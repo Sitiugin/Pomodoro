@@ -1,3 +1,13 @@
 <resources>
+
     <string name="app_name">Pomodoro</string>
+    <string name="app_version">v1.0.0</string>
+
+
+    <!--                                                                                   FONTS -->
+
+    <string name="font_sans_serif_normal">sans-serif-normal</string>
+    <string name="font_sans_serif_light">sans-serif-light</string>
+    <string name="font_sans_serif_thin">sans-serif-thin</string>
+
 </resources>

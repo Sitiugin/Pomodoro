@@ -1,0 +1,46 @@
+<resources>
+
+
+    <!--                                                                                 MARGINS -->
+
+    <dimen name="margin_content_quarter">4dp</dimen>
+    <dimen name="margin_content_half">8dp</dimen>
+    <dimen name="margin_content">16dp</dimen>
+    <dimen name="margin_content_double">32dp</dimen>
+    <dimen name="margin_content_triple">48dp</dimen>
+    <dimen name="margin_content_quadruple">64dp</dimen>
+    <dimen name="margin_splash">256dp</dimen>
+
+
+    <!--                                                                               ELEVATION -->
+
+    <dimen name="elevation_content">1dp</dimen>
+    <dimen name="elevation_content_high">2dp</dimen>
+    <dimen name="elevation_view">2dp</dimen>
+    <dimen name="elevation_view_high">4dp</dimen>
+    <dimen name="elevation_bottom_bar">6dp</dimen>
+    <dimen name="elevation_navigation">6dp</dimen>
+    <dimen name="elevation_fab">12dp</dimen>
+    <dimen name="elevation_fab_high">16dp</dimen>
+    <dimen name="elevation_popup">16dp</dimen>
+
+
+    <!--                                                                              VIEW SIZES -->
+
+    <dimen name="size_splash">64dp</dimen>
+    <dimen name="height_app_bar">56dp</dimen>
+    <dimen name="height_chart">192dp</dimen>
+    <dimen name="height_divider">1dp</dimen>
+    <dimen name="height_divider_thick">2dp</dimen>
+    <dimen name="width_button_large">256dp</dimen>
+    <dimen name="width_button_medium">192dp</dimen>
+    <dimen name="width_button_small">128dp</dimen>
+
+
+    <!--                                                                              TEXT SIZES -->
+
+    <dimen name="text_size_body">12sp</dimen>
+    <dimen name="text_size_title">16sp</dimen>
+    <dimen name="text_size_app_bar">24sp</dimen>
+
+</resources>
