@@ -3,6 +3,11 @@
     <string name="app_name">Pomodoro</string>
     <string name="app_version">v1.0.0</string>
 
+    <string name="core_cancel">Cancel</string>
+    <string name="core_save">Save</string>
+    <string name="core_filter">Filter</string>
+    <string name="core_text_no_data">Nothing to show</string>
+
 
     <!--                                                                                   FONTS -->
 
