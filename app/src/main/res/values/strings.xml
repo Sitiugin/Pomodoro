@@ -15,4 +15,15 @@
     <string name="font_sans_serif_light">sans-serif-light</string>
     <string name="font_sans_serif_thin">sans-serif-thin</string>
 
+
+    <!--                                                                                    MAIN -->
+
+    <string name="main_title_tasks">Tasks</string>
+    <string name="main_title_projects">Projects</string>
+    <string name="main_title_report">Report</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
