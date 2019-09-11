@@ -1,4 +1,4 @@
-package com.glebworx.pomodoro.ui;
+package com.glebworx.pomodoro.ui.main.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -6,6 +6,9 @@ import androidx.fragment.app.Fragment;
 import android.os.Bundle;
 
 import com.glebworx.pomodoro.R;
+import com.glebworx.pomodoro.ui.main.fragment.ProjectsFragment;
+import com.glebworx.pomodoro.ui.main.fragment.ReportFragment;
+import com.glebworx.pomodoro.ui.main.fragment.TasksFragment;
 import com.glebworx.pomodoro.util.manager.NavigationFragmentManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

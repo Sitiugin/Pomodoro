@@ -1,4 +1,4 @@
-package com.glebworx.pomodoro.ui;
+package com.glebworx.pomodoro.ui.main.fragment;
 
 
 import android.os.Bundle;
@@ -13,11 +13,10 @@ import android.view.ViewGroup;
 import com.glebworx.pomodoro.R;
 
 
-public class ReportFragment extends Fragment {
+public class TasksFragment extends Fragment {
 
 
-    public ReportFragment() {
-    }
+    public TasksFragment() { }
 
 
     @Override
@@ -25,7 +24,7 @@ public class ReportFragment extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_report, container, false);
+        return inflater.inflate(R.layout.fragment_tasks, container, false);
 
     }
 
