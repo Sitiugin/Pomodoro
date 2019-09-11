@@ -71,7 +71,7 @@
                     android:id="@+id/text_view_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/main_tasks_text_working_on"
+                    android:text="@string/main_tasks_text_tap_to_start"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_time_remaining"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>

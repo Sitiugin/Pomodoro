@@ -86,9 +86,13 @@ public class TasksFragment extends Fragment {
     private void initFab() {
         startPomodoroButton.setOnClickListener(view -> {
             isTaskRunning = !isTaskRunning;
-            startPomodoroButton.setImageResource(isTaskRunning
-                    ? R.drawable.ic_pause_black
-                    : R.drawable.ic_play_black);
+            if (isTaskRunning) {
+                startPomodoroButton.setImageResource(R.drawable.ic_pause_black);
+                statusTextView.setText(R.string.main_tasks_text_working_on);
+            } else {
+                startPomodoroButton.setImageResource(R.drawable.ic_play_black);
+                statusTextView.setText(R.string.main_tasks_text_paused);
+            }
         });
     }
 

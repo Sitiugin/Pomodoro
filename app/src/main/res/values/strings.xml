@@ -25,6 +25,7 @@
 
     <!--                                                                              MAIN TASKS -->
 
+    <string name="main_tasks_text_tap_to_start">Tap the button to begin</string>
     <string name="main_tasks_text_working_on">Working on</string>
     <string name="main_tasks_text_paused">Paused</string>
 
