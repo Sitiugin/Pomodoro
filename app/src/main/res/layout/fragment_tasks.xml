@@ -78,7 +78,7 @@
 
                 <TextView
                     style="@style/TextStyle.Title"
-                    android:id="@+id/text_view_working_on_title"
+                    android:id="@+id/text_view_current_task"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Some task"
