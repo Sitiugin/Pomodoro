@@ -23,6 +23,11 @@
     <string name="main_title_report">Report</string>
 
 
+    <!--                                                                              MAIN TASKS -->
+
+    <string name="main_tasks_text_working_on">Working on</string>
+    <string name="main_tasks_text_paused">Paused</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

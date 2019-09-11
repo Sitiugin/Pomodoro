@@ -1,14 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/height_app_bar"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     tools:context=".ui.main.fragment.TasksFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.google.android.material.appbar.AppBarLayout
+        style="@style/AppBarStyle"
+        android:id="@+id/layout_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false">
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            app:titleEnabled="false"
+            app:contentScrim="@color/colorBackground"
+            app:layout_scrollFlags="scroll|enterAlways|exitUntilCollapsed|snap">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                app:layout_collapseMode="none">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/TextStyle.AppBar"
+                    android:id="@+id/text_view_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/margin_content"
+                    android:text="@string/main_title_tasks"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    style="@style/ImageButtonStyle.Borderless"
+                    android:id="@+id/button_options"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_content"
+                    android:src="@drawable/ic_options_black"
+                    app:layout_constraintTop_toTopOf="@+id/text_view_title"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_view_title"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    style="@style/TextStyle.Time"
+                    android:id="@+id/text_view_time_remaining"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="25:00"
+                    app:layout_constraintTop_toTopOf="@+id/seek_arc"
+                    app:layout_constraintBottom_toBottomOf="@+id/seek_arc"
+                    app:layout_constraintStart_toStartOf="@+id/seek_arc"
+                    app:layout_constraintEnd_toEndOf="@+id/seek_arc"/>
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:id="@+id/text_view_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/main_tasks_text_working_on"
+                    app:layout_constraintTop_toBottomOf="@+id/text_view_time_remaining"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    style="@style/TextStyle.Title"
+                    android:id="@+id/text_view_working_on_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Some task"
+                    app:layout_constraintTop_toBottomOf="@+id/text_view_status"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <com.triggertrap.seekarc.SeekArc
+                    android:id="@+id/seek_arc"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_seek_arc"
+                    app:progress="100"
+                    app:enabled="false"
+                    app:arcColor="@android:color/darker_gray"
+                    app:progressColor="@color/colorHighlight"
+                    app:rotation="210"
+                    app:sweepAngle="300"
+                    app:progressWidth="4dp"
+                    app:roundEdges="true"
+                    app:layout_constraintTop_toBottomOf="@+id/text_view_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        style="@style/FloatingActionButtonStyle"
+        android:id="@+id/fab_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_content"
+        android:src="@drawable/ic_play_black"
+        android:outlineAmbientShadowColor="@color/colorHighlight"
+        android:outlineSpotShadowColor="@color/colorHighlight"
+        app:layout_anchor="@+id/layout_app_bar"
+        app:layout_anchorGravity="bottom|right"
+        tools:targetApi="p" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

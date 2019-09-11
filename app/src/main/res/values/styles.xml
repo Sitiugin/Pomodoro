@@ -163,6 +163,12 @@
         <item name="android:fontFamily">@string/font_sans_serif_thin</item>
     </style>
 
+    <style name="TextStyle.Time">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/text_size_giant</item>
+        <item name="android:fontFamily">@string/font_sans_serif_thin</item>
+    </style>
+
 
     <!--                                                                         EDIT TEXT THEME -->
 
