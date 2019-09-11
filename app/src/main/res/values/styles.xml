@@ -131,6 +131,13 @@
         <item name="android:stateListAnimator">@animator/lift_on_touch</item>
     </style>
 
+    <style name="ViewStyle.Clickable.Borderless">
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:padding">@dimen/margin_content</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
     <style name="ViewStyle.Selectable">
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>

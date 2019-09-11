@@ -96,7 +96,7 @@
                     app:progressColor="@color/colorHighlight"
                     app:rotation="210"
                     app:sweepAngle="300"
-                    app:progressWidth="4dp"
+                    app:progressWidth="@dimen/size_divider_thick"
                     app:roundEdges="true"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_title"
                     app:layout_constraintStart_toStartOf="parent"
@@ -116,7 +116,7 @@
         android:outlineAmbientShadowColor="@color/colorHighlight"
         android:outlineSpotShadowColor="@color/colorHighlight"
         app:layout_anchor="@+id/layout_app_bar"
-        app:layout_anchorGravity="bottom|right"
+        app:layout_anchorGravity="bottom|center_horizontal"
         tools:targetApi="p" />
 
     <androidx.recyclerview.widget.RecyclerView

@@ -17,9 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.glebworx.pomodoro.R;
+import com.glebworx.pomodoro.item.TaskItem;
+import com.glebworx.pomodoro.util.DummyDataProvider;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.triggertrap.seekarc.SeekArc;
 
 import butterknife.BindView;
@@ -38,6 +41,8 @@ public class TasksFragment extends Fragment {
 
     private boolean isTaskRunning;
 
+    private ItemAdapter<TaskItem> todayAdapter;
+
     public TasksFragment() { }
 
     @Override
@@ -55,9 +60,12 @@ public class TasksFragment extends Fragment {
         }
 
         isTaskRunning = false;
+        todayAdapter = new ItemAdapter<>();
+        todayAdapter.add(DummyDataProvider.getTasks());
+        FastAdapter fastAdapter = new FastAdapter();
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
 
-        initRecyclerView(context, activity, layoutManager, null);
+        initRecyclerView(context, activity, layoutManager, fastAdapter);
         initFab();
 
         return rootView;
@@ -72,6 +80,8 @@ public class TasksFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty));
 
+        fastAdapter.addAdapter(0, todayAdapter);
+        recyclerView.setAdapter(fastAdapter);
         /*fastAdapter.addAdapter(0, headerAdapter);
         fastAdapter.addAdapter(1, itemAdapter);
         fastAdapter.setHasStableIds(true);
