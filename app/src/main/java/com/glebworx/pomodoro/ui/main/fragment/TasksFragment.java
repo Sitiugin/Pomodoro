@@ -22,8 +22,12 @@ import com.glebworx.pomodoro.util.DummyDataProvider;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.IItem;
+import com.mikepenz.fastadapter.ISelectionListener;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.triggertrap.seekarc.SeekArc;
+
+import javax.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -81,16 +85,11 @@ public class TasksFragment extends Fragment {
         recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty));
 
         fastAdapter.addAdapter(0, todayAdapter);
-        recyclerView.setAdapter(fastAdapter);
-        /*fastAdapter.addAdapter(0, headerAdapter);
-        fastAdapter.addAdapter(1, itemAdapter);
         fastAdapter.setHasStableIds(true);
-
-        recyclerView.setAdapter(fastAdapter);*/
-
-        //attachSwipeHelper(context, recyclerView);
+        fastAdapter.withSelectable(true);
+        attachSelectionListener(context, fastAdapter);
         //fastAdapter.withOnClickListener((v, adapter, item, position) -> showEditEntryDialog(context, activity, rootView, (WeightItem) item));
-
+        recyclerView.setAdapter(fastAdapter);
     }
 
     private void initFab() {
@@ -102,6 +101,15 @@ public class TasksFragment extends Fragment {
             } else {
                 startPomodoroButton.setImageResource(R.drawable.ic_play_black);
                 statusTextView.setText(R.string.main_tasks_text_paused);
+            }
+        });
+    }
+
+    private void attachSelectionListener(Context context, FastAdapter fastAdapter) {
+        fastAdapter.withSelectionListener(new ISelectionListener() {
+            @Override
+            public void onSelectionChanged(@Nullable IItem item, boolean selected) {
+
             }
         });
     }

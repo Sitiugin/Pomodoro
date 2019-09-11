@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="true">
+        <set>
+            <objectAnimator
+                android:duration="@android:integer/config_shortAnimTime"
+                android:propertyName="translationZ"
+                android:valueTo="@dimen/elevation_view_high"
+                android:interpolator="@android:anim/overshoot_interpolator"/>
+        </set>
+    </item>
+
+    <item android:state_checked="true">
+        <set>
+            <objectAnimator
+                android:duration="@android:integer/config_shortAnimTime"
+                android:propertyName="translationZ"
+                android:valueTo="@dimen/elevation_view_high"
+                android:interpolator="@android:anim/overshoot_interpolator"/>
+        </set>
+    </item>
+
+    <item android:state_selected="true">
+        <set>
+            <objectAnimator
+                android:duration="@android:integer/config_shortAnimTime"
+                android:propertyName="translationZ"
+                android:valueTo="@dimen/elevation_view_high"
+                android:interpolator="@android:anim/overshoot_interpolator"/>
+        </set>
+    </item>
+
+    <item android:state_activated="true">
+        <set>
+            <objectAnimator
+                android:duration="@android:integer/config_shortAnimTime"
+                android:propertyName="translationZ"
+                android:valueTo="@dimen/elevation_view_high"
+                android:interpolator="@android:anim/overshoot_interpolator"/>
+        </set>
+    </item>
+
+    <item>
+        <set>
+            <objectAnimator
+                android:duration="@android:integer/config_shortAnimTime"
+                android:propertyName="translationZ"
+                android:valueTo="0dp"
+                android:interpolator="@android:anim/decelerate_interpolator"/>
+        </set>
+    </item>
+
+</selector>

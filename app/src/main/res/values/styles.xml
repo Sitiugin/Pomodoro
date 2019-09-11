@@ -138,6 +138,15 @@
         <item name="android:background">?attr/selectableItemBackground</item>
     </style>
 
+    <style name="ViewStyle.Toggle">
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:padding">@dimen/margin_content</item>
+        <item name="android:background">@drawable/selector_bg_toggle</item>
+        <item name="android:foreground">?selectableItemBackground</item>
+        <item name="android:stateListAnimator">@animator/lift_on_touch_toggle</item>
+    </style>
+
     <style name="ViewStyle.Selectable">
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
@@ -168,6 +177,10 @@
         <item name="android:textSize">@dimen/text_size_title</item>
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">@string/font_sans_serif_thin</item>
+    </style>
+
+    <style name="TextStyle.Title.Selectable" parent="TextStyle.Title">
+        <item name="android:textColor">@drawable/selector_tint_text</item>
     </style>
 
     <style name="TextStyle.Time">

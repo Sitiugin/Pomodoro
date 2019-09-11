@@ -2,10 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/ViewStyle.Clickable.Borderless"
+    style="@style/ViewStyle.Toggle"
     android:id="@+id/item_task"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/margin_content">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/image_view_dot"
@@ -19,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-        style="@style/TextStyle.Title"
+        style="@style/TextStyle.Title.Selectable"
         android:id="@+id/text_view_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
