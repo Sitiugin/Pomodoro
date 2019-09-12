@@ -8,6 +8,8 @@
     <color name="colorForeground">#ffffff</color>
     <color name="colorBackground">#fafafa</color>
     <color name="colorError">#e74c3c</color>
+    <color name="colorRipple">#42000000</color>
+    <color name="colorRippleLight">#AAFFFFFF</color>
 
 
     <!--                                                                             DATA COLORS -->

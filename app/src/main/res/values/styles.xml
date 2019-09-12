@@ -124,6 +124,18 @@
         <item name="android:elevation">@dimen/elevation_view</item>
     </style>
 
+    <style name="ViewStyle.Rounded">
+        <item name="android:background">@drawable/drawable_foreground_rounded_small</item>
+        <item name="android:elevation">@dimen/elevation_view</item>
+    </style>
+
+    <style name="ViewStyle.Rounded.Clickable" parent="ViewStyle.Rounded">
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:foreground">@drawable/ripple_rounded_small</item>
+        <item name="android:stateListAnimator">@animator/lift_on_touch</item>
+    </style>
+
     <style name="ViewStyle.Clickable">
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
@@ -186,8 +198,7 @@
     <style name="TextStyle.Title">
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">@dimen/text_size_title</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:fontFamily">@string/font_sans_serif_thin</item>
+        <item name="android:fontFamily">@string/font_sans_serif_normal</item>
     </style>
 
     <style name="TextStyle.Title.Selectable" parent="TextStyle.Title">

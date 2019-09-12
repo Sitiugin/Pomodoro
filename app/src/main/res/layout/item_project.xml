@@ -2,8 +2,66 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/ViewStyle.Rounded.Clickable"
     android:id="@+id/item_project"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="@dimen/margin_content"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:layout_marginVertical="@dimen/margin_content_half"
+    android:layout_marginHorizontal="@dimen/margin_content">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle.Title.Selectable"
+        android:id="@+id/text_view_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle"
+        android:id="@+id/text_view_due_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_title"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.triggertrap.seekarc.SeekArc
+        android:id="@+id/seek_arc_progress"
+        android:layout_width="@dimen/size_seek_arc_list"
+        android:layout_height="@dimen/size_seek_arc_list"
+        app:progress="75"
+        app:enabled="false"
+        app:arcColor="@android:color/darker_gray"
+        app:progressColor="@color/colorHighlight"
+        app:rotation="210"
+        app:sweepAngle="300"
+        app:progressWidth="@dimen/size_divider_thick"
+        app:roundEdges="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle"
+        android:id="@+id/text_view_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="75%"
+        app:layout_constraintTop_toTopOf="@+id/seek_arc_progress"
+        app:layout_constraintBottom_toBottomOf="@+id/seek_arc_progress"
+        app:layout_constraintStart_toStartOf="@+id/seek_arc_progress"
+        app:layout_constraintEnd_toEndOf="@+id/seek_arc_progress"/>
+
+    <!--<androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle.ShowActive"
+        android:id="@+id/text_view_active"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/core_active"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_title"
+        app:layout_constraintStart_toStartOf="@+id/text_view_title" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

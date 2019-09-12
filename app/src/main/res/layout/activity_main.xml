@@ -27,48 +27,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="0dp"
-                android:paddingBottom="@dimen/margin_content"
+                android:paddingBottom="@dimen/margin_content_half"
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 app:layout_collapseMode="none">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/TextStyle.AppBar"
-                    android:id="@+id/text_view_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingVertical="@dimen/margin_content"
-                    android:text="@string/main_title_projects"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-                <androidx.appcompat.widget.AppCompatImageButton
-                    style="@style/ImageButtonStyle.Borderless"
-                    android:id="@+id/button_report"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/margin_content"
-                    android:src="@drawable/ic_report_black"
-                    app:layout_constraintTop_toTopOf="@+id/text_view_title"
-                    app:layout_constraintBottom_toBottomOf="@+id/text_view_title"
-                    app:layout_constraintEnd_toStartOf="@+id/button_options"/>
-
-                <androidx.appcompat.widget.AppCompatImageButton
-                    style="@style/ImageButtonStyle.Borderless"
-                    android:id="@+id/button_options"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/margin_content"
-                    android:src="@drawable/ic_options_black"
-                    app:layout_constraintTop_toTopOf="@+id/text_view_title"
-                    app:layout_constraintBottom_toBottomOf="@+id/text_view_title"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
                 <androidx.appcompat.widget.SearchView
                     style="@style/ViewStyle.Search"
-                    android:id="@+id/search_view_routine"
-                    android:layout_width="match_parent"
+                    android:id="@+id/search_view"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="@dimen/margin_content_half"
                     android:clipChildren="false"
@@ -82,8 +49,31 @@
                     app:showDividers="none"
                     app:searchIcon="@drawable/ic_search_gray"
                     app:closeIcon="@drawable/ic_cross_black"
-                    app:layout_constraintTop_toBottomOf="@+id/text_view_title"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/button_report"/>
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    style="@style/ImageButtonStyle.Borderless"
+                    android:id="@+id/button_report"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_content"
+                    android:src="@drawable/ic_report_black"
+                    app:layout_constraintTop_toTopOf="@+id/search_view"
+                    app:layout_constraintBottom_toBottomOf="@+id/search_view"
+                    app:layout_constraintEnd_toStartOf="@+id/button_options"/>
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    style="@style/ImageButtonStyle.Borderless"
+                    android:id="@+id/button_options"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_content"
+                    android:src="@drawable/ic_options_black"
+                    app:layout_constraintTop_toTopOf="@+id/search_view"
+                    app:layout_constraintBottom_toBottomOf="@+id/search_view"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
