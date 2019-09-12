@@ -28,6 +28,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@+id/image_view_dot" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle.ShowActive"
+        android:id="@+id/text_view_active"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/core_active"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_title"
+        app:layout_constraintStart_toStartOf="@+id/text_view_title" />
+
     <androidx.appcompat.widget.AppCompatImageButton
         style="@style/ImageButtonStyle.Borderless"
         android:id="@+id/button_options"

@@ -37,6 +37,9 @@
     <dimen name="width_button_large">256dp</dimen>
     <dimen name="width_button_medium">192dp</dimen>
     <dimen name="width_button_small">128dp</dimen>
+    <dimen name="radius_small">2dp</dimen>
+    <dimen name="radius_medium">16dp</dimen>
+    <dimen name="radius_large">24dp</dimen>
 
 
     <!--                                                                              TEXT SIZES -->
