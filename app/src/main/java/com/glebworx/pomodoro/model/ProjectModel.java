@@ -135,4 +135,14 @@ public class ProjectModel extends AbstractModel {
     public void setTasks(List<TaskModel> tasks) {
         this.tasks = tasks;
     }
+
+    public int getProgress() {
+        int allocated = 0;
+        int completed = 0;
+        for (int i = 0; i < tasks.size(); i++) {
+            allocated += tasks.get(i).getPomodorosAllocated();
+            completed += tasks.get(i).getPomodorosCompleted();
+        }
+        return (int) Math.round( (double) completed / (double) allocated * 100);
+    }
 }

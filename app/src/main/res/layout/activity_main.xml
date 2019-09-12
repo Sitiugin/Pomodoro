@@ -88,4 +88,19 @@
         android:paddingVertical="@dimen/margin_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
+    <FrameLayout
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBackground"
+        android:elevation="@dimen/elevation_navigation"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="@dimen/height_app_bar"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+
+    </FrameLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

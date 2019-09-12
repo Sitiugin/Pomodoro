@@ -16,6 +16,7 @@ import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.triggertrap.seekarc.SeekArc;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +31,7 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
 
     private static SimpleDateFormat dateFormat =
             new SimpleDateFormat(Constants.PATTERN_DATE_TIME, Locale.getDefault());
+    private static NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
 
     private ProjectModel model;
 
@@ -67,15 +69,23 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
     }
 
     public @NonNull String getProjectName() {
-        return this.model.getName();
+        return model.getName();
     }
 
-    public @Nullable String getDueDate(Context context) {
-        if (this.model.getDueDate() == null) {
+    public @Nullable String getDueDateString(Context context) {
+        if (model.getDueDate() == null) {
             return null;
         }
-        Date dueDate = this.model.getDueDate();
+        Date dueDate = model.getDueDate();
         return context.getString(R.string.core_due, dateFormat.format(dueDate));
+    }
+
+    public int getProgress() {
+        return model.getProgress();
+    }
+
+    public @NonNull String getProgressString(int progress) {
+        return numberFormat.format(progress);
     }
 
 
@@ -87,6 +97,7 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
         private AppCompatTextView titleTextView;
         private AppCompatTextView dueDateTextView;
         private SeekArc progressSeekArc;
+        private AppCompatTextView progressTextView;
 
         ViewHolder(View view) {
             super(view);
@@ -94,18 +105,24 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
             titleTextView = view.findViewById(R.id.text_view_title);
             dueDateTextView = view.findViewById(R.id.text_view_due_date);
             progressSeekArc = view.findViewById(R.id.seek_arc_progress);
+            progressTextView = view.findViewById(R.id.text_view_progress);
         }
 
         @Override
         public void bindView(@NonNull ProjectItem item, @NonNull List<Object> payloads) {
             titleTextView.setText(item.getProjectName());
-            dueDateTextView.setText(item.getDueDate(context));
+            dueDateTextView.setText(item.getDueDateString(context));
+            int progress = item.getProgress();
+            progressSeekArc.setProgress(progress);
+            progressTextView.setText(item.getProgressString(progress));
         }
 
         @Override
         public void unbindView(@NonNull ProjectItem item) {
             titleTextView.setText(null);
             dueDateTextView.setText(null);
+            progressSeekArc.setProgress(0);
+            progressTextView.setText(null);
         }
 
     }

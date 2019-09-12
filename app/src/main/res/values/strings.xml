@@ -8,7 +8,7 @@
     <string name="core_filter">Filter</string>
     <string name="core_text_no_data">Nothing to show</string>
     <string name="core_active">Active</string>
-    <string name="core_due">Due: %1$s</string>
+    <string name="core_due" formatted="true">Due: %1$s</string>
 
 
     <!--                                                                                   FONTS -->

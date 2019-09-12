@@ -30,6 +30,7 @@ public class DummyDataProvider { // TODO temp class for testing
             List<TaskModel> taskModels = new ArrayList<>();
             for (int j = 0; j < 10; j++) {
                 TaskModel model = new TaskModel("Some task", "Some project", 5, null, 0);
+                model.setPomodorosCompleted(3);
                 taskModels.add(model);
             }
             ProjectModel model = new ProjectModel("Some Project", new Date(), COLOR_EMERALD_HEX, taskModels);
