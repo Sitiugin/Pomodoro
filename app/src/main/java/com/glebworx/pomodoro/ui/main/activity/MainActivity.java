@@ -13,6 +13,7 @@ import android.view.View;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.item.AddItem;
+import com.glebworx.pomodoro.item.ProjectHeaderItem;
 import com.glebworx.pomodoro.item.ProjectItem;
 import com.glebworx.pomodoro.ui.main.fragment.ProjectsFragment;
 import com.glebworx.pomodoro.ui.main.fragment.ReportFragment;
@@ -74,10 +75,15 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty));
 
-        fastAdapter.addAdapter(0, projectAdapter);
+        ItemAdapter<ProjectHeaderItem> headerAdapter = new ItemAdapter<>();
+        headerAdapter.add(new ProjectHeaderItem());
         ItemAdapter<AddItem> footerAdapter = new ItemAdapter<>();
         footerAdapter.add(new AddItem(getString(R.string.main_title_add_project)));
-        fastAdapter.addAdapter(1, footerAdapter);
+
+        fastAdapter.addAdapter(0, headerAdapter);
+        fastAdapter.addAdapter(1, projectAdapter);
+        fastAdapter.addAdapter(2, footerAdapter);
+
         fastAdapter.setHasStableIds(true);
         recyclerView.setAdapter(fastAdapter);
     }

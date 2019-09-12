@@ -57,6 +57,16 @@
         <item name="pressedTranslationZ">@dimen/elevation_fab_high</item>
     </style>
 
+    <style name="FloatingActionButtonStyle.Small">
+        <item name="backgroundTint">@android:color/white</item>
+        <item name="tint">@android:color/black</item>
+        <item name="rippleColor">@color/colorRipple</item>
+        <item name="elevation">@dimen/elevation_fab</item>
+        <item name="pressedTranslationZ">@dimen/elevation_fab_high</item>
+        <item name="fabSize">mini</item>
+    </style>
+
+
 
     <!--                                                                            BUTTON THEME -->
 

@@ -24,6 +24,9 @@
     <string name="main_title_projects">Projects</string>
     <string name="main_title_report">Report</string>
     <string name="main_title_add_project">Add Project</string>
+    <string name="main_text_today">Today</string>
+    <string name="main_text_this_week">This week</string>
+    <string name="main_text_all_time">All time</string>
 
 
     <!--                                                                              MAIN TASKS -->

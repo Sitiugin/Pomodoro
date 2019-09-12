@@ -85,6 +85,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
+        android:layout_marginBottom="@dimen/height_app_bar"
         android:paddingVertical="@dimen/margin_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
@@ -128,22 +129,23 @@
             android:id="@+id/button_complete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_content"
             android:src="@drawable/ic_check_black"
-            app:layout_constraintTop_toTopOf="@+id/text_view_task"
-            app:layout_constraintBottom_toBottomOf="@+id/text_view_task"
-            app:layout_constraintEnd_toStartOf="@+id/button_start_stop"/>
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            style="@style/ImageButtonStyle.Borderless"
-            android:id="@+id/button_start_stop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_play_black"
             app:layout_constraintTop_toTopOf="@+id/text_view_task"
             app:layout_constraintBottom_toBottomOf="@+id/text_view_task"
             app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        style="@style/FloatingActionButtonStyle"
+        android:id="@+id/fab_start_stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_play_black"
+        android:outlineAmbientShadowColor="@color/colorHighlight"
+        android:outlineSpotShadowColor="@color/colorHighlight"
+        app:layout_anchor="@+id/bottom_sheet"
+        app:layout_anchorGravity="top|center_horizontal"
+        tools:targetApi="p" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
