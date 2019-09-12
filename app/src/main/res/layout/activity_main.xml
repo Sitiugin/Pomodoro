@@ -88,10 +88,12 @@
         android:paddingVertical="@dimen/margin_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        style="@style/ViewStyle.Clickable"
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="@dimen/margin_content"
         android:background="@color/colorBackground"
         android:elevation="@dimen/elevation_navigation"
         android:clipChildren="false"
@@ -101,6 +103,47 @@
         app:behavior_peekHeight="@dimen/height_app_bar"
         app:layout_behavior="@string/bottom_sheet_behavior">
 
-    </FrameLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/TextStyle.Title"
+            android:id="@+id/text_view_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Some task"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            style="@style/ImageButtonStyle.Borderless"
+            android:id="@+id/button_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_content"
+            android:src="@drawable/ic_cross_black"
+            app:layout_constraintTop_toTopOf="@+id/text_view_task"
+            app:layout_constraintBottom_toBottomOf="@+id/text_view_task"
+            app:layout_constraintEnd_toStartOf="@+id/button_complete"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            style="@style/ImageButtonStyle.Borderless"
+            android:id="@+id/button_complete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_content"
+            android:src="@drawable/ic_check_black"
+            app:layout_constraintTop_toTopOf="@+id/text_view_task"
+            app:layout_constraintBottom_toBottomOf="@+id/text_view_task"
+            app:layout_constraintEnd_toStartOf="@+id/button_start_stop"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            style="@style/ImageButtonStyle.Borderless"
+            android:id="@+id/button_start_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_play_black"
+            app:layout_constraintTop_toTopOf="@+id/text_view_task"
+            app:layout_constraintBottom_toBottomOf="@+id/text_view_task"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

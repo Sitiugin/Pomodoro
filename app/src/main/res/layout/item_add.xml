@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.AppCompatButton
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ButtonStyle.Borderless"
+    android:id="@+id/item_add"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="@dimen/margin_content_half"
+    android:layout_marginHorizontal="@dimen/margin_content"
+    android:drawableEnd="@drawable/ic_plus_black"
+    android:gravity="start"/>
