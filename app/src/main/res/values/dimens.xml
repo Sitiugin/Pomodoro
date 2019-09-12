@@ -48,6 +48,7 @@
     <dimen name="text_size_body">12sp</dimen>
     <dimen name="text_size_title">16sp</dimen>
     <dimen name="text_size_app_bar">24sp</dimen>
+    <dimen name="text_size_count">32sp</dimen>
     <dimen name="text_size_giant">64sp</dimen>
 
 </resources>

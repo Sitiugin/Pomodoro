@@ -86,7 +86,8 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:layout_marginBottom="@dimen/height_app_bar"
-        android:paddingVertical="@dimen/margin_content"
+        android:paddingTop="0dp"
+        android:paddingBottom="@dimen/margin_content_half"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
