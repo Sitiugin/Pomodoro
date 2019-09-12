@@ -22,7 +22,9 @@ import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.manager.NavigationFragmentManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.IItemAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
+import com.mikepenz.fastadapter.adapters.ItemFilter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
 
         initRecyclerView(layoutManager, fastAdapter);
+        initSearchView();
         initClickEvents();
 
     }
@@ -75,15 +78,41 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(fastAdapter);
     }
 
-    private void initClickEvents() {
-        View.OnClickListener onClickListener = new View.OnClickListener() {
+    private void initSearchView() {
+
+        IItemAdapter.Predicate<ProjectItem> predicate = (item, constraint) -> {
+            if (constraint == null) {
+                return true;
+            }
+            String title = item.getModel().getName();
+            return title != null && title.toLowerCase().contains(constraint);
+        };
+
+        ItemFilter<ProjectItem, ProjectItem> itemFilter =
+                new ItemFilter<ProjectItem, ProjectItem>(projectAdapter).withFilterPredicate(predicate);
+
+        projectAdapter.withItemFilter(itemFilter);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onClick(View view) {
-                if (view.getId() == R.id.button_report) {
-                    startActivity(new Intent(MainActivity.this, ReportActivity.class));
-                } else {
-                    // TODO open options
-                }
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                projectAdapter.filter(newText);
+                return true;
+            }
+        });
+
+    }
+
+    private void initClickEvents() {
+        View.OnClickListener onClickListener = view -> {
+            if (view.getId() == R.id.button_report) {
+                startActivity(new Intent(MainActivity.this, ReportActivity.class));
+            } else {
+                // TODO open options
             }
         };
         reportButton.setOnClickListener(onClickListener);
