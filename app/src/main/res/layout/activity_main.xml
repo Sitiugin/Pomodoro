@@ -114,25 +114,72 @@
             app:layout_constraintStart_toStartOf="parent"
             android:text="Some task"/>
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            style="@style/ImageButtonStyle.Borderless"
-            android:id="@+id/button_cancel"
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/TextStyle"
+            android:id="@+id/text_view_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_content"
-            android:src="@drawable/ic_cross_black"
-            app:layout_constraintTop_toTopOf="@+id/text_view_task"
-            app:layout_constraintBottom_toBottomOf="@+id/text_view_task"
-            app:layout_constraintEnd_toStartOf="@+id/button_complete"/>
+            android:layout_marginTop="@dimen/margin_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="Paused"/>
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            style="@style/ImageButtonStyle.Borderless"
-            android:id="@+id/button_complete"
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/TextStyle.Title"
+            android:id="@+id/text_view_time_remaining"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_check_black"
-            app:layout_constraintTop_toTopOf="@+id/text_view_task"
-            app:layout_constraintBottom_toBottomOf="@+id/text_view_task"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="23:15"/>
+
+        <!--<TextView
+            style="@style/TextStyle.Time"
+            android:id="@+id/text_view_time_remaining_large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="25:00"
+            app:layout_constraintTop_toTopOf="@+id/seek_arc"
+            app:layout_constraintBottom_toBottomOf="@+id/seek_arc"
+            app:layout_constraintStart_toStartOf="@+id/seek_arc"
+            app:layout_constraintEnd_toEndOf="@+id/seek_arc"/>
+
+        <TextView
+            style="@style/TextStyle"
+            android:id="@+id/text_view_status_large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_tasks_text_tap_to_start"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_time_remaining_large"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            style="@style/TextStyle.Title"
+            android:id="@+id/text_view_current_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Some task"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_status_large"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>-->
+
+        <com.triggertrap.seekarc.SeekArc
+            android:id="@+id/seek_arc"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_seek_arc"
+            app:progress="100"
+            app:enabled="false"
+            app:arcColor="@android:color/darker_gray"
+            app:progressColor="@color/colorHighlight"
+            app:rotation="210"
+            app:sweepAngle="300"
+            app:progressWidth="@dimen/size_divider_thick"
+            app:roundEdges="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
