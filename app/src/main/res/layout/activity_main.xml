@@ -134,41 +134,22 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:text="23:15"/>
 
-        <!--<TextView
+        <TextView
             style="@style/TextStyle.Time"
             android:id="@+id/text_view_time_remaining_large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="25:00"
+            android:text="23:15"
             app:layout_constraintTop_toTopOf="@+id/seek_arc"
             app:layout_constraintBottom_toBottomOf="@+id/seek_arc"
             app:layout_constraintStart_toStartOf="@+id/seek_arc"
             app:layout_constraintEnd_toEndOf="@+id/seek_arc"/>
 
-        <TextView
-            style="@style/TextStyle"
-            android:id="@+id/text_view_status_large"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/main_tasks_text_tap_to_start"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_time_remaining_large"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-        <TextView
-            style="@style/TextStyle.Title"
-            android:id="@+id/text_view_current_task"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Some task"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_status_large"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>-->
-
         <com.triggertrap.seekarc.SeekArc
             android:id="@+id/seek_arc"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_seek_arc"
+            android:visibility="invisible"
             app:progress="100"
             app:enabled="false"
             app:arcColor="@android:color/darker_gray"

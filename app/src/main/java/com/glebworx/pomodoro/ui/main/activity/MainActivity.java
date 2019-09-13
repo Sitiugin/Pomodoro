@@ -156,6 +156,72 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void expandBottomSheetViews() {
+
+        TransitionManager.beginDelayedTransition(bottomSheet);
+        constraintSet.clone(bottomSheet);
+
+        // animate seek arc
+        constraintSet.setVisibility(R.id.seek_arc, ConstraintSet.VISIBLE);
+
+        // animate remaining time
+        constraintSet.setVisibility(R.id.text_view_time_remaining, ConstraintSet.INVISIBLE);
+        constraintSet.setVisibility(R.id.text_view_time_remaining_large, ConstraintSet.VISIBLE);
+
+        // animate status
+        constraintSet.connect(
+                R.id.text_view_status,
+                ConstraintSet.TOP,
+                R.id.text_view_time_remaining_large,
+                ConstraintSet.BOTTOM);
+
+        // animate task
+        constraintSet.connect(
+                R.id.text_view_task,
+                ConstraintSet.TOP,
+                R.id.text_view_status,
+                ConstraintSet.BOTTOM);
+        constraintSet.connect(
+                R.id.text_view_task,
+                ConstraintSet.END,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.END);
+
+        constraintSet.applyTo(bottomSheet);
+
+    }
+
+    private void collapseBottomSheetViews() {
+
+        TransitionManager.beginDelayedTransition(bottomSheet);
+        constraintSet.clone(bottomSheet);
+
+        // animate seek arc
+        constraintSet.setVisibility(R.id.seek_arc, ConstraintSet.INVISIBLE);
+
+        // animate remaining time
+        constraintSet.setVisibility(R.id.text_view_time_remaining, ConstraintSet.VISIBLE);
+        constraintSet.setVisibility(R.id.text_view_time_remaining_large, ConstraintSet.INVISIBLE);
+
+        // animate status
+        constraintSet.connect(
+                R.id.text_view_status,
+                ConstraintSet.TOP,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.TOP);
+
+        // animate task
+        constraintSet.connect(
+                R.id.text_view_task,
+                ConstraintSet.TOP,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.TOP);
+        constraintSet.clear(R.id.text_view_task, ConstraintSet.END);
+
+        constraintSet.applyTo(bottomSheet);
+
+    }
+
+    /*private void expandBottomSheetViews() {
         constraintSet.clone(MainActivity.this, R.layout.view_bottom_sheet_expanded);
         constraintSet.setAlpha(R.id.seek_arc, 100);
         Transition transition = new ChangeBounds();
@@ -173,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
         transition.setDuration(ANIM_DURATION);
         TransitionManager.beginDelayedTransition(bottomSheet, transition);
         constraintSet.applyTo(bottomSheet);
-    }
+    }*/
 
     private void initClickEvents() {
         View.OnClickListener onClickListener = view -> {
