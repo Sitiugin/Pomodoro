@@ -31,7 +31,7 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
 
     private static SimpleDateFormat dateFormat =
             new SimpleDateFormat(Constants.PATTERN_DATE_TIME, Locale.getDefault());
-    private static NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
+    private static NumberFormat numberFormat = NumberFormat.getPercentInstance(Locale.getDefault());
 
     private ProjectModel model;
 
@@ -80,11 +80,11 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
         return context.getString(R.string.core_due, dateFormat.format(dueDate));
     }
 
-    public int getProgress() {
-        return model.getProgress();
+    public double getProgressRatio() {
+        return model.getProgressRatio();
     }
 
-    public @NonNull String getProgressString(int progress) {
+    public @NonNull String getProgressString(double progress) {
         return numberFormat.format(progress);
     }
 
@@ -112,9 +112,10 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
         public void bindView(@NonNull ProjectItem item, @NonNull List<Object> payloads) {
             titleTextView.setText(item.getProjectName());
             dueDateTextView.setText(item.getDueDateString(context));
-            int progress = item.getProgress();
-            progressSeekArc.setProgress(progress);
-            progressTextView.setText(item.getProgressString(progress));
+
+            double progressRatio = item.getProgressRatio();
+            progressSeekArc.setProgress((int) Math.round(progressRatio * 100));
+            progressTextView.setText(item.getProgressString(progressRatio));
         }
 
         @Override
