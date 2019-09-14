@@ -21,7 +21,8 @@ import butterknife.ButterKnife;
 
 public class MainActivity
         extends AppCompatActivity
-        implements ProjectsFragment.OnProjectFragmentInteractionListener {
+        implements ProjectsFragment.OnProjectFragmentInteractionListener,
+                    AddProjectFragment.OnAddProjectFragmentInteractionListener {
 
 
     //                                                                                       BINDING
@@ -56,8 +57,22 @@ public class MainActivity
     }
 
     @Override
+    public void onBackPressed() {
+        if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_COLLAPSED) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     public void onAddProjectClicked() {
         fragmentManager.pushToBackStack(new AddProjectFragment());
+    }
+
+    @Override
+    public void onCloseClicked() {
+        fragmentManager.popFromBackStack();
     }
 
     private void initBottomSheet() {

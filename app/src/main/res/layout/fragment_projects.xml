@@ -5,6 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     tools:context=".ui.main.fragment.ProjectsFragment">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -83,8 +85,8 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipChildren="false"
         android:clipToPadding="false"
-        android:layout_marginBottom="@dimen/height_app_bar"
         android:paddingTop="0dp"
         android:paddingBottom="@dimen/margin_content_half"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>

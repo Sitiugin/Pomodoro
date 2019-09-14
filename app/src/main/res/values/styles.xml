@@ -66,6 +66,15 @@
         <item name="fabSize">mini</item>
     </style>
 
+    <style name="ExtendedFloatingActionButtonStyle">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="backgroundTint">@color/colorHighlight</item>
+        <item name="iconTint">@android:color/white</item>
+        <item name="rippleColor">@android:color/white</item>
+        <item name="elevation">@dimen/elevation_fab</item>
+        <item name="pressedTranslationZ">@dimen/elevation_fab_high</item>
+    </style>
+
 
 
     <!--                                                                            BUTTON THEME -->
@@ -81,8 +90,8 @@
         <item name="android:padding">@dimen/margin_content</item>
     </style>
     <style name="ButtonStyle" parent="@style/BaseButtonStyle">
-        <item name="android:background">@color/colorForeground</item>
-        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:background">@drawable/drawable_foreground_rounded_small</item>
+        <item name="android:foreground">@drawable/ripple_rounded_small</item>
         <item name="android:stateListAnimator">@animator/lift_on_touch</item>
     </style>
     <style name="ButtonStyle.Colored" parent="@style/ButtonStyle">
@@ -230,7 +239,7 @@
     <!--                                                                         EDIT TEXT THEME -->
 
     <style name="EditTextStyle">
-        <item name="android:foreground">?selectableItemBackground</item>
+        <item name="android:background">?selectableItemBackground</item>
         <item name="android:textCursorDrawable">@drawable/drawable_cursor</item>
         <item name="android:textSize">@dimen/text_size_body</item>
         <item name="android:padding">@dimen/margin_content</item>

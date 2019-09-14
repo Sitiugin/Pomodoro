@@ -56,10 +56,12 @@ public class TransitionFragmentManager {
     }
 
     public void pushToBackStack(Fragment fragment) {
+        //fragment.setEnterTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        //fragment.setExitTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
         fragmentManager.executePendingTransactions();
         fragmentManager.beginTransaction()
                 .setReorderingAllowed(true)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                //.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 /*.setCustomAnimations(android.R.anim.slide_in_left,
                         android.R.anim.slide_out_right,
                         android.R.anim.slide_in_left,
@@ -69,15 +71,9 @@ public class TransitionFragmentManager {
                 .commitAllowingStateLoss();
     }
 
-    public boolean popFromBackStack() {
+    public void popFromBackStack() {
         fragmentManager.executePendingTransactions();
         fragmentManager.popBackStack();
-        /*fragmentManager.beginTransaction()
-                .setReorderingAllowed(true)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .addToBackStack(null)
-                .commitAllowingStateLoss();*/
-        return false;
     }
 
 }

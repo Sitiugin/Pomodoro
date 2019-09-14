@@ -44,7 +44,7 @@
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     style="@style/ImageButtonStyle.Borderless"
-                    android:id="@+id/button_options"
+                    android:id="@+id/button_close"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/margin_content"
@@ -81,6 +81,11 @@
                 android:id="@+id/edit_text_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_content"
+                android:background="@drawable/drawable_foreground_rounded_small"
+                android:foreground="@drawable/ripple_rounded_small"
+                android:elevation="@dimen/elevation_view"
+                android:hint="@string/add_project_hint_name"
                 android:singleLine="true"
                 android:inputType="textCapWords"
                 android:maxLength="25"
@@ -92,7 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_content"
-                android:text="@string/add_project_text_color"
+                android:text="@string/add_project_text_color_tag"
                 app:layout_constraintTop_toBottomOf="@+id/edit_text_name"
                 app:layout_constraintStart_toStartOf="parent"/>
             <androidx.appcompat.widget.AppCompatTextView
@@ -109,11 +114,37 @@
                 android:id="@+id/button_due_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_content"
                 android:text="No due date"
                 android:drawableEnd="@drawable/ic_calendar_black"
                 android:gravity="start"
                 app:layout_constraintTop_toBottomOf="@+id/text_view_section_due_date" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/ButtonStyle.Borderless.Colored"
+        android:id="@+id/button_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_content"
+        android:text="Add Project"
+        android:layout_marginHorizontal="@dimen/margin_content"
+        android:drawableEnd="@drawable/ic_check_highlight"
+        android:gravity="start"
+        android:layout_gravity="bottom"/>
+    <!--<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        style="@style/ExtendedFloatingActionButtonStyle"
+        android:id="@+id/fab_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="72dp"
+        android:layout_marginHorizontal="@dimen/margin_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:text="@string/core_add"
+        android:outlineAmbientShadowColor="@color/colorHighlight"
+        android:outlineSpotShadowColor="@color/colorHighlight"
+        app:icon="@drawable/ic_check_black"
+        tools:targetApi="p" />-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

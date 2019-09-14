@@ -5,6 +5,7 @@
 
     <string name="core_cancel">Cancel</string>
     <string name="core_save">Save</string>
+    <string name="core_add">Add</string>
     <string name="core_filter">Filter</string>
     <string name="core_text_no_data">Nothing to show</string>
     <string name="core_active">Active</string>
@@ -33,8 +34,9 @@
 
     <string name="add_project_title">Add Project</string>
     <string name="add_project_text_name">Name</string>
-    <string name="add_project_text_color">Color</string>
+    <string name="add_project_text_color_tag">Color Tag</string>
     <string name="add_project_text_due">Due</string>
+    <string name="add_project_hint_name">Enter a name for your project</string>
 
     <!--                                                                              MAIN TASKS -->
 
