@@ -73,8 +73,8 @@ public class TransitionFragmentManager {
     }
 
     public void pushToBackStack(@NonNull Fragment fragment,
-                                @NonNull String sharedElementKey,
-                                @NonNull View sharedElementView) {
+                                @NonNull View sharedElementView,
+                                @NonNull String sharedElementKey) {
         fragmentManager.executePendingTransactions();
         fragmentManager
                 .beginTransaction()

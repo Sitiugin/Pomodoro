@@ -66,8 +66,8 @@ public class MainActivity
     }
 
     @Override
-    public void onAddProjectClicked(View view) {
-        fragmentManager.pushToBackStack(new AddProjectFragment(), getString(R.string.shared_element_add_btn), view);
+    public void onAddProjectClicked() {
+        fragmentManager.pushToBackStack(new AddProjectFragment());
     }
 
     @Override

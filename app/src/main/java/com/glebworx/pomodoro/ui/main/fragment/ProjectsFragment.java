@@ -52,6 +52,7 @@ public class ProjectsFragment extends Fragment {
     //                                                                                    ATTRIBUTES
 
     private ItemAdapter<ProjectItem> projectAdapter;
+    private ItemAdapter<AddItem> addAdapter;
     private OnProjectFragmentInteractionListener listener;
 
 
@@ -105,15 +106,16 @@ public class ProjectsFragment extends Fragment {
 
         ItemAdapter<ProjectHeaderItem> headerAdapter = new ItemAdapter<>();
         headerAdapter.add(new ProjectHeaderItem());
-        ItemAdapter<AddItem> footerAdapter = new ItemAdapter<>();
-        footerAdapter.add(new AddItem(getString(R.string.main_title_add_project)));
+        addAdapter = new ItemAdapter<>();
+        addAdapter.add(new AddItem(getString(R.string.main_title_add_project)));
 
         fastAdapter.addAdapter(0, headerAdapter);
         fastAdapter.addAdapter(1, projectAdapter);
-        fastAdapter.addAdapter(2, footerAdapter);
+        fastAdapter.addAdapter(2, addAdapter);
 
         fastAdapter.setHasStableIds(true);
         recyclerView.setAdapter(fastAdapter);
+
     }
 
     private void initSearchView() {
@@ -161,7 +163,7 @@ public class ProjectsFragment extends Fragment {
                 return false;
             }
             if (view.getId() == R.id.item_add) {
-                listener.onAddProjectClicked(view);
+                listener.onAddProjectClicked();
                 return true;
             }
             return false;
@@ -169,7 +171,7 @@ public class ProjectsFragment extends Fragment {
     }
 
     public interface OnProjectFragmentInteractionListener {
-        void onAddProjectClicked(View view);
+        void onAddProjectClicked();
     }
 
 }
