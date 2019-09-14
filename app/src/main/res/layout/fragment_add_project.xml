@@ -1,150 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/margin_content"
+    android:clipToPadding="false"
     tools:context=".ui.main.fragment.AddProjectFragment">
 
-    <com.google.android.material.appbar.AppBarLayout
-        style="@style/TransparentAppBarStyle"
-        android:id="@+id/layout_app_bar"
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle.AppBar"
+        android:id="@+id/text_view_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_project_title"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <androidx.appcompat.widget.AppCompatImageButton
+        style="@style/ImageButtonStyle.Borderless"
+        android:id="@+id/button_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_cross_black"
+        app:layout_constraintTop_toTopOf="@+id/text_view_title"
+        app:layout_constraintBottom_toBottomOf="@+id/text_view_title"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle"
+        android:id="@+id/text_view_section_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_content"
+        android:text="@string/add_project_text_name"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_title"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <androidx.appcompat.widget.AppCompatEditText
+        style="@style/EditTextStyle.Large"
+        android:id="@+id/edit_text_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clipChildren="false"
-        android:clipToPadding="false">
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            app:titleEnabled="false"
-            app:contentScrim="@color/colorBackground"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="0dp"
-                android:paddingBottom="@dimen/margin_content_half"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                app:layout_collapseMode="none">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/TextStyle.AppBar"
-                    android:id="@+id/text_view_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_content"
-                    android:layout_marginStart="@dimen/margin_content"
-                    android:text="@string/add_project_title"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"/>
-
-                <androidx.appcompat.widget.AppCompatImageButton
-                    style="@style/ImageButtonStyle.Borderless"
-                    android:id="@+id/button_close"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/margin_content"
-                    android:src="@drawable/ic_cross_black"
-                    app:layout_constraintTop_toTopOf="@+id/text_view_title"
-                    app:layout_constraintBottom_toBottomOf="@+id/text_view_title"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.core.widget.NestedScrollView
+        android:layout_marginTop="@dimen/margin_content"
+        android:background="@drawable/drawable_foreground_rounded_small"
+        android:foreground="@drawable/ripple_rounded_small"
+        android:elevation="@dimen/elevation_view"
+        android:hint="@string/add_project_hint_name"
+        android:singleLine="true"
+        android:inputType="textCapWords"
+        android:maxLength="25"
+        android:imeOptions="actionDone"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_section_name"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle"
+        android:id="@+id/text_view_section_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_content"
+        android:text="@string/add_project_text_color_tag"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_name"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle"
+        android:id="@+id/text_view_section_due_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_content"
+        android:text="@string/add_project_text_due"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_section_color"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/ButtonStyle"
+        android:id="@+id/button_due_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:layout_marginBottom="@dimen/height_app_bar"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:padding="@dimen/margin_content">
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/TextStyle"
-                android:id="@+id/text_view_section_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/add_project_text_name"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
-            <androidx.appcompat.widget.AppCompatEditText
-                style="@style/EditTextStyle.Large"
-                android:id="@+id/edit_text_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_content"
-                android:background="@drawable/drawable_foreground_rounded_small"
-                android:foreground="@drawable/ripple_rounded_small"
-                android:elevation="@dimen/elevation_view"
-                android:hint="@string/add_project_hint_name"
-                android:singleLine="true"
-                android:inputType="textCapWords"
-                android:maxLength="25"
-                android:imeOptions="actionDone"
-                app:layout_constraintTop_toBottomOf="@+id/text_view_section_name"/>
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/TextStyle"
-                android:id="@+id/text_view_section_color"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_content"
-                android:text="@string/add_project_text_color_tag"
-                app:layout_constraintTop_toBottomOf="@+id/edit_text_name"
-                app:layout_constraintStart_toStartOf="parent"/>
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/TextStyle"
-                android:id="@+id/text_view_section_due_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_content"
-                android:text="@string/add_project_text_due"
-                app:layout_constraintTop_toBottomOf="@+id/text_view_section_color"
-                app:layout_constraintStart_toStartOf="parent"/>
-            <androidx.appcompat.widget.AppCompatButton
-                style="@style/ButtonStyle"
-                android:id="@+id/button_due_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_content"
-                android:text="No due date"
-                android:drawableEnd="@drawable/ic_calendar_black"
-                android:gravity="start"
-                app:layout_constraintTop_toBottomOf="@+id/text_view_section_due_date" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+        android:layout_marginTop="@dimen/margin_content"
+        android:text="No due date"
+        android:drawableEnd="@drawable/ic_calendar_black"
+        android:gravity="start"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_section_due_date" />
 
     <androidx.appcompat.widget.AppCompatButton
         style="@style/ButtonStyle.Borderless.Colored"
         android:id="@+id/button_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_content"
-        android:text="Add Project"
-        android:layout_marginHorizontal="@dimen/margin_content"
+        android:text="@string/add_project_title_add_project"
         android:drawableEnd="@drawable/ic_check_highlight"
         android:gravity="start"
-        android:layout_gravity="bottom"/>
-    <!--<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        style="@style/ExtendedFloatingActionButtonStyle"
-        android:id="@+id/fab_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="72dp"
-        android:layout_marginHorizontal="@dimen/margin_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:text="@string/core_add"
-        android:outlineAmbientShadowColor="@color/colorHighlight"
-        android:outlineSpotShadowColor="@color/colorHighlight"
-        app:icon="@drawable/ic_check_black"
-        tools:targetApi="p" />-->
+        android:transitionName="@string/shared_element_add_btn"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

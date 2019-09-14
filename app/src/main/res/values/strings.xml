@@ -11,6 +11,8 @@
     <string name="core_active">Active</string>
     <string name="core_due" formatted="true">Due: %1$s</string>
 
+    <string name="shared_element_add_btn">Add Project</string>
+
 
     <!--                                                                                   FONTS -->
 
@@ -33,6 +35,7 @@
     <!--                                                                              ADD PROJECT -->
 
     <string name="add_project_title">Add Project</string>
+    <string name="add_project_title_add_project">Add Project</string>
     <string name="add_project_text_name">Name</string>
     <string name="add_project_text_color_tag">Color Tag</string>
     <string name="add_project_text_due">Due</string>

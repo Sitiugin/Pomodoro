@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -55,13 +56,13 @@ public class TransitionFragmentManager {
         });*/
     }
 
-    public void pushToBackStack(Fragment fragment) {
+    public void pushToBackStack(@NonNull Fragment fragment) {
         //fragment.setEnterTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         //fragment.setExitTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
         fragmentManager.executePendingTransactions();
         fragmentManager.beginTransaction()
                 .setReorderingAllowed(true)
-                //.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 /*.setCustomAnimations(android.R.anim.slide_in_left,
                         android.R.anim.slide_out_right,
                         android.R.anim.slide_in_left,
@@ -69,6 +70,33 @@ public class TransitionFragmentManager {
                 .replace(containerId, fragment)
                 .addToBackStack(null)
                 .commitAllowingStateLoss();
+    }
+
+    public void pushToBackStack(@NonNull Fragment fragment,
+                                @NonNull String sharedElementKey,
+                                @NonNull View sharedElementView) {
+        fragmentManager.executePendingTransactions();
+        fragmentManager
+                .beginTransaction()
+                .setReorderingAllowed(true)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .addSharedElement(sharedElementView, sharedElementKey)
+                .replace(containerId, fragment)
+                .addToBackStack(null)
+                .commitAllowingStateLoss();
+    }
+
+    public void pushToBackStack(@NonNull Fragment fragment, @NonNull Map<String, View> sharedElementsMap) {
+        fragmentManager.executePendingTransactions();
+        FragmentTransaction transaction = fragmentManager
+                .beginTransaction()
+                .setReorderingAllowed(true)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        Set<String> keys = sharedElementsMap.keySet();
+        for (String key: keys) {
+            transaction.addSharedElement(sharedElementsMap.get(key), key);
+        }
+        transaction.replace(containerId, fragment).addToBackStack(null).commitAllowingStateLoss();
     }
 
     public void popFromBackStack() {

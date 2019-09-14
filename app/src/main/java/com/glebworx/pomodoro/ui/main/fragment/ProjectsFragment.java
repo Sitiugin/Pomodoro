@@ -161,7 +161,7 @@ public class ProjectsFragment extends Fragment {
                 return false;
             }
             if (view.getId() == R.id.item_add) {
-                listener.onAddProjectClicked();
+                listener.onAddProjectClicked(view);
                 return true;
             }
             return false;
@@ -169,7 +169,7 @@ public class ProjectsFragment extends Fragment {
     }
 
     public interface OnProjectFragmentInteractionListener {
-        void onAddProjectClicked();
+        void onAddProjectClicked(View view);
     }
 
 }
