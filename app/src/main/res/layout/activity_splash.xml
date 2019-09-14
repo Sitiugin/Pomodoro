@@ -1,9 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container_splash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     tools:context=".ui.splash.SplashActivity">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle.AppBar"
+        android:id="@+id/text_view_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/margin_content"
+        android:text="@string/app_name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle"
+        android:id="@+id/text_view_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="320dp"
+        android:text="@string/app_version"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/TextInputLayoutStyle"
+        android:id="@+id/layout_email_input"
+        android:layout_width="@dimen/width_button_large"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_content_double"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_version"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/splash_hint_enter_email"
+            android:inputType="textEmailAddress"
+            android:imeOptions="actionDone"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        style="@style/ExtendedFloatingActionButtonStyle"
+        android:id="@+id/button_sign_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_content_double"
+        android:text="@string/splash_title_sign_in"
+        android:outlineAmbientShadowColor="@color/colorHighlight"
+        android:outlineSpotShadowColor="@color/colorHighlight"
+        app:icon="@drawable/ic_sign_in_black"
+        app:layout_constraintTop_toBottomOf="@+id/layout_email_input"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:targetApi="p" />
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        style="@style/SpinKitView.Large.Pulse"
+        android:id="@+id/spin_kit_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:SpinKit_Color="@color/colorHighlight"
+        app:layout_constraintTop_toBottomOf="@+id/button_sign_in"
+        app:layout_constraintBottom_toTopOf="@+id/text_view_tos_privacy_description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        style="@style/TextStyle"
+        android:id="@+id/text_view_tos_privacy_description"
+        android:layout_width="@dimen/width_button_large"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/splash_text_terms"
+        app:layout_constraintBottom_toTopOf="@+id/button_terms_of_service"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/ButtonStyle.Borderless.Colored"
+        android:id="@+id/button_terms_of_service"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/splash_title_terms"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_privacy"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/ButtonStyle.Borderless.Colored"
+        android:id="@+id/button_privacy"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/splash_title_privacy"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button_terms_of_service"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

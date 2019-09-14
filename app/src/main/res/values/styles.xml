@@ -252,4 +252,11 @@
         <item name="android:fontFamily">@string/font_sans_serif_thin</item>
     </style>
 
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="hintTextColor">@color/colorHighlight</item>
+        <item name="boxStrokeColor">@color/colorHighlight</item>
+        <item name="errorTextColor">@color/colorError</item>
+        <item name="errorTextAppearance">@style/TextStyle</item>
+    </style>
+
 </resources>

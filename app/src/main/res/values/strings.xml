@@ -21,6 +21,27 @@
     <string name="font_sans_serif_thin">sans-serif-thin</string>
 
 
+    <!--                                                                                  SPLASH -->
+
+    <string name="splash_title_sign_in">Sign In</string>
+    <string name="splash_title_send_again">Send Again</string>
+    <string name="splash_title_try_other_email">Try a Different Email</string>
+    <string name="splash_title_email_verification">Email Verification</string>
+    <string name="splash_title_terms">Terms of Service</string>
+    <string name="splash_title_privacy">Privacy Policy</string>
+    <string name="splash_text_terms">By signing in you are agreeing to our Terms and Conditions and Privacy Policy</string>
+    <string name="splash_text_confirmation_email_sent_success">Your verification email was sent to %1$s</string>
+    <string name="splash_text_confirmation_email_sent_fail">We could not send the verification email to %1$s. Please try another email</string>
+    <string name="splash_hint_enter_email">Enter your email address</string>
+    <string name="splash_toast_signing_in">Signing in…</string>
+    <string name="splash_toast_sign_in_success">Signed in</string>
+    <string name="splash_toast_sign_in_failed">Sign in failed</string>
+    <string name="splash_toast_signed_in_as">Signed in as %1$s</string>
+    <string name="splash_toast_confirmation_email_sent_success">Confirmation email sent</string>
+    <string name="splash_toast_confirmation_email_sent_failed">We could not send the confirmation email to %1$s</string>
+    <string name="splash_err_email_invalid">Enter a valid email!</string>
+
+
     <!--                                                                                    MAIN -->
 
     <string name="main_title_tasks">Tasks</string>
