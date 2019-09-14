@@ -92,4 +92,6 @@ public abstract class AbstractModel implements Comparable<AbstractModel>, Parcel
         this.dateModified = new Date();
     }
 
+    public abstract boolean isValid();
+
 }

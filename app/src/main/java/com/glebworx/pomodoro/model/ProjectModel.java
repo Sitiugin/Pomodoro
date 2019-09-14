@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +41,11 @@ public class ProjectModel extends AbstractModel {
 
 
     //                                                                                  CONSTRUCTORS
+
+    public ProjectModel() {
+        super();
+        this.tasks = new ArrayList<>();
+    }
 
     public ProjectModel(@NonNull String name,
                         @Nullable Date dueDate,
@@ -100,6 +107,11 @@ public class ProjectModel extends AbstractModel {
         return Objects.hash(name);
     }
 
+    @Override
+    public boolean isValid() {
+        return name != null && color != null && tasks != null;
+    }
+
 
     //                                                                           GETTERS AND SETTERS
 
@@ -136,6 +148,7 @@ public class ProjectModel extends AbstractModel {
         this.tasks = tasks;
     }
 
+    @Exclude
     public double getProgressRatio() {
         int allocated = 0;
         int completed = 0;
@@ -145,4 +158,5 @@ public class ProjectModel extends AbstractModel {
         }
         return (double) completed / (double) allocated;
     }
+
 }

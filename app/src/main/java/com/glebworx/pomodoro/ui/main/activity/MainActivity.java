@@ -71,7 +71,7 @@ public class MainActivity
     }
 
     @Override
-    public void onCloseClicked() {
+    public void onCloseFragment() {
         fragmentManager.popFromBackStack();
     }
 

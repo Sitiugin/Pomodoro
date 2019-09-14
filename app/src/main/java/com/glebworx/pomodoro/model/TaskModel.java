@@ -40,6 +40,10 @@ public class TaskModel extends AbstractModel {
 
     //                                                                                  CONSTRUCTORS
 
+    public TaskModel() {
+        super();
+    }
+
     public TaskModel(@NonNull String name,
                      @Nullable String project,
                      int pomodorosAllocated,
@@ -100,6 +104,11 @@ public class TaskModel extends AbstractModel {
     @Override
     public int hashCode() {
         return Objects.hash(name);
+    }
+
+    @Override
+    public boolean isValid() {
+        return name != null && project != null;
     }
 
 

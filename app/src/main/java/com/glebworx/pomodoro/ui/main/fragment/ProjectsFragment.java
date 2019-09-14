@@ -14,25 +14,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.glebworx.pomodoro.R;
+import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.item.AddItem;
 import com.glebworx.pomodoro.item.ProjectHeaderItem;
 import com.glebworx.pomodoro.item.ProjectItem;
-import com.glebworx.pomodoro.ui.main.activity.MainActivity;
-import com.glebworx.pomodoro.util.DummyDataProvider;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
+import com.glebworx.pomodoro.util.tasks.InitProjectsTask;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mikepenz.fastadapter.FastAdapter;
-import com.mikepenz.fastadapter.IAdapter;
-import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.IItemAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.adapters.ItemFilter;
 import com.mikepenz.fastadapter.items.AbstractItem;
-import com.mikepenz.fastadapter.listeners.OnClickListener;
-
-import javax.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,8 +48,8 @@ public class ProjectsFragment extends Fragment {
     //                                                                                    ATTRIBUTES
 
     private ItemAdapter<ProjectItem> projectAdapter;
-    private ItemAdapter<AddItem> addAdapter;
-    private OnProjectFragmentInteractionListener listener;
+    private EventListener<QuerySnapshot> eventListener;
+    private OnProjectFragmentInteractionListener fragmentListener;
 
 
     //                                                                                     LIFECYCLE
@@ -75,13 +71,15 @@ public class ProjectsFragment extends Fragment {
         }
 
         projectAdapter = new ItemAdapter<>();
-        projectAdapter.add(DummyDataProvider.getProjects());
+        //projectAdapter.add(DummyDataProvider.getProjects());
         FastAdapter<AbstractItem> fastAdapter = new FastAdapter<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
 
         initRecyclerView(layoutManager, fastAdapter);
         initSearchView();
         initClickEvents(fastAdapter);
+
+        ProjectApi.addModelEventListener(eventListener);
 
         return rootView;
 
@@ -90,12 +88,14 @@ public class ProjectsFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        listener = (OnProjectFragmentInteractionListener) context;
+        eventListener = (snapshots, e) -> new InitProjectsTask(snapshots, projectAdapter);
+        fragmentListener = (OnProjectFragmentInteractionListener) context;
     }
 
     @Override
     public void onDetach() {
-        listener = null;
+        eventListener = null;
+        fragmentListener = null;
         super.onDetach();
     }
 
@@ -106,7 +106,7 @@ public class ProjectsFragment extends Fragment {
 
         ItemAdapter<ProjectHeaderItem> headerAdapter = new ItemAdapter<>();
         headerAdapter.add(new ProjectHeaderItem());
-        addAdapter = new ItemAdapter<>();
+        ItemAdapter<AddItem> addAdapter = new ItemAdapter<>();
         addAdapter.add(new AddItem(getString(R.string.main_title_add_project)));
 
         fastAdapter.addAdapter(0, headerAdapter);
@@ -163,7 +163,7 @@ public class ProjectsFragment extends Fragment {
                 return false;
             }
             if (view.getId() == R.id.item_add) {
-                listener.onAddProjectClicked();
+                fragmentListener.onAddProjectClicked();
                 return true;
             }
             return false;

@@ -61,6 +61,8 @@
     <string name="add_project_text_color_tag">Color Tag</string>
     <string name="add_project_text_due">Due</string>
     <string name="add_project_hint_name">Enter a name for your project</string>
+    <string name="add_project_toast_add_success">Project Added</string>
+    <string name="add_project_toast_add_failed">Could not add project. Please try again later.</string>
 
     <!--                                                                              MAIN TASKS -->
 
