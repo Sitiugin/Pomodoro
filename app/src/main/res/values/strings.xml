@@ -29,6 +29,13 @@
     <string name="main_text_all_time">All time</string>
 
 
+    <!--                                                                              ADD PROJECT -->
+
+    <string name="add_project_title">Add Project</string>
+    <string name="add_project_text_name">Name</string>
+    <string name="add_project_text_color">Color</string>
+    <string name="add_project_text_due">Due</string>
+
     <!--                                                                              MAIN TASKS -->
 
     <string name="main_tasks_text_tap_to_start">Tap the button to begin</string>

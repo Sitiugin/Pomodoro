@@ -230,9 +230,10 @@
     <!--                                                                         EDIT TEXT THEME -->
 
     <style name="EditTextStyle">
-        <item name="android:background">?selectableItemBackground</item>
+        <item name="android:foreground">?selectableItemBackground</item>
         <item name="android:textCursorDrawable">@drawable/drawable_cursor</item>
         <item name="android:textSize">@dimen/text_size_body</item>
+        <item name="android:padding">@dimen/margin_content</item>
     </style>
 
     <style name="EditTextStyle.Large" parent="EditTextStyle">

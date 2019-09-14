@@ -55,4 +55,29 @@ public class TransitionFragmentManager {
         });*/
     }
 
+    public void pushToBackStack(Fragment fragment) {
+        fragmentManager.executePendingTransactions();
+        fragmentManager.beginTransaction()
+                .setReorderingAllowed(true)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                /*.setCustomAnimations(android.R.anim.slide_in_left,
+                        android.R.anim.slide_out_right,
+                        android.R.anim.slide_in_left,
+                        android.R.anim.slide_out_right)*/
+                .replace(containerId, fragment)
+                .addToBackStack(null)
+                .commitAllowingStateLoss();
+    }
+
+    public boolean popFromBackStack() {
+        fragmentManager.executePendingTransactions();
+        fragmentManager.popBackStack();
+        /*fragmentManager.beginTransaction()
+                .setReorderingAllowed(true)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .addToBackStack(null)
+                .commitAllowingStateLoss();*/
+        return false;
+    }
+
 }

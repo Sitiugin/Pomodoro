@@ -2,55 +2,26 @@ package com.glebworx.pomodoro.ui.main.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.appcompat.widget.SearchView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.transition.ChangeBounds;
-import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AnticipateOvershootInterpolator;
-import android.view.animation.BounceInterpolator;
-import android.view.animation.OvershootInterpolator;
 
 import com.glebworx.pomodoro.R;
-import com.glebworx.pomodoro.item.AddItem;
-import com.glebworx.pomodoro.item.ProjectHeaderItem;
-import com.glebworx.pomodoro.item.ProjectItem;
+import com.glebworx.pomodoro.ui.main.fragment.AddProjectFragment;
 import com.glebworx.pomodoro.ui.main.fragment.ProjectsFragment;
-import com.glebworx.pomodoro.ui.main.fragment.ReportFragment;
-import com.glebworx.pomodoro.ui.main.fragment.TasksFragment;
-import com.glebworx.pomodoro.ui.report.ReportActivity;
-import com.glebworx.pomodoro.util.DummyDataProvider;
-import com.glebworx.pomodoro.util.ZeroStateDecoration;
-import com.glebworx.pomodoro.util.manager.ConstraintTransitionManager;
-import com.glebworx.pomodoro.util.manager.NavigationFragmentManager;
 import com.glebworx.pomodoro.util.manager.TransitionFragmentManager;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.mikepenz.fastadapter.FastAdapter;
-import com.mikepenz.fastadapter.IItemAdapter;
-import com.mikepenz.fastadapter.adapters.ItemAdapter;
-import com.mikepenz.fastadapter.adapters.ItemFilter;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.glebworx.pomodoro.util.constants.Constants.ANIM_DURATION;
 
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity
+        extends AppCompatActivity
+        implements ProjectsFragment.OnProjectFragmentInteractionListener {
 
 
     //                                                                                       BINDING
@@ -82,6 +53,11 @@ public class MainActivity extends AppCompatActivity {
         initClickEvents();
         addProjectsFragment();
 
+    }
+
+    @Override
+    public void onAddProjectClicked() {
+        fragmentManager.pushToBackStack(new AddProjectFragment());
     }
 
     private void initBottomSheet() {

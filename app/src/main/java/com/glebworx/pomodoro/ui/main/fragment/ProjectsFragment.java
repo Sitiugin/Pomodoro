@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.item.AddItem;
@@ -23,9 +24,15 @@ import com.glebworx.pomodoro.ui.main.activity.MainActivity;
 import com.glebworx.pomodoro.util.DummyDataProvider;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.IAdapter;
+import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.IItemAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.adapters.ItemFilter;
+import com.mikepenz.fastadapter.items.AbstractItem;
+import com.mikepenz.fastadapter.listeners.OnClickListener;
+
+import javax.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +52,7 @@ public class ProjectsFragment extends Fragment {
     //                                                                                    ATTRIBUTES
 
     private ItemAdapter<ProjectItem> projectAdapter;
+    private OnProjectFragmentInteractionListener listener;
 
 
     //                                                                                     LIFECYCLE
@@ -67,15 +75,27 @@ public class ProjectsFragment extends Fragment {
 
         projectAdapter = new ItemAdapter<>();
         projectAdapter.add(DummyDataProvider.getProjects());
-        FastAdapter fastAdapter = new FastAdapter();
+        FastAdapter<AbstractItem> fastAdapter = new FastAdapter<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
 
         initRecyclerView(layoutManager, fastAdapter);
         initSearchView();
-        initClickEvents();
+        initClickEvents(fastAdapter);
 
         return rootView;
 
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        listener = (OnProjectFragmentInteractionListener) context;
+    }
+
+    @Override
+    public void onDetach() {
+        listener = null;
+        super.onDetach();
     }
 
     private void initRecyclerView(LinearLayoutManager layoutManager, FastAdapter fastAdapter) {
@@ -125,7 +145,7 @@ public class ProjectsFragment extends Fragment {
 
     }
 
-    private void initClickEvents() {
+    private void initClickEvents(FastAdapter<AbstractItem> fastAdapter) {
         View.OnClickListener onClickListener = view -> {
             switch (view.getId()) {
                 case R.id.button_report:
@@ -136,6 +156,20 @@ public class ProjectsFragment extends Fragment {
         };
         reportButton.setOnClickListener(onClickListener);
         optionsButton.setOnClickListener(onClickListener);
+        fastAdapter.withOnClickListener((view, adapter, item, position) -> {
+            if (view == null) {
+                return false;
+            }
+            if (view.getId() == R.id.item_add) {
+                listener.onAddProjectClicked();
+                return true;
+            }
+            return false;
+        });
+    }
+
+    public interface OnProjectFragmentInteractionListener {
+        void onAddProjectClicked();
     }
 
 }
