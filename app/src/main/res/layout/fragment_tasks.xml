@@ -60,7 +60,7 @@
                     android:id="@+id/text_view_time_remaining"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="25:00"
+                    android:text="23:15"
                     app:layout_constraintTop_toTopOf="@+id/seek_arc"
                     app:layout_constraintBottom_toBottomOf="@+id/seek_arc"
                     app:layout_constraintStart_toStartOf="@+id/seek_arc"
@@ -72,7 +72,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/main_tasks_text_tap_to_start"
-                    app:layout_constraintTop_toBottomOf="@+id/text_view_time_remaining"
+                    app:layout_constraintTop_toBottomOf="@+id/text_view_current_task"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
 

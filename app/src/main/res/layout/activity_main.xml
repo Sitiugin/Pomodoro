@@ -8,88 +8,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.activity.MainActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        style="@style/TransparentAppBarStyle"
-        android:id="@+id/layout_app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipChildren="false"
-        android:clipToPadding="false">
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            app:titleEnabled="false"
-            app:contentScrim="@color/colorBackground"
-            app:layout_scrollFlags="scroll|enterAlways|exitUntilCollapsed|snap">
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="0dp"
-                android:paddingBottom="@dimen/margin_content_half"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                app:layout_collapseMode="none">
-
-                <androidx.appcompat.widget.SearchView
-                    style="@style/ViewStyle.Search"
-                    android:id="@+id/search_view"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="@dimen/margin_content_half"
-                    android:clipChildren="false"
-                    android:clipToPadding="false"
-                    android:layout_marginTop="@dimen/margin_content"
-                    android:layout_marginHorizontal="@dimen/margin_content"
-                    app:dividerPadding="0dp"
-                    app:iconifiedByDefault="false"
-                    app:queryBackground="@android:color/transparent"
-                    app:queryHint="Search Projects"
-                    app:showDividers="none"
-                    app:searchIcon="@drawable/ic_search_gray"
-                    app:closeIcon="@drawable/ic_cross_black"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/button_report"/>
-
-                <androidx.appcompat.widget.AppCompatImageButton
-                    style="@style/ImageButtonStyle.Borderless"
-                    android:id="@+id/button_report"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/margin_content"
-                    android:src="@drawable/ic_report_black"
-                    app:layout_constraintTop_toTopOf="@+id/search_view"
-                    app:layout_constraintBottom_toBottomOf="@+id/search_view"
-                    app:layout_constraintEnd_toStartOf="@+id/button_options"/>
-
-                <androidx.appcompat.widget.AppCompatImageButton
-                    style="@style/ImageButtonStyle.Borderless"
-                    android:id="@+id/button_options"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/margin_content"
-                    android:src="@drawable/ic_options_black"
-                    app:layout_constraintTop_toTopOf="@+id/search_view"
-                    app:layout_constraintBottom_toBottomOf="@+id/search_view"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:layout_marginBottom="@dimen/height_app_bar"
-        android:paddingTop="0dp"
-        android:paddingBottom="@dimen/margin_content_half"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         style="@style/ViewStyle.Clickable"
         android:id="@+id/bottom_sheet"
@@ -119,26 +37,36 @@
             android:id="@+id/text_view_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_content"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_task"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:text="Paused"/>
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="@style/TextStyle.Title"
+            style="@style/TextStyle"
             android:id="@+id/text_view_time_remaining"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:text="23:15"/>
+            android:layout_marginStart="@dimen/margin_content"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_task"
+            app:layout_constraintStart_toEndOf="@+id/text_view_status"
+            android:text="23 min remains"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            style="@style/ImageButtonStyle.Borderless"
+            android:id="@+id/button_start_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_play_highlight"
+            app:layout_constraintTop_toTopOf="@+id/text_view_task"
+            app:layout_constraintBottom_toBottomOf="@+id/text_view_task"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <TextView
             style="@style/TextStyle.Time"
             android:id="@+id/text_view_time_remaining_large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             android:text="23:15"
             app:layout_constraintTop_toTopOf="@+id/seek_arc"
             app:layout_constraintBottom_toBottomOf="@+id/seek_arc"
@@ -163,18 +91,45 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            style="@style/FloatingActionButtonStyle"
+            android:id="@+id/fab_start_stop_large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_content"
+            android:visibility="invisible"
+            android:src="@drawable/ic_play_black"
+            android:outlineAmbientShadowColor="@color/colorHighlight"
+            android:outlineSpotShadowColor="@color/colorHighlight"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:targetApi="p" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        style="@style/FloatingActionButtonStyle"
-        android:id="@+id/fab_start_stop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_play_black"
-        android:outlineAmbientShadowColor="@color/colorHighlight"
-        android:outlineSpotShadowColor="@color/colorHighlight"
-        app:layout_anchor="@+id/bottom_sheet"
-        app:layout_anchorGravity="top|center_horizontal"
-        tools:targetApi="p" />
+        <androidx.appcompat.widget.AppCompatImageButton
+            style="@style/ImageButtonStyle.Borderless"
+            android:id="@+id/button_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_content"
+            android:visibility="invisible"
+            android:src="@drawable/ic_cross_black"
+            app:layout_constraintTop_toTopOf="@+id/fab_start_stop_large"
+            app:layout_constraintBottom_toBottomOf="@+id/fab_start_stop_large"
+            app:layout_constraintEnd_toStartOf="@+id/fab_start_stop_large"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            style="@style/ImageButtonStyle.Borderless"
+            android:id="@+id/button_complete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_content"
+            android:visibility="invisible"
+            android:src="@drawable/ic_check_black"
+            app:layout_constraintTop_toTopOf="@+id/fab_start_stop_large"
+            app:layout_constraintBottom_toBottomOf="@+id/fab_start_stop_large"
+            app:layout_constraintStart_toEndOf="@+id/fab_start_stop_large"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

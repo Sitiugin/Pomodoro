@@ -33,6 +33,7 @@ import com.glebworx.pomodoro.util.DummyDataProvider;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.manager.ConstraintTransitionManager;
 import com.glebworx.pomodoro.util.manager.NavigationFragmentManager;
+import com.glebworx.pomodoro.util.manager.TransitionFragmentManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.mikepenz.fastadapter.FastAdapter;
@@ -54,18 +55,14 @@ public class MainActivity extends AppCompatActivity {
 
     //                                                                                       BINDING
 
-    @BindView(R.id.button_report) AppCompatImageButton reportButton;
-    @BindView(R.id.button_options) AppCompatImageButton optionsButton;
-    @BindView(R.id.search_view) SearchView searchView;
-    @BindView(R.id.recycler_view) RecyclerView recyclerView;
     @BindView(R.id.bottom_sheet) ConstraintLayout bottomSheet;
 
 
     //                                                                                    ATTRIBUTES
 
-    private ItemAdapter<ProjectItem> projectAdapter;
     private BottomSheetBehavior bottomSheetBehavior;
     private ConstraintSet constraintSet;
+    private TransitionFragmentManager fragmentManager;
 
     //                                                                                     LIFECYCLE
 
@@ -76,70 +73,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        projectAdapter = new ItemAdapter<>();
-        projectAdapter.add(DummyDataProvider.getProjects());
-        FastAdapter fastAdapter = new FastAdapter();
-        LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
-
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         constraintSet = new ConstraintSet();
+        fragmentManager =
+                new TransitionFragmentManager(getSupportFragmentManager(), R.id.container_main);
 
-        initRecyclerView(layoutManager, fastAdapter);
-        initSearchView();
         initBottomSheet();
         initClickEvents();
-
-    }
-
-    private void initRecyclerView(LinearLayoutManager layoutManager, FastAdapter fastAdapter) {
-
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty));
-
-        ItemAdapter<ProjectHeaderItem> headerAdapter = new ItemAdapter<>();
-        headerAdapter.add(new ProjectHeaderItem());
-        ItemAdapter<AddItem> footerAdapter = new ItemAdapter<>();
-        footerAdapter.add(new AddItem(getString(R.string.main_title_add_project)));
-
-        fastAdapter.addAdapter(0, headerAdapter);
-        fastAdapter.addAdapter(1, projectAdapter);
-        fastAdapter.addAdapter(2, footerAdapter);
-
-        fastAdapter.setHasStableIds(true);
-        recyclerView.setAdapter(fastAdapter);
-    }
-
-    private void initSearchView() {
-
-        IItemAdapter.Predicate<ProjectItem> predicate = (item, constraint) -> {
-            if (constraint == null) {
-                return true;
-            }
-            String title = item.getModel().getName();
-            return title != null && title.toLowerCase().contains(constraint);
-        };
-
-        ItemFilter<ProjectItem, ProjectItem> itemFilter =
-                new ItemFilter<ProjectItem, ProjectItem>(projectAdapter).withFilterPredicate(predicate);
-
-        projectAdapter.withItemFilter(itemFilter);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                projectAdapter.filter(newText);
-                return true;
-            }
-        });
+        addProjectsFragment();
 
     }
 
     private void initBottomSheet() {
-        ConstraintTransitionManager transitionManager = new ConstraintTransitionManager();
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View view, int newState) {
@@ -173,6 +118,11 @@ public class MainActivity extends AppCompatActivity {
                 ConstraintSet.TOP,
                 R.id.text_view_time_remaining_large,
                 ConstraintSet.BOTTOM);
+        constraintSet.connect(
+                R.id.text_view_status,
+                ConstraintSet.END,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.END);
 
         // animate task
         constraintSet.connect(
@@ -185,6 +135,12 @@ public class MainActivity extends AppCompatActivity {
                 ConstraintSet.END,
                 ConstraintSet.PARENT_ID,
                 ConstraintSet.END);
+
+        // animate buttons
+        constraintSet.setVisibility(R.id.button_start_stop, ConstraintSet.INVISIBLE);
+        constraintSet.setVisibility(R.id.fab_start_stop_large, ConstraintSet.VISIBLE);
+        constraintSet.setVisibility(R.id.button_cancel, ConstraintSet.VISIBLE);
+        constraintSet.setVisibility(R.id.button_complete, ConstraintSet.VISIBLE);
 
         constraintSet.applyTo(bottomSheet);
 
@@ -206,8 +162,9 @@ public class MainActivity extends AppCompatActivity {
         constraintSet.connect(
                 R.id.text_view_status,
                 ConstraintSet.TOP,
-                ConstraintSet.PARENT_ID,
-                ConstraintSet.TOP);
+                R.id.text_view_task,
+                ConstraintSet.BOTTOM);
+        constraintSet.clear(R.id.text_view_status, ConstraintSet.END);
 
         // animate task
         constraintSet.connect(
@@ -217,50 +174,32 @@ public class MainActivity extends AppCompatActivity {
                 ConstraintSet.TOP);
         constraintSet.clear(R.id.text_view_task, ConstraintSet.END);
 
+        // animate buttons
+        constraintSet.setVisibility(R.id.button_start_stop, ConstraintSet.VISIBLE);
+        constraintSet.setVisibility(R.id.fab_start_stop_large, ConstraintSet.INVISIBLE);
+        constraintSet.setVisibility(R.id.button_cancel, ConstraintSet.INVISIBLE);
+        constraintSet.setVisibility(R.id.button_complete, ConstraintSet.INVISIBLE);
+
         constraintSet.applyTo(bottomSheet);
 
     }
-
-    /*private void expandBottomSheetViews() {
-        constraintSet.clone(MainActivity.this, R.layout.view_bottom_sheet_expanded);
-        constraintSet.setAlpha(R.id.seek_arc, 100);
-        Transition transition = new ChangeBounds();
-        transition.setInterpolator(new AnticipateOvershootInterpolator(1.0f));
-        transition.setDuration(ANIM_DURATION);
-        TransitionManager.beginDelayedTransition(bottomSheet, transition);
-        constraintSet.applyTo(bottomSheet);
-    }
-
-    private void collapseBottomSheetViews() {
-        constraintSet.clone(MainActivity.this, R.layout.view_bottom_sheet_collapsed);
-        constraintSet.setAlpha(R.id.seek_arc, 0);
-        Transition transition = new ChangeBounds();
-        transition.setInterpolator(new AnticipateOvershootInterpolator(1.0f));
-        transition.setDuration(ANIM_DURATION);
-        TransitionManager.beginDelayedTransition(bottomSheet, transition);
-        constraintSet.applyTo(bottomSheet);
-    }*/
 
     private void initClickEvents() {
         View.OnClickListener onClickListener = view -> {
-            switch (view.getId()) {
-                case R.id.bottom_sheet:
-                    int state = bottomSheetBehavior.getState();
-                    if (state == BottomSheetBehavior.STATE_COLLAPSED) {
-                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                    } else if (state == BottomSheetBehavior.STATE_EXPANDED) {
-                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    }
-                    break;
-                case R.id.button_report:
-                    break;
-                case R.id.button_options:
-                    break;
+            if (view.getId() == R.id.bottom_sheet) {
+                int state = bottomSheetBehavior.getState();
+                if (state == BottomSheetBehavior.STATE_COLLAPSED) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                } else if (state == BottomSheetBehavior.STATE_EXPANDED) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
             }
         };
         bottomSheet.setOnClickListener(onClickListener);
-        reportButton.setOnClickListener(onClickListener);
-        optionsButton.setOnClickListener(onClickListener);
+    }
+
+    private void addProjectsFragment() {
+        fragmentManager.addRootFragment(new ProjectsFragment());
     }
 
 }

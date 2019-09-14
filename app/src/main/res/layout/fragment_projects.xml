@@ -1,14 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.main.fragment.ProjectsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.google.android.material.appbar.AppBarLayout
+        style="@style/TransparentAppBarStyle"
+        android:id="@+id/layout_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false">
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            app:titleEnabled="false"
+            app:contentScrim="@color/colorBackground"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="0dp"
+                android:paddingBottom="@dimen/margin_content_half"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                app:layout_collapseMode="none">
+
+                <androidx.appcompat.widget.SearchView
+                    style="@style/ViewStyle.Search"
+                    android:id="@+id/search_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/margin_content_half"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:layout_marginTop="@dimen/margin_content"
+                    android:layout_marginHorizontal="@dimen/margin_content"
+                    app:dividerPadding="0dp"
+                    app:iconifiedByDefault="false"
+                    app:queryBackground="@android:color/transparent"
+                    app:queryHint="Search Projects"
+                    app:showDividers="none"
+                    app:searchIcon="@drawable/ic_search_gray"
+                    app:closeIcon="@drawable/ic_cross_black"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/button_report"/>
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    style="@style/ImageButtonStyle.Borderless"
+                    android:id="@+id/button_report"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_content"
+                    android:src="@drawable/ic_report_black"
+                    app:layout_constraintTop_toTopOf="@+id/search_view"
+                    app:layout_constraintBottom_toBottomOf="@+id/search_view"
+                    app:layout_constraintEnd_toStartOf="@+id/button_options"/>
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    style="@style/ImageButtonStyle.Borderless"
+                    android:id="@+id/button_options"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_content"
+                    android:src="@drawable/ic_options_black"
+                    app:layout_constraintTop_toTopOf="@+id/search_view"
+                    app:layout_constraintBottom_toBottomOf="@+id/search_view"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:clipToPadding="false"
+        android:layout_marginBottom="@dimen/height_app_bar"
+        android:paddingTop="0dp"
+        android:paddingBottom="@dimen/margin_content_half"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

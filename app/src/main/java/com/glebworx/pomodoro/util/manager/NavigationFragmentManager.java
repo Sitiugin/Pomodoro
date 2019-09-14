@@ -2,6 +2,7 @@ package com.glebworx.pomodoro.util.manager;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -9,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 public class NavigationFragmentManager {
 
@@ -24,6 +26,7 @@ public class NavigationFragmentManager {
     private FragmentManager fragmentManager;
     private String activeFragmentTag;
     private String[] tags;
+    private int containerId;
 
     public NavigationFragmentManager(FragmentManager fragmentManager,
                                      int containerId,
@@ -32,6 +35,7 @@ public class NavigationFragmentManager {
         this.handler = new Handler(Looper.getMainLooper());
         this.fragmentManager = fragmentManager;
         this.tags = new String[fragmentMap.size()];
+        this.containerId = containerId;
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Iterator iterator = fragmentMap.entrySet().iterator();
@@ -81,6 +85,7 @@ public class NavigationFragmentManager {
             handler.post(() -> {
                 fragmentManager.executePendingTransactions();
                 fragmentManager.beginTransaction()
+                        .setReorderingAllowed(true)
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
                         .hide(fragment)
                         .commitAllowingStateLoss();
@@ -103,6 +108,7 @@ public class NavigationFragmentManager {
                 try {
                     fragmentManager
                             .beginTransaction()
+                            .setReorderingAllowed(true)
                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                             .show(fragment)
                             .commitAllowingStateLoss();
