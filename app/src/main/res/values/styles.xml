@@ -20,6 +20,7 @@
 
         <!-- other -->
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:overScrollMode">never</item>
 
     </style>
 
