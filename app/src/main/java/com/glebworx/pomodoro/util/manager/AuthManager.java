@@ -72,7 +72,7 @@ public class AuthManager {
 
     private ActionCodeSettings buildActionCodeSettings() {
         return ActionCodeSettings.newBuilder()
-                .setUrl("https://vitality.page.link")
+                .setUrl("https://pomodorosignin.page.link")
                 .setHandleCodeInApp(true)
                 .setIOSBundleId("com.glebworx.ios")
                 .setAndroidPackageName(

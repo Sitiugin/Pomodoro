@@ -37,7 +37,7 @@
     <string name="splash_toast_sign_in_success">Signed in</string>
     <string name="splash_toast_sign_in_failed">Sign in failed</string>
     <string name="splash_toast_signed_in_as">Signed in as %1$s</string>
-    <string name="splash_toast_confirmation_email_sent_success">Confirmation email sent</string>
+    <string name="splash_toast_confirmation_email_sent_success">We sent the confirmation email to %1$s</string>
     <string name="splash_toast_confirmation_email_sent_failed">We could not send the confirmation email to %1$s</string>
     <string name="splash_err_email_invalid">Enter a valid email!</string>
 

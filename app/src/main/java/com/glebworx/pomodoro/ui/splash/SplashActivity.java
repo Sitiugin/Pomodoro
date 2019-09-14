@@ -136,7 +136,7 @@ public class SplashActivity extends AppCompatActivity {
             if (task.isSuccessful()) {
                 SharedPrefsManager sharedPrefsManager = new SharedPrefsManager(SplashActivity.this);
                 sharedPrefsManager.setEmail(email);
-                Toast.makeText(SplashActivity.this, getString(R.string.splash_toast_confirmation_email_sent_success), Toast.LENGTH_SHORT).show();
+                Toast.makeText(SplashActivity.this, getString(R.string.splash_toast_confirmation_email_sent_success, email), Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(SplashActivity.this, getString(R.string.splash_toast_confirmation_email_sent_failed, email), Toast.LENGTH_LONG).show();
             }
@@ -183,8 +183,8 @@ public class SplashActivity extends AppCompatActivity {
         }
         Toast.makeText(SplashActivity.this, message, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-        finish();
     }
 
 }

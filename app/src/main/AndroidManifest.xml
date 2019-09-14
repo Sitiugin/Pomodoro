@@ -12,20 +12,45 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name=".ui.project.ProjectActivity"></activity>
-        <activity android:name=".ui.report.ReportActivity" />
+
         <activity
             android:name=".ui.splash.SplashActivity"
             android:theme="@style/SplashTheme"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="pomodorosignin.page.link"
+                    android:scheme="https" />
+            </intent-filter>
+
         </activity>
-        <activity android:name=".ui.main.activity.MainActivity" />
-        <activity android:name=".ui.settings.SettingsActivity" />
+
+        <activity
+            android:name=".ui.main.activity.MainActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.project.ProjectActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.report.ReportActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>
