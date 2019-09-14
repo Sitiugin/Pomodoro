@@ -9,9 +9,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 
 public class TransitionFragmentManager {
 
@@ -27,6 +30,7 @@ public class TransitionFragmentManager {
     private FragmentManager fragmentManager;
     private String activeFragmentTag;
     private int containerId;
+    private Stack<Fragment> backStack;
 
     public TransitionFragmentManager(FragmentManager fragmentManager,
                                      int containerId) {
@@ -34,6 +38,7 @@ public class TransitionFragmentManager {
         this.handler = new Handler(Looper.getMainLooper());
         this.fragmentManager = fragmentManager;
         this.containerId = containerId;
+        this.backStack = new Stack<>();
 
     }
 
@@ -42,7 +47,7 @@ public class TransitionFragmentManager {
                 .beginTransaction()
                 .setReorderingAllowed(true)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .add(containerId, fragment)
+                .add(containerId, backStack.push(fragment))
                 .commitAllowingStateLoss();
         /*handler.post(() -> {
             fragmentManager.executePendingTransactions();
@@ -57,18 +62,13 @@ public class TransitionFragmentManager {
     }
 
     public void pushToBackStack(@NonNull Fragment fragment) {
-        //fragment.setEnterTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        //fragment.setExitTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
         fragmentManager.executePendingTransactions();
         fragmentManager.beginTransaction()
                 .setReorderingAllowed(true)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                /*.setCustomAnimations(android.R.anim.slide_in_left,
-                        android.R.anim.slide_out_right,
-                        android.R.anim.slide_in_left,
-                        android.R.anim.slide_out_right)*/
-                .replace(containerId, fragment)
-                .addToBackStack(null)
+                .hide(backStack.peek())
+                .add(containerId, backStack.push(fragment))
+                //.addToBackStack(null)
                 .commitAllowingStateLoss();
     }
 
@@ -81,8 +81,9 @@ public class TransitionFragmentManager {
                 .setReorderingAllowed(true)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .addSharedElement(sharedElementView, sharedElementKey)
-                .replace(containerId, fragment)
-                .addToBackStack(null)
+                .hide(backStack.peek())
+                .add(containerId, backStack.push(fragment))
+                //.addToBackStack(null)
                 .commitAllowingStateLoss();
     }
 
@@ -96,12 +97,27 @@ public class TransitionFragmentManager {
         for (String key: keys) {
             transaction.addSharedElement(sharedElementsMap.get(key), key);
         }
-        transaction.replace(containerId, fragment).addToBackStack(null).commitAllowingStateLoss();
+        transaction
+                .hide(backStack.peek())
+                .add(containerId, backStack.push(fragment))
+                .commitAllowingStateLoss();
+    }
+
+    public boolean hasStackedFragments() {
+        return backStack.size() > 1;
     }
 
     public void popFromBackStack() {
+        if (backStack.isEmpty()) {
+            return;
+        }
         fragmentManager.executePendingTransactions();
-        fragmentManager.popBackStack();
+        fragmentManager.beginTransaction()
+                .setReorderingAllowed(true)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+                .remove(backStack.pop())
+                .show(backStack.peek())
+                .commitAllowingStateLoss();
     }
 
 }

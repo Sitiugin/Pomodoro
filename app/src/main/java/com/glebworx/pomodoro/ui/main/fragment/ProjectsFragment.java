@@ -2,6 +2,7 @@ package com.glebworx.pomodoro.ui.main.fragment;
 
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,12 +24,15 @@ import com.glebworx.pomodoro.item.ProjectItem;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.tasks.InitProjectsTask;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IItemAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.adapters.ItemFilter;
 import com.mikepenz.fastadapter.items.AbstractItem;
+
+import javax.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,6 +54,7 @@ public class ProjectsFragment extends Fragment {
     private ItemAdapter<ProjectItem> projectAdapter;
     private EventListener<QuerySnapshot> eventListener;
     private OnProjectFragmentInteractionListener fragmentListener;
+    private InitProjectsTask initProjectsTask;
 
 
     //                                                                                     LIFECYCLE
@@ -70,7 +75,6 @@ public class ProjectsFragment extends Fragment {
             return rootView;
         }
 
-        projectAdapter = new ItemAdapter<>();
         //projectAdapter.add(DummyDataProvider.getProjects());
         FastAdapter<AbstractItem> fastAdapter = new FastAdapter<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
@@ -86,9 +90,16 @@ public class ProjectsFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(@NonNull Context context) {
+    public void onAttach(@NonNull Context context) { // TODO is this null safe
+        projectAdapter = new ItemAdapter<>();
+        if (initProjectsTask != null && initProjectsTask.getStatus() != AsyncTask.Status.FINISHED) {
+            initProjectsTask.cancel(true);
+        }
         super.onAttach(context);
-        eventListener = (snapshots, e) -> new InitProjectsTask(snapshots, projectAdapter).execute();
+        eventListener = (snapshots, e) -> {
+            initProjectsTask = new InitProjectsTask(snapshots, projectAdapter);
+            initProjectsTask.execute();
+        };
         fragmentListener = (OnProjectFragmentInteractionListener) context;
     }
 

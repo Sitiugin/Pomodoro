@@ -60,6 +60,8 @@ public class MainActivity
     public void onBackPressed() {
         if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_COLLAPSED) {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        } else if (fragmentManager.hasStackedFragments()){
+            fragmentManager.popFromBackStack();
         } else {
             super.onBackPressed();
         }
