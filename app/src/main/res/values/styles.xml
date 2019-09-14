@@ -248,8 +248,7 @@
     <style name="EditTextStyle.Large" parent="EditTextStyle">
         <item name="android:textCursorDrawable">@drawable/drawable_cursor_large</item>
         <item name="android:textSize">@dimen/text_size_title</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:fontFamily">@string/font_sans_serif_thin</item>
+        <item name="android:fontFamily">@string/font_sans_serif_normal</item>
     </style>
 
     <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -267,12 +266,13 @@
         <item name="android:textColor">@drawable/selector_tint_text</item>
         <item name="android:fontFamily">@string/font_sans_serif_light</item>
         <item name="android:stateListAnimator">@animator/lift_on_touch_toggle</item>
-        <item name="chipBackgroundColor">@color/colorBackground</item>
-        <item name="chipSurfaceColor">@color/colorForeground</item>
+        <item name="chipBackgroundColor">@drawable/selector_bg_chip</item>
+        <item name="iconStartPadding">21dp</item>
+        <item name="iconEndPadding">5dp</item>
         <item name="rippleColor">@color/colorRipple</item>
         <item name="chipIconVisible">true</item>
         <item name="chipIconEnabled">true</item>
-        <item name="chipIcon">@drawable/drawable_dot_black</item>
+        <item name="chipIcon">@drawable/drawable_dot_large_black</item>
     </style>
 
 </resources>

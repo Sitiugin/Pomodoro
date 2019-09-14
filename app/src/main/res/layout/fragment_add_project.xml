@@ -65,69 +65,68 @@
         android:id="@+id/chip_group_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_content"
+        app:chipSpacing="@dimen/margin_content_half"
         android:clipChildren="false"
         android:clipToPadding="false"
         app:singleSelection="true"
-        app:checkedChip="@+id/chip_alizarin"
+        app:checkedChip="@+id/chip_turquoise"
         app:layout_constraintTop_toBottomOf="@+id/text_view_section_color"
         app:layout_constraintStart_toStartOf="parent">
         <com.google.android.material.chip.Chip
             style="@style/ChipStyle"
-            android:id="@+id/chip_alizarin"
+            android:id="@+id/chip_turquoise"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:chipIconTint="@color/colorHighlight"
-            android:text="Alizarin"/>
+            app:chipIconTint="@color/colorTurquoise" />
         <com.google.android.material.chip.Chip
             style="@style/ChipStyle"
+            android:id="@+id/colorEmerald"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:chipIconTint="@color/colorHighlight"
-            android:text="Alizarin"/>
+            app:chipIconTint="@color/colorEmerald" />
         <com.google.android.material.chip.Chip
             style="@style/ChipStyle"
+            android:id="@+id/colorPeterRiver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:chipIconTint="@color/colorHighlight"
-            android:text="Alizarin"/>
+            app:chipIconTint="@color/colorPeterRiver" />
         <com.google.android.material.chip.Chip
             style="@style/ChipStyle"
+            android:id="@+id/colorAmethyst"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:chipIconTint="@color/colorHighlight"
-            android:text="Alizarin"/>
+            app:chipIconTint="@color/colorAmethyst" />
         <com.google.android.material.chip.Chip
             style="@style/ChipStyle"
+            android:id="@+id/colorWetAsphalt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:chipIconTint="@color/colorHighlight"
-            android:text="Alizarin"/>
+            app:chipIconTint="@color/colorWetAsphalt" />
         <com.google.android.material.chip.Chip
             style="@style/ChipStyle"
+            android:id="@+id/colorSunflower"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:chipIconTint="@color/colorHighlight"
-            android:text="Alizarin"/>
+            app:chipIconTint="@color/colorSunflower" />
         <com.google.android.material.chip.Chip
             style="@style/ChipStyle"
+            android:id="@+id/colorCarrot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:chipIconTint="@color/colorHighlight"
-            android:text="Alizarin"/>
+            app:chipIconTint="@color/colorCarrot" />
         <com.google.android.material.chip.Chip
             style="@style/ChipStyle"
+            android:id="@+id/colorAlizarin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:chipIconTint="@color/colorHighlight"
-            android:text="Alizarin"/>
+            app:chipIconTint="@color/colorAlizarin" />
     </com.google.android.material.chip.ChipGroup>
+
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/TextStyle"
         android:id="@+id/text_view_section_due_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_content"
         android:text="@string/add_project_text_due"
         app:layout_constraintTop_toBottomOf="@+id/chip_group_color"
         app:layout_constraintStart_toStartOf="parent"/>
