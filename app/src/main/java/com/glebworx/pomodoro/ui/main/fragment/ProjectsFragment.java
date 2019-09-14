@@ -31,6 +31,10 @@ import com.mikepenz.fastadapter.IItemAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.adapters.ItemFilter;
 import com.mikepenz.fastadapter.items.AbstractItem;
+import com.mikepenz.itemanimators.AlphaInAnimator;
+import com.mikepenz.itemanimators.SlideInOutBottomAnimator;
+import com.mikepenz.itemanimators.SlideInOutLeftAnimator;
+import com.mikepenz.itemanimators.SlideInOutTopAnimator;
 
 import javax.annotation.Nullable;
 
@@ -114,6 +118,7 @@ public class ProjectsFragment extends Fragment {
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty));
+        recyclerView.setItemAnimator(new SlideInOutLeftAnimator(recyclerView));
 
         ItemAdapter<ProjectHeaderItem> headerAdapter = new ItemAdapter<>();
         headerAdapter.add(new ProjectHeaderItem());

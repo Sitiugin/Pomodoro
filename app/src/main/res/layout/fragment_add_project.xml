@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/margin_content"
+    android:clipChildren="false"
     android:clipToPadding="false"
     tools:context=".ui.main.fragment.AddProjectFragment">
 
@@ -60,6 +61,67 @@
         android:text="@string/add_project_text_color_tag"
         app:layout_constraintTop_toBottomOf="@+id/edit_text_name"
         app:layout_constraintStart_toStartOf="parent"/>
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_content"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        app:singleSelection="true"
+        app:checkedChip="@+id/chip_alizarin"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_section_color"
+        app:layout_constraintStart_toStartOf="parent">
+        <com.google.android.material.chip.Chip
+            style="@style/ChipStyle"
+            android:id="@+id/chip_alizarin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipIconTint="@color/colorHighlight"
+            android:text="Alizarin"/>
+        <com.google.android.material.chip.Chip
+            style="@style/ChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipIconTint="@color/colorHighlight"
+            android:text="Alizarin"/>
+        <com.google.android.material.chip.Chip
+            style="@style/ChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipIconTint="@color/colorHighlight"
+            android:text="Alizarin"/>
+        <com.google.android.material.chip.Chip
+            style="@style/ChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipIconTint="@color/colorHighlight"
+            android:text="Alizarin"/>
+        <com.google.android.material.chip.Chip
+            style="@style/ChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipIconTint="@color/colorHighlight"
+            android:text="Alizarin"/>
+        <com.google.android.material.chip.Chip
+            style="@style/ChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipIconTint="@color/colorHighlight"
+            android:text="Alizarin"/>
+        <com.google.android.material.chip.Chip
+            style="@style/ChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipIconTint="@color/colorHighlight"
+            android:text="Alizarin"/>
+        <com.google.android.material.chip.Chip
+            style="@style/ChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipIconTint="@color/colorHighlight"
+            android:text="Alizarin"/>
+    </com.google.android.material.chip.ChipGroup>
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/TextStyle"
         android:id="@+id/text_view_section_due_date"
@@ -67,7 +129,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_content"
         android:text="@string/add_project_text_due"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_section_color"
+        app:layout_constraintTop_toBottomOf="@+id/chip_group_color"
         app:layout_constraintStart_toStartOf="parent"/>
     <androidx.appcompat.widget.AppCompatButton
         style="@style/ButtonStyle"
