@@ -88,7 +88,7 @@ public class ProjectsFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        eventListener = (snapshots, e) -> new InitProjectsTask(snapshots, projectAdapter);
+        eventListener = (snapshots, e) -> new InitProjectsTask(snapshots, projectAdapter).execute();
         fragmentListener = (OnProjectFragmentInteractionListener) context;
     }
 

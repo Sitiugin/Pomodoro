@@ -156,6 +156,9 @@ public class ProjectModel extends AbstractModel {
             allocated += tasks.get(i).getPomodorosAllocated();
             completed += tasks.get(i).getPomodorosCompleted();
         }
+        if (allocated == 0) {
+            return 0;
+        }
         return (double) completed / (double) allocated;
     }
 

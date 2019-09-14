@@ -74,8 +74,6 @@ public class AddProjectFragment extends Fragment {
         super.onDetach();
     }
 
-
-
     private void initClickEvents() {
         View.OnClickListener onClickListener = view -> {
             switch (view.getId()) {
