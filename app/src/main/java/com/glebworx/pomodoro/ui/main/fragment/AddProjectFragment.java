@@ -240,6 +240,7 @@ public class AddProjectFragment extends Fragment {
     }
 
     private void saveProject(Context context) {
+        startSaveStartedAnimation();
         ProjectApi.saveModel(projectModel, task -> {
             if (context == null) {
                 startSaveCanceledAnimation();
@@ -256,8 +257,6 @@ public class AddProjectFragment extends Fragment {
     }
 
     private void startSaveStartedAnimation() {
-        //spinKitView.setVisibility(View.VISIBLE);
-        //saveButton.setVisibility(View.INVISIBLE);
         saveButton.setEnabled(false);
         TransitionManager.beginDelayedTransition(addProjectLayout);
         constraintSet.clone(addProjectLayout);

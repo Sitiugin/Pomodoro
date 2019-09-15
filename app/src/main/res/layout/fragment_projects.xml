@@ -85,6 +85,7 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scrollbars="vertical"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:paddingTop="0dp"
