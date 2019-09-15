@@ -80,43 +80,43 @@
             app:chipIconTint="@color/colorTurquoise" />
         <com.google.android.material.chip.Chip
             style="@style/ChipStyle"
-            android:id="@+id/colorEmerald"
+            android:id="@+id/chip_emerald"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:chipIconTint="@color/colorEmerald" />
         <com.google.android.material.chip.Chip
             style="@style/ChipStyle"
-            android:id="@+id/colorPeterRiver"
+            android:id="@+id/chip_peter_river"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:chipIconTint="@color/colorPeterRiver" />
         <com.google.android.material.chip.Chip
             style="@style/ChipStyle"
-            android:id="@+id/colorAmethyst"
+            android:id="@+id/chip_amethyst"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:chipIconTint="@color/colorAmethyst" />
         <com.google.android.material.chip.Chip
             style="@style/ChipStyle"
-            android:id="@+id/colorWetAsphalt"
+            android:id="@+id/chip_wet_asphalt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:chipIconTint="@color/colorWetAsphalt" />
         <com.google.android.material.chip.Chip
             style="@style/ChipStyle"
-            android:id="@+id/colorSunflower"
+            android:id="@+id/chip_sunflower"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:chipIconTint="@color/colorSunflower" />
         <com.google.android.material.chip.Chip
             style="@style/ChipStyle"
-            android:id="@+id/colorCarrot"
+            android:id="@+id/chip_carrot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:chipIconTint="@color/colorCarrot" />
         <com.google.android.material.chip.Chip
             style="@style/ChipStyle"
-            android:id="@+id/colorAlizarin"
+            android:id="@+id/chip_alizarin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:chipIconTint="@color/colorAlizarin" />
@@ -137,7 +137,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_content"
         android:text="No due date"
-        android:drawableEnd="@drawable/ic_calendar_black"
         android:gravity="start"
         app:layout_constraintTop_toBottomOf="@+id/text_view_section_due_date" />
 

@@ -16,7 +16,7 @@
             <objectAnimator
                 android:duration="@android:integer/config_shortAnimTime"
                 android:propertyName="translationZ"
-                android:valueTo="@dimen/elevation_view_high"
+                android:valueTo="@dimen/elevation_view"
                 android:interpolator="@android:anim/overshoot_interpolator"/>
         </set>
     </item>
@@ -26,7 +26,7 @@
             <objectAnimator
                 android:duration="@android:integer/config_shortAnimTime"
                 android:propertyName="translationZ"
-                android:valueTo="@dimen/elevation_view_high"
+                android:valueTo="@dimen/elevation_view"
                 android:interpolator="@android:anim/overshoot_interpolator"/>
         </set>
     </item>
@@ -36,7 +36,7 @@
             <objectAnimator
                 android:duration="@android:integer/config_shortAnimTime"
                 android:propertyName="translationZ"
-                android:valueTo="@dimen/elevation_view_high"
+                android:valueTo="@dimen/elevation_view"
                 android:interpolator="@android:anim/overshoot_interpolator"/>
         </set>
     </item>

@@ -7,6 +7,8 @@
     <string name="core_save">Save</string>
     <string name="core_add">Add</string>
     <string name="core_filter">Filter</string>
+    <string name="core_today">Today</string>
+    <string name="core_tomorrow">Tomorrow</string>
     <string name="core_text_no_data">Nothing to show</string>
     <string name="core_active">Active</string>
     <string name="core_due" formatted="true">Due: %1$s</string>
@@ -63,6 +65,7 @@
     <string name="add_project_hint_name">Enter a name for your project</string>
     <string name="add_project_toast_add_success">Project Added</string>
     <string name="add_project_toast_add_failed">Could not add project. Please try again later.</string>
+    <string name="add_project_err_name_empty">Project name cannot be empty!</string>
 
     <!--                                                                              MAIN TASKS -->
 
