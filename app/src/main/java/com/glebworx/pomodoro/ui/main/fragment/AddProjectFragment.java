@@ -216,8 +216,14 @@ public class AddProjectFragment extends Fragment {
 
     private void showDatePickerDialog(Activity activity) {
         AlertDialog alertDialog = DialogManager.showDialog(activity, R.id.container_main, R.layout.dialog_date_picker);
-        ((DatePicker) Objects.requireNonNull(alertDialog.findViewById(R.id.date_picker)))
-                .setOnDateChangedListener(getDateChangeListener(alertDialog));
+        DatePicker datePicker = alertDialog.findViewById(R.id.date_picker);
+        if (datePicker != null) {
+            datePicker.init(
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH),
+                    getDateChangeListener(alertDialog));
+        }
     }
 
     private DatePicker.OnDateChangedListener getDateChangeListener(AlertDialog alertDialog) {
