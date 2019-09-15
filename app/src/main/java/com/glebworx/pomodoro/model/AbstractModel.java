@@ -17,6 +17,7 @@ public abstract class AbstractModel implements Comparable<AbstractModel>, Parcel
     //                                                                                    ATTRIBUTES
 
     private final String id;
+    private String name;
     private final Date timestamp;
     private Date dateModified;
 
@@ -25,12 +26,21 @@ public abstract class AbstractModel implements Comparable<AbstractModel>, Parcel
 
     public AbstractModel() {
         this.id = UUID.randomUUID().toString();
+        this.name = null;
+        this.timestamp = new Date();
+        this.dateModified = new Date();
+    }
+
+    public AbstractModel(@NonNull String name) {
+        this.id = UUID.randomUUID().toString();
+        this.name = name;
         this.timestamp = new Date();
         this.dateModified = new Date();
     }
 
     public AbstractModel(Parcel in) {
         this.id = in.readString();
+        this.name = in.readString();
         this.timestamp = new Date(in.readLong());
         this.dateModified = new Date(in.readLong());
     }
@@ -44,7 +54,7 @@ public abstract class AbstractModel implements Comparable<AbstractModel>, Parcel
         if (this == o) return true;
         if (!(o instanceof AbstractModel)) return false;
         AbstractModel that = (AbstractModel) o;
-        return id.equals(that.id);
+        return name.equals(that.name);
     }
 
     @Override
@@ -75,6 +85,14 @@ public abstract class AbstractModel implements Comparable<AbstractModel>, Parcel
     @Exclude
     public String getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Exclude

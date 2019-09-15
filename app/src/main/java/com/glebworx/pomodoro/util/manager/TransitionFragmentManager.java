@@ -108,7 +108,7 @@ public class TransitionFragmentManager {
     }
 
     public void popFromBackStack() {
-        if (backStack.isEmpty()) {
+        if (backStack.isEmpty() || backStack.size() == 1) {
             return;
         }
         fragmentManager.executePendingTransactions();

@@ -34,7 +34,6 @@ public class ProjectModel extends AbstractModel {
 
     //                                                                                    ATTRIBUTES
 
-    private String name;
     private Date dueDate;
     private String colorTag;
     private List<TaskModel> tasks;
@@ -51,8 +50,7 @@ public class ProjectModel extends AbstractModel {
                         @Nullable Date dueDate,
                         @NonNull String colorTag,
                         @Nullable List<TaskModel> tasks) {
-        super();
-        this.name = name;
+        super(name);
         if (dueDate != null) {
             this.dueDate = dueDate;
         } else {
@@ -68,7 +66,6 @@ public class ProjectModel extends AbstractModel {
 
     public ProjectModel(Parcel in) {
         super(in);
-        this.name = in.readString();
         long dueDate = in.readLong();
         if (dueDate != -1) {
             this.dueDate = new Date(dueDate);
@@ -84,7 +81,6 @@ public class ProjectModel extends AbstractModel {
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
         super.writeToParcel(parcel, flags);
-        parcel.writeString(this.name);
         if (this.dueDate != null) {
             parcel.writeLong(this.dueDate.getTime());
         } else {
@@ -94,36 +90,14 @@ public class ProjectModel extends AbstractModel {
         parcel.writeTypedList(this.tasks);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ProjectModel)) return false;
-        ProjectModel that = (ProjectModel) o;
-        return name.equals(that.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
-    }
-
     @Exclude
     @Override
     public boolean isValid() {
-        return name != null && colorTag != null && tasks != null;
+        return getName() != null && colorTag != null && tasks != null;
     }
 
 
     //                                                                           GETTERS AND SETTERS
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public Date getDueDate() {
         return dueDate;

@@ -11,7 +11,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
+import androidx.transition.TransitionManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,13 +23,17 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.util.constants.Constants;
 import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.KeyboardManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.time.YearMonth;
@@ -52,11 +59,13 @@ public class AddProjectFragment extends Fragment {
 
     //                                                                                       BINDING
 
+    @BindView(R.id.layout_add_project) ConstraintLayout addProjectLayout;
     @BindView(R.id.button_close) AppCompatImageButton closeButton;
     @BindView(R.id.edit_text_name) AppCompatEditText projectNameEditText;
     @BindView(R.id.chip_group_color) ChipGroup colorTagChipGroup;
     @BindView(R.id.button_due_date) AppCompatButton dueDateButton;
     @BindView(R.id.button_save) AppCompatButton saveButton;
+    @BindView(R.id.spin_kit_view) SpinKitView spinKitView;
 
 
     //                                                                                    ATTRIBUTES
@@ -64,6 +73,7 @@ public class AddProjectFragment extends Fragment {
     private static SimpleDateFormat dateFormat =
             new SimpleDateFormat(Constants.PATTERN_DATE, Locale.getDefault());
     private OnAddProjectFragmentInteractionListener fragmentListener;
+    private ConstraintSet constraintSet;
     private ProjectModel projectModel;
     private Calendar calendar;
     private int year;
@@ -84,6 +94,7 @@ public class AddProjectFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_add_project, container, false);
         ButterKnife.bind(this, rootView);
 
+        constraintSet = new ConstraintSet();
         projectModel = new ProjectModel();
         calendar = Calendar.getInstance(Locale.getDefault());
         updateToday();
@@ -231,6 +242,7 @@ public class AddProjectFragment extends Fragment {
     private void saveProject(Context context) {
         ProjectApi.saveModel(projectModel, task -> {
             if (context == null) {
+                startSaveCanceledAnimation();
                 return;
             }
             if (task.isSuccessful()) {
@@ -238,8 +250,29 @@ public class AddProjectFragment extends Fragment {
                 fragmentListener.onCloseFragment();
             } else {
                 Toast.makeText(context, R.string.add_project_toast_add_failed, Toast.LENGTH_LONG).show();
+                startSaveCanceledAnimation();
             }
         });
+    }
+
+    private void startSaveStartedAnimation() {
+        //spinKitView.setVisibility(View.VISIBLE);
+        //saveButton.setVisibility(View.INVISIBLE);
+        saveButton.setEnabled(false);
+        TransitionManager.beginDelayedTransition(addProjectLayout);
+        constraintSet.clone(addProjectLayout);
+        constraintSet.setVisibility(R.id.spin_kit_view, ConstraintSet.VISIBLE);
+        constraintSet.setVisibility(R.id.button_save, ConstraintSet.INVISIBLE);
+        constraintSet.applyTo(addProjectLayout);
+    }
+
+    private void startSaveCanceledAnimation() {
+        saveButton.setEnabled(true);
+        TransitionManager.beginDelayedTransition(addProjectLayout);
+        constraintSet.clone(addProjectLayout);
+        constraintSet.setVisibility(R.id.spin_kit_view, ConstraintSet.INVISIBLE);
+        constraintSet.setVisibility(R.id.button_save, ConstraintSet.VISIBLE);
+        constraintSet.applyTo(addProjectLayout);
     }
 
     private void updateToday() {

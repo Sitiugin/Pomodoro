@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_add_project"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/margin_content"
@@ -136,9 +137,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_content"
-        android:text="No due date"
         android:gravity="start"
         app:layout_constraintTop_toBottomOf="@+id/text_view_section_due_date" />
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        style="@style/SpinKitView.Large.Pulse"
+        android:id="@+id/spin_kit_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:SpinKit_Color="@color/colorHighlight"
+        app:layout_constraintTop_toBottomOf="@+id/button_due_date"
+        app:layout_constraintBottom_toTopOf="@+id/button_save"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatButton
         style="@style/ButtonStyle.Borderless.Colored"

@@ -30,7 +30,6 @@ public class TaskModel extends AbstractModel {
 
     //                                                                                    ATTRIBUTES
 
-    private String name;
     private String project;
     private int pomodorosAllocated;
     private int pomodorosCompleted;
@@ -49,8 +48,7 @@ public class TaskModel extends AbstractModel {
                      int pomodorosAllocated,
                      @Nullable Date dueDate,
                      int recurrence) {
-        super();
-        this.name = name;
+        super(name);
         this.project = project;
         this.pomodorosAllocated = pomodorosAllocated;
         this.pomodorosCompleted = 0;
@@ -64,7 +62,6 @@ public class TaskModel extends AbstractModel {
 
     public TaskModel(Parcel in) {
         super(in);
-        this.name = in.readString();
         this.project = in.readString();
         this.pomodorosAllocated = in.readInt();
         this.pomodorosCompleted = in.readInt();
@@ -81,7 +78,6 @@ public class TaskModel extends AbstractModel {
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
         super.writeToParcel(parcel, flags);
-        parcel.writeString(this.name);
         parcel.writeString(this.project);
         parcel.writeInt(this.pomodorosAllocated);
         parcel.writeInt(this.pomodorosCompleted);
@@ -94,33 +90,12 @@ public class TaskModel extends AbstractModel {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TaskModel)) return false;
-        TaskModel taskModel = (TaskModel) o;
-        return name.equals(taskModel.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
-    }
-
-    @Override
     public boolean isValid() {
-        return name != null && project != null;
+        return getName() != null && project != null;
     }
 
 
     //                                                                           GETTERS AND SETTERS
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getProject() {
         return project;

@@ -9,6 +9,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -32,16 +33,22 @@ public abstract class BaseApi {
     protected static void saveModel(@NonNull AbstractModel model,
                                     @NonNull CollectionReference collectionReference,
                                     @Nullable OnCompleteListener<Void> onCompleteListener) {
-        Task<Void> task = collectionReference.document(model.getId()).set(model);
+        Task<Void> task = collectionReference.document(model.getName()).set(model);
         if (onCompleteListener != null) {
             task.addOnCompleteListener(onCompleteListener);
         }
     }
 
+    protected static void getModel(@NonNull AbstractModel model,
+                                   @NonNull CollectionReference collectionReference,
+                                   @NonNull OnCompleteListener<DocumentSnapshot> onCompleteListener) {
+        collectionReference.document(model.getName()).get().addOnCompleteListener(onCompleteListener);
+    }
+
     protected static void deleteModel(@NonNull AbstractModel model,
                                       @NonNull CollectionReference collectionReference,
                                       @Nullable OnCompleteListener<Void> onCompleteListener) {
-        Task<Void> task = collectionReference.document(model.getId()).delete();
+        Task<Void> task = collectionReference.document(model.getName()).delete();
         if (onCompleteListener != null) {
             task.addOnCompleteListener(onCompleteListener);
         }
