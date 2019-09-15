@@ -36,7 +36,7 @@ public class ProjectModel extends AbstractModel {
 
     private String name;
     private Date dueDate;
-    private String color;
+    private String colorTag;
     private List<TaskModel> tasks;
 
 
@@ -49,7 +49,7 @@ public class ProjectModel extends AbstractModel {
 
     public ProjectModel(@NonNull String name,
                         @Nullable Date dueDate,
-                        @NonNull String color,
+                        @NonNull String colorTag,
                         @Nullable List<TaskModel> tasks) {
         super();
         this.name = name;
@@ -58,7 +58,7 @@ public class ProjectModel extends AbstractModel {
         } else {
             this.dueDate = null;
         }
-        this.color = color;
+        this.colorTag = colorTag;
         if (tasks != null) {
             this.tasks = tasks;
         } else {
@@ -73,7 +73,7 @@ public class ProjectModel extends AbstractModel {
         if (dueDate != -1) {
             this.dueDate = new Date(dueDate);
         }
-        this.color = in.readString();
+        this.colorTag = in.readString();
         this.tasks = new ArrayList<>();
         in.readTypedList(this.tasks, TaskModel.CREATOR);
     }
@@ -90,7 +90,7 @@ public class ProjectModel extends AbstractModel {
         } else {
             parcel.writeLong(-1);
         }
-        parcel.writeString(this.color);
+        parcel.writeString(this.colorTag);
         parcel.writeTypedList(this.tasks);
     }
 
@@ -107,9 +107,10 @@ public class ProjectModel extends AbstractModel {
         return Objects.hash(name);
     }
 
+    @Exclude
     @Override
     public boolean isValid() {
-        return name != null && color != null && tasks != null;
+        return name != null && colorTag != null && tasks != null;
     }
 
 
@@ -132,12 +133,12 @@ public class ProjectModel extends AbstractModel {
         this.dueDate = dueDate;
     }
 
-    public String getColor() {
-        return color;
+    public String getColorTag() {
+        return colorTag;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setColorTag(String colorTag) {
+        this.colorTag = colorTag;
     }
 
     public List<TaskModel> getTasks() {

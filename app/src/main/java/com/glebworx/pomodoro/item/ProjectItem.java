@@ -18,9 +18,11 @@ import com.triggertrap.seekarc.SeekArc;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
@@ -30,7 +32,7 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
     //                                                                                    ATTRIBUTES
 
     private static SimpleDateFormat dateFormat =
-            new SimpleDateFormat(Constants.PATTERN_DATE_TIME, Locale.getDefault());
+            new SimpleDateFormat(Constants.PATTERN_DATE, Locale.getDefault());
     private static NumberFormat numberFormat = NumberFormat.getPercentInstance(Locale.getDefault());
 
     private ProjectModel model;
@@ -61,6 +63,19 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
         return R.layout.item_project;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ProjectItem)) return false;
+        if (!super.equals(o)) return false;
+        ProjectItem that = (ProjectItem) o;
+        return model.equals(that.model);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), model);
+    }
 
     //                                                                                       HELPERS
 

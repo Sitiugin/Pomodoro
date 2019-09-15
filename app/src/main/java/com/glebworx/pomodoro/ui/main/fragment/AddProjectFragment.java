@@ -29,9 +29,8 @@ import com.glebworx.pomodoro.util.manager.KeyboardManager;
 import com.google.android.material.chip.ChipGroup;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -42,7 +41,6 @@ import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_ALIZARIN
 import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_AMETHYST_HEX;
 import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_CARROT_HEX;
 import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_EMERALD_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_EMERALD_INT;
 import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_PETER_RIVER_HEX;
 import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_SUNFLOWER_HEX;
 import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_TURQUOISE_HEX;
@@ -124,7 +122,6 @@ public class AddProjectFragment extends Fragment {
     private void initEditText(Activity activity) {
         projectNameEditText.setOnEditorActionListener((textView, actionId, keyEvent) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                projectModel.setName(Objects.requireNonNull(projectNameEditText.getText()).toString().trim());
                 clearEditTextFocus(activity);
             }
             return false;
@@ -134,37 +131,34 @@ public class AddProjectFragment extends Fragment {
     }
 
     private void initColorChips(Activity activity) {
-        projectModel.setColor(COLOR_TURQUOISE_HEX);
-        colorTagChipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(ChipGroup group, int checkedId) {
-                clearEditTextFocus(activity);
-                switch (checkedId) {
-                    case R.id.chip_turquoise:
-                        projectModel.setColor(COLOR_TURQUOISE_HEX);
-                        break;
-                    case R.id.chip_emerald:
-                        projectModel.setColor(COLOR_EMERALD_HEX);
-                        break;
-                    case R.id.chip_peter_river:
-                        projectModel.setColor(COLOR_PETER_RIVER_HEX);
-                        break;
-                    case R.id.chip_amethyst:
-                        projectModel.setColor(COLOR_AMETHYST_HEX);
-                        break;
-                    case R.id.chip_wet_asphalt:
-                        projectModel.setColor(COLOR_WET_ASPHALT_HEX);
-                        break;
-                    case R.id.chip_sunflower:
-                        projectModel.setColor(COLOR_SUNFLOWER_HEX);
-                        break;
-                    case R.id.chip_carrot:
-                        projectModel.setColor(COLOR_CARROT_HEX);
-                        break;
-                    case R.id.chip_alizarin:
-                        projectModel.setColor(COLOR_ALIZARIN_HEX);
-                        break;
-                }
+        projectModel.setColorTag(COLOR_TURQUOISE_HEX);
+        colorTagChipGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            clearEditTextFocus(activity);
+            switch (checkedId) {
+                case R.id.chip_turquoise:
+                    projectModel.setColorTag(COLOR_TURQUOISE_HEX);
+                    break;
+                case R.id.chip_emerald:
+                    projectModel.setColorTag(COLOR_EMERALD_HEX);
+                    break;
+                case R.id.chip_peter_river:
+                    projectModel.setColorTag(COLOR_PETER_RIVER_HEX);
+                    break;
+                case R.id.chip_amethyst:
+                    projectModel.setColorTag(COLOR_AMETHYST_HEX);
+                    break;
+                case R.id.chip_wet_asphalt:
+                    projectModel.setColorTag(COLOR_WET_ASPHALT_HEX);
+                    break;
+                case R.id.chip_sunflower:
+                    projectModel.setColorTag(COLOR_SUNFLOWER_HEX);
+                    break;
+                case R.id.chip_carrot:
+                    projectModel.setColorTag(COLOR_CARROT_HEX);
+                    break;
+                case R.id.chip_alizarin:
+                    projectModel.setColorTag(COLOR_ALIZARIN_HEX);
+                    break;
             }
         });
     }
@@ -202,7 +196,7 @@ public class AddProjectFragment extends Fragment {
     }
 
     private boolean validateInput(Context context) {
-        if (projectNameEditText.getText().toString().trim().isEmpty()) {
+        if (Objects.requireNonNull(projectNameEditText.getText()).toString().trim().isEmpty()) {
             Toast.makeText(context, R.string.add_project_err_name_empty, Toast.LENGTH_LONG).show();
             return false;
         }
@@ -218,10 +212,11 @@ public class AddProjectFragment extends Fragment {
     private DatePicker.OnDateChangedListener getDateChangeListener(AlertDialog alertDialog) {
         return (view, year, monthOfYear, dayOfMonth) -> {
             calendar.set(year, monthOfYear, dayOfMonth);
+            YearMonth yearMonthObject = YearMonth.of(year, monthOfYear);
             if (year == this.year && monthOfYear == this.month) {
                 if (dayOfMonth == this.today) {
                     dueDateButton.setText(R.string.core_today);
-                } else if (dayOfMonth == this.today + 1) {
+                } else if (dayOfMonth == this.today + 1 || dayOfMonth == 1 && this.today == yearMonthObject.lengthOfMonth()) {
                     dueDateButton.setText(R.string.core_tomorrow);
                 } else {
                     dueDateButton.setText(dateFormat.format(calendar.getTime()));
@@ -255,6 +250,7 @@ public class AddProjectFragment extends Fragment {
     }
 
     private void clearEditTextFocus(Activity activity) {
+        projectModel.setName(Objects.requireNonNull(projectNameEditText.getText()).toString().trim());
         KeyboardManager.hideKeyboard(activity);
         projectNameEditText.clearFocus();
     }
