@@ -69,6 +69,10 @@ public class ProjectsFragment extends Fragment {
 
     public ProjectsFragment() { }
 
+    public static ProjectsFragment newInstance() {
+        return new ProjectsFragment();
+    }
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,

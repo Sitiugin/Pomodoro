@@ -71,12 +71,12 @@ public class MainActivity
 
     @Override
     public void onAddProjectClicked() {
-        fragmentManager.pushToBackStack(new AddProjectFragment());
+        fragmentManager.pushToBackStack(AddProjectFragment.newInstance());
     }
 
     @Override
     public void onViewProjectClicked(ProjectModel projectModel) {
-        fragmentManager.pushToBackStack(new ViewProjectFragment());
+        fragmentManager.pushToBackStack(ViewProjectFragment.newInstance(projectModel));
     }
 
     @Override
@@ -199,7 +199,7 @@ public class MainActivity
     }
 
     private void addProjectsFragment() {
-        fragmentManager.addRootFragment(new ProjectsFragment());
+        fragmentManager.addRootFragment(ProjectsFragment.newInstance());
     }
 
 }

@@ -182,8 +182,9 @@ public class SplashActivity extends AppCompatActivity {
         }
         Toast.makeText(SplashActivity.this, message, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+        finishAffinity();
     }
 
 }
