@@ -11,7 +11,9 @@ import android.view.View;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.ProjectModel;
+import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.ui.main.fragment.AddProjectFragment;
+import com.glebworx.pomodoro.ui.main.fragment.AddTaskFragment;
 import com.glebworx.pomodoro.ui.main.fragment.ProjectsFragment;
 import com.glebworx.pomodoro.ui.main.fragment.ViewProjectFragment;
 import com.glebworx.pomodoro.util.manager.TransitionFragmentManager;
@@ -24,7 +26,8 @@ import butterknife.ButterKnife;
 public class MainActivity
         extends AppCompatActivity
         implements ProjectsFragment.OnProjectFragmentInteractionListener,
-                    AddProjectFragment.OnAddProjectFragmentInteractionListener {
+                    AddProjectFragment.OnAddProjectFragmentInteractionListener,
+                    ViewProjectFragment.OnViewProjectFragmentInteractionListener {
 
 
     //                                                                                       BINDING
@@ -70,18 +73,28 @@ public class MainActivity
     }
 
     @Override
-    public void onAddProjectClicked() {
+    public void onAddProject() {
         fragmentManager.pushToBackStack(AddProjectFragment.newInstance());
     }
 
     @Override
-    public void onViewProjectClicked(ProjectModel projectModel) {
+    public void onViewProject(ProjectModel projectModel) {
         fragmentManager.pushToBackStack(ViewProjectFragment.newInstance(projectModel));
     }
 
     @Override
     public void onCloseFragment() {
         fragmentManager.popFromBackStack();
+    }
+
+    @Override
+    public void onAddTask() {
+        fragmentManager.pushToBackStack(AddTaskFragment.newInstance());
+    }
+
+    @Override
+    public void onSelectTask(TaskModel taskModel) {
+        // TODO implement
     }
 
     private void initBottomSheet() {

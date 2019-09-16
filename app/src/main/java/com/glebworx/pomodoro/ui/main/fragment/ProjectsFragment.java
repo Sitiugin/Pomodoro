@@ -25,25 +25,16 @@ import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.tasks.InitProjectsTask;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mikepenz.fastadapter.FastAdapter;
-import com.mikepenz.fastadapter.IAdapter;
 import com.mikepenz.fastadapter.IItemAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.adapters.ItemFilter;
 import com.mikepenz.fastadapter.items.AbstractItem;
-import com.mikepenz.fastadapter.listeners.OnClickListener;
-import com.mikepenz.itemanimators.AlphaInAnimator;
-import com.mikepenz.itemanimators.SlideInOutBottomAnimator;
 import com.mikepenz.itemanimators.SlideInOutLeftAnimator;
-import com.mikepenz.itemanimators.SlideInOutTopAnimator;
-
-import javax.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 
 public class ProjectsFragment extends Fragment {
@@ -188,11 +179,11 @@ public class ProjectsFragment extends Fragment {
                 return false;
             }
             if (view.getId() == R.id.item_project && item instanceof ProjectItem) {
-                fragmentListener.onViewProjectClicked(((ProjectItem) item).getModel());
+                fragmentListener.onViewProject(((ProjectItem) item).getModel());
                 return true;
             }
             if (view.getId() == R.id.item_add) {
-                fragmentListener.onAddProjectClicked();
+                fragmentListener.onAddProject();
                 return true;
             }
             return false;
@@ -200,8 +191,8 @@ public class ProjectsFragment extends Fragment {
     }
 
     public interface OnProjectFragmentInteractionListener {
-        void onAddProjectClicked();
-        void onViewProjectClicked(ProjectModel projectModel);
+        void onAddProject();
+        void onViewProject(ProjectModel projectModel);
     }
 
 }

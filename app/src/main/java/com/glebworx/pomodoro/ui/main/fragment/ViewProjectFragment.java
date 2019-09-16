@@ -18,8 +18,10 @@ import android.view.ViewGroup;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.item.AddItem;
 import com.glebworx.pomodoro.item.ProjectHeaderItem;
+import com.glebworx.pomodoro.item.ProjectItem;
 import com.glebworx.pomodoro.item.TaskItem;
 import com.glebworx.pomodoro.model.ProjectModel;
+import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.util.DummyDataProvider;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.constants.Constants;
@@ -50,6 +52,7 @@ public class ViewProjectFragment extends Fragment {
             new SimpleDateFormat(Constants.PATTERN_DATE, Locale.getDefault());
 
     private ItemAdapter<TaskItem> taskAdapter;
+    private OnViewProjectFragmentInteractionListener fragmentListener;
 
     public ViewProjectFragment() { }
 
@@ -87,8 +90,21 @@ public class ViewProjectFragment extends Fragment {
 
         initTitle(projectModel);
         initRecyclerView(layoutManager, fastAdapter);
+        initClickEvents(fastAdapter);
 
         return rootView;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        fragmentListener = (OnViewProjectFragmentInteractionListener) context;
+    }
+
+    @Override
+    public void onDetach() {
+        fragmentListener = null;
+        super.onDetach();
     }
 
     private void initTitle(ProjectModel projectModel) {
@@ -131,6 +147,28 @@ public class ViewProjectFragment extends Fragment {
         fastAdapter.withSelectable(true);
         recyclerView.setAdapter(fastAdapter);
 
+    }
+
+    private void initClickEvents(FastAdapter<AbstractItem> fastAdapter) {
+        fastAdapter.withOnClickListener((view, adapter, item, position) -> {
+            if (view == null) {
+                return false;
+            }
+            if (view.getId() == R.id.item_task && item instanceof TaskItem) {
+                fragmentListener.onSelectTask(((TaskItem) item).getModel());
+                return true;
+            }
+            if (view.getId() == R.id.item_add) {
+                fragmentListener.onAddTask();
+                return true;
+            }
+            return false;
+        });
+    }
+
+    public interface OnViewProjectFragmentInteractionListener {
+        void onAddTask();
+        void onSelectTask(TaskModel taskModel);
     }
 
 }
