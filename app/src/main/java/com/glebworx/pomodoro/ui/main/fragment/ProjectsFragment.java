@@ -167,6 +167,7 @@ public class ProjectsFragment extends Fragment {
         View.OnClickListener onClickListener = view -> {
             switch (view.getId()) {
                 case R.id.button_report:
+                    fragmentListener.onViewReport();
                     break;
                 case R.id.button_options:
                     break;
@@ -193,6 +194,7 @@ public class ProjectsFragment extends Fragment {
     public interface OnProjectFragmentInteractionListener {
         void onAddProject();
         void onViewProject(ProjectModel projectModel);
+        void onViewReport();
     }
 
 }

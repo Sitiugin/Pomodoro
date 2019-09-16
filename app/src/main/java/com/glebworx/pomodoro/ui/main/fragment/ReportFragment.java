@@ -12,20 +12,25 @@ import android.view.ViewGroup;
 
 import com.glebworx.pomodoro.R;
 
+import butterknife.ButterKnife;
+
 
 public class ReportFragment extends Fragment {
 
+    public ReportFragment() { }
 
-    public ReportFragment() {
+    public static ReportFragment newInstance() {
+        return new ReportFragment();
     }
-
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_report, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_report, container, false);
+        ButterKnife.bind(this, rootView);
+        return rootView;
 
     }
 

@@ -30,7 +30,6 @@ public class TaskModel extends AbstractModel {
 
     //                                                                                    ATTRIBUTES
 
-    private String project;
     private int pomodorosAllocated;
     private int pomodorosCompleted;
     private Date dueDate;
@@ -44,12 +43,10 @@ public class TaskModel extends AbstractModel {
     }
 
     public TaskModel(@NonNull String name,
-                     @Nullable String project,
                      int pomodorosAllocated,
                      @Nullable Date dueDate,
                      int recurrence) {
         super(name);
-        this.project = project;
         this.pomodorosAllocated = pomodorosAllocated;
         this.pomodorosCompleted = 0;
         if (dueDate != null) {
@@ -62,7 +59,6 @@ public class TaskModel extends AbstractModel {
 
     public TaskModel(Parcel in) {
         super(in);
-        this.project = in.readString();
         this.pomodorosAllocated = in.readInt();
         this.pomodorosCompleted = in.readInt();
         long dueDate = in.readLong();
@@ -78,7 +74,6 @@ public class TaskModel extends AbstractModel {
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
         super.writeToParcel(parcel, flags);
-        parcel.writeString(this.project);
         parcel.writeInt(this.pomodorosAllocated);
         parcel.writeInt(this.pomodorosCompleted);
         if (this.dueDate != null) {
@@ -91,19 +86,11 @@ public class TaskModel extends AbstractModel {
 
     @Override
     public boolean isValid() {
-        return getName() != null && project != null;
+        return getName() != null;
     }
 
 
     //                                                                           GETTERS AND SETTERS
-
-    public String getProject() {
-        return project;
-    }
-
-    public void setProject(String project) {
-        this.project = project;
-    }
 
     public int getPomodorosAllocated() {
         return pomodorosAllocated;

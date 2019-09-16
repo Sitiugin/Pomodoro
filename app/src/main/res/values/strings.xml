@@ -12,6 +12,18 @@
     <string name="core_text_no_data">Nothing to show</string>
     <string name="core_active">Active</string>
     <string name="core_due" formatted="true">Due: %1$s</string>
+    <string-array name="core_recurrence">
+        <item>Never repeat</item>
+        <item>Repeat every day</item>
+        <item>Repeat every two days</item>
+        <item>Repeat every three days</item>
+        <item>Repeat every four days</item>
+        <item>Repeat every five days</item>
+        <item>Repeat every six days</item>
+        <item>Repeat every week</item>
+        <item>Repeat on weekdays</item>
+        <item>Repeat on weekends</item>
+    </string-array>
 
     <string name="shared_element_add_btn">Add Project</string>
 

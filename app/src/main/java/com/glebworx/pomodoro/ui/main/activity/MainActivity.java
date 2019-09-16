@@ -15,9 +15,11 @@ import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.ui.main.fragment.AddProjectFragment;
 import com.glebworx.pomodoro.ui.main.fragment.AddTaskFragment;
 import com.glebworx.pomodoro.ui.main.fragment.ProjectsFragment;
+import com.glebworx.pomodoro.ui.main.fragment.ReportFragment;
 import com.glebworx.pomodoro.ui.main.fragment.ViewProjectFragment;
 import com.glebworx.pomodoro.util.manager.TransitionFragmentManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.firebase.database.core.Repo;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -80,6 +82,11 @@ public class MainActivity
     @Override
     public void onViewProject(ProjectModel projectModel) {
         fragmentManager.pushToBackStack(ViewProjectFragment.newInstance(projectModel));
+    }
+
+    @Override
+    public void onViewReport() {
+        fragmentManager.pushToBackStack(ReportFragment.newInstance());
     }
 
     @Override
