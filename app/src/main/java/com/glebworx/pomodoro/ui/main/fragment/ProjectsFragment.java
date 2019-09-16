@@ -21,16 +21,19 @@ import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.item.AddItem;
 import com.glebworx.pomodoro.item.ProjectHeaderItem;
 import com.glebworx.pomodoro.item.ProjectItem;
+import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.tasks.InitProjectsTask;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.IAdapter;
 import com.mikepenz.fastadapter.IItemAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.adapters.ItemFilter;
 import com.mikepenz.fastadapter.items.AbstractItem;
+import com.mikepenz.fastadapter.listeners.OnClickListener;
 import com.mikepenz.itemanimators.AlphaInAnimator;
 import com.mikepenz.itemanimators.SlideInOutBottomAnimator;
 import com.mikepenz.itemanimators.SlideInOutLeftAnimator;
@@ -180,6 +183,10 @@ public class ProjectsFragment extends Fragment {
             if (view == null) {
                 return false;
             }
+            if (view.getId() == R.id.item_project && item instanceof ProjectItem) {
+                fragmentListener.onViewProjectClicked(((ProjectItem) item).getModel());
+                return true;
+            }
             if (view.getId() == R.id.item_add) {
                 fragmentListener.onAddProjectClicked();
                 return true;
@@ -190,6 +197,7 @@ public class ProjectsFragment extends Fragment {
 
     public interface OnProjectFragmentInteractionListener {
         void onAddProjectClicked();
+        void onViewProjectClicked(ProjectModel projectModel);
     }
 
 }

@@ -229,7 +229,7 @@ public class AddProjectFragment extends Fragment {
     private DatePicker.OnDateChangedListener getDateChangeListener(AlertDialog alertDialog) {
         return (view, year, monthOfYear, dayOfMonth) -> {
             calendar.set(year, monthOfYear, dayOfMonth);
-            YearMonth yearMonthObject = YearMonth.of(year, monthOfYear);
+            YearMonth yearMonthObject = YearMonth.of(year, monthOfYear + 1);
             if (year == this.year && monthOfYear == this.month) {
                 if (dayOfMonth == this.today) {
                     dueDateButton.setText(R.string.core_today);

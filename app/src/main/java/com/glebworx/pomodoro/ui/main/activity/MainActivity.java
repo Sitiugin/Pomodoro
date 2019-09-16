@@ -10,8 +10,10 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.glebworx.pomodoro.R;
+import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.ui.main.fragment.AddProjectFragment;
 import com.glebworx.pomodoro.ui.main.fragment.ProjectsFragment;
+import com.glebworx.pomodoro.ui.main.fragment.ViewProjectFragment;
 import com.glebworx.pomodoro.util.manager.TransitionFragmentManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
@@ -70,6 +72,11 @@ public class MainActivity
     @Override
     public void onAddProjectClicked() {
         fragmentManager.pushToBackStack(new AddProjectFragment());
+    }
+
+    @Override
+    public void onViewProjectClicked(ProjectModel projectModel) {
+        fragmentManager.pushToBackStack(new ViewProjectFragment());
     }
 
     @Override
