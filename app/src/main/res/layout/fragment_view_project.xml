@@ -34,7 +34,7 @@
                 app:layout_collapseMode="none">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/TextStyle.Title"
+                    style="@style/TextStyle.AppBar"
                     android:id="@+id/text_view_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

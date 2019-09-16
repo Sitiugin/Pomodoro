@@ -18,7 +18,7 @@ public class DummyDataProvider { // TODO temp class for testing
     public static List<TaskItem> getTasks() {
         List<TaskItem> result = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            TaskModel model = new TaskModel("Some task", "Some project", 5, null, 0);
+            TaskModel model = new TaskModel("Some task", "Some project", 5, new Date(), 0);
             result.add(new TaskItem(model));
         }
         return result;
