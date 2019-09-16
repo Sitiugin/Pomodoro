@@ -132,7 +132,7 @@ public class ProjectsFragment extends Fragment {
         ItemAdapter<ProjectHeaderItem> headerAdapter = new ItemAdapter<>();
         headerAdapter.add(new ProjectHeaderItem());
         ItemAdapter<AddItem> addAdapter = new ItemAdapter<>();
-        addAdapter.add(new AddItem(getString(R.string.main_title_add_project)));
+        addAdapter.add(new AddItem(getString(R.string.add_project_title_add_project)));
 
         fastAdapter.addAdapter(0, headerAdapter);
         fastAdapter.addAdapter(1, projectAdapter);

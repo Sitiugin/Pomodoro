@@ -27,7 +27,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/margin_content"
+                android:paddingTop="0dp"
+                android:paddingBottom="@dimen/margin_content_half"
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 app:layout_collapseMode="none">
@@ -37,7 +38,8 @@
                     android:id="@+id/text_view_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Project Title"
+                    android:layout_marginTop="@dimen/margin_content"
+                    android:layout_marginStart="@dimen/margin_content"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>
 
@@ -46,9 +48,8 @@
                     android:id="@+id/text_view_subtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Due: Mar 3, 2020"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_title"
-                    app:layout_constraintStart_toStartOf="parent"/>
+                    app:layout_constraintStart_toStartOf="@+id/text_view_title"/>
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     style="@style/ImageButtonStyle.Borderless"

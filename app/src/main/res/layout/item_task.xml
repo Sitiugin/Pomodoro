@@ -2,31 +2,21 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/ViewStyle.Toggle"
+    style="@style/ViewStyle.Rounded.Clickable"
     android:id="@+id/item_task"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:padding="@dimen/margin_content"
+    android:layout_marginVertical="@dimen/margin_content_half"
     android:layout_marginHorizontal="@dimen/margin_content">
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/image_view_dot"
-        android:layout_width="@dimen/size_icon"
-        android:layout_height="@dimen/size_icon"
-        android:layout_marginEnd="@dimen/margin_content"
-        android:src="@drawable/drawable_dot_highlight"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintTop_toTopOf="@+id/text_view_title"
-        app:layout_constraintBottom_toBottomOf="@+id/text_view_title"
-        app:layout_constraintStart_toStartOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/TextStyle.Title.Selectable"
         android:id="@+id/text_view_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/image_view_dot" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/TextStyle.ShowActive"
@@ -35,16 +25,6 @@
         android:layout_height="wrap_content"
         android:text="@string/core_active"
         app:layout_constraintTop_toBottomOf="@+id/text_view_title"
-        app:layout_constraintStart_toStartOf="@+id/text_view_title" />
-
-    <androidx.appcompat.widget.AppCompatImageButton
-        style="@style/ImageButtonStyle.Borderless"
-        android:id="@+id/button_options"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_options_black"
-        app:layout_constraintTop_toTopOf="@+id/text_view_title"
-        app:layout_constraintBottom_toBottomOf="@+id/text_view_title"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -65,15 +65,11 @@ public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> {
 
     protected static class ViewHolder extends FastAdapter.ViewHolder<TaskItem> {
 
-        private AppCompatImageView dotImageView;
         private AppCompatTextView titleTextView;
-        private AppCompatImageButton optionsButton;
 
         ViewHolder(View view) {
             super(view);
-            dotImageView = view.findViewById(R.id.image_view_dot);
             titleTextView = view.findViewById(R.id.text_view_title);
-            optionsButton = view.findViewById(R.id.button_options);
         }
 
         @Override
