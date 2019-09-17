@@ -1,14 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/margin_content"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     tools:context=".ui.main.fragment.AddTaskFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle.AppBar"
+        android:id="@+id/text_view_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_task_title_add_task"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <androidx.appcompat.widget.AppCompatImageButton
+        style="@style/ImageButtonStyle.Borderless"
+        android:id="@+id/button_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_cross_black"
+        app:layout_constraintTop_toTopOf="@+id/text_view_title"
+        app:layout_constraintBottom_toBottomOf="@+id/text_view_title"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-</FrameLayout>
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle"
+        android:id="@+id/text_view_section_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_content"
+        android:text="@string/add_task_text_name"
+        android:drawableStart="@drawable/ic_task_gray_small"
+        android:drawablePadding="@dimen/margin_content_quarter"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_title"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <androidx.appcompat.widget.AppCompatEditText
+        style="@style/EditTextStyle.Large"
+        android:id="@+id/edit_text_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_content"
+        android:background="@drawable/drawable_foreground_rounded_small"
+        android:foreground="@drawable/ripple_rounded_small"
+        android:elevation="@dimen/elevation_view"
+        android:hint="@string/add_task_hint_name"
+        android:singleLine="true"
+        android:inputType="textCapWords"
+        android:maxLength="25"
+        android:imeOptions="actionDone"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_section_name"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle"
+        android:id="@+id/text_view_section_due_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_content"
+        android:text="@string/add_task_text_due"
+        android:drawableStart="@drawable/ic_calendar_gray_small"
+        android:drawablePadding="@dimen/margin_content_quarter"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_name"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/ButtonStyle"
+        android:id="@+id/button_due_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_content"
+        android:gravity="start"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_section_due_date" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle"
+        android:id="@+id/text_view_section_pomodoros_allocated"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_content"
+        android:text="@string/add_task_text_pomodoros_allocated"
+        android:drawableStart="@drawable/ic_timer_gray_small"
+        android:drawablePadding="@dimen/margin_content_quarter"
+        app:layout_constraintTop_toBottomOf="@+id/button_due_date"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/ButtonStyle"
+        android:id="@+id/button_pomodoros_allocated"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_content"
+        android:gravity="start"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_section_pomodoros_allocated" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle"
+        android:id="@+id/text_view_recurrence"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_content"
+        android:text="@string/add_task_text_recurrence"
+        android:drawableStart="@drawable/ic_repeat_gray_small"
+        android:drawablePadding="@dimen/margin_content_quarter"
+        app:layout_constraintTop_toBottomOf="@+id/button_pomodoros_allocated"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/ButtonStyle"
+        android:id="@+id/button_recurrence"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_content"
+        android:gravity="start"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_recurrence" />
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        style="@style/SpinKitView.Large.Pulse"
+        android:id="@+id/spin_kit_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:SpinKit_Color="@color/colorHighlight"
+        app:layout_constraintTop_toBottomOf="@+id/button_due_date"
+        app:layout_constraintBottom_toTopOf="@+id/button_save"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/ButtonStyle.Borderless.Colored"
+        android:id="@+id/button_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_task_title_add_task"
+        android:drawableEnd="@drawable/ic_check_highlight"
+        android:gravity="start"
+        android:transitionName="@string/shared_element_add_btn"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

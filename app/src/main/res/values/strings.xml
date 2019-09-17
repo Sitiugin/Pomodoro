@@ -66,9 +66,8 @@
     <string name="main_text_overdue">Overdue</string>
 
 
-    <!--                                                                              ADD PROJECT -->
+    <!--                                                                             ADD PROJECT -->
 
-    <string name="add_project_title">Add Project</string>
     <string name="add_project_title_add_project">Add Project</string>
     <string name="add_project_text_name">Name</string>
     <string name="add_project_text_color_tag">Color Tag</string>
@@ -80,6 +79,20 @@
     <string name="add_project_toast_add_failed_connection">Could not add project. Please check your internet connection.</string>
     <string name="add_project_err_name_empty">Project name cannot be empty!</string>
 
+
+    <!--                                                                                ADD TASK -->
+
+    <string name="add_task_title_add_task">Add Task</string>
+    <string name="add_task_text_name">Name</string>
+    <string name="add_task_text_due">Due</string>
+    <string name="add_task_text_pomodoros_allocated">Allocated time</string>
+    <string name="add_task_text_recurrence">Repeat</string>
+    <string name="add_task_hint_name">Enter a name for your task</string>
+    <string name="add_task_toast_add_success">Task Added</string>
+    <string name="add_task_toast_add_failed">Could not add task. Please try again later.</string>
+    <string name="add_task_toast_add_failed_duplicate">Task with this name already exists!</string>
+    <string name="add_task_toast_add_failed_connection">Could not add task. Please check your internet connection.</string>
+    <string name="add_task_err_name_empty">Task name cannot be empty!</string>
 
     <!--                                                                            VIEW PROJECT -->
 

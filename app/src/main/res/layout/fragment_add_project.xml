@@ -16,7 +16,7 @@
         android:id="@+id/text_view_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/add_project_title"
+        android:text="@string/add_project_title_add_project"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
     <androidx.appcompat.widget.AppCompatImageButton
@@ -36,6 +36,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_content"
         android:text="@string/add_project_text_name"
+        android:drawableStart="@drawable/ic_project_gray_small"
+        android:drawablePadding="@dimen/margin_content_quarter"
         app:layout_constraintTop_toBottomOf="@+id/text_view_title"
         app:layout_constraintStart_toStartOf="parent"/>
     <androidx.appcompat.widget.AppCompatEditText
@@ -53,6 +55,7 @@
         android:maxLength="25"
         android:imeOptions="actionDone"
         app:layout_constraintTop_toBottomOf="@+id/text_view_section_name"/>
+
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/TextStyle"
         android:id="@+id/text_view_section_color"
@@ -60,6 +63,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_content"
         android:text="@string/add_project_text_color_tag"
+        android:drawableStart="@drawable/ic_palette_gray_small"
+        android:drawablePadding="@dimen/margin_content_quarter"
         app:layout_constraintTop_toBottomOf="@+id/edit_text_name"
         app:layout_constraintStart_toStartOf="parent"/>
     <com.google.android.material.chip.ChipGroup
@@ -129,6 +134,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add_project_text_due"
+        android:drawableStart="@drawable/ic_calendar_gray_small"
+        android:drawablePadding="@dimen/margin_content_quarter"
         app:layout_constraintTop_toBottomOf="@+id/chip_group_color"
         app:layout_constraintStart_toStartOf="parent"/>
     <androidx.appcompat.widget.AppCompatButton
