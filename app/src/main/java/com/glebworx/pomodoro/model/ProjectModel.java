@@ -124,6 +124,17 @@ public class ProjectModel extends AbstractModel {
     }
 
     @Exclude
+    public void addTask(TaskModel taskModel) {
+        this.tasks.add(taskModel);
+    }
+
+    @Exclude
+    public void removeTask(TaskModel taskModel) {
+        this.tasks.remove(taskModel);
+    }
+
+
+    @Exclude
     public double getProgressRatio() {
         int allocated = 0;
         int completed = 0;

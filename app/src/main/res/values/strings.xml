@@ -23,6 +23,7 @@
         <item>Repeat every week</item>
         <item>Repeat on weekdays</item>
         <item>Repeat on weekends</item>
+        <item>Repeat every month</item>
     </string-array>
     <string-array name="core_pomodoro_count">
         <item>1 pomodoro</item><item>2 pomodoros</item>

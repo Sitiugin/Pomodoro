@@ -25,6 +25,7 @@ import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.util.DummyDataProvider;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.constants.Constants;
+import com.google.android.gms.tasks.Task;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
@@ -90,7 +91,7 @@ public class ViewProjectFragment extends Fragment {
 
         initTitle(projectModel);
         initRecyclerView(layoutManager, fastAdapter);
-        initClickEvents(fastAdapter);
+        initClickEvents(fastAdapter, projectModel);
 
         return rootView;
     }
@@ -149,7 +150,7 @@ public class ViewProjectFragment extends Fragment {
 
     }
 
-    private void initClickEvents(FastAdapter<AbstractItem> fastAdapter) {
+    private void initClickEvents(FastAdapter<AbstractItem> fastAdapter, ProjectModel projectModel) {
         fastAdapter.withOnClickListener((view, adapter, item, position) -> {
             if (view == null) {
                 return false;
@@ -159,7 +160,7 @@ public class ViewProjectFragment extends Fragment {
                 return true;
             }
             if (view.getId() == R.id.item_add) {
-                fragmentListener.onAddTask();
+                fragmentListener.onAddTask(projectModel);
                 return true;
             }
             return false;
@@ -167,7 +168,7 @@ public class ViewProjectFragment extends Fragment {
     }
 
     public interface OnViewProjectFragmentInteractionListener {
-        void onAddTask();
+        void onAddTask(ProjectModel projectModel);
         void onSelectTask(TaskModel taskModel);
     }
 

@@ -27,13 +27,24 @@ public class TaskModel extends AbstractModel {
         }
     };
 
+    public static final String RECURRENCE_EVERY_DAY = "EVERY_DAY";
+    public static final String RECURRENCE_EVERY_TWO_DAYS = "EVERY_TWO_DAYS";
+    public static final String RECURRENCE_EVERY_THREE_DAYS = "EVERY_THREE_DAYS";
+    public static final String RECURRENCE_EVERY_FOUR_DAYS = "FOUR_DAYS";
+    public static final String RECURRENCE_EVERY_FIVE_DAYS = "FIVE_DAYS";
+    public static final String RECURRENCE_EVERY_SIX_DAYS = "SIX_DAYS";
+    public static final String RECURRENCE_EVERY_WEEKLY = "EVERY_WEEK";
+    public static final String RECURRENCE_WEEKDAY = "EVERY_WEEKDAY";
+    public static final String RECURRENCE_WEEKEND = "EVERY_WEEKEND";
+    public static final String RECURRENCE_MONTHLY = "EVERY_MONTH";
+
 
     //                                                                                    ATTRIBUTES
 
     private int pomodorosAllocated;
     private int pomodorosCompleted;
     private Date dueDate;
-    private int recurrence;
+    private String recurrence;
 
 
     //                                                                                  CONSTRUCTORS
@@ -45,7 +56,7 @@ public class TaskModel extends AbstractModel {
     public TaskModel(@NonNull String name,
                      int pomodorosAllocated,
                      @Nullable Date dueDate,
-                     int recurrence) {
+                     @Nullable String recurrence) {
         super(name);
         this.pomodorosAllocated = pomodorosAllocated;
         this.pomodorosCompleted = 0;
@@ -54,7 +65,11 @@ public class TaskModel extends AbstractModel {
         } else {
             this.dueDate = null;
         }
-        this.recurrence = recurrence;
+        if (recurrence != null) {
+            this.recurrence = recurrence;
+        } else {
+            this.recurrence = null;
+        }
     }
 
     public TaskModel(Parcel in) {
@@ -65,7 +80,7 @@ public class TaskModel extends AbstractModel {
         if (dueDate != -1) {
             this.dueDate = new Date(dueDate);
         }
-        this.recurrence = in.readInt();
+        this.recurrence = in.readString();
     }
 
 
@@ -81,7 +96,7 @@ public class TaskModel extends AbstractModel {
         } else {
             parcel.writeLong(-1);
         }
-        parcel.writeInt(recurrence);
+        parcel.writeString(recurrence);
     }
 
     @Override
@@ -116,11 +131,11 @@ public class TaskModel extends AbstractModel {
         this.dueDate = dueDate;
     }
 
-    public int getRecurrence() {
+    public String getRecurrence() {
         return recurrence;
     }
 
-    public void setRecurrence(int recurrence) {
+    public void setRecurrence(String recurrence) {
         this.recurrence = recurrence;
     }
 }

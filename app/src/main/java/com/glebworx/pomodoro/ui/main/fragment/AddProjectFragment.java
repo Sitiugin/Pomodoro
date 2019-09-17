@@ -81,9 +81,12 @@ public class AddProjectFragment extends Fragment {
     private int today;
 
 
-    //                                                                                     LIFECYCLE
+    //                                                                                  CONSTRUCTORS
 
     public AddProjectFragment() { }
+
+
+    //                                                                                     LIFECYCLE
 
     public static AddProjectFragment newInstance() {
         return new AddProjectFragment();

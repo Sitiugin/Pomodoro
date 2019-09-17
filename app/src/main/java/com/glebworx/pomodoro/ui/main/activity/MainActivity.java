@@ -29,7 +29,8 @@ public class MainActivity
         extends AppCompatActivity
         implements ProjectsFragment.OnProjectFragmentInteractionListener,
                     AddProjectFragment.OnAddProjectFragmentInteractionListener,
-                    ViewProjectFragment.OnViewProjectFragmentInteractionListener {
+                    ViewProjectFragment.OnViewProjectFragmentInteractionListener,
+                    AddTaskFragment.OnAddTaskFragmentInteractionListener {
 
 
     //                                                                                       BINDING
@@ -95,8 +96,8 @@ public class MainActivity
     }
 
     @Override
-    public void onAddTask() {
-        fragmentManager.pushToBackStack(AddTaskFragment.newInstance());
+    public void onAddTask(ProjectModel projectModel) {
+        fragmentManager.pushToBackStack(AddTaskFragment.newInstance(projectModel));
     }
 
     @Override
