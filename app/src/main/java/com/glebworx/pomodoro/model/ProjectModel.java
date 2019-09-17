@@ -156,4 +156,14 @@ public class ProjectModel extends AbstractModel {
         return (double) completed / (double) allocated;
     }
 
+    @Exclude
+    public Map<String, Object> getTasksAsMap() {
+        Map<String, Object> map = new HashMap<>();
+        Set<Map.Entry<String, TaskModel>> entrySet = tasks.entrySet();
+        for (Map.Entry<String, TaskModel> entry: entrySet) {
+            map.put(entry.getKey(), entry.getValue().getTaskAsMap());
+        }
+        return map;
+    }
+
 }

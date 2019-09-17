@@ -6,7 +6,11 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 
@@ -102,6 +106,20 @@ public class TaskModel extends AbstractModel {
     @Override
     public boolean isValid() {
         return getName() != null;
+    }
+
+    @Exclude
+    public Map<String, Object> getTaskAsMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", getId());
+        map.put("name", getName());
+        map.put("timestamp", getTimestamp());
+        map.put("dateModified", getDateModified());
+        map.put("pomodorosAllocated", pomodorosAllocated);
+        map.put("pomodorosCompleted", pomodorosCompleted);
+        map.put("dueDate", dueDate);
+        map.put("recurrence", recurrence);
+        return map;
     }
 
 

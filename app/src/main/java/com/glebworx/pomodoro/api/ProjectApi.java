@@ -37,10 +37,11 @@ public class ProjectApi extends BaseApi {
         saveModel(model, getCollection(COLLECTION), onCompleteListener);
     }
 
-    public static void updateTasks(@NonNull String projectName,
-                                   @NonNull Map<String, TaskModel> tasks,
+    public static void updateTasks(@NonNull ProjectModel projectModel,
                                    @Nullable OnCompleteListener<Void> onCompleteListener) {
-        Task<Void> task = getCollection(COLLECTION).document(projectName).set(tasks);
+        Task<Void> task = getCollection(COLLECTION)
+                .document(projectModel.getName())
+                .update("tasks", projectModel.getTasksAsMap());
         if (onCompleteListener != null) {
             task.addOnCompleteListener(onCompleteListener);
         }
