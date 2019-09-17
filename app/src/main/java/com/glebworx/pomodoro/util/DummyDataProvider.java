@@ -7,7 +7,9 @@ import com.glebworx.pomodoro.model.TaskModel;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_EMERALD_HEX;
 
@@ -27,11 +29,11 @@ public class DummyDataProvider { // TODO temp class for testing
     public static List<ProjectItem> getProjects() {
         List<ProjectItem> result  = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            List<TaskModel> taskModels = new ArrayList<>();
+            Map<String, TaskModel> taskModels = new HashMap<>();
             for (int j = 0; j < 10; j++) {
                 TaskModel model = new TaskModel("Some task", 5, null, null);
                 model.setPomodorosCompleted(3);
-                taskModels.add(model);
+                taskModels.put(model.getName(), model);
             }
             ProjectModel model = new ProjectModel("Some Project", new Date(), COLOR_EMERALD_HEX, taskModels);
             result.add(new ProjectItem(model));

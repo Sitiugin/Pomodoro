@@ -16,6 +16,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
+import java.util.Map;
 
 public class ProjectApi extends BaseApi {
 
@@ -37,7 +38,7 @@ public class ProjectApi extends BaseApi {
     }
 
     public static void updateTasks(@NonNull String projectName,
-                                   @NonNull List<TaskModel> tasks,
+                                   @NonNull Map<String, TaskModel> tasks,
                                    @Nullable OnCompleteListener<Void> onCompleteListener) {
         Task<Void> task = getCollection(COLLECTION).document(projectName).set(tasks);
         if (onCompleteListener != null) {

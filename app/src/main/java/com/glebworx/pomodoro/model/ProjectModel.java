@@ -10,8 +10,12 @@ import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 
 public class ProjectModel extends AbstractModel {
@@ -36,20 +40,20 @@ public class ProjectModel extends AbstractModel {
 
     private Date dueDate;
     private String colorTag;
-    private List<TaskModel> tasks;
+    private Map<String, TaskModel> tasks;
 
 
     //                                                                                  CONSTRUCTORS
 
     public ProjectModel() {
         super();
-        this.tasks = new ArrayList<>();
+        this.tasks = new HashMap<>();
     }
 
     public ProjectModel(@NonNull String name,
                         @Nullable Date dueDate,
                         @NonNull String colorTag,
-                        @Nullable List<TaskModel> tasks) {
+                        @Nullable Map<String, TaskModel> tasks) {
         super(name);
         if (dueDate != null) {
             this.dueDate = dueDate;
@@ -60,7 +64,7 @@ public class ProjectModel extends AbstractModel {
         if (tasks != null) {
             this.tasks = tasks;
         } else {
-            this.tasks = new ArrayList<>();
+            this.tasks = new HashMap<>();
         }
     }
 
@@ -71,8 +75,8 @@ public class ProjectModel extends AbstractModel {
             this.dueDate = new Date(dueDate);
         }
         this.colorTag = in.readString();
-        this.tasks = new ArrayList<>();
-        in.readTypedList(this.tasks, TaskModel.CREATOR);
+        this.tasks = new HashMap<>();
+        in.readMap(this.tasks, HashMap.class.getClassLoader());
     }
 
 
@@ -87,7 +91,7 @@ public class ProjectModel extends AbstractModel {
             parcel.writeLong(-1);
         }
         parcel.writeString(this.colorTag);
-        parcel.writeTypedList(this.tasks);
+        parcel.writeMap(this.tasks);
     }
 
     @Exclude
@@ -115,22 +119,22 @@ public class ProjectModel extends AbstractModel {
         this.colorTag = colorTag;
     }
 
-    public List<TaskModel> getTasks() {
+    public Map<String, TaskModel> getTasks() {
         return tasks;
     }
 
-    public void setTasks(List<TaskModel> tasks) {
+    public void setTasks(HashMap<String, TaskModel> tasks) {
         this.tasks = tasks;
     }
 
     @Exclude
     public void addTask(TaskModel taskModel) {
-        this.tasks.add(taskModel);
+        tasks.put(taskModel.getName(), taskModel);
     }
 
     @Exclude
     public void removeTask(TaskModel taskModel) {
-        this.tasks.remove(taskModel);
+        tasks.remove(taskModel.getName());
     }
 
 
@@ -138,9 +142,13 @@ public class ProjectModel extends AbstractModel {
     public double getProgressRatio() {
         int allocated = 0;
         int completed = 0;
-        for (int i = 0; i < tasks.size(); i++) {
-            allocated += tasks.get(i).getPomodorosAllocated();
-            completed += tasks.get(i).getPomodorosCompleted();
+        Set<Map.Entry<String, TaskModel>> entrySet = tasks.entrySet();
+        Iterator<Map.Entry<String, TaskModel>> iterator =  entrySet.iterator();
+        Map.Entry<String, TaskModel> next;
+        while (iterator.hasNext()) {
+            next = iterator.next();
+            allocated += next.getValue().getPomodorosAllocated();
+            completed += next.getValue().getPomodorosCompleted();
         }
         if (allocated == 0) {
             return 0;
