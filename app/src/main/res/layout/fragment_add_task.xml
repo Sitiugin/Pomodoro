@@ -86,13 +86,15 @@
         android:drawablePadding="@dimen/margin_content_quarter"
         app:layout_constraintTop_toBottomOf="@+id/button_due_date"
         app:layout_constraintStart_toStartOf="parent"/>
-    <androidx.appcompat.widget.AppCompatButton
-        style="@style/ButtonStyle"
-        android:id="@+id/button_pomodoros_allocated"
+    <androidx.appcompat.widget.AppCompatSpinner
+        style="@style/SpinnerStyle"
+        android:id="@+id/spinner_pomodoros_allocated"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_content"
         android:gravity="start"
+        android:entries="@array/core_pomodoro_count"
+        android:spinnerMode="dialog"
         app:layout_constraintTop_toBottomOf="@+id/text_view_section_pomodoros_allocated" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -104,15 +106,17 @@
         android:text="@string/add_task_text_recurrence"
         android:drawableStart="@drawable/ic_repeat_gray_small"
         android:drawablePadding="@dimen/margin_content_quarter"
-        app:layout_constraintTop_toBottomOf="@+id/button_pomodoros_allocated"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_pomodoros_allocated"
         app:layout_constraintStart_toStartOf="parent"/>
-    <androidx.appcompat.widget.AppCompatButton
-        style="@style/ButtonStyle"
-        android:id="@+id/button_recurrence"
+    <androidx.appcompat.widget.AppCompatSpinner
+        style="@style/SpinnerStyle"
+        android:id="@+id/spinner_recurrence"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_content"
         android:gravity="start"
+        android:entries="@array/core_recurrence"
+        android:spinnerMode="dialog"
         app:layout_constraintTop_toBottomOf="@+id/text_view_recurrence" />
 
     <com.github.ybq.android.spinkit.SpinKitView
