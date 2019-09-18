@@ -26,6 +26,10 @@ import com.glebworx.pomodoro.util.DummyDataProvider;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.constants.Constants;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
@@ -35,6 +39,10 @@ import java.text.SimpleDateFormat;
 import java.time.YearMonth;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,7 +52,7 @@ public class ViewProjectFragment extends Fragment {
 
     @BindView(R.id.text_view_title) AppCompatTextView titleTextView;
     @BindView(R.id.text_view_subtitle) AppCompatTextView subtitleTextView;
-    @BindView(R.id.button_options) AppCompatImageButton optionsButton;
+    @BindView(R.id.button_close) AppCompatImageButton closeButton;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
     private static final String ARG_PROJECT_MODEL = "project_model";
@@ -53,6 +61,7 @@ public class ViewProjectFragment extends Fragment {
             new SimpleDateFormat(Constants.PATTERN_DATE, Locale.getDefault());
 
     private ItemAdapter<TaskItem> taskAdapter;
+    private EventListener<DocumentSnapshot> eventListener;
     private OnViewProjectFragmentInteractionListener fragmentListener;
 
     public ViewProjectFragment() { }
@@ -85,7 +94,6 @@ public class ViewProjectFragment extends Fragment {
         }
 
         taskAdapter = new ItemAdapter<>();
-        taskAdapter.add(DummyDataProvider.getTasks());
         FastAdapter<AbstractItem> fastAdapter = new FastAdapter<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
 
@@ -99,11 +107,30 @@ public class ViewProjectFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        eventListener = (documentSnapshot, e) -> {
+            if (documentSnapshot != null && documentSnapshot.exists()) {
+                ProjectModel projectModel = (ProjectModel) documentSnapshot.getData();
+                Map<String, Map<String, Object>> tasks = (Map<String, Map<String, Object>>) documentSnapshot.get("tasks");
+                if (projectModel == null || tasks == null) {
+                    return;
+                }
+                Set<Map.Entry<String, Map<String, Object>>> entrySet = tasks.entrySet();
+                taskAdapter.clear();
+                TaskModel taskModel;
+                for (Map.Entry<String, Map<String, Object>> entry: entrySet) {
+                    taskModel = new TaskModel(entry.getValue());
+                    projectModel.addTask(taskModel);
+                    taskAdapter.add(new TaskItem(taskModel));
+                }
+
+            }
+        };
         fragmentListener = (OnViewProjectFragmentInteractionListener) context;
     }
 
     @Override
     public void onDetach() {
+        eventListener = null;
         fragmentListener = null;
         super.onDetach();
     }
@@ -151,6 +178,12 @@ public class ViewProjectFragment extends Fragment {
     }
 
     private void initClickEvents(FastAdapter<AbstractItem> fastAdapter, ProjectModel projectModel) {
+        View.OnClickListener onClickListener = view -> {
+            if (view.getId() == R.id.button_close) {
+                fragmentListener.onCloseFragment();
+            }
+        };
+        closeButton.setOnClickListener(onClickListener);
         fastAdapter.withOnClickListener((view, adapter, item, position) -> {
             if (view == null) {
                 return false;
@@ -163,6 +196,7 @@ public class ViewProjectFragment extends Fragment {
                 fragmentListener.onAddTask(projectModel);
                 return true;
             }
+
             return false;
         });
     }
@@ -170,6 +204,7 @@ public class ViewProjectFragment extends Fragment {
     public interface OnViewProjectFragmentInteractionListener {
         void onAddTask(ProjectModel projectModel);
         void onSelectTask(TaskModel taskModel);
+        void onCloseFragment();
     }
 
 }

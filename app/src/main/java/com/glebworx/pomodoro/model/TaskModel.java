@@ -76,6 +76,14 @@ public class TaskModel extends AbstractModel {
         }
     }
 
+    public TaskModel(Map<String, Object> map) {
+        try {
+            pomodorosAllocated = (int) map.get("pomodorosAllocated");
+        } catch (ClassCastException ignored) {
+
+        }
+    }
+
     public TaskModel(Parcel in) {
         super(in);
         this.pomodorosAllocated = in.readInt();

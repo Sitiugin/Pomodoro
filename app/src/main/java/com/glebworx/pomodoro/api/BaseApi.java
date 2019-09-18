@@ -59,6 +59,12 @@ public abstract class BaseApi {
         collectionReference.orderBy("dateModified", Query.Direction.DESCENDING).addSnapshotListener(eventListener);
     }
 
+    protected static void addDocumentModelEventListener(@NonNull EventListener<DocumentSnapshot> eventListener,
+                                                        @NonNull CollectionReference collectionReference,
+                                                        @NonNull String documentName) {
+        collectionReference.document(documentName).addSnapshotListener(eventListener);
+    }
+
 
     //                                                                                       HELPERS
 

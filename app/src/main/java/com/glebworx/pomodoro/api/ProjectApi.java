@@ -66,6 +66,10 @@ public class ProjectApi extends BaseApi {
         addModelEventListener(eventListener, getCollection(COLLECTION));
     }
 
+    public static void addDocumentModelEventListener(@NonNull EventListener<DocumentSnapshot> eventListener, @NonNull String documentName) {
+        addDocumentModelEventListener(eventListener,  getCollection(COLLECTION), documentName);
+    }
+
     public interface OnValidationCompleteListener {
         void onConnectionFailed();
         void onDuplicateFound();

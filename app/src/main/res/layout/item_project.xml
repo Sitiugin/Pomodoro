@@ -13,9 +13,9 @@
     android:layout_marginHorizontal="@dimen/margin_content">
 
     <!--<View
-        android:layout_width="4dp"
-        android:layout_height="match_parent"
-        android:background="@drawable/drawable_color_tag_turquoise"
+        android:layout_width="@dimen/radius_small"
+        android:layout_height="30dp"
+        android:backgroundTint="@color/colorTurquoise"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />-->
