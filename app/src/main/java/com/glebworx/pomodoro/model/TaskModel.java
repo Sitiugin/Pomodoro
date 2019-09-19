@@ -78,7 +78,12 @@ public class TaskModel extends AbstractModel {
 
     public TaskModel(Map<String, Object> map) {
         try {
+            setName((String) map.get("name"));
+            updateTimestamp();
             pomodorosAllocated = (int) map.get("pomodorosAllocated");
+            pomodorosCompleted = (int) map.get("pomodorosCompleted");
+            dueDate = (Date) map.get("dueDate");
+            recurrence = (String) map.get("recurrence");
         } catch (ClassCastException ignored) {
 
         }
@@ -119,10 +124,8 @@ public class TaskModel extends AbstractModel {
     @Exclude
     public Map<String, Object> getTaskAsMap() {
         Map<String, Object> map = new HashMap<>();
-        map.put("id", getId());
         map.put("name", getName());
         map.put("timestamp", getTimestamp());
-        map.put("dateModified", getDateModified());
         map.put("pomodorosAllocated", pomodorosAllocated);
         map.put("pomodorosCompleted", pomodorosCompleted);
         map.put("dueDate", dueDate);

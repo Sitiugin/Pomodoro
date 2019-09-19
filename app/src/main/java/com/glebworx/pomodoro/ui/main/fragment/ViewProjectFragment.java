@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.glebworx.pomodoro.R;
+import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.item.AddItem;
 import com.glebworx.pomodoro.item.ProjectHeaderItem;
 import com.glebworx.pomodoro.item.ProjectItem;
@@ -38,9 +39,13 @@ import com.mikepenz.itemanimators.SlideInOutLeftAnimator;
 import java.text.SimpleDateFormat;
 import java.time.YearMonth;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.annotation.Nullable;
 
@@ -101,6 +106,8 @@ public class ViewProjectFragment extends Fragment {
         initRecyclerView(layoutManager, fastAdapter);
         initClickEvents(fastAdapter, projectModel);
 
+        ProjectApi.addDocumentModelEventListener(eventListener, projectModel.getName());
+
         return rootView;
     }
 
@@ -109,8 +116,9 @@ public class ViewProjectFragment extends Fragment {
         super.onAttach(context);
         eventListener = (documentSnapshot, e) -> {
             if (documentSnapshot != null && documentSnapshot.exists()) {
-                ProjectModel projectModel = (ProjectModel) documentSnapshot.getData();
-                Map<String, Map<String, Object>> tasks = (Map<String, Map<String, Object>>) documentSnapshot.get("tasks");
+                ProjectModel projectModel = new ProjectModel(documentSnapshot);
+                taskAdapter.clear();
+                /*Map<String, Map<String, Object>> tasks = (Map<String, Map<String, Object>>) documentSnapshot.get("tasks");
                 if (projectModel == null || tasks == null) {
                     return;
                 }
@@ -121,7 +129,7 @@ public class ViewProjectFragment extends Fragment {
                     taskModel = new TaskModel(entry.getValue());
                     projectModel.addTask(taskModel);
                     taskAdapter.add(new TaskItem(taskModel));
-                }
+                }*/
 
             }
         };

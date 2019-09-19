@@ -2,6 +2,7 @@ package com.glebworx.pomodoro.item;
 
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,15 @@ import java.util.Locale;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
+
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_ALIZARIN_HEX;
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_AMETHYST_HEX;
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_CARROT_HEX;
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_EMERALD_HEX;
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_PETER_RIVER_HEX;
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_SUNFLOWER_HEX;
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_TURQUOISE_HEX;
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_WET_ASPHALT_HEX;
 
 public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolder> {
 
@@ -87,6 +97,10 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
         return model.getName();
     }
 
+    public @Nullable String getColorTag() {
+        return model.getColorTag();
+    }
+
     public @Nullable String getDueDateString(Context context) {
         if (model.getDueDate() == null) {
             return null;
@@ -126,8 +140,8 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
         @Override
         public void bindView(@NonNull ProjectItem item, @NonNull List<Object> payloads) {
             titleTextView.setText(item.getProjectName());
+            titleTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getDrawable(item.getColorTag()), null);
             dueDateTextView.setText(item.getDueDateString(context));
-
             double progressRatio = item.getProgressRatio();
             progressSeekArc.setProgress((int) Math.round(progressRatio * 100));
             progressTextView.setText(item.getProgressString(progressRatio));
@@ -136,9 +150,33 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
         @Override
         public void unbindView(@NonNull ProjectItem item) {
             titleTextView.setText(null);
+            titleTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, null, null);
             dueDateTextView.setText(null);
             progressSeekArc.setProgress(0);
             progressTextView.setText(null);
+        }
+
+        private Drawable getDrawable(String colorTag) {
+            switch (colorTag) {
+                case COLOR_TURQUOISE_HEX:
+                    return context.getDrawable(R.drawable.drawable_dot_turquoise);
+                case COLOR_EMERALD_HEX:
+                    return context.getDrawable(R.drawable.drawable_dot_emerald);
+                case COLOR_PETER_RIVER_HEX:
+                    return context.getDrawable(R.drawable.drawable_dot_peter_river);
+                case COLOR_AMETHYST_HEX:
+                    return context.getDrawable(R.drawable.drawable_dot_amethyst);
+                case COLOR_WET_ASPHALT_HEX:
+                    return context.getDrawable(R.drawable.drawable_dot_wet_asphalt);
+                case COLOR_SUNFLOWER_HEX:
+                    return context.getDrawable(R.drawable.drawable_dot_sunflower);
+                case COLOR_CARROT_HEX:
+                    return context.getDrawable(R.drawable.drawable_dot_carrot);
+                case COLOR_ALIZARIN_HEX:
+                    return context.getDrawable(R.drawable.drawable_dot_alizarin);
+                default:
+                    return null;
+            }
         }
 
     }

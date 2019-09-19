@@ -6,7 +6,9 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.glebworx.pomodoro.item.TaskItem;
 import com.google.firebase.database.Exclude;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -77,6 +79,33 @@ public class ProjectModel extends AbstractModel {
         this.colorTag = in.readString();
         this.tasks = new HashMap<>();
         in.readMap(this.tasks, HashMap.class.getClassLoader());
+    }
+
+    public ProjectModel(@NonNull DocumentSnapshot snapshot) {
+        this();
+        if (snapshot.exists()) {
+            Map<String, Object> map = snapshot.getData();
+            if (map == null) {
+                return;
+            }
+            try {
+                setName((String) map.get("name"));
+                updateTimestamp();
+                dueDate = (Date) map.get("dueDate");
+                colorTag = (String) map.get("colorTag");
+                Map<String, Map<String, Object>> tasks = (Map<String, Map<String, Object>>) snapshot.get("tasks");
+                if (tasks == null) {
+                    return;
+                }
+                Set<Map.Entry<String, Map<String, Object>>> entrySet = tasks.entrySet();
+                TaskModel taskModel;
+                for (Map.Entry<String, Map<String, Object>> entry: entrySet) {
+                    taskModel = new TaskModel(entry.getValue());
+                    addTask(taskModel);
+                }
+            } catch (ClassCastException ignored) { }
+        }
+
     }
 
 

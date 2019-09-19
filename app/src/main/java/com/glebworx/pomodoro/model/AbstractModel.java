@@ -16,33 +16,25 @@ public abstract class AbstractModel implements Comparable<AbstractModel>, Parcel
 
     //                                                                                    ATTRIBUTES
 
-    private final String id;
     private String name;
-    private final Date timestamp;
-    private Date dateModified;
+    private Date timestamp;
 
 
     //                                                                                  CONSTRUCTORS
 
     public AbstractModel() {
-        this.id = UUID.randomUUID().toString();
         this.name = null;
         this.timestamp = new Date();
-        this.dateModified = new Date();
     }
 
     public AbstractModel(@NonNull String name) {
-        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.timestamp = new Date();
-        this.dateModified = new Date();
     }
 
     public AbstractModel(Parcel in) {
-        this.id = in.readString();
         this.name = in.readString();
         this.timestamp = new Date(in.readLong());
-        this.dateModified = new Date(in.readLong());
     }
 
 
@@ -59,12 +51,12 @@ public abstract class AbstractModel implements Comparable<AbstractModel>, Parcel
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(name, timestamp);
     }
 
     @Override
     public int compareTo(@NonNull AbstractModel other) {
-        return this.dateModified.compareTo(other.dateModified);
+        return this.timestamp.compareTo(other.timestamp);
     }
 
     @Override
@@ -74,18 +66,12 @@ public abstract class AbstractModel implements Comparable<AbstractModel>, Parcel
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
-        parcel.writeString(this.id);
-        parcel.writeLong(this.timestamp.getTime());
-        parcel.writeLong(this.dateModified.getTime());
+        parcel.writeString(name);
+        parcel.writeLong(timestamp.getTime());
     }
 
 
     //                                                                                       METHODS
-
-    @Exclude
-    public String getId() {
-        return id;
-    }
 
     public String getName() {
         return name;
@@ -101,13 +87,8 @@ public abstract class AbstractModel implements Comparable<AbstractModel>, Parcel
     }
 
     @Exclude
-    public Date getDateModified() {
-        return dateModified;
-    }
-
-    @Exclude
-    public void updateDateModified() {
-        this.dateModified = new Date();
+    public void updateTimestamp() {
+        timestamp = new Date();
     }
 
     public abstract boolean isValid();
