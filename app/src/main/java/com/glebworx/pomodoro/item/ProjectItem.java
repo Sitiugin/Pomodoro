@@ -2,6 +2,7 @@ package com.glebworx.pomodoro.item;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
@@ -13,6 +14,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.util.constants.Constants;
+import com.glebworx.pomodoro.util.manager.ColorManager;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.triggertrap.seekarc.SeekArc;
@@ -140,7 +142,11 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
         @Override
         public void bindView(@NonNull ProjectItem item, @NonNull List<Object> payloads) {
             titleTextView.setText(item.getProjectName());
-            titleTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getDrawable(item.getColorTag()), null);
+            titleTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                    null,
+                    null,
+                    ColorManager.getDrawable(context, item.getColorTag()),
+                    null);
             dueDateTextView.setText(item.getDueDateString(context));
             double progressRatio = item.getProgressRatio();
             progressSeekArc.setProgress((int) Math.round(progressRatio * 100));
@@ -154,29 +160,6 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
             dueDateTextView.setText(null);
             progressSeekArc.setProgress(0);
             progressTextView.setText(null);
-        }
-
-        private Drawable getDrawable(String colorTag) {
-            switch (colorTag) {
-                case COLOR_TURQUOISE_HEX:
-                    return context.getDrawable(R.drawable.drawable_dot_turquoise);
-                case COLOR_EMERALD_HEX:
-                    return context.getDrawable(R.drawable.drawable_dot_emerald);
-                case COLOR_PETER_RIVER_HEX:
-                    return context.getDrawable(R.drawable.drawable_dot_peter_river);
-                case COLOR_AMETHYST_HEX:
-                    return context.getDrawable(R.drawable.drawable_dot_amethyst);
-                case COLOR_WET_ASPHALT_HEX:
-                    return context.getDrawable(R.drawable.drawable_dot_wet_asphalt);
-                case COLOR_SUNFLOWER_HEX:
-                    return context.getDrawable(R.drawable.drawable_dot_sunflower);
-                case COLOR_CARROT_HEX:
-                    return context.getDrawable(R.drawable.drawable_dot_carrot);
-                case COLOR_ALIZARIN_HEX:
-                    return context.getDrawable(R.drawable.drawable_dot_alizarin);
-                default:
-                    return null;
-            }
         }
 
     }

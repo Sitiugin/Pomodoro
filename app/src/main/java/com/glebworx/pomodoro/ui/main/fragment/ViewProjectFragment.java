@@ -26,6 +26,7 @@ import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.util.DummyDataProvider;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.constants.Constants;
+import com.glebworx.pomodoro.util.manager.ColorManager;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -102,7 +103,7 @@ public class ViewProjectFragment extends Fragment {
         FastAdapter<AbstractItem> fastAdapter = new FastAdapter<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
 
-        initTitle(projectModel);
+        initTitle(context, projectModel);
         initRecyclerView(layoutManager, fastAdapter);
         initClickEvents(fastAdapter, projectModel);
 
@@ -143,8 +144,12 @@ public class ViewProjectFragment extends Fragment {
         super.onDetach();
     }
 
-    private void initTitle(ProjectModel projectModel) {
+    private void initTitle(Context context, ProjectModel projectModel) {
         titleTextView.setText(projectModel.getName());
+        titleTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                null,
+                null,
+                ColorManager.getDrawable(context, projectModel.getColorTag()), null);
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         subtitleTextView.setText(getString(R.string.core_due, dateFormat.format(calendar.getTime())));
         /*Calendar calendar = Calendar.getInstance(Locale.getDefault());
