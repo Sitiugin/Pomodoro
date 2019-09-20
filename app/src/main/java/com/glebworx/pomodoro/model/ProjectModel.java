@@ -7,8 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.glebworx.pomodoro.item.TaskItem;
-import com.google.firebase.database.Exclude;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Exclude;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,6 +42,7 @@ public class ProjectModel extends AbstractModel {
 
     private Date dueDate;
     private String colorTag;
+    @Exclude
     private Map<String, TaskModel> tasks;
 
 
@@ -148,10 +149,12 @@ public class ProjectModel extends AbstractModel {
         this.colorTag = colorTag;
     }
 
+    @Exclude
     public Map<String, TaskModel> getTasks() {
         return tasks;
     }
 
+    @Exclude
     public void setTasks(HashMap<String, TaskModel> tasks) {
         this.tasks = tasks;
     }

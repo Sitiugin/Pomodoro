@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import com.google.firebase.database.Exclude;
+import com.google.firebase.firestore.Exclude;
 
 import java.util.Date;
 import java.util.Objects;
@@ -81,7 +81,6 @@ public abstract class AbstractModel implements Comparable<AbstractModel>, Parcel
         this.name = name;
     }
 
-    @Exclude
     public Date getTimestamp() {
         return timestamp;
     }
@@ -91,6 +90,7 @@ public abstract class AbstractModel implements Comparable<AbstractModel>, Parcel
         timestamp = new Date();
     }
 
+    @Exclude
     public abstract boolean isValid();
 
 }
