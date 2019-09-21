@@ -248,10 +248,10 @@ public class ViewProjectFragment extends Fragment {
     }
 
     private void deleteProject(Context context) {
+        fragmentListener.onCloseFragment();
         ProjectApi.deleteProject(projectModel, task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(context, R.string.view_project_toast_delete_success, Toast.LENGTH_SHORT).show();
-                fragmentListener.onCloseFragment();
             } else {
                 Toast.makeText(context, R.string.view_project_toast_delete_failed, Toast.LENGTH_LONG).show();
             }

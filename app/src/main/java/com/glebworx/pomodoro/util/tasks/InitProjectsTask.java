@@ -48,6 +48,10 @@ public class InitProjectsTask extends AsyncTask<Void, DocumentChange, Void> {
 
         super.onProgressUpdate(values);
 
+        if (itemAdapter == null) {
+            cancel(true);
+        }
+
         ProjectItem item;
         int index;
 

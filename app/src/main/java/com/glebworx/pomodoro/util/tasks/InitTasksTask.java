@@ -45,6 +45,10 @@ public class InitTasksTask extends AsyncTask<Void, DocumentChange, Void> {
 
         super.onProgressUpdate(values);
 
+        if (itemAdapter == null) {
+            cancel(true);
+        }
+
         TaskItem item;
         int index;
 

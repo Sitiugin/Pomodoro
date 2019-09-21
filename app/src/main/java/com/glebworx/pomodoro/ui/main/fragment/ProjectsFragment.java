@@ -93,7 +93,7 @@ public class ProjectsFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(@NonNull Context context) { // TODO is this null safe
+    public void onAttach(@NonNull Context context) {
         projectAdapter = new ItemAdapter<>();
         if (initProjectsTask != null && initProjectsTask.getStatus() != AsyncTask.Status.FINISHED) {
             initProjectsTask.cancel(true);

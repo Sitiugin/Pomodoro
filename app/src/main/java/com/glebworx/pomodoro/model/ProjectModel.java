@@ -60,7 +60,7 @@ public class ProjectModel extends AbstractModel {
 
     public ProjectModel(@NonNull String name,
                         @Nullable Date dueDate,
-                        @NonNull String colorTag) {
+                        @Nullable String colorTag) {
         super(name);
         if (dueDate != null) {
             this.dueDate = dueDate;
@@ -105,7 +105,7 @@ public class ProjectModel extends AbstractModel {
     @Exclude
     @Override
     public boolean isValid() {
-        return super.isValid() && colorTag != null && dueDate != null;
+        return super.isValid() && dueDate != null;
     }
 
 

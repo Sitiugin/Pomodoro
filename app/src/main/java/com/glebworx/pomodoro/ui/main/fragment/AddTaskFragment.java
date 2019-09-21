@@ -116,7 +116,7 @@ public class AddTaskFragment extends Fragment {
         }
 
         initEditText(activity);
-        initSpinners();
+        initSpinners(activity);
         initClickEvents(activity);
 
         return rootView;
@@ -152,11 +152,12 @@ public class AddTaskFragment extends Fragment {
         KeyboardManager.showKeyboard(activity, taskNameEditText);
     }
 
-    private void initSpinners() {
+    private void initSpinners(Activity activity) {
         taskModel.setPomodorosAllocated(1);
         allocatedTimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                clearEditTextFocus(activity);
                 taskModel.setPomodorosAllocated(position + 1);
             }
 
@@ -166,6 +167,7 @@ public class AddTaskFragment extends Fragment {
         recurrenceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                clearEditTextFocus(activity);
                 switch (position) {
                     case 0:
                         taskModel.setRecurrence(null);

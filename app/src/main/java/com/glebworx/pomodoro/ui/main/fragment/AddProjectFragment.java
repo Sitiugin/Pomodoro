@@ -146,8 +146,6 @@ public class AddProjectFragment extends Fragment {
                     calendar.get(Calendar.DAY_OF_MONTH)));
             saveButton.setText(R.string.add_project_title_update_project);
         } else {
-            projectModel.setColorTag(COLOR_TURQUOISE_HEX);
-            checkColorTag(COLOR_TURQUOISE_HEX);
             DateTimeManager.clearTime(calendar);
             projectModel.setDueDate(calendar.getTime());
             dueDateButton.setText(getString(R.string.core_today));

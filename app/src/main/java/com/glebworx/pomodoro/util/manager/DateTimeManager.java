@@ -8,8 +8,8 @@ public class DateTimeManager {
     private DateTimeManager() { }
 
     public static void clearTime(Calendar calendar) {
-        calendar.set(Calendar.YEAR, 0);
-        calendar.set(Calendar.MONTH, 0);
-        calendar.set(Calendar.DAY_OF_MONTH, 0);
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
     }
 }
