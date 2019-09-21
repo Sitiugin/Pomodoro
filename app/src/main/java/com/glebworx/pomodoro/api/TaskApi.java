@@ -9,7 +9,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
@@ -17,9 +16,6 @@ import com.google.firebase.firestore.WriteBatch;
 public class TaskApi extends BaseApi {
 
     //                                                                                     CONSTANTS
-
-    private static final String COLLECTION_PROJECTS = "projects";
-    private static final String COLLECTION_TASKS = "tasks";
 
 
     //                                                                       CONSTRUCTOR SUPPRESSION
@@ -43,11 +39,13 @@ public class TaskApi extends BaseApi {
                 taskModel);
 
         batch.update(projectDocument,
-                "tasks", projectModel.getTasks(),
-                "pomodorosAllocated", projectModel.getPomodorosAllocated(),
-                "pomodorosCompleted", projectModel.getPomodorosCompleted());
+                FIELD_TASKS, projectModel.getTasks(),
+                FIELD_POMODOROS_ALLOCATED, projectModel.getPomodorosAllocated(),
+                FIELD_POMODOROS_COMPLETED, projectModel.getPomodorosCompleted());
 
-        if (onCompleteListener != null) {
+        if (onCompleteListener == null) {
+            batch.commit();
+        } else {
             batch.commit().addOnCompleteListener(onCompleteListener);
         }
 

@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.ProjectApi;
@@ -35,6 +36,7 @@ import com.glebworx.pomodoro.util.constants.Constants;
 import com.glebworx.pomodoro.util.manager.ColorManager;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
 import com.glebworx.pomodoro.util.tasks.InitTasksTask;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -75,6 +77,7 @@ public class ViewProjectFragment extends Fragment {
     private static SimpleDateFormat dateFormat =
             new SimpleDateFormat(Constants.PATTERN_DATE, Locale.getDefault());
 
+    private ProjectModel projectModel;
     private ItemAdapter<TaskItem> taskAdapter;
     private EventListener<QuerySnapshot> eventListener;
     private OnViewProjectFragmentInteractionListener fragmentListener;
@@ -104,7 +107,7 @@ public class ViewProjectFragment extends Fragment {
         if (arguments == null || context == null) {
             return rootView;
         }
-        ProjectModel projectModel = arguments.getParcelable(ARG_PROJECT_MODEL);
+        projectModel = arguments.getParcelable(ARG_PROJECT_MODEL);
         if (projectModel == null) {
             return rootView;
         }
@@ -112,9 +115,9 @@ public class ViewProjectFragment extends Fragment {
         FastAdapter<AbstractItem> fastAdapter = new FastAdapter<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
 
-        initTitle(context, projectModel);
+        initTitle(context);
         initRecyclerView(layoutManager, fastAdapter);
-        initClickEvents(context, fastAdapter, projectModel);
+        initClickEvents(context, fastAdapter);
 
         TaskApi.addModelEventListener(projectModel.getName(), eventListener);
 
@@ -143,7 +146,7 @@ public class ViewProjectFragment extends Fragment {
         super.onDetach();
     }
 
-    private void initTitle(Context context, ProjectModel projectModel) {
+    private void initTitle(Context context) {
         titleTextView.setText(projectModel.getName());
         titleTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(
                 null,
@@ -189,7 +192,7 @@ public class ViewProjectFragment extends Fragment {
 
     }
 
-    private void initClickEvents(Context context, FastAdapter<AbstractItem> fastAdapter, ProjectModel projectModel) {
+    private void initClickEvents(Context context, FastAdapter<AbstractItem> fastAdapter) {
         View.OnClickListener onClickListener = view -> {
             if (view.getId() == R.id.button_close) {
                 fragmentListener.onCloseFragment();
@@ -217,23 +220,38 @@ public class ViewProjectFragment extends Fragment {
     }
 
     private void showOptionsPopup(Context context) {
+
         PopupWindowManager popupWindowManager = new PopupWindowManager(context);
         PopupWindow popupWindow = popupWindowManager.showPopup(
                 R.layout.popup_options_project,
                 optionsButton,
                 Gravity.BOTTOM | Gravity.END);
+
         View contentView = popupWindow.getContentView();
+
         View.OnClickListener onClickListener = view -> {
             if (view.getId() == R.id.button_edit) {
                 // TODO
                 popupWindow.dismiss();
             } else if (view.getId() == R.id.button_delete) {
-                // TODO
+                deleteProject(context);
                 popupWindow.dismiss();
             }
         };
         contentView.findViewById(R.id.button_edit).setOnClickListener(onClickListener);
         contentView.findViewById(R.id.button_delete).setOnClickListener(onClickListener);
+
+    }
+
+    private void deleteProject(Context context) {
+        ProjectApi.deleteProject(projectModel, task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(context, "Project deleted successfully", Toast.LENGTH_SHORT).show();
+                fragmentListener.onCloseFragment();
+            } else {
+                Toast.makeText(context, "Failed to delete project", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     public interface OnViewProjectFragmentInteractionListener {

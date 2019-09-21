@@ -53,17 +53,6 @@
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/button_report"/>
-
-                <androidx.appcompat.widget.AppCompatImageButton
-                    style="@style/ImageButtonStyle.Borderless"
-                    android:id="@+id/button_report"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/margin_content"
-                    android:src="@drawable/ic_report_black"
-                    app:layout_constraintTop_toTopOf="@+id/search_view"
-                    app:layout_constraintBottom_toBottomOf="@+id/search_view"
                     app:layout_constraintEnd_toStartOf="@+id/button_options"/>
 
                 <androidx.appcompat.widget.AppCompatImageButton
@@ -75,7 +64,18 @@
                     android:src="@drawable/ic_options_black"
                     app:layout_constraintTop_toTopOf="@+id/search_view"
                     app:layout_constraintBottom_toBottomOf="@+id/search_view"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintEnd_toStartOf="@+id/button_report" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    style="@style/ImageButtonStyle.Borderless"
+                    android:id="@+id/button_report"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_content"
+                    android:src="@drawable/ic_report_black"
+                    app:layout_constraintTop_toTopOf="@+id/search_view"
+                    app:layout_constraintBottom_toBottomOf="@+id/search_view"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.CollapsingToolbarLayout>

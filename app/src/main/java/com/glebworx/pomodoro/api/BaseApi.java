@@ -22,6 +22,12 @@ public abstract class BaseApi {
 
     private static final String COLLECTION_GLOBAL = "global";
     private static final String COLLECTION_USERS = "users";
+    static final String COLLECTION_PROJECTS = "projects";
+    static final String COLLECTION_TASKS = "tasks";
+
+    static final String FIELD_TASKS = "tasks";
+    static final String FIELD_POMODOROS_ALLOCATED = "pomodorosAllocated";
+    static final String FIELD_POMODOROS_COMPLETED = "pomodorosCompleted";
 
 
     //                                                                                   CONSTRUCTOR

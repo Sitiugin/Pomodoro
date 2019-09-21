@@ -3,7 +3,6 @@ package com.glebworx.pomodoro.ui.main.fragment;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -30,10 +29,7 @@ import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.util.constants.Constants;
 import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.KeyboardManager;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.ChipGroup;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.time.YearMonth;
@@ -255,7 +251,7 @@ public class AddProjectFragment extends Fragment {
 
     private void saveProject(Context context) {
         startSaveStartedAnimation();
-        ProjectApi.saveModel(projectModel, task -> {
+        ProjectApi.saveProject(projectModel, task -> {
             if (context == null) {
                 startSaveCanceledAnimation();
                 return;

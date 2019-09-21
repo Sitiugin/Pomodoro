@@ -69,6 +69,8 @@ public class ProjectModel extends AbstractModel {
         }
         this.colorTag = colorTag;
         this.tasks = new ArrayList<>();
+        this.pomodorosAllocated = 0;
+        this.pomodorosCompleted = 0;
     }
 
     public ProjectModel(Parcel in) {
@@ -79,6 +81,8 @@ public class ProjectModel extends AbstractModel {
         }
         this.colorTag = in.readString();
         in.readStringList(this.tasks);
+        this.pomodorosAllocated = in.readInt();
+        this.pomodorosCompleted = in.readInt();
     }
 
 
@@ -94,6 +98,8 @@ public class ProjectModel extends AbstractModel {
         }
         parcel.writeString(colorTag);
         parcel.writeStringList(tasks);
+        parcel.writeInt(pomodorosAllocated);
+        parcel.writeInt(pomodorosCompleted);
     }
 
     @Exclude
