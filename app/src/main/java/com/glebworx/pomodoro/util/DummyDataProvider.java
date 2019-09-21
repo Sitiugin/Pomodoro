@@ -35,7 +35,7 @@ public class DummyDataProvider { // TODO temp class for testing
                 model.setPomodorosCompleted(3);
                 taskModels.put(model.getName(), model);
             }
-            ProjectModel model = new ProjectModel("Some Project", new Date(), COLOR_EMERALD_HEX, taskModels);
+            ProjectModel model = new ProjectModel("Some Project", new Date(), COLOR_EMERALD_HEX);
             result.add(new ProjectItem(model));
         }
         return result;

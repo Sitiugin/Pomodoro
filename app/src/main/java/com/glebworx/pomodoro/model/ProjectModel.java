@@ -42,21 +42,25 @@ public class ProjectModel extends AbstractModel {
 
     private Date dueDate;
     private String colorTag;
-    @Exclude
-    private Map<String, TaskModel> tasks;
+    //@Exclude
+    //private Map<String, TaskModel> tasks; //  TODO remove
+
+    /*private List<String> tasks;
+    private int pomodorosAllocated;
+    private int pomodorosCompleted;*/
+
 
 
     //                                                                                  CONSTRUCTORS
 
     public ProjectModel() {
         super();
-        this.tasks = new HashMap<>();
+        //this.tasks = new HashMap<>();
     }
 
     public ProjectModel(@NonNull String name,
                         @Nullable Date dueDate,
-                        @NonNull String colorTag,
-                        @Nullable Map<String, TaskModel> tasks) {
+                        @NonNull String colorTag) {
         super(name);
         if (dueDate != null) {
             this.dueDate = dueDate;
@@ -64,11 +68,11 @@ public class ProjectModel extends AbstractModel {
             this.dueDate = null;
         }
         this.colorTag = colorTag;
-        if (tasks != null) {
+        /*if (tasks != null) {
             this.tasks = tasks;
         } else {
             this.tasks = new HashMap<>();
-        }
+        }*/
     }
 
     public ProjectModel(Parcel in) {
@@ -78,11 +82,11 @@ public class ProjectModel extends AbstractModel {
             this.dueDate = new Date(dueDate);
         }
         this.colorTag = in.readString();
-        this.tasks = new HashMap<>();
-        in.readMap(this.tasks, HashMap.class.getClassLoader());
+        /*this.tasks = new HashMap<>();
+        in.readMap(this.tasks, HashMap.class.getClassLoader());*/
     }
 
-    public ProjectModel(@NonNull DocumentSnapshot snapshot) {
+    /*public ProjectModel(@NonNull DocumentSnapshot snapshot) {
         this();
         if (snapshot.exists()) {
             Map<String, Object> map = snapshot.getData();
@@ -107,7 +111,7 @@ public class ProjectModel extends AbstractModel {
             } catch (ClassCastException ignored) { }
         }
 
-    }
+    }*/
 
 
     //                                                                                    OVERRIDDEN
@@ -121,13 +125,13 @@ public class ProjectModel extends AbstractModel {
             parcel.writeLong(-1);
         }
         parcel.writeString(this.colorTag);
-        parcel.writeMap(this.tasks);
+        //parcel.writeMap(this.tasks);
     }
 
     @Exclude
     @Override
     public boolean isValid() {
-        return getName() != null && colorTag != null && tasks != null;
+        return getName() != null && colorTag != null;
     }
 
 
@@ -149,7 +153,7 @@ public class ProjectModel extends AbstractModel {
         this.colorTag = colorTag;
     }
 
-    @Exclude
+    /*@Exclude
     public Map<String, TaskModel> getTasks() {
         return tasks;
     }
@@ -167,12 +171,13 @@ public class ProjectModel extends AbstractModel {
     @Exclude
     public void removeTask(TaskModel taskModel) {
         tasks.remove(taskModel.getName());
-    }
+    }*/
 
 
     @Exclude
     public double getProgressRatio() {
-        int allocated = 0;
+        return 0;
+        /*int allocated = 0;
         int completed = 0;
         Set<Map.Entry<String, TaskModel>> entrySet = tasks.entrySet();
         Iterator<Map.Entry<String, TaskModel>> iterator =  entrySet.iterator();
@@ -185,10 +190,10 @@ public class ProjectModel extends AbstractModel {
         if (allocated == 0) {
             return 0;
         }
-        return (double) completed / (double) allocated;
+        return (double) completed / (double) allocated;*/
     }
 
-    @Exclude
+    /*@Exclude
     public Map<String, Object> getTasksAsMap() {
         Map<String, Object> map = new HashMap<>();
         Set<Map.Entry<String, TaskModel>> entrySet = tasks.entrySet();
@@ -196,6 +201,6 @@ public class ProjectModel extends AbstractModel {
             map.put(entry.getKey(), entry.getValue().getTaskAsMap());
         }
         return map;
-    }
+    }*/
 
 }

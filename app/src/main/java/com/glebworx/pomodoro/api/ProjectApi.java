@@ -37,7 +37,7 @@ public class ProjectApi extends BaseApi {
         saveModel(model, getCollection(COLLECTION), onCompleteListener);
     }
 
-    public static void updateTasks(@NonNull ProjectModel projectModel,
+    /*public static void updateTasks(@NonNull ProjectModel projectModel,
                                    @Nullable OnCompleteListener<Void> onCompleteListener) {
         Task<Void> task = getCollection(COLLECTION)
                 .document(projectModel.getName())
@@ -45,7 +45,7 @@ public class ProjectApi extends BaseApi {
         if (onCompleteListener != null) {
             task.addOnCompleteListener(onCompleteListener);
         }
-    }
+    }*/
 
     public static void getModel(@NonNull ProjectModel model,
                                 @NonNull OnCompleteListener<DocumentSnapshot> onCompleteListener) {

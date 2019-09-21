@@ -119,7 +119,7 @@ public class ViewProjectFragment extends Fragment {
             if (documentSnapshot != null && documentSnapshot.exists()) {
                 //ProjectModel projectModel = new ProjectModel(documentSnapshot);
                 //TaskModel projectModel = new ProjectModel(documentSnapshot);
-                TaskModel taskModel;
+                /*TaskModel taskModel;
                 taskAdapter.clear();
                 Map<String, Object> tasks = documentSnapshot.getData();
                 if (tasks != null) {
@@ -128,7 +128,7 @@ public class ViewProjectFragment extends Fragment {
                         taskModel = new TaskModel((Map<String, Object>) entry.getValue());
                         taskAdapter.add(new TaskItem(taskModel));
                     }
-                }
+                }*/
 
                 /*Map<String, Map<String, Object>> tasks = (Map<String, Map<String, Object>>) documentSnapshot.get("tasks");
                 if (projectModel == null || tasks == null) {

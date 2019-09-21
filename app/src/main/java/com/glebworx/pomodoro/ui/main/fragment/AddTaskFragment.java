@@ -27,11 +27,14 @@ import android.widget.Toast;
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.ProjectApi;
+import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.util.constants.Constants;
 import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.KeyboardManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.text.SimpleDateFormat;
 import java.time.YearMonth;
@@ -165,33 +168,36 @@ public class AddTaskFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        taskModel.setRecurrence(TaskModel.RECURRENCE_EVERY_DAY);
+                        taskModel.setRecurrence(null);
                         break;
                     case 1:
-                        taskModel.setRecurrence(TaskModel.RECURRENCE_EVERY_TWO_DAYS);
+                        taskModel.setRecurrence(TaskModel.RECURRENCE_EVERY_DAY);
                         break;
                     case 2:
-                        taskModel.setRecurrence(TaskModel.RECURRENCE_EVERY_THREE_DAYS);
+                        taskModel.setRecurrence(TaskModel.RECURRENCE_EVERY_TWO_DAYS);
                         break;
                     case 3:
-                        taskModel.setRecurrence(TaskModel.RECURRENCE_EVERY_FOUR_DAYS);
+                        taskModel.setRecurrence(TaskModel.RECURRENCE_EVERY_THREE_DAYS);
                         break;
                     case 4:
-                        taskModel.setRecurrence(TaskModel.RECURRENCE_EVERY_FIVE_DAYS);
+                        taskModel.setRecurrence(TaskModel.RECURRENCE_EVERY_FOUR_DAYS);
                         break;
                     case 5:
-                        taskModel.setRecurrence(TaskModel.RECURRENCE_EVERY_SIX_DAYS);
+                        taskModel.setRecurrence(TaskModel.RECURRENCE_EVERY_FIVE_DAYS);
                         break;
                     case 6:
-                        taskModel.setRecurrence(TaskModel.RECURRENCE_EVERY_WEEKLY);
+                        taskModel.setRecurrence(TaskModel.RECURRENCE_EVERY_SIX_DAYS);
                         break;
                     case 7:
-                        taskModel.setRecurrence(TaskModel.RECURRENCE_WEEKDAY);
+                        taskModel.setRecurrence(TaskModel.RECURRENCE_EVERY_WEEKLY);
                         break;
                     case 8:
-                        taskModel.setRecurrence(TaskModel.RECURRENCE_WEEKEND);
+                        taskModel.setRecurrence(TaskModel.RECURRENCE_WEEKDAY);
                         break;
                     case 9:
+                        taskModel.setRecurrence(TaskModel.RECURRENCE_WEEKEND);
+                        break;
+                    case 10:
                         taskModel.setRecurrence(TaskModel.RECURRENCE_MONTHLY);
                         break;
                 }
@@ -276,8 +282,8 @@ public class AddTaskFragment extends Fragment {
 
     private void saveTasks(Context context) {
         startSaveStartedAnimation();
-        projectModel.addTask(taskModel);
-        ProjectApi.updateTasks(projectModel, task -> {
+        //projectModel.addTask(taskModel);
+        TaskApi.addTask(projectModel.getName(), taskModel, task -> {
             if (context == null) {
                 startSaveCanceledAnimation();
                 return;

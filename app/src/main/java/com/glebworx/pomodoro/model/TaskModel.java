@@ -121,18 +121,6 @@ public class TaskModel extends AbstractModel {
         return getName() != null;
     }
 
-    @Exclude
-    public Map<String, Object> getTaskAsMap() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("name", getName());
-        map.put("timestamp", getTimestamp());
-        map.put("pomodorosAllocated", pomodorosAllocated);
-        map.put("pomodorosCompleted", pomodorosCompleted);
-        map.put("dueDate", dueDate);
-        map.put("recurrence", recurrence);
-        return map;
-    }
-
 
     //                                                                           GETTERS AND SETTERS
 
