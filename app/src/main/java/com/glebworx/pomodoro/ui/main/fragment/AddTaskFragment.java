@@ -157,7 +157,7 @@ public class AddTaskFragment extends Fragment {
         allocatedTimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-
+                taskModel.setPomodorosAllocated(position + 1);
             }
 
             @Override

@@ -38,13 +38,13 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/TextStyle"
+        android:id="@+id/text_view_pomodoros"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorHighlight"
         android:drawableStart="@drawable/ic_timer_highlight_small"
         android:drawablePadding="@dimen/margin_content_quarter"
         app:layout_constraintTop_toTopOf="@+id/text_view_due_date"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="3/10"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

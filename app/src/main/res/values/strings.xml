@@ -12,6 +12,7 @@
     <string name="core_text_no_data">Nothing to show</string>
     <string name="core_active">Active</string>
     <string name="core_due" formatted="true">Due: %1$s</string>
+    <string name="core_ratio" formatted="true">%1$s/%2$s</string>
     <string-array name="core_recurrence">
         <item>Never repeat</item>
         <item>Repeat every day</item>
@@ -36,6 +37,21 @@
         <item>15 pomodoros</item><item>16 pomodoros</item>
         <item>17 pomodoros</item><item>18 pomodoros</item>
         <item>19 pomodoros</item><item>20 pomodoros</item>
+        <item>21 pomodoro</item><item>22 pomodoros</item>
+        <item>23 pomodoros</item><item>24 pomodoros</item>
+        <item>25 pomodoros</item><item>26 pomodoros</item>
+        <item>27 pomodoros</item><item>28 pomodoros</item>
+        <item>29 pomodoros</item><item>30 pomodoros</item>
+        <item>31 pomodoros</item><item>32 pomodoros</item>
+        <item>33 pomodoros</item><item>34 pomodoros</item>
+        <item>35 pomodoros</item><item>36 pomodoros</item>
+        <item>37 pomodoros</item><item>38 pomodoros</item>
+        <item>39 pomodoros</item><item>40 pomodoros</item>
+        <item>41 pomodoro</item><item>42 pomodoros</item>
+        <item>43 pomodoros</item><item>44 pomodoros</item>
+        <item>45 pomodoros</item><item>46 pomodoros</item>
+        <item>47 pomodoros</item><item>48 pomodoros</item>
+        <item>49 pomodoros</item><item>50 pomodoros</item>
     </string-array>
 
     <string name="shared_element_add_btn">Add Project</string>

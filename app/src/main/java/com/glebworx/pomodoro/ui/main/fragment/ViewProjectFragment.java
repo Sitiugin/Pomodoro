@@ -2,6 +2,7 @@ package com.glebworx.pomodoro.ui.main.fragment;
 
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.ProjectApi;
+import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.item.AddItem;
 import com.glebworx.pomodoro.item.ProjectHeaderItem;
 import com.glebworx.pomodoro.item.ProjectItem;
@@ -27,6 +29,7 @@ import com.glebworx.pomodoro.util.DummyDataProvider;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.constants.Constants;
 import com.glebworx.pomodoro.util.manager.ColorManager;
+import com.glebworx.pomodoro.util.tasks.InitTasksTask;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -67,8 +70,9 @@ public class ViewProjectFragment extends Fragment {
             new SimpleDateFormat(Constants.PATTERN_DATE, Locale.getDefault());
 
     private ItemAdapter<TaskItem> taskAdapter;
-    private EventListener<DocumentSnapshot> eventListener;
+    private EventListener<QuerySnapshot> eventListener;
     private OnViewProjectFragmentInteractionListener fragmentListener;
+    private InitTasksTask initTasksTask;
 
     public ViewProjectFragment() { }
 
@@ -99,7 +103,6 @@ public class ViewProjectFragment extends Fragment {
             return rootView;
         }
 
-        taskAdapter = new ItemAdapter<>();
         FastAdapter<AbstractItem> fastAdapter = new FastAdapter<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
 
@@ -107,7 +110,7 @@ public class ViewProjectFragment extends Fragment {
         initRecyclerView(layoutManager, fastAdapter);
         initClickEvents(fastAdapter, projectModel);
 
-        ProjectApi.addDocumentModelEventListener(eventListener, projectModel.getName());
+        TaskApi.addModelEventListener(projectModel.getName(), eventListener);
 
         return rootView;
     }
@@ -115,35 +118,14 @@ public class ViewProjectFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        eventListener = (documentSnapshot, e) -> {
-            if (documentSnapshot != null && documentSnapshot.exists()) {
-                //ProjectModel projectModel = new ProjectModel(documentSnapshot);
-                //TaskModel projectModel = new ProjectModel(documentSnapshot);
-                /*TaskModel taskModel;
-                taskAdapter.clear();
-                Map<String, Object> tasks = documentSnapshot.getData();
-                if (tasks != null) {
-                    Set<Map.Entry<String, Object>> entrySet = tasks.entrySet();
-                    for (Map.Entry<String, Object> entry: entrySet) {
-                        taskModel = new TaskModel((Map<String, Object>) entry.getValue());
-                        taskAdapter.add(new TaskItem(taskModel));
-                    }
-                }*/
-
-                /*Map<String, Map<String, Object>> tasks = (Map<String, Map<String, Object>>) documentSnapshot.get("tasks");
-                if (projectModel == null || tasks == null) {
-                    return;
-                }
-                Set<Map.Entry<String, Map<String, Object>>> entrySet = tasks.entrySet();
-                taskAdapter.clear();
-                TaskModel taskModel;
-                for (Map.Entry<String, Map<String, Object>> entry: entrySet) {
-                    taskModel = new TaskModel(entry.getValue());
-                    projectModel.addTask(taskModel);
-                    taskAdapter.add(new TaskItem(taskModel));
-                }*/
-
-            }
+        taskAdapter = new ItemAdapter<>();
+        if (initTasksTask != null && initTasksTask.getStatus() != AsyncTask.Status.FINISHED) {
+            initTasksTask.cancel(true);
+        }
+        super.onAttach(context);
+        eventListener = (snapshots, e) -> {
+            initTasksTask = new InitTasksTask(snapshots, taskAdapter);
+            initTasksTask.execute();
         };
         fragmentListener = (OnViewProjectFragmentInteractionListener) context;
     }

@@ -6,6 +6,9 @@ import androidx.annotation.Nullable;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class TaskApi extends BaseApi {
 
@@ -55,6 +58,15 @@ public class TaskApi extends BaseApi {
         if (onCompleteListener != null) {
             task.addOnCompleteListener(onCompleteListener);
         }
+    }
+
+    public static void addModelEventListener(@NonNull String projectName,
+                                             @NonNull EventListener<QuerySnapshot> eventListener) {
+        getCollection(COLLECTION_PROJECTS)
+                .document(projectName)
+                .collection(COLLECTION_TASKS)
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .addSnapshotListener(eventListener);
     }
 
 }

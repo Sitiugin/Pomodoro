@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
 
+
 public class InitProjectsTask extends AsyncTask<Void, DocumentChange, Void> {
 
     private QuerySnapshot querySnapshot;
