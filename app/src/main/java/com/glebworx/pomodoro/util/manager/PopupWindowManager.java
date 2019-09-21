@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.PopupWindow;
 
 
+import androidx.core.widget.PopupWindowCompat;
+
 import com.glebworx.pomodoro.R;
 
 import javax.annotation.Nonnull;
@@ -28,7 +30,7 @@ public class PopupWindowManager {
             return null;
         }
 
-        popupWindow.showAsDropDown(anchorView, 0, 0, gravity);
+        PopupWindowCompat.showAsDropDown(popupWindow, anchorView, 0, 0, gravity);
 
         return popupWindow;
 

@@ -126,6 +126,8 @@
     <!--                                                                            VIEW PROJECT -->
 
     <string name="view_project_title_add_task">Add Task</string>
+    <string name="view_project_title_edit_project">Edit Project</string>
+    <string name="view_project_title_delete_project">Delete Project</string>
 
     <!--                                                                              MAIN TASKS -->
 

@@ -6,15 +6,19 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.widget.PopupWindowCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupWindow;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.ProjectApi;
@@ -29,6 +33,7 @@ import com.glebworx.pomodoro.util.DummyDataProvider;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.constants.Constants;
 import com.glebworx.pomodoro.util.manager.ColorManager;
+import com.glebworx.pomodoro.util.manager.PopupWindowManager;
 import com.glebworx.pomodoro.util.tasks.InitTasksTask;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -61,6 +66,7 @@ public class ViewProjectFragment extends Fragment {
 
     @BindView(R.id.text_view_title) AppCompatTextView titleTextView;
     @BindView(R.id.text_view_subtitle) AppCompatTextView subtitleTextView;
+    @BindView(R.id.button_options) AppCompatImageButton optionsButton;
     @BindView(R.id.button_close) AppCompatImageButton closeButton;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
@@ -108,7 +114,7 @@ public class ViewProjectFragment extends Fragment {
 
         initTitle(context, projectModel);
         initRecyclerView(layoutManager, fastAdapter);
-        initClickEvents(fastAdapter, projectModel);
+        initClickEvents(context, fastAdapter, projectModel);
 
         TaskApi.addModelEventListener(projectModel.getName(), eventListener);
 
@@ -183,12 +189,15 @@ public class ViewProjectFragment extends Fragment {
 
     }
 
-    private void initClickEvents(FastAdapter<AbstractItem> fastAdapter, ProjectModel projectModel) {
+    private void initClickEvents(Context context, FastAdapter<AbstractItem> fastAdapter, ProjectModel projectModel) {
         View.OnClickListener onClickListener = view -> {
             if (view.getId() == R.id.button_close) {
                 fragmentListener.onCloseFragment();
+            } else if (view.getId() == R.id.button_options) {
+                showOptionsPopup(context);
             }
         };
+        optionsButton.setOnClickListener(onClickListener);
         closeButton.setOnClickListener(onClickListener);
         fastAdapter.withOnClickListener((view, adapter, item, position) -> {
             if (view == null) {
@@ -205,6 +214,26 @@ public class ViewProjectFragment extends Fragment {
 
             return false;
         });
+    }
+
+    private void showOptionsPopup(Context context) {
+        PopupWindowManager popupWindowManager = new PopupWindowManager(context);
+        PopupWindow popupWindow = popupWindowManager.showPopup(
+                R.layout.popup_options_project,
+                optionsButton,
+                Gravity.BOTTOM | Gravity.END);
+        View contentView = popupWindow.getContentView();
+        View.OnClickListener onClickListener = view -> {
+            if (view.getId() == R.id.button_edit) {
+                // TODO
+                popupWindow.dismiss();
+            } else if (view.getId() == R.id.button_delete) {
+                // TODO
+                popupWindow.dismiss();
+            }
+        };
+        contentView.findViewById(R.id.button_edit).setOnClickListener(onClickListener);
+        contentView.findViewById(R.id.button_delete).setOnClickListener(onClickListener);
     }
 
     public interface OnViewProjectFragmentInteractionListener {
