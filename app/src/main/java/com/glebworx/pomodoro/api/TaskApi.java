@@ -3,12 +3,16 @@ package com.glebworx.pomodoro.api;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 public class TaskApi extends BaseApi {
 
@@ -26,20 +30,25 @@ public class TaskApi extends BaseApi {
     //                                                                                    PUBLIC API
 
 
-    public static void addTask(@NonNull String projectName,
+    public static void addTask(@NonNull ProjectModel projectModel,
                                @NonNull TaskModel taskModel,
                                @Nullable OnCompleteListener<Void> onCompleteListener) {
 
-        Task<Void> task = getCollection(COLLECTION_PROJECTS)
-                .document(projectName)
-                .collection(COLLECTION_TASKS)
-                .document(taskModel.getName())
-                .set(taskModel);
+        WriteBatch batch = getWriteBatch();
 
-        // TODO batch update project data
+        DocumentReference projectDocument = getCollection(COLLECTION_PROJECTS).document(projectModel.getName());
+
+        batch.set(
+                projectDocument.collection(COLLECTION_TASKS).document(taskModel.getName()),
+                taskModel);
+
+        batch.update(projectDocument,
+                "tasks", projectModel.getTasks(),
+                "pomodorosAllocated", projectModel.getPomodorosAllocated(),
+                "pomodorosCompleted", projectModel.getPomodorosCompleted());
 
         if (onCompleteListener != null) {
-            task.addOnCompleteListener(onCompleteListener);
+            batch.commit().addOnCompleteListener(onCompleteListener);
         }
 
     }

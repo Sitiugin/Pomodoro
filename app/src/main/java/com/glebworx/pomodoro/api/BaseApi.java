@@ -14,6 +14,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 public abstract class BaseApi {
 
@@ -74,6 +75,10 @@ public abstract class BaseApi {
 
     static DocumentReference getUserDocument() {
         return FirebaseFirestore.getInstance().collection(COLLECTION_USERS).document(AuthManager.getInstance().getUid());
+    }
+
+    static WriteBatch getWriteBatch() {
+        return FirebaseFirestore.getInstance().batch();
     }
 
 

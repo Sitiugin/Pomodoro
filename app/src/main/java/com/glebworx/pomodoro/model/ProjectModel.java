@@ -45,9 +45,9 @@ public class ProjectModel extends AbstractModel {
     //@Exclude
     //private Map<String, TaskModel> tasks; //  TODO remove
 
-    /*private List<String> tasks;
+    private List<String> tasks;
     private int pomodorosAllocated;
-    private int pomodorosCompleted;*/
+    private int pomodorosCompleted;
 
 
 
@@ -55,7 +55,7 @@ public class ProjectModel extends AbstractModel {
 
     public ProjectModel() {
         super();
-        //this.tasks = new HashMap<>();
+        this.tasks = new ArrayList<>();
     }
 
     public ProjectModel(@NonNull String name,
@@ -68,11 +68,7 @@ public class ProjectModel extends AbstractModel {
             this.dueDate = null;
         }
         this.colorTag = colorTag;
-        /*if (tasks != null) {
-            this.tasks = tasks;
-        } else {
-            this.tasks = new HashMap<>();
-        }*/
+        this.tasks = new ArrayList<>();
     }
 
     public ProjectModel(Parcel in) {
@@ -82,36 +78,8 @@ public class ProjectModel extends AbstractModel {
             this.dueDate = new Date(dueDate);
         }
         this.colorTag = in.readString();
-        /*this.tasks = new HashMap<>();
-        in.readMap(this.tasks, HashMap.class.getClassLoader());*/
+        in.readStringList(this.tasks);
     }
-
-    /*public ProjectModel(@NonNull DocumentSnapshot snapshot) {
-        this();
-        if (snapshot.exists()) {
-            Map<String, Object> map = snapshot.getData();
-            if (map == null) {
-                return;
-            }
-            try {
-                setName((String) map.get("name"));
-                updateTimestamp();
-                dueDate = (Date) map.get("dueDate");
-                colorTag = (String) map.get("colorTag");
-                Map<String, Map<String, Object>> tasks = (Map<String, Map<String, Object>>) snapshot.get("tasks");
-                if (tasks == null) {
-                    return;
-                }
-                Set<Map.Entry<String, Map<String, Object>>> entrySet = tasks.entrySet();
-                TaskModel taskModel;
-                for (Map.Entry<String, Map<String, Object>> entry: entrySet) {
-                    taskModel = new TaskModel(entry.getValue());
-                    addTask(taskModel);
-                }
-            } catch (ClassCastException ignored) { }
-        }
-
-    }*/
 
 
     //                                                                                    OVERRIDDEN
@@ -119,13 +87,13 @@ public class ProjectModel extends AbstractModel {
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
         super.writeToParcel(parcel, flags);
-        if (this.dueDate != null) {
-            parcel.writeLong(this.dueDate.getTime());
+        if (dueDate != null) {
+            parcel.writeLong(dueDate.getTime());
         } else {
             parcel.writeLong(-1);
         }
-        parcel.writeString(this.colorTag);
-        //parcel.writeMap(this.tasks);
+        parcel.writeString(colorTag);
+        parcel.writeStringList(tasks);
     }
 
     @Exclude
@@ -153,54 +121,39 @@ public class ProjectModel extends AbstractModel {
         this.colorTag = colorTag;
     }
 
-    /*@Exclude
-    public Map<String, TaskModel> getTasks() {
+    public List<String> getTasks() {
         return tasks;
     }
 
     @Exclude
-    public void setTasks(HashMap<String, TaskModel> tasks) {
-        this.tasks = tasks;
-    }
-
-    @Exclude
     public void addTask(TaskModel taskModel) {
-        tasks.put(taskModel.getName(), taskModel);
+        tasks.add(taskModel.getName());
+        pomodorosAllocated += taskModel.getPomodorosAllocated();
+        pomodorosCompleted += taskModel.getPomodorosCompleted();
     }
 
-    @Exclude
-    public void removeTask(TaskModel taskModel) {
-        tasks.remove(taskModel.getName());
-    }*/
+    public int getPomodorosAllocated() {
+        return pomodorosAllocated;
+    }
 
+    public void setPomodorosAllocated(int pomodorosAllocated) {
+        this.pomodorosAllocated = pomodorosAllocated;
+    }
+
+    public int getPomodorosCompleted() {
+        return pomodorosCompleted;
+    }
+
+    public void setPomodorosCompleted(int pomodorosCompleted) {
+        this.pomodorosCompleted = pomodorosCompleted;
+    }
 
     @Exclude
     public double getProgressRatio() {
-        return 0;
-        /*int allocated = 0;
-        int completed = 0;
-        Set<Map.Entry<String, TaskModel>> entrySet = tasks.entrySet();
-        Iterator<Map.Entry<String, TaskModel>> iterator =  entrySet.iterator();
-        Map.Entry<String, TaskModel> next;
-        while (iterator.hasNext()) {
-            next = iterator.next();
-            allocated += next.getValue().getPomodorosAllocated();
-            completed += next.getValue().getPomodorosCompleted();
-        }
-        if (allocated == 0) {
+        if (pomodorosAllocated == 0) {
             return 0;
         }
-        return (double) completed / (double) allocated;*/
+        return (double) pomodorosCompleted / pomodorosAllocated;
     }
-
-    /*@Exclude
-    public Map<String, Object> getTasksAsMap() {
-        Map<String, Object> map = new HashMap<>();
-        Set<Map.Entry<String, TaskModel>> entrySet = tasks.entrySet();
-        for (Map.Entry<String, TaskModel> entry: entrySet) {
-            map.put(entry.getKey(), entry.getValue().getTaskAsMap());
-        }
-        return map;
-    }*/
 
 }

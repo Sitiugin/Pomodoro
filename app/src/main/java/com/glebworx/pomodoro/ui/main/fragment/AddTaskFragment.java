@@ -282,8 +282,8 @@ public class AddTaskFragment extends Fragment {
 
     private void saveTasks(Context context) {
         startSaveStartedAnimation();
-        //projectModel.addTask(taskModel);
-        TaskApi.addTask(projectModel.getName(), taskModel, task -> {
+        projectModel.addTask(taskModel);
+        TaskApi.addTask(projectModel, taskModel, task -> {
             if (context == null) {
                 startSaveCanceledAnimation();
                 return;

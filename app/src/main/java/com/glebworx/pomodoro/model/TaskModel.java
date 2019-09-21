@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.firestore.Exclude;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -114,6 +116,7 @@ public class TaskModel extends AbstractModel {
         parcel.writeString(recurrence);
     }
 
+    @Exclude
     @Override
     public boolean isValid() {
         return getName() != null;
