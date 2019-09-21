@@ -96,6 +96,11 @@ public class MainActivity
     }
 
     @Override
+    public void onEditProject(ProjectModel projectModel) {
+        fragmentManager.pushToBackStack(AddProjectFragment.newInstance(projectModel));
+    }
+
+    @Override
     public void onAddTask(ProjectModel projectModel) {
         fragmentManager.pushToBackStack(AddTaskFragment.newInstance(projectModel));
     }

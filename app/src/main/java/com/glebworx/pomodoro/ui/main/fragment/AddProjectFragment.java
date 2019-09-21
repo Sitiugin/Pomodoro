@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
@@ -27,6 +28,7 @@ import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.util.constants.Constants;
+import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.KeyboardManager;
 import com.google.android.material.chip.ChipGroup;
@@ -56,7 +58,9 @@ public class AddProjectFragment extends Fragment {
     //                                                                                       BINDING
 
     @BindView(R.id.layout_add_project) ConstraintLayout addProjectLayout;
+    @BindView(R.id.text_view_title) AppCompatTextView titleTextView;
     @BindView(R.id.button_close) AppCompatImageButton closeButton;
+    @BindView(R.id.text_view_section_name) AppCompatTextView projectNameSectionTextView;
     @BindView(R.id.edit_text_name) AppCompatEditText projectNameEditText;
     @BindView(R.id.chip_group_color) ChipGroup colorTagChipGroup;
     @BindView(R.id.button_due_date) AppCompatButton dueDateButton;
@@ -66,6 +70,7 @@ public class AddProjectFragment extends Fragment {
 
     //                                                                                    ATTRIBUTES
 
+    private static final String ARG_PROJECT_MODEL = "project_model";
     private static SimpleDateFormat dateFormat =
             new SimpleDateFormat(Constants.PATTERN_DATE, Locale.getDefault());
     private OnAddProjectFragmentInteractionListener fragmentListener;
@@ -75,6 +80,7 @@ public class AddProjectFragment extends Fragment {
     private int year;
     private int month;
     private int today;
+    private boolean isEditing;
 
 
     //                                                                                  CONSTRUCTORS
@@ -88,6 +94,14 @@ public class AddProjectFragment extends Fragment {
         return new AddProjectFragment();
     }
 
+    public static AddProjectFragment newInstance(ProjectModel projectModel) {
+        AddProjectFragment fragment = new AddProjectFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(ARG_PROJECT_MODEL, projectModel);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -97,17 +111,49 @@ public class AddProjectFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_add_project, container, false);
         ButterKnife.bind(this, rootView);
 
-        constraintSet = new ConstraintSet();
-        projectModel = new ProjectModel();
-        calendar = Calendar.getInstance(Locale.getDefault());
-        updateToday();
-
         Activity activity = getActivity();
-        if (activity == null) {
+        Context context = getContext();
+        if (activity == null || context == null) {
             return rootView;
         }
 
-        initEditText(activity);
+        calendar = Calendar.getInstance(Locale.getDefault());
+
+        constraintSet = new ConstraintSet();
+        updateToday();
+
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            projectModel = arguments.getParcelable(ARG_PROJECT_MODEL);
+        }
+        if (projectModel == null) {
+            projectModel = new ProjectModel();
+            isEditing = false;
+        } else {
+            isEditing = true;
+        }
+
+        if (isEditing) {
+            projectNameEditText.setVisibility(View.GONE);
+            projectNameSectionTextView.setVisibility(View.GONE);
+            titleTextView.setText(context.getString(R.string.core_edit_something, projectModel.getName()));
+            checkColorTag(projectModel.getColorTag());
+            calendar.setTime(projectModel.getDueDate());
+            DateTimeManager.clearTime(calendar);
+            dueDateButton.setText(getDueDateString(
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH)));
+            saveButton.setText(R.string.add_project_title_update_project);
+        } else {
+            projectModel.setColorTag(COLOR_TURQUOISE_HEX);
+            checkColorTag(COLOR_TURQUOISE_HEX);
+            DateTimeManager.clearTime(calendar);
+            projectModel.setDueDate(calendar.getTime());
+            dueDateButton.setText(getString(R.string.core_today));
+            initEditText(activity);
+        }
+
         initColorChips(activity);
         initClickEvents(activity);
 
@@ -145,7 +191,6 @@ public class AddProjectFragment extends Fragment {
     }
 
     private void initColorChips(Activity activity) {
-        projectModel.setColorTag(COLOR_TURQUOISE_HEX);
         colorTagChipGroup.setOnCheckedChangeListener((group, checkedId) -> {
             clearEditTextFocus(activity);
             switch (checkedId) {
@@ -177,6 +222,35 @@ public class AddProjectFragment extends Fragment {
         });
     }
 
+    private void checkColorTag(String colorTagHex) {
+        switch (colorTagHex) {
+            case COLOR_TURQUOISE_HEX:
+                colorTagChipGroup.check(R.id.chip_turquoise);
+                break;
+            case COLOR_EMERALD_HEX:
+                colorTagChipGroup.check(R.id.chip_emerald);
+                break;
+            case COLOR_PETER_RIVER_HEX:
+                colorTagChipGroup.check(R.id.chip_peter_river);
+                break;
+            case COLOR_AMETHYST_HEX:
+                colorTagChipGroup.check(R.id.chip_amethyst);
+                break;
+            case COLOR_WET_ASPHALT_HEX:
+                colorTagChipGroup.check(R.id.chip_wet_asphalt);
+                break;
+            case COLOR_SUNFLOWER_HEX:
+                colorTagChipGroup.check(R.id.chip_sunflower);
+                break;
+            case COLOR_CARROT_HEX:
+                colorTagChipGroup.check(R.id.chip_carrot);
+                break;
+            case COLOR_ALIZARIN_HEX:
+                colorTagChipGroup.check(R.id.chip_alizarin);
+                break;
+        }
+    }
+
     private void initClickEvents(Activity activity) {
         View.OnClickListener onClickListener = view -> {
             switch (view.getId()) {
@@ -185,10 +259,12 @@ public class AddProjectFragment extends Fragment {
                     showDatePickerDialog(activity);
                     break;
                 case R.id.button_save:
-                    clearEditTextFocus(activity);
                     Context context = getContext();
-                    if (!validateInput(context)) {
-                        break;
+                    if (!isEditing) {
+                        clearEditTextFocus(activity);
+                        if (!validateInput(context)) {
+                            break;
+                        }
                     }
                     if (projectModel.isValid()) {
                         saveProject(context);
@@ -197,13 +273,11 @@ public class AddProjectFragment extends Fragment {
                     }
                     break;
                 case R.id.button_close:
-                    clearEditTextFocus(activity);
+                    KeyboardManager.hideKeyboard(activity);
                     fragmentListener.onCloseFragment();
                     break;
             }
         };
-        projectModel.setDueDate(calendar.getTime());
-        dueDateButton.setText(getString(R.string.core_today));
         dueDateButton.setOnClickListener(onClickListener);
         saveButton.setOnClickListener(onClickListener);
         closeButton.setOnClickListener(onClickListener);
@@ -233,20 +307,21 @@ public class AddProjectFragment extends Fragment {
         return (view, year, monthOfYear, dayOfMonth) -> {
             calendar.set(year, monthOfYear, dayOfMonth, 0, 0, 0);
             projectModel.setDueDate(calendar.getTime());
-            YearMonth yearMonthObject = YearMonth.of(year, monthOfYear + 1);
-            if (year == this.year && monthOfYear == this.month) {
-                if (dayOfMonth == this.today) {
-                    dueDateButton.setText(R.string.core_today);
-                } else if (dayOfMonth == this.today + 1 || dayOfMonth == 1 && this.today == yearMonthObject.lengthOfMonth()) {
-                    dueDateButton.setText(R.string.core_tomorrow);
-                } else {
-                    dueDateButton.setText(dateFormat.format(calendar.getTime()));
-                }
-            } else {
-                dueDateButton.setText(dateFormat.format(calendar.getTime()));
-            }
+            dueDateButton.setText(getDueDateString(year, monthOfYear, dayOfMonth));
             alertDialog.dismiss();
         };
+    }
+
+    private String getDueDateString(int year, int month, int day) {
+        YearMonth yearMonthObject = YearMonth.of(year, month + 1);
+        if (year == this.year && month == this.month) {
+            if (day == this.today) {
+                dueDateButton.setText(R.string.core_today);
+            } else if (day == this.today + 1 || day == 1 && this.today == yearMonthObject.lengthOfMonth()) {
+                dueDateButton.setText(R.string.core_tomorrow);
+            }
+        }
+        return dateFormat.format(calendar.getTime());
     }
 
     private void saveProject(Context context) {

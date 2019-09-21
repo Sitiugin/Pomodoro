@@ -27,12 +27,6 @@ public class InitProjectsTask extends AsyncTask<Void, DocumentChange, Void> {
         this.itemAdapter = itemAdapter;
     }
 
-    /*@Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        itemAdapter.clear();
-    }*/
-
     @Override
     protected Void doInBackground(Void... voids) {
 
@@ -43,35 +37,7 @@ public class InitProjectsTask extends AsyncTask<Void, DocumentChange, Void> {
         List<DocumentChange> changes = querySnapshot.getDocumentChanges();
         for (DocumentChange change: changes) {
             this.publishProgress(change);
-            /*switch (change.getType()) {
-                case ADDED:
-                    break;
-                case MODIFIED:
-                    Log.d(TAG, "Modified city: " + dc.getDocument().getData());
-                    break;
-                case REMOVED:
-                    Log.d(TAG, "Removed city: " + dc.getDocument().getData());
-                    break;
-            }*/
         }
-        /*List<DocumentSnapshot> documentSnapshots = querySnapshot.getDocuments();
-        for (DocumentSnapshot snapshot: documentSnapshots) {
-
-            if (!snapshot.exists()) {
-                continue;
-            }
-            ProjectModel model;
-            try {
-                model = snapshot.toObject(ProjectModel.class);
-            } catch (Exception e) {
-                continue;
-            }
-            if (model == null) {
-                continue;
-            }
-            publishProgress(new ProjectItem(model));
-
-        }*/
 
         return null;
 
@@ -79,44 +45,43 @@ public class InitProjectsTask extends AsyncTask<Void, DocumentChange, Void> {
 
     @Override
     protected void onProgressUpdate(DocumentChange... values) {
+
         super.onProgressUpdate(values);
+
         ProjectItem item;
         int index;
+
         for (DocumentChange change: values) {
-            item = new ProjectItem(change.getDocument().toObject(ProjectModel.class));
-            switch (change.getType()) {
-                case ADDED:
-                    itemAdapter.add(item);
-                    break;
-                case MODIFIED:
-                    index = getProjectItemIndex(item.getProjectName());
-                    if (index != -1) {
-                        itemAdapter.set(getProjectItemIndex(item.getProjectName()), item);
-                    }
-                    break;
-                case REMOVED:
-                    index = getProjectItemIndex(item.getProjectName());
-                    if (index != -1) {
-                        itemAdapter.remove(index);
-                    }
-                    break;
-            }
+            try {
+
+                item = new ProjectItem(change.getDocument().toObject(ProjectModel.class));
+                switch (change.getType()) {
+                    case ADDED:
+                        itemAdapter.add(item);
+                        break;
+                    case MODIFIED:
+                        index = getProjectItemIndex(item.getProjectName());
+                        if (index != -1) {
+                            itemAdapter.set(getProjectItemIndex(item.getProjectName()), item);
+                        }
+                        break;
+                    case REMOVED:
+                        index = getProjectItemIndex(item.getProjectName());
+                        if (index != -1) {
+                            itemAdapter.remove(index);
+                        }
+                        break;
+                }
+
+            } catch (Exception ignored) { }
         }
+
     }
 
     private int getProjectItemIndex(@NonNull String name) {
-        /*return itemAdapter.getAdapterItems().stream().
-                filter(p -> p.getProjectName().equals(name)).
-                findAny().orElse(null);*/
         return IntStream.range(0, itemAdapter.getAdapterItems().size())
                 .filter(i -> name.equals(itemAdapter.getAdapterItems().get(i).getProjectName()))
                 .findFirst().orElse(-1);
     }
-
-    /*@Override
-    protected void onProgressUpdate(ProjectItem... values) {
-        super.onProgressUpdate(values);
-        itemAdapter.add(values);
-    }*/
 
 }

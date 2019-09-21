@@ -6,6 +6,7 @@
     <string name="core_cancel">Cancel</string>
     <string name="core_save">Save</string>
     <string name="core_add">Add</string>
+    <string name="core_edit_something">Edit %1$s</string>
     <string name="core_filter">Filter</string>
     <string name="core_today">Today</string>
     <string name="core_tomorrow">Tomorrow</string>
@@ -98,6 +99,7 @@
     <!--                                                                             ADD PROJECT -->
 
     <string name="add_project_title_add_project">Add Project</string>
+    <string name="add_project_title_update_project">Update Project</string>
     <string name="add_project_text_name">Name</string>
     <string name="add_project_text_color_tag">Color Tag</string>
     <string name="add_project_text_due">Due</string>

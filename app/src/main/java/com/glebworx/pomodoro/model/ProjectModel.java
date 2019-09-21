@@ -105,7 +105,7 @@ public class ProjectModel extends AbstractModel {
     @Exclude
     @Override
     public boolean isValid() {
-        return getName() != null && colorTag != null;
+        return super.isValid() && colorTag != null && dueDate != null;
     }
 
 

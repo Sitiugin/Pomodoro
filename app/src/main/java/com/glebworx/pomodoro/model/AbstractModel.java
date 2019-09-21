@@ -91,6 +91,8 @@ public abstract class AbstractModel implements Comparable<AbstractModel>, Parcel
     }
 
     @Exclude
-    public abstract boolean isValid();
+    public boolean isValid() {
+        return name != null && !getName().contains("/");
+    }
 
 }

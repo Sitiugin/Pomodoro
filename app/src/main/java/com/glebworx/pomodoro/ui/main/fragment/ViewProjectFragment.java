@@ -153,6 +153,10 @@ public class ViewProjectFragment extends Fragment {
                 null,
                 ColorManager.getDrawable(context, projectModel.getColorTag()), null);
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        calendar.setTime(projectModel.getDueDate());
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
         subtitleTextView.setText(getString(R.string.core_due, dateFormat.format(calendar.getTime())));
         /*Calendar calendar = Calendar.getInstance(Locale.getDefault());
         int year = calendar.get(Calendar.YEAR);
@@ -231,11 +235,11 @@ public class ViewProjectFragment extends Fragment {
 
         View.OnClickListener onClickListener = view -> {
             if (view.getId() == R.id.button_edit) {
-                // TODO
                 popupWindow.dismiss();
+                fragmentListener.onEditProject(projectModel);
             } else if (view.getId() == R.id.button_delete) {
-                deleteProject(context);
                 popupWindow.dismiss();
+                deleteProject(context);
             }
         };
         contentView.findViewById(R.id.button_edit).setOnClickListener(onClickListener);
@@ -246,15 +250,16 @@ public class ViewProjectFragment extends Fragment {
     private void deleteProject(Context context) {
         ProjectApi.deleteProject(projectModel, task -> {
             if (task.isSuccessful()) {
-                Toast.makeText(context, "Project deleted successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.view_project_toast_delete_success, Toast.LENGTH_SHORT).show();
                 fragmentListener.onCloseFragment();
             } else {
-                Toast.makeText(context, "Failed to delete project", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, R.string.view_project_toast_delete_failed, Toast.LENGTH_LONG).show();
             }
         });
     }
 
     public interface OnViewProjectFragmentInteractionListener {
+        void onEditProject(ProjectModel projectModel);
         void onAddTask(ProjectModel projectModel);
         void onSelectTask(TaskModel taskModel);
         void onCloseFragment();

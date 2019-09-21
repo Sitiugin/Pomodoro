@@ -119,7 +119,7 @@ public class TaskModel extends AbstractModel {
     @Exclude
     @Override
     public boolean isValid() {
-        return getName() != null;
+        return super.isValid() && dueDate != null;
     }
 
 

@@ -263,7 +263,7 @@ public class AddTaskFragment extends Fragment {
 
     private DatePicker.OnDateChangedListener getDateChangeListener(AlertDialog alertDialog) {
         return (view, year, monthOfYear, dayOfMonth) -> {
-            calendar.set(year, monthOfYear, dayOfMonth);
+            calendar.set(year, monthOfYear, dayOfMonth, 0, 0, 0);
             YearMonth yearMonthObject = YearMonth.of(year, monthOfYear + 1);
             if (year == this.year && monthOfYear == this.month) {
                 if (dayOfMonth == this.today) {

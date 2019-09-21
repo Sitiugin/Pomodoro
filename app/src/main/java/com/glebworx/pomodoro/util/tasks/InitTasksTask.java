@@ -42,29 +42,38 @@ public class InitTasksTask extends AsyncTask<Void, DocumentChange, Void> {
 
     @Override
     protected void onProgressUpdate(DocumentChange... values) {
+
         super.onProgressUpdate(values);
+
         TaskItem item;
         int index;
+
         for (DocumentChange change: values) {
-            item = new TaskItem(change.getDocument().toObject(TaskModel.class));
-            switch (change.getType()) {
-                case ADDED:
-                    itemAdapter.add(item);
-                    break;
-                case MODIFIED:
-                    index = getTaskItemIndex(item.getTaskName());
-                    if (index != -1) {
-                        itemAdapter.set(getTaskItemIndex(item.getTaskName()), item);
-                    }
-                    break;
-                case REMOVED:
-                    index = getTaskItemIndex(item.getTaskName());
-                    if (index != -1) {
-                        itemAdapter.remove(index);
-                    }
-                    break;
-            }
+            try {
+
+                item = new TaskItem(change.getDocument().toObject(TaskModel.class));
+
+                switch (change.getType()) {
+                    case ADDED:
+                        itemAdapter.add(item);
+                        break;
+                    case MODIFIED:
+                        index = getTaskItemIndex(item.getTaskName());
+                        if (index != -1) {
+                            itemAdapter.set(getTaskItemIndex(item.getTaskName()), item);
+                        }
+                        break;
+                    case REMOVED:
+                        index = getTaskItemIndex(item.getTaskName());
+                        if (index != -1) {
+                            itemAdapter.remove(index);
+                        }
+                        break;
+                }
+
+            } catch (Exception ignored) { }
         }
+
     }
 
     private int getTaskItemIndex(@NonNull String name) {
