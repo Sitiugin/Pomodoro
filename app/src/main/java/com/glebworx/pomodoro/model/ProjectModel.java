@@ -138,6 +138,13 @@ public class ProjectModel extends AbstractModel {
         pomodorosCompleted += taskModel.getPomodorosCompleted();
     }
 
+    @Exclude
+    public void removeTask(TaskModel taskModel) {
+        tasks.remove(taskModel.getName());
+        pomodorosAllocated -= taskModel.getPomodorosAllocated();
+        pomodorosCompleted -= taskModel.getPomodorosCompleted();
+    }
+
     public int getPomodorosAllocated() {
         return pomodorosAllocated;
     }

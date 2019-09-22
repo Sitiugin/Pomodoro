@@ -54,7 +54,7 @@ public class ProjectApi extends BaseApi {
     }
 
     public static void getModelByName(@NonNull String name,
-                                @NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
+                                      @NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
         getCollection(COLLECTION_PROJECTS).whereEqualTo(FIELD_NAME, name).get().addOnCompleteListener(onCompleteListener);
     }
 

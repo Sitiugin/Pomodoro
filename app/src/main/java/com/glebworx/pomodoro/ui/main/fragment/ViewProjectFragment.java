@@ -214,7 +214,7 @@ public class ViewProjectFragment extends Fragment {
     }
 
     private void deleteTask(Context context, TaskModel taskModel, FastAdapter fastAdapter, int position) {
-        TaskApi.deleteTask(projectModel.getName(), taskModel, task -> {
+        TaskApi.deleteTask(projectModel, taskModel, task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(context, R.string.view_project_toast_task_delete_success, Toast.LENGTH_SHORT).show();
             } else {
