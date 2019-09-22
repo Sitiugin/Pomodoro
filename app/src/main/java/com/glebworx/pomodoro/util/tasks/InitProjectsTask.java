@@ -14,6 +14,7 @@ import com.google.firebase.firestore.model.Document;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
+import com.mikepenz.fastadapter.adapters.ItemFilter;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.fastadapter.listeners.OnClickListener;
 
@@ -31,6 +32,7 @@ public class InitProjectsTask extends AsyncTask<Void, DocumentChange, Void> {
     private ItemAdapter<ProjectItem> itemAdapter;
     private WeakReference<FastAdapter<AbstractItem>> fastAdapterWeakReference;
     private FastAdapter<AbstractItem> fastAdapter;
+    private ItemFilter<ProjectItem, ProjectItem> itemFilter;
 
     public InitProjectsTask(QuerySnapshot querySnapshot,
                             ItemAdapter<ProjectItem> itemAdapter,
@@ -75,7 +77,13 @@ public class InitProjectsTask extends AsyncTask<Void, DocumentChange, Void> {
                 item = new ProjectItem(change.getDocument().toObject(ProjectModel.class));
                 switch (change.getType()) {
                     case ADDED:
-                        itemAdapter.add(item);
+                        //itemAdapter.add(item);
+                        itemFilter = itemAdapter.getItemFilter();
+                        if (itemFilter  != null) {
+                            itemFilter.add(item);
+                        } else {
+                            itemAdapter.add(item);
+                        }
                         //fastAdapter.notifyAdapterItemInserted(itemAdapter.getAdapterItemCount() - 1);
                         break;
                     case MODIFIED:
@@ -88,8 +96,14 @@ public class InitProjectsTask extends AsyncTask<Void, DocumentChange, Void> {
                     case REMOVED:
                         index = getProjectItemIndex(item.getProjectName());
                         if (index != -1) {
-                            itemAdapter.remove(index + 1); // add 1 because of header
+                            //itemAdapter.remove(index + 1); // add 1 because of header
+                            itemFilter = itemAdapter.getItemFilter();
+                            if (itemFilter  != null) {
+                                itemFilter.remove(index + 1);
+                            }
                             //fastAdapter.notifyAdapterItemRemoved(index);
+                        } else {
+                            itemAdapter.remove(index + 1);
                         }
                         break;
                 }

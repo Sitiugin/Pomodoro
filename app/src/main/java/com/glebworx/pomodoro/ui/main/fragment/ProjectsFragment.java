@@ -220,6 +220,7 @@ public class ProjectsFragment extends Fragment {
                 return true;
             }
             if (view.getId() == R.id.item_add) {
+                searchView.setQuery(null, true);
                 fragmentListener.onAddProject();
                 return true;
             }
@@ -232,7 +233,6 @@ public class ProjectsFragment extends Fragment {
         void onViewProject(ProjectModel projectModel);
         void onViewReport();
         void onEditProject(ProjectModel projectModel);
-        void onCloseFragment();
     }
 
 }
