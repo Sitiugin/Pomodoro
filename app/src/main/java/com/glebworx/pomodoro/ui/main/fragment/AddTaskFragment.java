@@ -45,6 +45,17 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_DAY;
+import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_FIVE_DAYS;
+import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_FOUR_DAYS;
+import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_SIX_DAYS;
+import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_THREE_DAYS;
+import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_TWO_DAYS;
+import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_WEEKLY;
+import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_MONTHLY;
+import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_WEEKDAY;
+import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_WEEKEND;
+
 
 public class AddTaskFragment extends Fragment {
 
@@ -146,12 +157,14 @@ public class AddTaskFragment extends Fragment {
             taskNameEditText.setVisibility(View.GONE);
             taskNameSectionTextView.setVisibility(View.GONE);
             titleTextView.setText(context.getString(R.string.core_edit_something, taskModel.getName()));
-            calendar.setTime(projectModel.getDueDate());
+            calendar.setTime(taskModel.getDueDate());
             DateTimeManager.clearTime(calendar);
             dueDateButton.setText(getDueDateString(
                     calendar.get(Calendar.YEAR),
                     calendar.get(Calendar.MONTH),
                     calendar.get(Calendar.DAY_OF_MONTH)));
+            allocatedTimeSpinner.setSelection(taskModel.getPomodorosAllocated() - 1, true);
+            selectRecurrence(taskModel.getRecurrence());
             saveButton.setText(R.string.add_task_title_update_task);
         } else {
             DateTimeManager.clearTime(calendar);
@@ -221,34 +234,34 @@ public class AddTaskFragment extends Fragment {
                         taskModel.setRecurrence(null);
                         break;
                     case 1:
-                        taskModel.setRecurrence(TaskModel.RECURRENCE_EVERY_DAY);
+                        taskModel.setRecurrence(RECURRENCE_EVERY_DAY);
                         break;
                     case 2:
-                        taskModel.setRecurrence(TaskModel.RECURRENCE_EVERY_TWO_DAYS);
+                        taskModel.setRecurrence(RECURRENCE_EVERY_TWO_DAYS);
                         break;
                     case 3:
-                        taskModel.setRecurrence(TaskModel.RECURRENCE_EVERY_THREE_DAYS);
+                        taskModel.setRecurrence(RECURRENCE_EVERY_THREE_DAYS);
                         break;
                     case 4:
-                        taskModel.setRecurrence(TaskModel.RECURRENCE_EVERY_FOUR_DAYS);
+                        taskModel.setRecurrence(RECURRENCE_EVERY_FOUR_DAYS);
                         break;
                     case 5:
-                        taskModel.setRecurrence(TaskModel.RECURRENCE_EVERY_FIVE_DAYS);
+                        taskModel.setRecurrence(RECURRENCE_EVERY_FIVE_DAYS);
                         break;
                     case 6:
-                        taskModel.setRecurrence(TaskModel.RECURRENCE_EVERY_SIX_DAYS);
+                        taskModel.setRecurrence(RECURRENCE_EVERY_SIX_DAYS);
                         break;
                     case 7:
-                        taskModel.setRecurrence(TaskModel.RECURRENCE_EVERY_WEEKLY);
+                        taskModel.setRecurrence(RECURRENCE_EVERY_WEEKLY);
                         break;
                     case 8:
-                        taskModel.setRecurrence(TaskModel.RECURRENCE_WEEKDAY);
+                        taskModel.setRecurrence(RECURRENCE_WEEKDAY);
                         break;
                     case 9:
-                        taskModel.setRecurrence(TaskModel.RECURRENCE_WEEKEND);
+                        taskModel.setRecurrence(RECURRENCE_WEEKEND);
                         break;
                     case 10:
-                        taskModel.setRecurrence(TaskModel.RECURRENCE_MONTHLY);
+                        taskModel.setRecurrence(RECURRENCE_MONTHLY);
                         break;
                 }
             }
@@ -264,6 +277,43 @@ public class AddTaskFragment extends Fragment {
         });
     }
 
+    private void selectRecurrence(String recurrenceString) {
+        if (recurrenceString == null) {
+            return;
+        }
+        switch (recurrenceString) {
+            case RECURRENCE_EVERY_DAY:
+                recurrenceSpinner.setSelection(1, true);
+                break;
+            case RECURRENCE_EVERY_TWO_DAYS:
+                recurrenceSpinner.setSelection(2, true);
+                break;
+            case RECURRENCE_EVERY_THREE_DAYS:
+                recurrenceSpinner.setSelection(3, true);
+                break;
+            case RECURRENCE_EVERY_FOUR_DAYS:
+                recurrenceSpinner.setSelection(4, true);
+                break;
+            case RECURRENCE_EVERY_FIVE_DAYS:
+                recurrenceSpinner.setSelection(5, true);
+                break;
+            case RECURRENCE_EVERY_SIX_DAYS:
+                recurrenceSpinner.setSelection(6, true);
+                break;
+            case RECURRENCE_EVERY_WEEKLY:
+                recurrenceSpinner.setSelection(7, true);
+                break;
+            case RECURRENCE_WEEKDAY:
+                recurrenceSpinner.setSelection(8, true);
+                break;
+            case RECURRENCE_WEEKEND:
+                recurrenceSpinner.setSelection(9, true);
+                break;
+            case RECURRENCE_MONTHLY:
+                recurrenceSpinner.setSelection(10, true);
+                break;
+        }
+    }
 
     private void initClickEvents(Activity activity) {
         View.OnClickListener onClickListener = view -> {
@@ -324,18 +374,8 @@ public class AddTaskFragment extends Fragment {
     private DatePicker.OnDateChangedListener getDateChangeListener(AlertDialog alertDialog) {
         return (view, year, monthOfYear, dayOfMonth) -> {
             calendar.set(year, monthOfYear, dayOfMonth, 0, 0, 0);
-            YearMonth yearMonthObject = YearMonth.of(year, monthOfYear + 1);
-            if (year == this.year && monthOfYear == this.month) {
-                if (dayOfMonth == this.today) {
-                    dueDateButton.setText(R.string.core_today);
-                } else if (dayOfMonth == this.today + 1 || dayOfMonth == 1 && this.today == yearMonthObject.lengthOfMonth()) {
-                    dueDateButton.setText(R.string.core_tomorrow);
-                } else {
-                    dueDateButton.setText(dateFormat.format(calendar.getTime()));
-                }
-            } else {
-                dueDateButton.setText(dateFormat.format(calendar.getTime()));
-            }
+            taskModel.setDueDate(calendar.getTime());
+            dueDateButton.setText(getDueDateString(year, monthOfYear, dayOfMonth));
             alertDialog.dismiss();
         };
     }
