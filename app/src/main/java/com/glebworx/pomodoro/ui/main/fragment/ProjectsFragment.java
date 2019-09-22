@@ -160,6 +160,7 @@ public class ProjectsFragment extends Fragment {
     }
 
     private void deleteProject(Context context, ProjectModel projectModel, int position) {
+        searchView.setQuery(null, true);
         ProjectApi.deleteProject(projectModel, task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(context, R.string.view_project_toast_project_delete_success, Toast.LENGTH_SHORT).show();

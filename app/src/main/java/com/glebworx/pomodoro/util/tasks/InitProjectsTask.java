@@ -77,33 +77,18 @@ public class InitProjectsTask extends AsyncTask<Void, DocumentChange, Void> {
                 item = new ProjectItem(change.getDocument().toObject(ProjectModel.class));
                 switch (change.getType()) {
                     case ADDED:
-                        //itemAdapter.add(item);
-                        itemFilter = itemAdapter.getItemFilter();
-                        if (itemFilter  != null) {
-                            itemFilter.add(item);
-                        } else {
-                            itemAdapter.add(item);
-                        }
-                        //fastAdapter.notifyAdapterItemInserted(itemAdapter.getAdapterItemCount() - 1);
+                        itemAdapter.add(item);
                         break;
                     case MODIFIED:
                         index = getProjectItemIndex(item.getProjectName());
                         if (index != -1) {
                             itemAdapter.set(index + 1, item); // add 1 because of header
-                            //fastAdapter.notifyAdapterItemChanged(index);
                         }
                         break;
                     case REMOVED:
                         index = getProjectItemIndex(item.getProjectName());
                         if (index != -1) {
-                            //itemAdapter.remove(index + 1); // add 1 because of header
-                            itemFilter = itemAdapter.getItemFilter();
-                            if (itemFilter  != null) {
-                                itemFilter.remove(index + 1);
-                            }
-                            //fastAdapter.notifyAdapterItemRemoved(index);
-                        } else {
-                            itemAdapter.remove(index + 1);
+                            itemAdapter.remove(index + 1); // add 1 because of header
                         }
                         break;
                 }
