@@ -16,7 +16,9 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.transition.TransitionManager;
 
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -157,17 +159,23 @@ public class AddTaskFragment extends Fragment {
         allocatedTimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                clearEditTextFocus(activity);
+                //clearEditTextFocus(activity);
                 taskModel.setPomodorosAllocated(position + 1);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) { }
         });
+        allocatedTimeSpinner.setOnTouchListener((view, motionEvent) -> {
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                clearEditTextFocus(activity);
+            }
+            return false;
+        });
         recurrenceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                clearEditTextFocus(activity);
+                //clearEditTextFocus(activity);
                 switch (position) {
                     case 0:
                         taskModel.setRecurrence(null);
@@ -207,6 +215,12 @@ public class AddTaskFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) { }
+        });
+        recurrenceSpinner.setOnTouchListener((view, motionEvent) -> {
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                clearEditTextFocus(activity);
+            }
+            return false;
         });
     }
 

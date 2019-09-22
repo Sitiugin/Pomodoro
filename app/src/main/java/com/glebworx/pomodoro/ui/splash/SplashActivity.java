@@ -22,6 +22,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+
 public class SplashActivity extends AppCompatActivity {
 
     private SpinKitView spinKitView;
@@ -60,6 +61,17 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
+    private void startMainActivity() {
+        String name = AuthManager.getInstance().getName();
+        String message = name == null
+                ? getString(R.string.splash_toast_sign_in_success)
+                : getString(R.string.splash_toast_signed_in_as, name);
+        Toast.makeText(SplashActivity.this, message, Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+        startActivity(intent);
+        finishAffinity();
+    }
+
     private void inflateSplashLayout() {
 
         isSplashLayoutInflated = true;
@@ -87,8 +99,10 @@ public class SplashActivity extends AppCompatActivity {
                     validateAndSendSignInLink(emailInputLayout);
                     break;
                 case R.id.button_terms_of_service:
+                    // TODO implement
                     break;
                 case R.id.button_privacy:
+                    // TODO implement
                     break;
             }
         };
@@ -169,22 +183,6 @@ public class SplashActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    private void startMainActivity() {
-        String name = AuthManager.getInstance().getName();
-        String message;
-        if (name == null) {
-            message = getString(R.string.splash_toast_sign_in_success);
-
-        } else {
-            message = getString(R.string.splash_toast_signed_in_as, name);
-        }
-        Toast.makeText(SplashActivity.this, message, Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        finishAffinity();
     }
 
 }
