@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_content"
+        android:text="@string/main_title_sort"/>
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/ButtonStyle.Borderless"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:text="Alphabetically"/>
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/ButtonStyle.Borderless"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:text="Due Date"/>
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/ButtonStyle.Borderless"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:text="Modified Date"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_content"
+        android:text="@string/main_title_other"/>
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/ButtonStyle.Borderless"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:text="About"/>
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/ButtonStyle.Borderless"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:text="Premium"/>
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/ButtonStyle.Borderless"
+        android:id="@+id/button_settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:text="Settings"/>
+</androidx.appcompat.widget.LinearLayoutCompat>

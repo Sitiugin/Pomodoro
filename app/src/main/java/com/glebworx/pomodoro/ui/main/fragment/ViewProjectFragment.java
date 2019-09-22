@@ -34,8 +34,6 @@ import com.glebworx.pomodoro.util.manager.ColorManager;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
 import com.glebworx.pomodoro.util.tasks.InitTasksTask;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mikepenz.fastadapter.FastAdapter;
@@ -256,7 +254,7 @@ public class ViewProjectFragment extends Fragment {
 
         PopupWindowManager popupWindowManager = new PopupWindowManager(context);
         PopupWindow popupWindow = popupWindowManager.showPopup(
-                R.layout.popup_options_project,
+                R.layout.popup_options_view_project,
                 optionsButton,
                 Gravity.BOTTOM | Gravity.END);
 

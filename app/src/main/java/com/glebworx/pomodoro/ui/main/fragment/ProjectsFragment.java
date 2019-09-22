@@ -13,9 +13,11 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.glebworx.pomodoro.R;
@@ -25,6 +27,7 @@ import com.glebworx.pomodoro.item.ProjectHeaderItem;
 import com.glebworx.pomodoro.item.ProjectItem;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
+import com.glebworx.pomodoro.util.manager.PopupWindowManager;
 import com.glebworx.pomodoro.util.tasks.InitProjectsTask;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -87,7 +90,7 @@ public class ProjectsFragment extends Fragment {
 
         initRecyclerView(context, layoutManager, fastAdapter);
         initSearchView();
-        initClickEvents(fastAdapter);
+        initClickEvents(context, fastAdapter);
 
         ProjectApi.addModelEventListener(eventListener);
 
@@ -200,13 +203,14 @@ public class ProjectsFragment extends Fragment {
 
     }
 
-    private void initClickEvents(FastAdapter<AbstractItem> fastAdapter) {
+    private void initClickEvents(Context context, FastAdapter<AbstractItem> fastAdapter) {
         View.OnClickListener onClickListener = view -> {
             switch (view.getId()) {
                 case R.id.button_report:
                     fragmentListener.onViewReport();
                     break;
                 case R.id.button_options:
+                    showOptionsPopup(context);
                     break;
             }
         };
@@ -226,6 +230,24 @@ public class ProjectsFragment extends Fragment {
                 return true;
             }
             return false;
+        });
+    }
+
+    private void showOptionsPopup(Context context) {
+        PopupWindowManager popupWindowManager = new PopupWindowManager(context);
+        PopupWindow popupWindow = popupWindowManager.showPopup(
+                R.layout.popup_options_projects,
+                optionsButton,
+                Gravity.BOTTOM | Gravity.END);
+        popupWindow.getContentView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (view.getId()) {
+                    case R.id.button_settings:
+                        popupWindow.dismiss();
+                        break;
+                }
+            }
         });
     }
 

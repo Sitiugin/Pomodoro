@@ -91,6 +91,8 @@
     <string name="main_title_tasks">Tasks</string>
     <string name="main_title_projects">Projects</string>
     <string name="main_title_report">Report</string>
+    <string name="main_title_sort">Sort</string>
+    <string name="main_title_other">Other</string>
     <string name="main_text_today">Today</string>
     <string name="main_text_this_week">This week</string>
     <string name="main_text_overdue">Overdue</string>

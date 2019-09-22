@@ -9,7 +9,7 @@
         android:id="@+id/button_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_edit_black"
+        android:drawableEnd="@drawable/ic_edit_black"
         android:drawablePadding="@dimen/margin_content_quarter"
         android:text="@string/view_project_title_edit_project"/>
     <androidx.appcompat.widget.AppCompatButton
@@ -17,7 +17,7 @@
         android:id="@+id/button_delete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_delete_black"
+        android:drawableEnd="@drawable/ic_delete_black"
         android:drawablePadding="@dimen/margin_content_quarter"
         android:text="@string/view_project_title_delete_project"/>
 </androidx.appcompat.widget.LinearLayoutCompat>
