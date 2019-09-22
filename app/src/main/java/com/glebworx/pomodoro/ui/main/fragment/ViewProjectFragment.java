@@ -11,6 +11,7 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.widget.PopupWindowCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,6 +47,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
+import com.mikepenz.fastadapter_extensions.swipe.SimpleSwipeCallback;
 import com.mikepenz.itemanimators.SlideInOutLeftAnimator;
 
 import java.text.SimpleDateFormat;
@@ -117,7 +119,7 @@ public class ViewProjectFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
 
         initTitle(context);
-        initRecyclerView(layoutManager, fastAdapter);
+        initRecyclerView(context, layoutManager, fastAdapter);
         initClickEvents(context, fastAdapter);
 
         TaskApi.addModelEventListener(projectModel.getName(), eventListener);
@@ -184,7 +186,7 @@ public class ViewProjectFragment extends Fragment {
         }*/
     }
 
-    private void initRecyclerView(LinearLayoutManager layoutManager, FastAdapter fastAdapter) {
+    private void initRecyclerView(Context context, LinearLayoutManager layoutManager, FastAdapter fastAdapter) {
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty));
@@ -200,7 +202,34 @@ public class ViewProjectFragment extends Fragment {
 
         fastAdapter.setHasStableIds(true);
         fastAdapter.withSelectable(true);
+        attachSwipeHelper(context, recyclerView, fastAdapter);
         recyclerView.setAdapter(fastAdapter);
+
+    }
+
+    private void attachSwipeHelper(Context context,
+                                   RecyclerView recyclerView,
+                                   FastAdapter fastAdapter) {
+        SimpleSwipeCallback swipeCallback = new SimpleSwipeCallback(
+                (position, direction) -> {
+                    TaskModel taskModel = taskAdapter.getAdapterItem(position - 1).getModel();
+                    if (direction == ItemTouchHelper.RIGHT) {
+                        fragmentListener.onEditTask(taskModel);
+                    } else if (direction == ItemTouchHelper.LEFT) {
+                        deleteTask(context, taskModel);
+                        //deleteProject(context, taskModel);
+                    }
+                    fastAdapter.notifyAdapterItemChanged(position);
+                },
+                context.getDrawable(R.drawable.ic_delete_black),
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT,
+                context.getColor(android.R.color.transparent))
+                .withLeaveBehindSwipeRight(context.getDrawable(R.drawable.ic_edit_black));
+        ItemTouchHelper touchHelper = new ItemTouchHelper(swipeCallback);
+        touchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    private void deleteTask(Context context, TaskModel taskModel) {
 
     }
 
@@ -270,6 +299,7 @@ public class ViewProjectFragment extends Fragment {
         void onEditProject(ProjectModel projectModel);
         void onAddTask(ProjectModel projectModel);
         void onSelectTask(TaskModel taskModel);
+        void onEditTask(TaskModel taskModel);
         void onCloseFragment();
     }
 

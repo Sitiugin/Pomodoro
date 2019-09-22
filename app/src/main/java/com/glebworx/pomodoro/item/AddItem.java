@@ -9,10 +9,11 @@ import androidx.appcompat.widget.AppCompatTextView;
 import com.glebworx.pomodoro.R;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
+import com.mikepenz.fastadapter_extensions.swipe.ISwipeable;
 
 import java.util.List;
 
-public class AddItem extends AbstractItem<AddItem, AddItem.ViewHolder> {
+public class AddItem extends AbstractItem<AddItem, AddItem.ViewHolder> implements ISwipeable<AddItem, AddItem> {
 
 
     //                                                                                    ATTRIBUTES
@@ -50,6 +51,16 @@ public class AddItem extends AbstractItem<AddItem, AddItem.ViewHolder> {
 
     public String getButtonText() {
         return buttonText;
+    }
+
+    @Override
+    public boolean isSwipeable() {
+        return false;
+    }
+
+    @Override
+    public AddItem withIsSwipeable(boolean swipeable) {
+        return this;
     }
 
 

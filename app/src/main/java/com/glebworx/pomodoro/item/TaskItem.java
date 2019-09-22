@@ -14,6 +14,7 @@ import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.util.constants.Constants;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
+import com.mikepenz.fastadapter_extensions.swipe.ISwipeable;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,7 +23,7 @@ import java.util.Locale;
 
 import javax.annotation.Nonnull;
 
-public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> {
+public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> implements ISwipeable<TaskItem, TaskItem> {
 
 
     //                                                                                    ATTRIBUTES
@@ -55,6 +56,16 @@ public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> {
     @Override
     public int getLayoutRes() {
         return R.layout.item_task;
+    }
+
+    @Override
+    public boolean isSwipeable() {
+        return true;
+    }
+
+    @Override
+    public TaskItem withIsSwipeable(boolean swipeable) {
+        return this;
     }
 
 

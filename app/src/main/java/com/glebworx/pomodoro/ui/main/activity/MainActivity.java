@@ -112,6 +112,11 @@ public class MainActivity
         // TODO implement
     }
 
+    @Override
+    public void onEditTask(TaskModel taskModel) {
+        // TODO implement
+    }
+
     private void initBottomSheet() {
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override

@@ -17,6 +17,7 @@ import com.glebworx.pomodoro.util.constants.Constants;
 import com.glebworx.pomodoro.util.manager.ColorManager;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
+import com.mikepenz.fastadapter_extensions.swipe.ISwipeable;
 import com.triggertrap.seekarc.SeekArc;
 
 import java.text.NumberFormat;
@@ -38,7 +39,7 @@ import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_SUNFLOWE
 import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_TURQUOISE_HEX;
 import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_WET_ASPHALT_HEX;
 
-public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolder> {
+public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolder> implements ISwipeable<ProjectItem, ProjectItem> {
 
 
     //                                                                                    ATTRIBUTES
@@ -73,6 +74,16 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
     @Override
     public int getLayoutRes() {
         return R.layout.item_project;
+    }
+
+    @Override
+    public boolean isSwipeable() {
+        return true;
+    }
+
+    @Override
+    public ProjectItem withIsSwipeable(boolean swipeable) {
+        return this;
     }
 
     @Override

@@ -13,6 +13,7 @@ import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.util.constants.Constants;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
+import com.mikepenz.fastadapter_extensions.swipe.ISwipeable;
 import com.triggertrap.seekarc.SeekArc;
 
 import java.text.NumberFormat;
@@ -23,7 +24,7 @@ import java.util.Locale;
 
 import javax.annotation.Nonnull;
 
-public class ProjectHeaderItem extends AbstractItem<ProjectHeaderItem, ProjectHeaderItem.ViewHolder> {
+public class ProjectHeaderItem extends AbstractItem<ProjectHeaderItem, ProjectHeaderItem.ViewHolder> implements ISwipeable<ProjectHeaderItem, ProjectHeaderItem> {
 
 
     //                                                                                    ATTRIBUTES
@@ -33,8 +34,7 @@ public class ProjectHeaderItem extends AbstractItem<ProjectHeaderItem, ProjectHe
 
     //                                                                                  CONSTRUCTORS
 
-    public ProjectHeaderItem() {
-    }
+    public ProjectHeaderItem() { }
 
 
     //                                                                                    OVERRIDDEN
@@ -53,6 +53,16 @@ public class ProjectHeaderItem extends AbstractItem<ProjectHeaderItem, ProjectHe
     @Override
     public int getLayoutRes() {
         return R.layout.item_project_header;
+    }
+
+    @Override
+    public boolean isSwipeable() {
+        return false;
+    }
+
+    @Override
+    public ProjectHeaderItem withIsSwipeable(boolean swipeable) {
+        return this;
     }
 
     //                                                                                       HELPERS

@@ -39,7 +39,7 @@ import com.mikepenz.itemanimators.SlideInOutLeftAnimator;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
+// TODO add project when filter is on is wrong
 public class ProjectsFragment extends Fragment {
 
 
@@ -146,10 +146,10 @@ public class ProjectsFragment extends Fragment {
                     ProjectModel projectModel = projectAdapter.getAdapterItem(position - 1).getModel();
                     if (direction == ItemTouchHelper.RIGHT) {
                         fragmentListener.onEditProject(projectModel); // adjust for header
+                        fastAdapter.notifyAdapterItemChanged(position);
                     } else if (direction == ItemTouchHelper.LEFT) {
-                        deleteProject(context, projectModel);
+                        deleteProject(context, projectModel, position);
                     }
-                    fastAdapter.notifyAdapterItemChanged(position);
                 },
                 context.getDrawable(R.drawable.ic_delete_black),
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT,
@@ -159,12 +159,12 @@ public class ProjectsFragment extends Fragment {
         touchHelper.attachToRecyclerView(recyclerView);
     }
 
-    private void deleteProject(Context context, ProjectModel projectModel) {
-        fragmentListener.onCloseFragment();
+    private void deleteProject(Context context, ProjectModel projectModel, int position) {
         ProjectApi.deleteProject(projectModel, task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(context, R.string.view_project_toast_delete_success, Toast.LENGTH_SHORT).show();
             } else {
+                fastAdapter.notifyAdapterItemChanged(position);
                 Toast.makeText(context, R.string.view_project_toast_delete_failed, Toast.LENGTH_LONG).show();
             }
         });
