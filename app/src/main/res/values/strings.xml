@@ -106,8 +106,11 @@
     <string name="add_project_hint_name">Enter a name for your project</string>
     <string name="add_project_toast_add_success">Project Added</string>
     <string name="add_project_toast_add_failed">Could not add project. Please try again later.</string>
+    <string name="add_project_toast_update_success">Project Updated</string>
+    <string name="add_project_toast_update_failed">Could not update project. Please try again later.</string>
     <string name="add_project_toast_add_failed_duplicate">Project with this name already exists!</string>
     <string name="add_project_toast_add_failed_connection">Failed to add project. Please check your internet connection.</string>
+    <string name="add_project_toast_update_failed_connection">Failed to update project. Please check your internet connection.</string>
     <string name="add_project_err_name_empty">Project name cannot be empty!</string>
 
 

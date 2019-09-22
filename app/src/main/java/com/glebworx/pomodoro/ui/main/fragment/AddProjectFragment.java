@@ -261,16 +261,17 @@ public class AddProjectFragment extends Fragment {
                     break;
                 case R.id.button_save:
                     Context context = getContext();
-                    if (!isEditing) {
-                        clearEditTextFocus(activity);
-                        if (!validateInput(context)) {
-                            break;
-                        }
+                    clearEditTextFocus(activity);
+                    if (!validateInput(context)) {
+                        break;
                     }
                     if (projectModel.isValid()) {
                         saveProject(context);
                     } else if (context != null) {
-                        Toast.makeText(context, R.string.add_project_toast_add_failed, Toast.LENGTH_LONG).show();
+                        Toast.makeText(
+                                context,
+                                isEditing ? R.string.add_project_toast_update_failed : R.string.add_project_toast_add_failed,
+                                Toast.LENGTH_LONG).show();
                     }
                     break;
                 case R.id.button_close:
@@ -285,6 +286,9 @@ public class AddProjectFragment extends Fragment {
     }
 
     private boolean validateInput(Context context) {
+        if (isEditing) {
+            return true;
+        }
         if (Objects.requireNonNull(projectNameEditText.getText()).toString().trim().isEmpty()) {
             Toast.makeText(context, R.string.add_project_err_name_empty, Toast.LENGTH_LONG).show();
             return false;
@@ -333,10 +337,16 @@ public class AddProjectFragment extends Fragment {
                 return;
             }
             if (task.isSuccessful()) {
-                Toast.makeText(context, R.string.add_project_toast_add_success, Toast.LENGTH_SHORT).show();
+                Toast.makeText(
+                        context,
+                        isEditing ? R.string.add_project_toast_update_success : R.string.add_project_toast_add_success,
+                        Toast.LENGTH_SHORT).show();
                 fragmentListener.onCloseFragment();
             } else {
-                Toast.makeText(context, R.string.add_project_toast_add_failed, Toast.LENGTH_LONG).show();
+                Toast.makeText(
+                        context,
+                        isEditing ? R.string.add_project_toast_update_failed : R.string.add_project_toast_add_failed,
+                        Toast.LENGTH_LONG).show();
                 startSaveCanceledAnimation();
             }
         });
@@ -368,9 +378,11 @@ public class AddProjectFragment extends Fragment {
     }
 
     private void clearEditTextFocus(Activity activity) {
-        projectModel.setName(Objects.requireNonNull(projectNameEditText.getText()).toString().trim());
-        KeyboardManager.hideKeyboard(activity);
-        projectNameEditText.clearFocus();
+        if (!isEditing) {
+            projectModel.setName(Objects.requireNonNull(projectNameEditText.getText()).toString().trim());
+            KeyboardManager.hideKeyboard(activity);
+            projectNameEditText.clearFocus();
+        }
     }
 
     public interface OnAddProjectFragmentInteractionListener {
