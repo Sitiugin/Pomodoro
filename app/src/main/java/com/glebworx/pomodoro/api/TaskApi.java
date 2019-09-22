@@ -51,7 +51,7 @@ public class TaskApi extends BaseApi {
 
     }
 
-    public static void removeTask(@NonNull String projectName,
+    public static void deleteTask(@NonNull String projectName,
                                   @NonNull TaskModel taskModel,
                                   @Nullable OnCompleteListener<Void> onCompleteListener) {
         Task<Void> task = getCollection(COLLECTION_PROJECTS)
@@ -61,7 +61,6 @@ public class TaskApi extends BaseApi {
                 .delete();
 
         // TODO batch update project data
-        // TODO delete collection if necessary
         if (onCompleteListener != null) {
             task.addOnCompleteListener(onCompleteListener);
         }

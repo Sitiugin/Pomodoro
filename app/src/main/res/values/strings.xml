@@ -133,8 +133,10 @@
     <string name="view_project_title_add_task">Add Task</string>
     <string name="view_project_title_edit_project">Edit Project</string>
     <string name="view_project_title_delete_project">Delete Project</string>
-    <string name="view_project_toast_delete_success">Project deleted</string>
-    <string name="view_project_toast_delete_failed">Failed to delete project. Please try again later.</string>
+    <string name="view_project_toast_project_delete_success">Project deleted</string>
+    <string name="view_project_toast_project_delete_failed">Failed to delete project. Please try again later.</string>
+    <string name="view_project_toast_task_delete_success">Task deleted</string>
+    <string name="view_project_toast_task_delete_failed">Failed to delete task. Please try again later.</string>
 
     <!--                                                                              MAIN TASKS -->
 

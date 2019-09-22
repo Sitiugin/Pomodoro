@@ -162,10 +162,10 @@ public class ProjectsFragment extends Fragment {
     private void deleteProject(Context context, ProjectModel projectModel, int position) {
         ProjectApi.deleteProject(projectModel, task -> {
             if (task.isSuccessful()) {
-                Toast.makeText(context, R.string.view_project_toast_delete_success, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.view_project_toast_project_delete_success, Toast.LENGTH_SHORT).show();
             } else {
                 fastAdapter.notifyAdapterItemChanged(position);
-                Toast.makeText(context, R.string.view_project_toast_delete_failed, Toast.LENGTH_LONG).show();
+                Toast.makeText(context, R.string.view_project_toast_project_delete_failed, Toast.LENGTH_LONG).show();
             }
         });
     }

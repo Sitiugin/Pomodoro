@@ -6,10 +6,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.widget.PopupWindowCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,11 +25,9 @@ import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.item.AddItem;
 import com.glebworx.pomodoro.item.ProjectHeaderItem;
-import com.glebworx.pomodoro.item.ProjectItem;
 import com.glebworx.pomodoro.item.TaskItem;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
-import com.glebworx.pomodoro.util.DummyDataProvider;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.constants.Constants;
 import com.glebworx.pomodoro.util.manager.ColorManager;
@@ -40,9 +36,7 @@ import com.glebworx.pomodoro.util.manager.PopupWindowManager;
 import com.glebworx.pomodoro.util.tasks.InitTasksTask;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
@@ -51,17 +45,8 @@ import com.mikepenz.fastadapter_extensions.swipe.SimpleSwipeCallback;
 import com.mikepenz.itemanimators.SlideInOutLeftAnimator;
 
 import java.text.SimpleDateFormat;
-import java.time.YearMonth;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.Vector;
-
-import javax.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -212,12 +197,11 @@ public class ViewProjectFragment extends Fragment {
                                    FastAdapter fastAdapter) {
         SimpleSwipeCallback swipeCallback = new SimpleSwipeCallback(
                 (position, direction) -> {
-                    TaskModel taskModel = taskAdapter.getAdapterItem(position - 1).getModel();
+                    TaskModel taskModel = taskAdapter.getAdapterItem(position).getModel();
                     if (direction == ItemTouchHelper.RIGHT) {
                         fragmentListener.onEditTask(taskModel);
                     } else if (direction == ItemTouchHelper.LEFT) {
-                        deleteTask(context, taskModel);
-                        //deleteProject(context, taskModel);
+                        deleteTask(context, taskModel, fastAdapter, position);
                     }
                     fastAdapter.notifyAdapterItemChanged(position);
                 },
@@ -229,8 +213,15 @@ public class ViewProjectFragment extends Fragment {
         touchHelper.attachToRecyclerView(recyclerView);
     }
 
-    private void deleteTask(Context context, TaskModel taskModel) {
-
+    private void deleteTask(Context context, TaskModel taskModel, FastAdapter fastAdapter, int position) {
+        TaskApi.deleteTask(projectModel.getName(), taskModel, task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(context, R.string.view_project_toast_task_delete_success, Toast.LENGTH_SHORT).show();
+            } else {
+                fastAdapter.notifyAdapterItemChanged(position);
+                Toast.makeText(context, R.string.view_project_toast_task_delete_failed, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void initClickEvents(Context context, FastAdapter<AbstractItem> fastAdapter) {
@@ -288,9 +279,9 @@ public class ViewProjectFragment extends Fragment {
         fragmentListener.onCloseFragment();
         ProjectApi.deleteProject(projectModel, task -> {
             if (task.isSuccessful()) {
-                Toast.makeText(context, R.string.view_project_toast_delete_success, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.view_project_toast_project_delete_success, Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(context, R.string.view_project_toast_delete_failed, Toast.LENGTH_LONG).show();
+                Toast.makeText(context, R.string.view_project_toast_project_delete_failed, Toast.LENGTH_LONG).show();
             }
         });
     }

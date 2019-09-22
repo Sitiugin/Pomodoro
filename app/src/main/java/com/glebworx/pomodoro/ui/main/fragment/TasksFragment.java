@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.item.TaskItem;
+import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.util.DummyDataProvider;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -25,6 +27,7 @@ import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.ISelectionListener;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
+import com.mikepenz.fastadapter_extensions.swipe.SimpleSwipeCallback;
 import com.triggertrap.seekarc.SeekArc;
 
 import javax.annotation.Nullable;
@@ -69,7 +72,7 @@ public class TasksFragment extends Fragment {
         FastAdapter fastAdapter = new FastAdapter();
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
 
-        initRecyclerView(context, activity, layoutManager, fastAdapter);
+        initRecyclerView(context, layoutManager, fastAdapter);
         initFab();
 
         return rootView;
@@ -77,7 +80,6 @@ public class TasksFragment extends Fragment {
     }
 
     private void initRecyclerView(Context context,
-                                  Activity activity,
                                   LinearLayoutManager layoutManager,
                                   FastAdapter fastAdapter) {
 
@@ -88,9 +90,29 @@ public class TasksFragment extends Fragment {
         fastAdapter.setHasStableIds(true);
         fastAdapter.withSelectable(true);
         attachSelectionListener(context, fastAdapter);
-        //fastAdapter.withOnClickListener((v, adapter, item, position) -> showEditEntryDialog(context, activity, rootView, (WeightItem) item));
+        //attachSwipeHelper(context, recyclerView);
         recyclerView.setAdapter(fastAdapter);
     }
+
+    /*private void attachSwipeHelper(Context context,
+                                   RecyclerView recyclerView) {
+        SimpleSwipeCallback swipeCallback = new SimpleSwipeCallback(
+                (position, direction) -> {
+                    TaskModel taskModel = todayAdapter.getAdapterItem(position - 1).getModel();
+                    if (direction == ItemTouchHelper.RIGHT) {
+                        fragmentListener.onEditTask(taskModel); // adjust for header
+                        fastAdapter.notifyAdapterItemChanged(position);
+                    } else if (direction == ItemTouchHelper.LEFT) {
+                        deleteTask(context, taskModel, position);
+                    }
+                },
+                context.getDrawable(R.drawable.ic_delete_black),
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT,
+                context.getColor(android.R.color.transparent))
+                .withLeaveBehindSwipeRight(context.getDrawable(R.drawable.ic_edit_black));
+        ItemTouchHelper touchHelper = new ItemTouchHelper(swipeCallback);
+        touchHelper.attachToRecyclerView(recyclerView);
+    }*/
 
     private void initFab() {
         startPomodoroButton.setOnClickListener(view -> {
