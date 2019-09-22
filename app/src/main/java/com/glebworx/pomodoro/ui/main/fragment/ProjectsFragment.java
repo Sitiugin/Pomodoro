@@ -145,7 +145,7 @@ public class ProjectsFragment extends Fragment {
                 (position, direction) -> {
                     ProjectModel projectModel = projectAdapter.getAdapterItem(position - 1).getModel();
                     if (direction == ItemTouchHelper.RIGHT) {
-                        fragmentListener.onEditProject(projectModel); // adjust for header
+                        fragmentListener.onEditProject(projectModel);
                         fastAdapter.notifyAdapterItemChanged(position);
                     } else if (direction == ItemTouchHelper.LEFT) {
                         deleteProject(context, projectModel, position);

@@ -77,6 +77,9 @@ public class MainActivity
         }
     }
 
+
+    //                                                                          NAVIGATION CALLBACKS
+
     @Override
     public void onAddProject() {
         fragmentManager.pushToBackStack(AddProjectFragment.newInstance());
@@ -113,9 +116,12 @@ public class MainActivity
     }
 
     @Override
-    public void onEditTask(TaskModel taskModel) {
-        // TODO implement
+    public void onEditTask(ProjectModel projectModel, TaskModel taskModel) {
+        fragmentManager.pushToBackStack(AddTaskFragment.newInstance(projectModel, taskModel));
     }
+
+
+    //                                                                                       HELPERS
 
     private void initBottomSheet() {
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {

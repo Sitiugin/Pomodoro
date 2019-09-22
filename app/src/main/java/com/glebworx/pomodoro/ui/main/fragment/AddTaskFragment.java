@@ -11,6 +11,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
@@ -56,6 +57,7 @@ public class AddTaskFragment extends Fragment {
     @BindView(R.id.layout_add_task) ConstraintLayout addTaskLayout;
     @BindView(R.id.button_close) AppCompatImageButton closeButton;
     @BindView(R.id.edit_text_name) AppCompatEditText taskNameEditText;
+    @BindView(R.id.text_view_section_name) AppCompatTextView taskNameSectionTextView;
     @BindView(R.id.button_due_date) AppCompatButton dueDateButton;
     @BindView(R.id.spinner_pomodoros_allocated) AppCompatSpinner allocatedTimeSpinner;
     @BindView(R.id.spinner_recurrence) AppCompatSpinner recurrenceSpinner;
@@ -63,6 +65,7 @@ public class AddTaskFragment extends Fragment {
     @BindView(R.id.spin_kit_view) SpinKitView spinKitView;
 
     private static final String ARG_PROJECT_MODEL = "project_model";
+    private static final String ARG_TASK_MODEL = "task_model";
 
     //                                                                                    ATTRIBUTES
 
@@ -76,6 +79,7 @@ public class AddTaskFragment extends Fragment {
     private int year;
     private int month;
     private int today;
+    private boolean isEditing;
 
 
     //                                                                                  CONSTRUCTORS
@@ -93,6 +97,15 @@ public class AddTaskFragment extends Fragment {
         return fragment;
     }
 
+    public static AddTaskFragment newInstance(ProjectModel projectModel, TaskModel taskModel) {
+        AddTaskFragment fragment = new AddTaskFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(ARG_PROJECT_MODEL, projectModel);
+        args.putParcelable(ARG_TASK_MODEL, taskModel);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -103,18 +116,39 @@ public class AddTaskFragment extends Fragment {
         ButterKnife.bind(this, rootView);
 
         constraintSet = new ConstraintSet();
-        taskModel = new TaskModel();
+        //taskModel = new TaskModel();
         calendar = Calendar.getInstance(Locale.getDefault());
-        updateToday();
 
         Activity activity = getActivity();
+        Context context = getContext();
+        if (activity == null || context == null) {
+            return rootView;
+        }
+
+        updateToday();
+
         Bundle arguments = getArguments();
-        if (activity == null || arguments == null) {
+        if (arguments == null) {
             return rootView;
         }
         projectModel = arguments.getParcelable(ARG_PROJECT_MODEL);
         if (projectModel == null) {
+            projectModel = new ProjectModel();
             return rootView;
+        }
+        taskModel = arguments.getParcelable(ARG_TASK_MODEL);
+        if (taskModel == null) {
+            taskModel = new TaskModel();
+            isEditing = false;
+        } else {
+            isEditing = true;
+        }
+
+        if (isEditing) {
+            taskNameEditText.setVisibility(View.GONE);
+            taskNameSectionTextView.setVisibility(View.GONE);
+        } else {
+
         }
 
         initEditText(activity);

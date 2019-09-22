@@ -199,7 +199,8 @@ public class ViewProjectFragment extends Fragment {
                 (position, direction) -> {
                     TaskModel taskModel = taskAdapter.getAdapterItem(position).getModel();
                     if (direction == ItemTouchHelper.RIGHT) {
-                        fragmentListener.onEditTask(taskModel);
+                        fragmentListener.onEditTask(projectModel, taskModel);
+                        fastAdapter.notifyAdapterItemChanged(position);
                     } else if (direction == ItemTouchHelper.LEFT) {
                         deleteTask(context, taskModel, fastAdapter, position);
                     }
@@ -290,7 +291,7 @@ public class ViewProjectFragment extends Fragment {
         void onEditProject(ProjectModel projectModel);
         void onAddTask(ProjectModel projectModel);
         void onSelectTask(TaskModel taskModel);
-        void onEditTask(TaskModel taskModel);
+        void onEditTask(ProjectModel projectModel, TaskModel taskModel);
         void onCloseFragment();
     }
 

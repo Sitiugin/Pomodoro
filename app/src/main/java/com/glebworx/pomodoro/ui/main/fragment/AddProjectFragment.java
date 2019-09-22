@@ -111,15 +111,15 @@ public class AddProjectFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_add_project, container, false);
         ButterKnife.bind(this, rootView);
 
+        calendar = Calendar.getInstance(Locale.getDefault());
+        constraintSet = new ConstraintSet();
+
         Activity activity = getActivity();
         Context context = getContext();
         if (activity == null || context == null) {
             return rootView;
         }
 
-        calendar = Calendar.getInstance(Locale.getDefault());
-
-        constraintSet = new ConstraintSet();
         updateToday();
 
         Bundle arguments = getArguments();
