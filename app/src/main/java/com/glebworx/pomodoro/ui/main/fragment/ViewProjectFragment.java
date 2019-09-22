@@ -34,6 +34,7 @@ import com.glebworx.pomodoro.util.DummyDataProvider;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.constants.Constants;
 import com.glebworx.pomodoro.util.manager.ColorManager;
+import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
 import com.glebworx.pomodoro.util.tasks.InitTasksTask;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -125,6 +126,15 @@ public class ViewProjectFragment extends Fragment {
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        Context context = getContext();
+        if (context != null && !hidden) {
+            initTitle(context);
+        }
+    }
+
+    @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         taskAdapter = new ItemAdapter<>();
@@ -154,9 +164,7 @@ public class ViewProjectFragment extends Fragment {
                 ColorManager.getDrawable(context, projectModel.getColorTag()), null);
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.setTime(projectModel.getDueDate());
-        calendar.set(Calendar.HOUR, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
+        DateTimeManager.clearTime(calendar);
         subtitleTextView.setText(getString(R.string.core_due, dateFormat.format(calendar.getTime())));
         /*Calendar calendar = Calendar.getInstance(Locale.getDefault());
         int year = calendar.get(Calendar.YEAR);

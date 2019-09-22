@@ -76,14 +76,14 @@ public class InitProjectsTask extends AsyncTask<Void, DocumentChange, Void> {
                     case MODIFIED:
                         index = getProjectItemIndex(item.getProjectName());
                         if (index != -1) {
-                            itemAdapter.set(getProjectItemIndex(item.getProjectName()), item);
+                            itemAdapter.set(index + 1, item); // add 1 because of header
                             //fastAdapter.notifyAdapterItemChanged(index);
                         }
                         break;
                     case REMOVED:
                         index = getProjectItemIndex(item.getProjectName());
                         if (index != -1) {
-                            itemAdapter.remove(index);
+                            itemAdapter.remove(index + 1); // add 1 because of header
                             //fastAdapter.notifyAdapterItemRemoved(index);
                         }
                         break;
