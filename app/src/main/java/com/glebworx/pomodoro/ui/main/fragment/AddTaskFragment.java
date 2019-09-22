@@ -17,7 +17,6 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.transition.TransitionManager;
 
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,15 +28,13 @@ import android.widget.Toast;
 
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.glebworx.pomodoro.R;
-import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.util.constants.Constants;
+import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.KeyboardManager;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
 import java.text.SimpleDateFormat;
 import java.time.YearMonth;
@@ -55,6 +52,7 @@ public class AddTaskFragment extends Fragment {
     //                                                                                       BINDING
 
     @BindView(R.id.layout_add_task) ConstraintLayout addTaskLayout;
+    @BindView(R.id.text_view_title) AppCompatTextView titleTextView;
     @BindView(R.id.button_close) AppCompatImageButton closeButton;
     @BindView(R.id.edit_text_name) AppCompatEditText taskNameEditText;
     @BindView(R.id.text_view_section_name) AppCompatTextView taskNameSectionTextView;
@@ -147,11 +145,22 @@ public class AddTaskFragment extends Fragment {
         if (isEditing) {
             taskNameEditText.setVisibility(View.GONE);
             taskNameSectionTextView.setVisibility(View.GONE);
+            titleTextView.setText(context.getString(R.string.core_edit_something, taskModel.getName()));
+            calendar.setTime(projectModel.getDueDate());
+            DateTimeManager.clearTime(calendar);
+            dueDateButton.setText(getDueDateString(
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH)));
+            saveButton.setText(R.string.add_task_title_update_task);
         } else {
-
+            DateTimeManager.clearTime(calendar);
+            taskModel.setDueDate(calendar.getTime());
+            dueDateButton.setText(getString(R.string.core_today));
+            taskModel.setPomodorosAllocated(1);
+            initEditText(activity);
         }
 
-        initEditText(activity);
         initSpinners(activity);
         initClickEvents(activity);
 
@@ -189,11 +198,9 @@ public class AddTaskFragment extends Fragment {
     }
 
     private void initSpinners(Activity activity) {
-        taskModel.setPomodorosAllocated(1);
         allocatedTimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                //clearEditTextFocus(activity);
                 taskModel.setPomodorosAllocated(position + 1);
             }
 
@@ -209,7 +216,6 @@ public class AddTaskFragment extends Fragment {
         recurrenceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                //clearEditTextFocus(activity);
                 switch (position) {
                     case 0:
                         taskModel.setRecurrence(null);
@@ -273,9 +279,12 @@ public class AddTaskFragment extends Fragment {
                         break;
                     }
                     if (taskModel.isValid()) {
-                        saveTasks(context);
+                        saveTask(context);
                     } else if (context != null) {
-                        Toast.makeText(context, R.string.add_task_toast_add_failed, Toast.LENGTH_LONG).show();
+                        Toast.makeText(
+                                context,
+                                isEditing ? R.string.add_task_toast_update_failed : R.string.add_task_toast_add_failed,
+                                Toast.LENGTH_LONG).show();
                     }
                     break;
                 case R.id.button_close:
@@ -284,16 +293,17 @@ public class AddTaskFragment extends Fragment {
                     break;
             }
         };
-        taskModel.setDueDate(calendar.getTime());
-        dueDateButton.setText(getString(R.string.core_today));
         dueDateButton.setOnClickListener(onClickListener);
         saveButton.setOnClickListener(onClickListener);
         closeButton.setOnClickListener(onClickListener);
     }
 
     private boolean validateInput(Context context) {
+        if (isEditing) {
+            return true;
+        }
         if (Objects.requireNonNull(taskNameEditText.getText()).toString().trim().isEmpty()) {
-            Toast.makeText(context, R.string.add_project_err_name_empty, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, R.string.add_task_err_name_empty, Toast.LENGTH_LONG).show();
             return false;
         }
         return true;
@@ -330,7 +340,19 @@ public class AddTaskFragment extends Fragment {
         };
     }
 
-    private void saveTasks(Context context) {
+    private String getDueDateString(int year, int month, int day) {
+        YearMonth yearMonthObject = YearMonth.of(year, month + 1);
+        if (year == this.year && month == this.month) {
+            if (day == this.today) {
+                dueDateButton.setText(R.string.core_today);
+            } else if (day == this.today + 1 || day == 1 && this.today == yearMonthObject.lengthOfMonth()) {
+                dueDateButton.setText(R.string.core_tomorrow);
+            }
+        }
+        return dateFormat.format(calendar.getTime());
+    }
+
+    private void saveTask(Context context) {
         startSaveStartedAnimation();
         projectModel.addTask(taskModel);
         TaskApi.addTask(projectModel, taskModel, task -> {
@@ -339,10 +361,16 @@ public class AddTaskFragment extends Fragment {
                 return;
             }
             if (task.isSuccessful()) {
-                Toast.makeText(context, R.string.add_task_toast_add_success, Toast.LENGTH_SHORT).show();
+                Toast.makeText(
+                        context,
+                        isEditing ? R.string.add_task_toast_update_success : R.string.add_task_toast_add_success,
+                        Toast.LENGTH_SHORT).show();
                 fragmentListener.onCloseFragment();
             } else {
-                Toast.makeText(context, R.string.add_task_toast_add_failed, Toast.LENGTH_LONG).show();
+                Toast.makeText(
+                        context,
+                        isEditing ? R.string.add_task_toast_update_failed : R.string.add_task_toast_add_failed,
+                        Toast.LENGTH_LONG).show();
                 startSaveCanceledAnimation();
             }
         });
@@ -374,9 +402,11 @@ public class AddTaskFragment extends Fragment {
     }
 
     private void clearEditTextFocus(Activity activity) {
-        taskModel.setName(Objects.requireNonNull(taskNameEditText.getText()).toString().trim());
-        KeyboardManager.hideKeyboard(activity);
-        taskNameEditText.clearFocus();
+        if (!isEditing) {
+            taskModel.setName(Objects.requireNonNull(taskNameEditText.getText()).toString().trim());
+            KeyboardManager.hideKeyboard(activity);
+            taskNameEditText.clearFocus();
+        }
     }
 
     public interface OnAddTaskFragmentInteractionListener {
