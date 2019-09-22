@@ -9,12 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.ProjectApi;
@@ -31,6 +33,7 @@ import com.mikepenz.fastadapter.IItemAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.adapters.ItemFilter;
 import com.mikepenz.fastadapter.items.AbstractItem;
+import com.mikepenz.fastadapter_extensions.swipe.SimpleSwipeCallback;
 import com.mikepenz.itemanimators.SlideInOutLeftAnimator;
 
 import butterknife.BindView;
@@ -82,7 +85,7 @@ public class ProjectsFragment extends Fragment {
         //projectAdapter.add(DummyDataProvider.getProjects());
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
 
-        initRecyclerView(layoutManager, fastAdapter);
+        initRecyclerView(context, layoutManager, fastAdapter);
         initSearchView();
         initClickEvents(fastAdapter);
 
@@ -114,7 +117,7 @@ public class ProjectsFragment extends Fragment {
         super.onDetach();
     }
 
-    private void initRecyclerView(LinearLayoutManager layoutManager, FastAdapter fastAdapter) {
+    private void initRecyclerView(Context context, LinearLayoutManager layoutManager, FastAdapter fastAdapter) {
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty));
@@ -131,8 +134,40 @@ public class ProjectsFragment extends Fragment {
         fastAdapter.addAdapter(2, addAdapter);
 
         fastAdapter.setHasStableIds(true);
+        attachSwipeHelper(context, recyclerView);
         recyclerView.setAdapter(fastAdapter);
 
+    }
+
+    private void attachSwipeHelper(Context context,
+                                   RecyclerView recyclerView) {
+        SimpleSwipeCallback swipeCallback = new SimpleSwipeCallback(
+                (position, direction) -> {
+                    ProjectModel projectModel = projectAdapter.getAdapterItem(position - 1).getModel();
+                    if (direction == ItemTouchHelper.RIGHT) {
+                        fragmentListener.onEditProject(projectModel); // adjust for header
+                    } else if (direction == ItemTouchHelper.LEFT) {
+                        deleteProject(context, projectModel);
+                    }
+                    fastAdapter.notifyAdapterItemChanged(position);
+                },
+                context.getDrawable(R.drawable.ic_delete_black),
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT,
+                context.getColor(android.R.color.transparent))
+                .withLeaveBehindSwipeRight(context.getDrawable(R.drawable.ic_edit_black));
+        ItemTouchHelper touchHelper = new ItemTouchHelper(swipeCallback);
+        touchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    private void deleteProject(Context context, ProjectModel projectModel) {
+        fragmentListener.onCloseFragment();
+        ProjectApi.deleteProject(projectModel, task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(context, R.string.view_project_toast_delete_success, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, R.string.view_project_toast_delete_failed, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void initSearchView() {
@@ -196,6 +231,8 @@ public class ProjectsFragment extends Fragment {
         void onAddProject();
         void onViewProject(ProjectModel projectModel);
         void onViewReport();
+        void onEditProject(ProjectModel projectModel);
+        void onCloseFragment();
     }
 
 }
