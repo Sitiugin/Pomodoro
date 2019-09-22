@@ -221,6 +221,9 @@ public class AddProjectFragment extends Fragment {
     }
 
     private void checkColorTag(String colorTagHex) {
+        if (colorTagHex == null) {
+            return;
+        }
         switch (colorTagHex) {
             case COLOR_TURQUOISE_HEX:
                 colorTagChipGroup.check(R.id.chip_turquoise);

@@ -25,6 +25,8 @@ public abstract class BaseApi {
     static final String COLLECTION_PROJECTS = "projects";
     static final String COLLECTION_TASKS = "tasks";
 
+    static final String FIELD_NAME = "name";
+    static final String FIELD_TIMESTAMP = "timestamp";
     static final String FIELD_TASKS = "tasks";
     static final String FIELD_POMODOROS_ALLOCATED = "pomodorosAllocated";
     static final String FIELD_POMODOROS_COMPLETED = "pomodorosCompleted";

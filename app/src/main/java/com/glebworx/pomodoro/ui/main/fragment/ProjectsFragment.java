@@ -51,6 +51,7 @@ public class ProjectsFragment extends Fragment {
     //                                                                                    ATTRIBUTES
 
     private ItemAdapter<ProjectItem> projectAdapter;
+    private FastAdapter<AbstractItem> fastAdapter;
     private EventListener<QuerySnapshot> eventListener;
     private OnProjectFragmentInteractionListener fragmentListener;
     private InitProjectsTask initProjectsTask;
@@ -79,7 +80,6 @@ public class ProjectsFragment extends Fragment {
         }
 
         //projectAdapter.add(DummyDataProvider.getProjects());
-        FastAdapter<AbstractItem> fastAdapter = new FastAdapter<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
 
         initRecyclerView(layoutManager, fastAdapter);
@@ -95,12 +95,13 @@ public class ProjectsFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         projectAdapter = new ItemAdapter<>();
-        if (initProjectsTask != null && initProjectsTask.getStatus() != AsyncTask.Status.FINISHED) {
-            initProjectsTask.cancel(true);
-        }
+        fastAdapter = new FastAdapter<>();
         super.onAttach(context);
         eventListener = (snapshots, e) -> {
-            initProjectsTask = new InitProjectsTask(snapshots, projectAdapter);
+            if (initProjectsTask != null && initProjectsTask.getStatus() != AsyncTask.Status.FINISHED) {
+                initProjectsTask.cancel(true);
+            }
+            initProjectsTask = new InitProjectsTask(snapshots, projectAdapter, fastAdapter);
             initProjectsTask.execute();
         };
         fragmentListener = (OnProjectFragmentInteractionListener) context;

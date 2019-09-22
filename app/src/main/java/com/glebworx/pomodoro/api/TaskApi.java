@@ -72,7 +72,7 @@ public class TaskApi extends BaseApi {
         getCollection(COLLECTION_PROJECTS)
                 .document(projectName)
                 .collection(COLLECTION_TASKS)
-                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
                 .addSnapshotListener(eventListener);
     }
 

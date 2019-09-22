@@ -55,7 +55,7 @@ public class ProjectApi extends BaseApi {
 
     public static void getModelByName(@NonNull String name,
                                 @NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
-        getCollection(COLLECTION_PROJECTS).whereEqualTo("name", name).get().addOnCompleteListener(onCompleteListener);
+        getCollection(COLLECTION_PROJECTS).whereEqualTo(FIELD_NAME, name).get().addOnCompleteListener(onCompleteListener);
     }
 
     public static void deleteProject(@NonNull ProjectModel projectModel,

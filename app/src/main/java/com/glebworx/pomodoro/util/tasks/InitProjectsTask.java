@@ -10,8 +10,11 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.model.Document;
+import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
+import com.mikepenz.fastadapter.items.AbstractItem;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
@@ -21,10 +24,15 @@ public class InitProjectsTask extends AsyncTask<Void, DocumentChange, Void> {
 
     private QuerySnapshot querySnapshot;
     private ItemAdapter<ProjectItem> itemAdapter;
+    private WeakReference<FastAdapter<AbstractItem>> fastAdapterWeakReference;
+    private FastAdapter<AbstractItem> fastAdapter;
 
-    public InitProjectsTask(QuerySnapshot querySnapshot, ItemAdapter<ProjectItem> itemAdapter) {
+    public InitProjectsTask(QuerySnapshot querySnapshot,
+                            ItemAdapter<ProjectItem> itemAdapter,
+                            FastAdapter<AbstractItem> fastAdapter) {
         this.querySnapshot = querySnapshot;
         this.itemAdapter = itemAdapter;
+        this.fastAdapterWeakReference = new WeakReference<>(fastAdapter);
     }
 
     @Override
@@ -48,7 +56,8 @@ public class InitProjectsTask extends AsyncTask<Void, DocumentChange, Void> {
 
         super.onProgressUpdate(values);
 
-        if (itemAdapter == null) {
+        fastAdapter = fastAdapterWeakReference.get();
+        if (itemAdapter == null || fastAdapter == null) {
             cancel(true);
         }
 
@@ -62,17 +71,20 @@ public class InitProjectsTask extends AsyncTask<Void, DocumentChange, Void> {
                 switch (change.getType()) {
                     case ADDED:
                         itemAdapter.add(item);
+                        //fastAdapter.notifyAdapterItemInserted(itemAdapter.getAdapterItemCount() - 1);
                         break;
                     case MODIFIED:
                         index = getProjectItemIndex(item.getProjectName());
                         if (index != -1) {
                             itemAdapter.set(getProjectItemIndex(item.getProjectName()), item);
+                            //fastAdapter.notifyAdapterItemChanged(index);
                         }
                         break;
                     case REMOVED:
                         index = getProjectItemIndex(item.getProjectName());
                         if (index != -1) {
                             itemAdapter.remove(index);
+                            //fastAdapter.notifyAdapterItemRemoved(index);
                         }
                         break;
                 }

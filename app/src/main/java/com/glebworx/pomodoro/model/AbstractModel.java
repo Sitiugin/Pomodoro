@@ -92,7 +92,12 @@ public abstract class AbstractModel implements Comparable<AbstractModel>, Parcel
 
     @Exclude
     public boolean isValid() {
-        return name != null && !getName().contains("/");
+        return name != null && !(name.contains(".")
+                || name.contains("$")
+                || name.contains("[")
+                || name.contains("]")
+                || name.contains("#")
+                || name.contains("/")); // TODO encode/decode instead
     }
 
 }
