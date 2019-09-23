@@ -39,7 +39,6 @@
             android:id="@+id/text_view_task_count_today"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="15"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -72,7 +71,6 @@
             android:id="@+id/text_view_task_count_this_week"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="52"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>

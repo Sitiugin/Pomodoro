@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +30,7 @@ import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
 import com.glebworx.pomodoro.util.tasks.InitProjectsTask;
+import com.glebworx.pomodoro.util.tasks.InitTaskCountTask;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mikepenz.fastadapter.FastAdapter;
@@ -62,9 +62,10 @@ public class ProjectsFragment extends Fragment {
     private ItemAdapter<ProjectHeaderItem> headerAdapter;
     private ItemAdapter<ProjectItem> projectAdapter;
     private FastAdapter<AbstractItem> fastAdapter;
-    private EventListener<QuerySnapshot> overdueEventListener;
+    private EventListener<QuerySnapshot> taskCountEventListener;
     private EventListener<QuerySnapshot> projectsEventListener;
     private OnProjectFragmentInteractionListener fragmentListener;
+    private InitTaskCountTask initTaskCountTask;
     private InitProjectsTask initProjectsTask;
 
 
@@ -97,7 +98,7 @@ public class ProjectsFragment extends Fragment {
         initSearchView();
         initClickEvents(context, fastAdapter);
 
-        TaskApi.addOverdueCountEventListener(overdueEventListener);
+        TaskApi.addAllTasksEventListener(taskCountEventListener);
         ProjectApi.addModelEventListener(projectsEventListener);
 
         return rootView;
@@ -109,10 +110,12 @@ public class ProjectsFragment extends Fragment {
         projectAdapter = new ItemAdapter<>();
         fastAdapter = new FastAdapter<>();
         super.onAttach(context);
-        overdueEventListener = (querySnapshot, e) -> {
-            if (querySnapshot != null) {
-                setOverdueCount(querySnapshot.getDocuments().size());
+        taskCountEventListener = (snapshots, e) -> { // TODO why executed twice !?
+            if (initTaskCountTask != null && initTaskCountTask.getStatus() != AsyncTask.Status.FINISHED) {
+                initTaskCountTask.cancel(true);
             }
+            initTaskCountTask = new InitTaskCountTask(snapshots, headerAdapter, fastAdapter);
+            initTaskCountTask.execute();
         };
         projectsEventListener = (snapshots, e) -> {
             if (initProjectsTask != null && initProjectsTask.getStatus() != AsyncTask.Status.FINISHED) {
@@ -126,7 +129,7 @@ public class ProjectsFragment extends Fragment {
 
     @Override
     public void onDetach() {
-        overdueEventListener = null;
+        taskCountEventListener = null;
         projectsEventListener = null;
         fragmentListener = null;
         super.onDetach();
@@ -247,7 +250,6 @@ public class ProjectsFragment extends Fragment {
 
     private void setOverdueCount(int count) {
         headerAdapter.getAdapterItem(0).setOverdueCount(count);
-        //headerAdapter.set(0, new ProjectHeaderItem(count));
         fastAdapter.notifyAdapterItemChanged(0);
     }
 

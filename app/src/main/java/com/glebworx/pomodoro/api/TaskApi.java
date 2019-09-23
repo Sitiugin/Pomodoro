@@ -78,10 +78,9 @@ public class TaskApi extends BaseApi {
 
     }
 
-    public static void addOverdueCountEventListener(@NonNull EventListener<QuerySnapshot> eventListener) {
+    public static void addAllTasksEventListener(@NonNull EventListener<QuerySnapshot> eventListener) {
         getCollectionGroup(COLLECTION_TASKS)
                 .orderBy(FIELD_DUE_DATE, Query.Direction.DESCENDING)
-                .whereLessThan(FIELD_DUE_DATE, new Date())
                 .addSnapshotListener(eventListener);
     }
 
