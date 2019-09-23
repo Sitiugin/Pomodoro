@@ -43,8 +43,9 @@ public class InitTaskCountTask extends AsyncTask<Void, Void, int[]> {
             return new int[3];
         }
 
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        DateTimeManager.clearTime(calendar);
+        Calendar currentCalendar = Calendar.getInstance(Locale.getDefault());
+        Calendar targetCalendar = Calendar.getInstance(Locale.getDefault());
+        DateTimeManager.clearTime(currentCalendar);
 
         List<DocumentSnapshot> documentSnapshots = querySnapshot.getDocuments();
         TaskModel model;
@@ -59,9 +60,15 @@ public class InitTaskCountTask extends AsyncTask<Void, Void, int[]> {
             if (date == null) {
                 continue;
             }
-            counts[0]++; // TODO
-            counts[1]++; // TODO
-            if (date.compareTo(calendar.getTime()) < 0) {
+            targetCalendar.setTime(date);
+            DateTimeManager.clearTime(targetCalendar);
+            if (DateTimeManager.isDateToday(currentCalendar, targetCalendar)) {
+                counts[0]++;
+            }
+            if (DateTimeManager.isDateInCurrentWeek(currentCalendar, targetCalendar)) {
+                counts[1]++;
+            }
+            if (date.compareTo(currentCalendar.getTime()) < 0) {
                 counts[2]++;
             }
         }
@@ -86,4 +93,5 @@ public class InitTaskCountTask extends AsyncTask<Void, Void, int[]> {
         }
 
     }
+
 }
