@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.ProjectApi;
+import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.item.AddItem;
 import com.glebworx.pomodoro.item.ProjectHeaderItem;
 import com.glebworx.pomodoro.item.ProjectItem;
@@ -43,6 +45,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 // TODO add project when filter is on is wrong
+// TODO overdue projects and tasks must be red
 public class ProjectsFragment extends Fragment {
 
 
@@ -56,9 +59,11 @@ public class ProjectsFragment extends Fragment {
 
     //                                                                                    ATTRIBUTES
 
+    private ItemAdapter<ProjectHeaderItem> headerAdapter;
     private ItemAdapter<ProjectItem> projectAdapter;
     private FastAdapter<AbstractItem> fastAdapter;
-    private EventListener<QuerySnapshot> eventListener;
+    private EventListener<QuerySnapshot> overdueEventListener;
+    private EventListener<QuerySnapshot> projectsEventListener;
     private OnProjectFragmentInteractionListener fragmentListener;
     private InitProjectsTask initProjectsTask;
 
@@ -92,7 +97,8 @@ public class ProjectsFragment extends Fragment {
         initSearchView();
         initClickEvents(context, fastAdapter);
 
-        ProjectApi.addModelEventListener(eventListener);
+        TaskApi.addOverdueCountEventListener(overdueEventListener);
+        ProjectApi.addModelEventListener(projectsEventListener);
 
         return rootView;
 
@@ -103,7 +109,12 @@ public class ProjectsFragment extends Fragment {
         projectAdapter = new ItemAdapter<>();
         fastAdapter = new FastAdapter<>();
         super.onAttach(context);
-        eventListener = (snapshots, e) -> {
+        overdueEventListener = (querySnapshot, e) -> {
+            if (querySnapshot != null) {
+                setOverdueCount(querySnapshot.getDocuments().size());
+            }
+        };
+        projectsEventListener = (snapshots, e) -> {
             if (initProjectsTask != null && initProjectsTask.getStatus() != AsyncTask.Status.FINISHED) {
                 initProjectsTask.cancel(true);
             }
@@ -115,7 +126,8 @@ public class ProjectsFragment extends Fragment {
 
     @Override
     public void onDetach() {
-        eventListener = null;
+        overdueEventListener = null;
+        projectsEventListener = null;
         fragmentListener = null;
         super.onDetach();
     }
@@ -127,7 +139,7 @@ public class ProjectsFragment extends Fragment {
         recyclerView.setItemAnimator(new SlideInOutLeftAnimator(recyclerView));
         //OverScrollDecoratorHelper.setUpOverScroll(recyclerView, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
 
-        ItemAdapter<ProjectHeaderItem> headerAdapter = new ItemAdapter<>();
+        headerAdapter = new ItemAdapter<>();
         headerAdapter.add(new ProjectHeaderItem());
         ItemAdapter<AddItem> addAdapter = new ItemAdapter<>();
         addAdapter.add(new AddItem(getString(R.string.add_project_title_add_project)));
@@ -231,6 +243,12 @@ public class ProjectsFragment extends Fragment {
             }
             return false;
         });
+    }
+
+    private void setOverdueCount(int count) {
+        headerAdapter.getAdapterItem(0).setOverdueCount(count);
+        //headerAdapter.set(0, new ProjectHeaderItem(count));
+        fastAdapter.notifyAdapterItemChanged(0);
     }
 
     private void showOptionsPopup(Context context) {

@@ -14,6 +14,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
+import java.util.Date;
 import java.util.List;
 
 public class TaskApi extends BaseApi {
@@ -77,8 +78,11 @@ public class TaskApi extends BaseApi {
 
     }
 
-    public static void addTodayTaskEventListener(@NonNull EventListener<QuerySnapshot> eventListener) {
-
+    public static void addOverdueCountEventListener(@NonNull EventListener<QuerySnapshot> eventListener) {
+        getCollectionGroup(COLLECTION_TASKS)
+                .orderBy(FIELD_DUE_DATE, Query.Direction.DESCENDING)
+                .whereLessThan(FIELD_DUE_DATE, new Date())
+                .addSnapshotListener(eventListener);
     }
 
     public static void addTaskEventListener(@NonNull String projectName,

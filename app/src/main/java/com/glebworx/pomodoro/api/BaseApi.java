@@ -30,6 +30,7 @@ public abstract class BaseApi {
     static final String FIELD_TASKS = "tasks";
     static final String FIELD_POMODOROS_ALLOCATED = "pomodorosAllocated";
     static final String FIELD_POMODOROS_COMPLETED = "pomodorosCompleted";
+    static final String FIELD_DUE_DATE = "dueDate";
 
 
     //                                                                                   CONSTRUCTOR
@@ -100,6 +101,7 @@ public abstract class BaseApi {
         return getUserDocument().collection(collection);
     }
 
+    // TODO add firestore rules to restrict non-user collections access
     protected static Query getCollectionGroup(@NonNull String collection) {
         return FirebaseFirestore.getInstance().collectionGroup(collection);
     }

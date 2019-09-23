@@ -30,11 +30,18 @@ public class ProjectHeaderItem extends AbstractItem<ProjectHeaderItem, ProjectHe
     //                                                                                    ATTRIBUTES
 
     private static NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
+    private int overdueCount;
 
 
     //                                                                                  CONSTRUCTORS
 
-    public ProjectHeaderItem() { }
+    public ProjectHeaderItem() {
+        this.overdueCount = 0;
+    }
+
+    public ProjectHeaderItem(int overdueCount) {
+        this.overdueCount = overdueCount;
+    }
 
 
     //                                                                                    OVERRIDDEN
@@ -65,29 +72,54 @@ public class ProjectHeaderItem extends AbstractItem<ProjectHeaderItem, ProjectHe
         return this;
     }
 
+
     //                                                                                       HELPERS
 
+    public void setOverdueCount(int count) {
+        overdueCount = count;
+    }
+
+    public int getOverdueCount() {
+        return overdueCount;
+    }
 
     //                                                                                   VIEW HOLDER
 
     protected static class ViewHolder extends FastAdapter.ViewHolder<ProjectHeaderItem> {
 
         private Context context;
+        private AppCompatTextView todayTextView;
+        private AppCompatTextView thisWeekTextView;
+        private AppCompatTextView overdueTextView;
 
         ViewHolder(View view) {
             super(view);
-            this.context = view.getContext();
+            context = view.getContext();
+            todayTextView = view.findViewById(R.id.text_view_task_count_today);
+            thisWeekTextView = view.findViewById(R.id.text_view_task_count_this_week);
+            overdueTextView = view.findViewById(R.id.text_view_task_count_overdue);
 
         }
 
         @Override
         public void bindView(@NonNull ProjectHeaderItem item, @NonNull List<Object> payloads) {
-
+            int count = item.getOverdueCount();
+            overdueTextView.setText(String.valueOf(count));
+            if (count > 0) {
+                overdueTextView.setTextColor(context.getColor(R.color.colorError));
+            } else {
+                overdueTextView.setTextColor(context.getColor(R.color.colorHighlight));
+            }
         }
 
         @Override
         public void unbindView(@NonNull ProjectHeaderItem item) {
-
+            todayTextView.setText(null);
+            thisWeekTextView.setText(null);
+            overdueTextView.setText(null);
+            todayTextView.setTextColor(context.getColor(android.R.color.black));
+            thisWeekTextView.setTextColor(context.getColor(android.R.color.black));
+            overdueTextView.setTextColor(context.getColor(R.color.colorHighlight));
         }
 
     }
