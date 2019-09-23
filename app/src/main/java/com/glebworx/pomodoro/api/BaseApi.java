@@ -78,11 +78,11 @@ public abstract class BaseApi {
     //                                                                                       HELPERS
 
     static DocumentReference getGlobalDocument() {
-        return FirebaseFirestore.getInstance().collection(COLLECTION_GLOBAL).document(AuthManager.getInstance().getUid());
+        return FirebaseFirestore.getInstance().collection(COLLECTION_GLOBAL).document(getUserId());
     }
 
     static DocumentReference getUserDocument() {
-        return FirebaseFirestore.getInstance().collection(COLLECTION_USERS).document(AuthManager.getInstance().getUid());
+        return FirebaseFirestore.getInstance().collection(COLLECTION_USERS).document(getUserId());
     }
 
     static WriteBatch getWriteBatch() {
@@ -92,8 +92,16 @@ public abstract class BaseApi {
 
     //                                                                                       HELPERS
 
-    protected static CollectionReference getCollection(String collection) {
+    protected static String getUserId() {
+        return AuthManager.getInstance().getUid();
+    }
+
+    protected static CollectionReference getCollection(@NonNull String collection) {
         return getUserDocument().collection(collection);
+    }
+
+    protected static Query getCollectionGroup(@NonNull String collection) {
+        return FirebaseFirestore.getInstance().collectionGroup(collection);
     }
 
 }

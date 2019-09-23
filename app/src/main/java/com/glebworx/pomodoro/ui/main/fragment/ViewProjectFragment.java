@@ -105,7 +105,7 @@ public class ViewProjectFragment extends Fragment {
         initRecyclerView(context, layoutManager, fastAdapter);
         initClickEvents(context, fastAdapter);
 
-        TaskApi.addModelEventListener(projectModel.getName(), eventListener);
+        TaskApi.addTaskEventListener(projectModel.getName(), eventListener);
 
         return rootView;
     }

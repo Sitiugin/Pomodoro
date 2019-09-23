@@ -77,8 +77,12 @@ public class TaskApi extends BaseApi {
 
     }
 
-    public static void addModelEventListener(@NonNull String projectName,
-                                             @NonNull EventListener<QuerySnapshot> eventListener) {
+    public static void addTodayTaskEventListener(@NonNull EventListener<QuerySnapshot> eventListener) {
+
+    }
+
+    public static void addTaskEventListener(@NonNull String projectName,
+                                            @NonNull EventListener<QuerySnapshot> eventListener) {
         getCollection(COLLECTION_PROJECTS)
                 .document(projectName)
                 .collection(COLLECTION_TASKS)

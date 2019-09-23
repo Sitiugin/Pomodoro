@@ -239,16 +239,13 @@ public class ProjectsFragment extends Fragment {
                 R.layout.popup_options_projects,
                 optionsButton,
                 Gravity.BOTTOM | Gravity.END);
-        popupWindow.getContentView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (view.getId()) {
-                    case R.id.button_settings:
-                        popupWindow.dismiss();
-                        break;
-                }
+        /*popupWindow.getContentView().setOnClickListener(view -> {
+            switch (view.getId()) {
+                case R.id.button_settings:
+                    popupWindow.dismiss();
+                    break;
             }
-        });
+        });*/
     }
 
     public interface OnProjectFragmentInteractionListener {
