@@ -27,10 +27,6 @@ public class InitTasksTask extends AsyncTask<Void, DocumentChange, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
 
-        if (querySnapshot == null) {
-            return null;
-        }
-
         List<DocumentChange> changes = querySnapshot.getDocumentChanges();
         for (DocumentChange change: changes) {
             this.publishProgress(change);

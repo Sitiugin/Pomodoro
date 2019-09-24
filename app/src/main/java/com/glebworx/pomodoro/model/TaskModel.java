@@ -76,19 +76,6 @@ public class TaskModel extends AbstractModel {
         }
     }
 
-    public TaskModel(Map<String, Object> map) {
-        try {
-            setName((String) map.get("name"));
-            updateTimestamp();
-            pomodorosAllocated = (int) map.get("pomodorosAllocated");
-            pomodorosCompleted = (int) map.get("pomodorosCompleted");
-            dueDate = (Date) map.get("dueDate");
-            recurrence = (String) map.get("recurrence");
-        } catch (ClassCastException ignored) {
-
-        }
-    }
-
     public TaskModel(Parcel in) {
         super(in);
         this.pomodorosAllocated = in.readInt();

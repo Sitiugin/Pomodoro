@@ -39,10 +39,6 @@ public class InitTaskCountTask extends AsyncTask<Void, Void, int[]> {
     @Override
     protected int[] doInBackground(Void... voids) {
 
-        if (querySnapshot == null) {
-            return new int[3];
-        }
-
         Calendar currentCalendar = Calendar.getInstance(Locale.getDefault());
         Calendar targetCalendar = Calendar.getInstance(Locale.getDefault());
         DateTimeManager.clearTime(currentCalendar);

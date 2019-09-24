@@ -114,12 +114,18 @@ public class ProjectsFragment extends Fragment {
             if (initTaskCountTask != null && initTaskCountTask.getStatus() != AsyncTask.Status.FINISHED) {
                 initTaskCountTask.cancel(true);
             }
+            if (snapshots == null) {
+                return;
+            }
             initTaskCountTask = new InitTaskCountTask(snapshots, headerAdapter, fastAdapter);
             initTaskCountTask.execute();
         };
         projectsEventListener = (snapshots, e) -> {
             if (initProjectsTask != null && initProjectsTask.getStatus() != AsyncTask.Status.FINISHED) {
                 initProjectsTask.cancel(true);
+            }
+            if (snapshots == null) {
+                return;
             }
             initProjectsTask = new InitProjectsTask(snapshots, projectAdapter, fastAdapter);
             initProjectsTask.execute();

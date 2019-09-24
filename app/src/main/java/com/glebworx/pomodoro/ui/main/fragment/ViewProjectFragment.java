@@ -121,13 +121,15 @@ public class ViewProjectFragment extends Fragment {
 
     @Override
     public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
         taskAdapter = new ItemAdapter<>();
-        if (initTasksTask != null && initTasksTask.getStatus() != AsyncTask.Status.FINISHED) {
-            initTasksTask.cancel(true);
-        }
         super.onAttach(context);
         eventListener = (snapshots, e) -> {
+            if (initTasksTask != null && initTasksTask.getStatus() != AsyncTask.Status.FINISHED) {
+                initTasksTask.cancel(true);
+            }
+            if (snapshots == null) {
+                return;
+            }
             initTasksTask = new InitTasksTask(snapshots, taskAdapter);
             initTasksTask.execute();
         };
