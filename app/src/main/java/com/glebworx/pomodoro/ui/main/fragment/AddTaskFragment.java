@@ -138,8 +138,6 @@ public class AddTaskFragment extends Fragment {
             return rootView;
         }
 
-        updateToday(context);
-
         Bundle arguments = getArguments();
         if (arguments == null) {
             return rootView;
@@ -184,11 +182,11 @@ public class AddTaskFragment extends Fragment {
 
     @Override
     public void onResume() {
+        super.onResume();
         Context context = getContext();
         if (context != null) {
             updateToday(context);
         }
-        super.onResume();
     }
 
     @Override

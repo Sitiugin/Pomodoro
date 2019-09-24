@@ -125,8 +125,6 @@ public class AddProjectFragment extends Fragment {
             return rootView;
         }
 
-        updateToday(context);
-
         Bundle arguments = getArguments();
         if (arguments != null) {
             projectModel = arguments.getParcelable(ARG_PROJECT_MODEL);
@@ -163,11 +161,11 @@ public class AddProjectFragment extends Fragment {
 
     @Override
     public void onResume() {
+        super.onResume();
         Context context = getContext();
         if (context != null) {
             updateToday(context);
         }
-        super.onResume();
     }
 
     @Override

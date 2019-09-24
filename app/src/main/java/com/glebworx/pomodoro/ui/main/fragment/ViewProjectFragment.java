@@ -68,6 +68,7 @@ public class ViewProjectFragment extends Fragment {
     private EventListener<QuerySnapshot> eventListener;
     private OnViewProjectFragmentInteractionListener fragmentListener;
     private InitTasksTask initTasksTask;
+    private Calendar currentCalendar;
 
     public ViewProjectFragment() { }
 
@@ -143,6 +144,15 @@ public class ViewProjectFragment extends Fragment {
         super.onDetach();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Context context = getContext();
+        if (context != null) {
+            updateToday(context);
+        }
+    }
+
     private void initTitle(Context context) {
         titleTextView.setText(projectModel.getName());
         titleTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(
@@ -152,23 +162,8 @@ public class ViewProjectFragment extends Fragment {
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.setTime(projectModel.getDueDate());
         DateTimeManager.clearTime(calendar);
-        subtitleTextView.setText(getString(R.string.core_due, dateFormat.format(calendar.getTime())));
-        /*Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int today = calendar.get(Calendar.DAY_OF_MONTH);
-        YearMonth yearMonthObject = YearMonth.of(year, month + 1);
-        if (year == this.year && monthOfYear == this.month) {
-            if (dayOfMonth == this.today) {
-                subtitleTextView.setText(R.string.core_today);
-            } else if (dayOfMonth == this.today + 1 || dayOfMonth == 1 && this.today == yearMonthObject.lengthOfMonth()) {
-                subtitleTextView.setText(R.string.core_tomorrow);
-            } else {
-                dueDateButton.setText(dateFormat.format(calendar.getTime()));
-            }
-        } else {
-            subtitleTextView.setText(getString(R.string.core_due, dateFormat.format(calendar.getTime())));
-        }*/
+        updateToday(context, calendar);
+        //subtitleTextView.setText(DateTimeManager.getDueDateString(context, currentCalendar, calendar, dateFormat));
     }
 
     private void initRecyclerView(Context context, LinearLayoutManager layoutManager, FastAdapter fastAdapter) {
@@ -285,6 +280,21 @@ public class ViewProjectFragment extends Fragment {
                 Toast.makeText(context, R.string.view_project_toast_project_delete_failed, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void updateToday(Context context, Calendar targetCalendar) {
+        currentCalendar = Calendar.getInstance(Locale.getDefault());
+        DateTimeManager.clearTime(currentCalendar);
+        subtitleTextView.setText(DateTimeManager.getDueDateString(context, currentCalendar, targetCalendar, dateFormat));
+    }
+
+    private void updateToday(Context context) {
+        currentCalendar = Calendar.getInstance(Locale.getDefault());
+        DateTimeManager.clearTime(currentCalendar);
+        Calendar targetCalendar = Calendar.getInstance(Locale.getDefault());
+        targetCalendar.setTime(projectModel.getDueDate());
+        DateTimeManager.clearTime(targetCalendar);
+        subtitleTextView.setText(DateTimeManager.getDueDateString(context, currentCalendar, targetCalendar, dateFormat));
     }
 
     public interface OnViewProjectFragmentInteractionListener {

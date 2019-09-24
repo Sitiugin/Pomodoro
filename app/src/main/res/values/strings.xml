@@ -6,7 +6,7 @@
     <string name="core_cancel">Cancel</string>
     <string name="core_save">Save</string>
     <string name="core_add">Add</string>
-    <string name="core_edit_something">Edit %1$s</string>
+    <string name="core_edit_something" formatted="true">Edit %1$s</string>
     <string name="core_filter">Filter</string>
     <string name="core_today">Today</string>
     <string name="core_tomorrow">Tomorrow</string>
@@ -14,6 +14,9 @@
     <string name="core_text_no_data">Nothing to show</string>
     <string name="core_active">Active</string>
     <string name="core_due" formatted="true">Due: %1$s</string>
+    <string name="core_due_today">Due: today</string>
+    <string name="core_due_tomorrow">Due: tomorrow</string>
+    <string name="core_due_yesterday">Due: yesterday</string>
     <string name="core_ratio" formatted="true">%1$s/%2$s</string>
     <string-array name="core_recurrence">
         <item>Never repeat</item>
@@ -75,15 +78,15 @@
     <string name="splash_title_terms">Terms of Service</string>
     <string name="splash_title_privacy">Privacy Policy</string>
     <string name="splash_text_terms">By signing in you are agreeing to our Terms and Conditions and Privacy Policy</string>
-    <string name="splash_text_confirmation_email_sent_success">Your verification email was sent to %1$s</string>
-    <string name="splash_text_confirmation_email_sent_fail">We could not send the verification email to %1$s. Please try another email</string>
+    <string name="splash_text_confirmation_email_sent_success" formatted="true">Your verification email was sent to %1$s</string>
+    <string name="splash_text_confirmation_email_sent_fail" formatted="true">We could not send the verification email to %1$s. Please try another email</string>
     <string name="splash_hint_enter_email">Enter your email address</string>
     <string name="splash_toast_signing_in">Signing in…</string>
     <string name="splash_toast_sign_in_success">Signed in</string>
     <string name="splash_toast_sign_in_failed">Sign in failed</string>
-    <string name="splash_toast_signed_in_as">Signed in as %1$s</string>
-    <string name="splash_toast_confirmation_email_sent_success">We sent the confirmation email to %1$s</string>
-    <string name="splash_toast_confirmation_email_sent_failed">We could not send the confirmation email to %1$s</string>
+    <string name="splash_toast_signed_in_as" formatted="true">Signed in as %1$s</string>
+    <string name="splash_toast_confirmation_email_sent_success" formatted="true">We sent the confirmation email to %1$s</string>
+    <string name="splash_toast_confirmation_email_sent_failed" formatted="true">We could not send the confirmation email to %1$s</string>
     <string name="splash_err_email_invalid">Enter a valid email!</string>
 
 

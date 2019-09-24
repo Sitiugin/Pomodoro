@@ -65,4 +65,22 @@ public class DateTimeManager {
 
     }
 
+    public static String getDueDateString(Context context,
+                                          Calendar currentCalendar,
+                                          Calendar targetCalendar,
+                                          SimpleDateFormat dateFormat) {
+
+        if (isDateToday(currentCalendar, targetCalendar)) {
+            return context.getString(R.string.core_due_today);
+        }
+        if (isDateTomorrow(currentCalendar, targetCalendar)) {
+            return context.getString(R.string.core_due_tomorrow);
+        }
+        if (isDateYesterday(currentCalendar, targetCalendar)) {
+            return context.getString(R.string.core_due_yesterday);
+        }
+        return context.getString(R.string.core_due, dateFormat.format(targetCalendar.getTime()));
+
+    }
+
 }
