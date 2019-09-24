@@ -107,10 +107,13 @@ public class ProjectsFragment extends Fragment {
 
     @Override
     public void onAttach(@NonNull Context context) {
+
         projectAdapter = new ItemAdapter<>();
         fastAdapter = new FastAdapter<>();
+
         super.onAttach(context);
-        taskCountEventListener = (snapshots, e) -> { // TODO why executed twice !?
+
+        taskCountEventListener = (snapshots, e) -> { // TODO not triggered when editing a project task
             if (initTaskCountTask != null && initTaskCountTask.getStatus() != AsyncTask.Status.FINISHED) {
                 initTaskCountTask.cancel(true);
             }
@@ -130,7 +133,9 @@ public class ProjectsFragment extends Fragment {
             initProjectsTask = new InitProjectsTask(snapshots, projectAdapter, fastAdapter);
             initProjectsTask.execute();
         };
+
         fragmentListener = (OnProjectFragmentInteractionListener) context;
+
     }
 
     @Override
