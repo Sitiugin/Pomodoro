@@ -28,6 +28,18 @@ public class DateTimeManager {
         return week == targetWeek && year == targetYear;
     }
 
+    public static boolean isDateOverdue(Calendar currentCalendar, Calendar targetCalendar) {
+
+        if (currentCalendar.get(Calendar.YEAR) > targetCalendar.get(Calendar.YEAR)) {
+            return true;
+        }
+        if (currentCalendar.get(Calendar.YEAR) < targetCalendar.get(Calendar.YEAR)) {
+            return false;
+        }
+        return currentCalendar.get(Calendar.DAY_OF_YEAR) > targetCalendar.get(Calendar.DAY_OF_YEAR);
+
+    }
+
     public static boolean isDateToday(Calendar currentCalendar, Calendar targetCalendar) {
         return currentCalendar.get(Calendar.YEAR) == targetCalendar.get(Calendar.YEAR)
                 && currentCalendar.get(Calendar.DAY_OF_YEAR) == targetCalendar.get(Calendar.DAY_OF_YEAR);

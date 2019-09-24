@@ -273,7 +273,7 @@ public class AddProjectFragment extends Fragment {
                     } else if (context != null) {
                         Toast.makeText(
                                 context,
-                                isEditing ? R.string.add_project_toast_update_failed : R.string.add_project_toast_add_failed,
+                                R.string.add_project_err_name_invalid,
                                 Toast.LENGTH_LONG).show();
                     }
                     break;
