@@ -73,6 +73,9 @@ public class AddTaskFragment extends Fragment {
     @BindView(R.id.button_save) AppCompatButton saveButton;
     @BindView(R.id.spin_kit_view) SpinKitView spinKitView;
 
+
+    //                                                                                     CONSTANTS
+
     private static final String ARG_PROJECT_MODEL = "project_model";
     private static final String ARG_TASK_MODEL = "task_model";
 
@@ -84,10 +87,8 @@ public class AddTaskFragment extends Fragment {
     private ConstraintSet constraintSet;
     private ProjectModel projectModel;
     private TaskModel taskModel;
-    private Calendar calendar;
-    private int year;
-    private int month;
-    private int today;
+    private Calendar currentCalendar;
+    private Calendar targetCalendar;
     private boolean isEditing;
 
 
@@ -124,9 +125,12 @@ public class AddTaskFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_add_task, container, false);
         ButterKnife.bind(this, rootView);
 
+        currentCalendar = Calendar.getInstance(Locale.getDefault());
+        DateTimeManager.clearTime(currentCalendar);
+        targetCalendar = Calendar.getInstance(Locale.getDefault());
+        DateTimeManager.clearTime(targetCalendar);
+
         constraintSet = new ConstraintSet();
-        //taskModel = new TaskModel();
-        calendar = Calendar.getInstance(Locale.getDefault());
 
         Activity activity = getActivity();
         Context context = getContext();
@@ -134,7 +138,7 @@ public class AddTaskFragment extends Fragment {
             return rootView;
         }
 
-        updateToday();
+        updateToday(context);
 
         Bundle arguments = getArguments();
         if (arguments == null) {
@@ -157,18 +161,15 @@ public class AddTaskFragment extends Fragment {
             taskNameEditText.setVisibility(View.GONE);
             taskNameSectionTextView.setVisibility(View.GONE);
             titleTextView.setText(context.getString(R.string.core_edit_something, taskModel.getName()));
-            calendar.setTime(taskModel.getDueDate());
-            DateTimeManager.clearTime(calendar);
-            dueDateButton.setText(getDueDateString(
-                    calendar.get(Calendar.YEAR),
-                    calendar.get(Calendar.MONTH),
-                    calendar.get(Calendar.DAY_OF_MONTH)));
+            targetCalendar.setTime(taskModel.getDueDate());
+            DateTimeManager.clearTime(targetCalendar);
+            dueDateButton.setText(DateTimeManager.getDateString(context, currentCalendar, targetCalendar, dateFormat));
             allocatedTimeSpinner.setSelection(taskModel.getPomodorosAllocated() - 1, true);
             selectRecurrence(taskModel.getRecurrence());
             saveButton.setText(R.string.add_task_title_update_task);
         } else {
-            DateTimeManager.clearTime(calendar);
-            taskModel.setDueDate(calendar.getTime());
+            DateTimeManager.clearTime(targetCalendar);
+            taskModel.setDueDate(targetCalendar.getTime());
             dueDateButton.setText(getString(R.string.core_today));
             taskModel.setPomodorosAllocated(1);
             initEditText(activity);
@@ -183,7 +184,10 @@ public class AddTaskFragment extends Fragment {
 
     @Override
     public void onResume() {
-        updateToday();
+        Context context = getContext();
+        if (context != null) {
+            updateToday(context);
+        }
         super.onResume();
     }
 
@@ -223,6 +227,10 @@ public class AddTaskFragment extends Fragment {
         allocatedTimeSpinner.setOnTouchListener((view, motionEvent) -> {
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                 clearEditTextFocus(activity);
+                return true;
+            } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                view.performClick();
+                return true;
             }
             return false;
         });
@@ -272,6 +280,10 @@ public class AddTaskFragment extends Fragment {
         recurrenceSpinner.setOnTouchListener((view, motionEvent) -> {
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                 clearEditTextFocus(activity);
+                return true;
+            } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                view.performClick();
+                return true;
             }
             return false;
         });
@@ -364,32 +376,20 @@ public class AddTaskFragment extends Fragment {
         DatePicker datePicker = alertDialog.findViewById(R.id.date_picker);
         if (datePicker != null) {
             datePicker.init(
-                    calendar.get(Calendar.YEAR),
-                    calendar.get(Calendar.MONTH),
-                    calendar.get(Calendar.DAY_OF_MONTH),
-                    getDateChangeListener(alertDialog));
+                    targetCalendar.get(Calendar.YEAR),
+                    targetCalendar.get(Calendar.MONTH),
+                    targetCalendar.get(Calendar.DAY_OF_MONTH),
+                    getDateChangeListener(activity, alertDialog));
         }
     }
 
-    private DatePicker.OnDateChangedListener getDateChangeListener(AlertDialog alertDialog) {
+    private DatePicker.OnDateChangedListener getDateChangeListener(Context context, AlertDialog alertDialog) {
         return (view, year, monthOfYear, dayOfMonth) -> {
-            calendar.set(year, monthOfYear, dayOfMonth, 0, 0, 0);
-            taskModel.setDueDate(calendar.getTime());
-            dueDateButton.setText(getDueDateString(year, monthOfYear, dayOfMonth));
+            targetCalendar.set(year, monthOfYear, dayOfMonth, 0, 0, 0);
+            taskModel.setDueDate(targetCalendar.getTime());
+            dueDateButton.setText(DateTimeManager.getDateString(context, currentCalendar, targetCalendar, dateFormat));
             alertDialog.dismiss();
         };
-    }
-
-    private String getDueDateString(int year, int month, int day) {
-        YearMonth yearMonthObject = YearMonth.of(year, month + 1);
-        if (year == this.year && month == this.month) {
-            if (day == this.today) {
-                dueDateButton.setText(R.string.core_today);
-            } else if (day == this.today + 1 || day == 1 && this.today == yearMonthObject.lengthOfMonth()) {
-                dueDateButton.setText(R.string.core_tomorrow);
-            }
-        }
-        return dateFormat.format(calendar.getTime());
     }
 
     private void saveTask(Context context) {
@@ -434,11 +434,10 @@ public class AddTaskFragment extends Fragment {
         constraintSet.applyTo(addTaskLayout);
     }
 
-    private void updateToday() {
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        this.year = calendar.get(Calendar.YEAR);
-        this.month = calendar.get(Calendar.MONTH);
-        this.today = calendar.get(Calendar.DAY_OF_MONTH);
+    private void updateToday(Context context) {
+        currentCalendar = Calendar.getInstance(Locale.getDefault());
+        DateTimeManager.clearTime(currentCalendar);
+        dueDateButton.setText(DateTimeManager.getDateString(context, currentCalendar, targetCalendar, dateFormat));
     }
 
     private void clearEditTextFocus(Activity activity) {

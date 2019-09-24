@@ -67,9 +67,13 @@ public class AddProjectFragment extends Fragment {
     @BindView(R.id.spin_kit_view) SpinKitView spinKitView;
 
 
-    //                                                                                    ATTRIBUTES
+    //                                                                                     CONSTANTS
 
     private static final String ARG_PROJECT_MODEL = "project_model";
+
+
+    //                                                                                    ATTRIBUTES
+
     private static SimpleDateFormat dateFormat =
             new SimpleDateFormat(Constants.PATTERN_DATE, Locale.getDefault());
     private OnAddProjectFragmentInteractionListener fragmentListener;
