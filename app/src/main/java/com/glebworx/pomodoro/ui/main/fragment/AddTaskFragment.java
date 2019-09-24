@@ -37,7 +37,6 @@ import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.KeyboardManager;
 
 import java.text.SimpleDateFormat;
-import java.time.YearMonth;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
@@ -87,8 +86,8 @@ public class AddTaskFragment extends Fragment {
     private ConstraintSet constraintSet;
     private ProjectModel projectModel;
     private TaskModel taskModel;
-    private Calendar currentCalendar;
     private Calendar targetCalendar;
+    private DateTimeManager dateTimeManager;
     private boolean isEditing;
 
 
@@ -125,11 +124,6 @@ public class AddTaskFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_add_task, container, false);
         ButterKnife.bind(this, rootView);
 
-        currentCalendar = Calendar.getInstance(Locale.getDefault());
-        DateTimeManager.clearTime(currentCalendar);
-        targetCalendar = Calendar.getInstance(Locale.getDefault());
-        DateTimeManager.clearTime(targetCalendar);
-
         constraintSet = new ConstraintSet();
 
         Activity activity = getActivity();
@@ -137,6 +131,10 @@ public class AddTaskFragment extends Fragment {
         if (activity == null || context == null) {
             return rootView;
         }
+
+        targetCalendar = Calendar.getInstance(Locale.getDefault());
+        DateTimeManager.clearTime(targetCalendar);
+        dateTimeManager = new DateTimeManager(context, targetCalendar);
 
         Bundle arguments = getArguments();
         if (arguments == null) {
@@ -161,7 +159,7 @@ public class AddTaskFragment extends Fragment {
             titleTextView.setText(context.getString(R.string.core_edit_something, taskModel.getName()));
             targetCalendar.setTime(taskModel.getDueDate());
             DateTimeManager.clearTime(targetCalendar);
-            dueDateButton.setText(DateTimeManager.getDateString(context, currentCalendar, targetCalendar, dateFormat));
+            dueDateButton.setText(dateTimeManager.getDateString());
             allocatedTimeSpinner.setSelection(taskModel.getPomodorosAllocated() - 1, true);
             selectRecurrence(taskModel.getRecurrence());
             saveButton.setText(R.string.add_task_title_update_task);
@@ -385,7 +383,7 @@ public class AddTaskFragment extends Fragment {
         return (view, year, monthOfYear, dayOfMonth) -> {
             targetCalendar.set(year, monthOfYear, dayOfMonth, 0, 0, 0);
             taskModel.setDueDate(targetCalendar.getTime());
-            dueDateButton.setText(DateTimeManager.getDateString(context, currentCalendar, targetCalendar, dateFormat));
+            dueDateButton.setText(dateTimeManager.getDateString());
             alertDialog.dismiss();
         };
     }
@@ -433,9 +431,8 @@ public class AddTaskFragment extends Fragment {
     }
 
     private void updateToday(Context context) {
-        currentCalendar = Calendar.getInstance(Locale.getDefault());
-        DateTimeManager.clearTime(currentCalendar);
-        dueDateButton.setText(DateTimeManager.getDateString(context, currentCalendar, targetCalendar, dateFormat));
+        dateTimeManager.setCurrentCalendar();
+        dueDateButton.setText(dateTimeManager.getDateString());
     }
 
     private void clearEditTextFocus(Activity activity) {

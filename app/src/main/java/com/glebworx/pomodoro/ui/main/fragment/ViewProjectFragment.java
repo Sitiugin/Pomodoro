@@ -68,7 +68,7 @@ public class ViewProjectFragment extends Fragment {
     private EventListener<QuerySnapshot> eventListener;
     private OnViewProjectFragmentInteractionListener fragmentListener;
     private InitTasksTask initTasksTask;
-    private Calendar currentCalendar;
+    private DateTimeManager dateTimeManager;
 
     public ViewProjectFragment() { }
 
@@ -99,6 +99,11 @@ public class ViewProjectFragment extends Fragment {
             return rootView;
         }
 
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        calendar.setTime(projectModel.getDueDate());
+        DateTimeManager.clearTime(calendar);
+        dateTimeManager = new DateTimeManager(context, calendar);
+
         FastAdapter<AbstractItem> fastAdapter = new FastAdapter<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
 
@@ -117,6 +122,10 @@ public class ViewProjectFragment extends Fragment {
         Context context = getContext();
         if (context != null && !hidden) {
             initTitle(context);
+            Calendar calendar = Calendar.getInstance(Locale.getDefault());
+            calendar.setTime(projectModel.getDueDate());
+            dateTimeManager.setTargetCalendar(calendar);
+            updateToday();
         }
     }
 
@@ -149,7 +158,7 @@ public class ViewProjectFragment extends Fragment {
         super.onResume();
         Context context = getContext();
         if (context != null) {
-            updateToday(context);
+            updateToday();
         }
     }
 
@@ -159,11 +168,6 @@ public class ViewProjectFragment extends Fragment {
                 null,
                 null,
                 ColorManager.getDrawable(context, projectModel.getColorTag()), null);
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        calendar.setTime(projectModel.getDueDate());
-        DateTimeManager.clearTime(calendar);
-        updateToday(context, calendar);
-        //subtitleTextView.setText(DateTimeManager.getDueDateString(context, currentCalendar, calendar, dateFormat));
     }
 
     private void initRecyclerView(Context context, LinearLayoutManager layoutManager, FastAdapter fastAdapter) {
@@ -282,19 +286,9 @@ public class ViewProjectFragment extends Fragment {
         });
     }
 
-    private void updateToday(Context context, Calendar targetCalendar) {
-        currentCalendar = Calendar.getInstance(Locale.getDefault());
-        DateTimeManager.clearTime(currentCalendar);
-        subtitleTextView.setText(DateTimeManager.getDueDateString(context, currentCalendar, targetCalendar, dateFormat));
-    }
-
-    private void updateToday(Context context) {
-        currentCalendar = Calendar.getInstance(Locale.getDefault());
-        DateTimeManager.clearTime(currentCalendar);
-        Calendar targetCalendar = Calendar.getInstance(Locale.getDefault());
-        targetCalendar.setTime(projectModel.getDueDate());
-        DateTimeManager.clearTime(targetCalendar);
-        subtitleTextView.setText(DateTimeManager.getDueDateString(context, currentCalendar, targetCalendar, dateFormat));
+    private void updateToday() {
+        dateTimeManager.setCurrentCalendar();
+        subtitleTextView.setText(dateTimeManager.getDueDateString());
     }
 
     public interface OnViewProjectFragmentInteractionListener {
