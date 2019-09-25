@@ -95,6 +95,7 @@
     <style name="ButtonStyle" parent="@style/BaseButtonStyle">
         <item name="android:background">@drawable/drawable_foreground_rounded_small</item>
         <item name="android:foreground">@drawable/ripple_rounded_small</item>
+        <item name="android:elevation">@dimen/elevation_view</item>
         <item name="android:stateListAnimator">@animator/lift_on_touch</item>
     </style>
     <style name="ButtonStyle.Colored" parent="@style/ButtonStyle">
@@ -102,7 +103,7 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
     <style name="ButtonStyle.Borderless" parent="@style/BaseButtonStyle">
-        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:background">@drawable/ripple_rounded_small</item>
     </style>
     <style name="ButtonStyle.Borderless.Colored" parent="@style/ButtonStyle.Borderless">
         <item name="android:textColor">@color/colorHighlight</item>
@@ -169,7 +170,8 @@
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
         <item name="android:padding">@dimen/margin_content</item>
-        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:background">@drawable/ripple_rounded_small</item>
+        <item name="android:foreground">@null</item>
     </style>
 
     <style name="ViewStyle.Toggle">
@@ -185,7 +187,7 @@
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
         <item name="android:padding">@dimen/margin_content</item>
-        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:background">@drawable/ripple_rounded_small</item>
     </style>
 
     <style name="ViewStyle.Search">

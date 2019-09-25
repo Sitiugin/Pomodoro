@@ -4,7 +4,6 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatTextView;
 
 import com.glebworx.pomodoro.R;
 import com.mikepenz.fastadapter.FastAdapter;
@@ -13,18 +12,27 @@ import com.mikepenz.fastadapter_extensions.swipe.ISwipeable;
 
 import java.util.List;
 
-public class AddItem extends AbstractItem<AddItem, AddItem.ViewHolder> implements ISwipeable<AddItem, AddItem> {
+public class AddItem
+        extends AbstractItem<AddItem, AddItem.ViewHolder>
+        implements ISwipeable<AddItem, AddItem> {
 
 
     //                                                                                    ATTRIBUTES
 
     private String buttonText;
+    private boolean showRoundedBg;
 
 
     //                                                                                  CONSTRUCTORS
 
     public AddItem(String buttonText) {
         this.buttonText = buttonText;
+        this.showRoundedBg = false;
+    }
+
+    public AddItem(String buttonText, boolean showRoundedBg) {
+        this.buttonText = buttonText;
+        this.showRoundedBg = showRoundedBg;
     }
 
 
@@ -43,7 +51,12 @@ public class AddItem extends AbstractItem<AddItem, AddItem.ViewHolder> implement
 
     @Override
     public int getLayoutRes() {
-        return R.layout.item_add;
+        return showRoundedBg ? R.layout.item_add_top_view : R.layout.item_add;
+    }
+
+    @Override
+    public boolean isSelectable() {
+        return false;
     }
 
 
@@ -61,6 +74,10 @@ public class AddItem extends AbstractItem<AddItem, AddItem.ViewHolder> implement
     @Override
     public AddItem withIsSwipeable(boolean swipeable) {
         return this;
+    }
+
+    public void setShowRoundedBg(boolean showRoundedBg) {
+        this.showRoundedBg = showRoundedBg;
     }
 
 

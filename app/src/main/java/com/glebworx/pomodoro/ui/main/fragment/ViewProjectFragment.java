@@ -179,7 +179,7 @@ public class ViewProjectFragment extends Fragment {
         ItemAdapter<ProjectHeaderItem> headerAdapter = new ItemAdapter<>();
         headerAdapter.add(new ProjectHeaderItem());
         ItemAdapter<AddItem> addAdapter = new ItemAdapter<>();
-        addAdapter.add(new AddItem(getString(R.string.view_project_title_add_task)));
+        addAdapter.add(new AddItem(getString(R.string.view_project_title_add_task), true));
 
         fastAdapter.addAdapter(0, taskAdapter);
         fastAdapter.addAdapter(1, addAdapter);

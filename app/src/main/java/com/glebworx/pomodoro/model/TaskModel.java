@@ -49,6 +49,7 @@ public class TaskModel extends AbstractModel {
     private int pomodorosCompleted;
     private Date dueDate;
     private String recurrence;
+    private boolean isCompleted;
 
 
     //                                                                                  CONSTRUCTORS
@@ -74,6 +75,7 @@ public class TaskModel extends AbstractModel {
         } else {
             this.recurrence = null;
         }
+        this.isCompleted = false;
     }
 
     public TaskModel(Parcel in) {
@@ -85,6 +87,7 @@ public class TaskModel extends AbstractModel {
             this.dueDate = new Date(dueDate);
         }
         this.recurrence = in.readString();
+        this.isCompleted = in.readInt() == 1;
     }
 
 
@@ -101,6 +104,7 @@ public class TaskModel extends AbstractModel {
             parcel.writeLong(-1);
         }
         parcel.writeString(recurrence);
+        parcel.writeInt(isCompleted ? 1 : 0);
     }
 
     @Exclude
@@ -143,4 +147,13 @@ public class TaskModel extends AbstractModel {
     public void setRecurrence(String recurrence) {
         this.recurrence = recurrence;
     }
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
+    }
+
 }
