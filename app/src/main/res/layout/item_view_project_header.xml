@@ -5,9 +5,6 @@
     android:id="@+id/item_view_project_header"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/margin_content"
-    android:paddingBottom="0dp"
-    android:paddingHorizontal="@dimen/margin_content"
     android:layout_marginTop="@dimen/margin_content_half"
     android:layout_marginHorizontal="@dimen/margin_content"
     android:background="@drawable/drawable_foreground_rounded_small_top"
@@ -20,11 +17,69 @@
         android:id="@+id/text_view_summary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_content"
+        android:layout_marginStart="@dimen/margin_content"
         android:text="@string/view_project_title_summary"
         android:drawableStart="@drawable/ic_project_gray_small"
         android:drawablePadding="@dimen/margin_content_quarter"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        style="@style/ImageButtonStyle.Borderless"
+        android:id="@+id/button_options"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_content_half"
+        android:layout_marginEnd="@dimen/margin_content_half"
+        android:src="@drawable/ic_options_black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle.Count"
+        android:id="@+id/text_view_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="32"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_summary"
+        app:layout_constraintStart_toStartOf="parent" />
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle"
+        android:id="@+id/text_view_1_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Elapsed"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_1"
+        app:layout_constraintStart_toStartOf="@+id/text_view_1"
+        app:layout_constraintEnd_toEndOf="@+id/text_view_1"/>
+
+    <com.triggertrap.seekarc.SeekArc
+        android:id="@+id/seek_arc_progress"
+        android:layout_width="@dimen/size_seek_arc_list"
+        android:layout_height="@dimen/size_seek_arc_list"
+        android:layout_marginTop="@dimen/margin_content"
+        android:layout_marginEnd="@dimen/margin_content"
+        app:enabled="false"
+        app:arcColor="@android:color/darker_gray"
+        app:progressColor="@color/colorHighlight"
+        app:rotation="210"
+        app:sweepAngle="300"
+        app:progressWidth="@dimen/size_divider_thick"
+        app:roundEdges="true"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_summary"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle"
+        android:id="@+id/text_view_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="375%"
+        app:layout_constraintTop_toTopOf="@+id/seek_arc_progress"
+        app:layout_constraintBottom_toBottomOf="@+id/seek_arc_progress"
+        app:layout_constraintStart_toStartOf="@+id/seek_arc_progress"
+        app:layout_constraintEnd_toEndOf="@+id/seek_arc_progress"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/TextStyle"
@@ -32,18 +87,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_content"
+        android:layout_marginStart="@dimen/margin_content"
         android:text="@string/view_project_title_tasks"
         android:drawableStart="@drawable/ic_task_gray_small"
         android:drawablePadding="@dimen/margin_content_quarter"
         app:layout_constraintTop_toBottomOf="@+id/text_view_summary"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <!--<View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/radius_small"
-        android:layout_marginTop="@dimen/margin_content"
-        android:background="@drawable/drawable_foreground_rounded_small_top"
-        android:elevation="@dimen/elevation_view"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_tasks" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

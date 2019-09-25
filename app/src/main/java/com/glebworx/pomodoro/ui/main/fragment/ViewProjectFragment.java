@@ -55,7 +55,6 @@ public class ViewProjectFragment extends Fragment {
 
     @BindView(R.id.text_view_title) AppCompatTextView titleTextView;
     @BindView(R.id.text_view_subtitle) AppCompatTextView subtitleTextView;
-    @BindView(R.id.button_options) AppCompatImageButton optionsButton;
     @BindView(R.id.button_close) AppCompatImageButton closeButton;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
@@ -178,7 +177,13 @@ public class ViewProjectFragment extends Fragment {
         recyclerView.setItemAnimator(new SlideInOutLeftAnimator(recyclerView));
 
         ItemAdapter<ViewProjectHeaderItem> headerAdapter = new ItemAdapter<>();
-        headerAdapter.add(new ViewProjectHeaderItem());
+        headerAdapter.add(new ViewProjectHeaderItem(view -> {
+            switch (view.getId()) {
+                case R.id.button_options:
+                    showOptionsPopup(context);
+                    break;
+            }
+        }));
 
         ItemAdapter<AddItem> addAdapter = new ItemAdapter<>();
         addAdapter.add(new AddItem(getString(R.string.view_project_title_add_task), true));
@@ -232,11 +237,8 @@ public class ViewProjectFragment extends Fragment {
         View.OnClickListener onClickListener = view -> {
             if (view.getId() == R.id.button_close) {
                 fragmentListener.onCloseFragment();
-            } else if (view.getId() == R.id.button_options) {
-                showOptionsPopup(context);
             }
         };
-        optionsButton.setOnClickListener(onClickListener);
         closeButton.setOnClickListener(onClickListener);
         fastAdapter.withOnClickListener((view, adapter, item, position) -> {
             if (view == null) {
@@ -260,8 +262,8 @@ public class ViewProjectFragment extends Fragment {
         PopupWindowManager popupWindowManager = new PopupWindowManager(context);
         PopupWindow popupWindow = popupWindowManager.showPopup(
                 R.layout.popup_options_view_project,
-                optionsButton,
-                Gravity.BOTTOM | Gravity.END);
+                recyclerView,
+                Gravity.TOP | Gravity.END);
 
         View contentView = popupWindow.getContentView();
 

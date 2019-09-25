@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.glebworx.pomodoro.R;
 import com.mikepenz.fastadapter.FastAdapter;
@@ -18,11 +19,13 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
 
     //                                                                                    ATTRIBUTES
 
+    private View.OnClickListener onClickListener;
+
 
     //                                                                                  CONSTRUCTORS
 
-    public ViewProjectHeaderItem() {
-
+    public ViewProjectHeaderItem(View.OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
     }
 
 
@@ -57,6 +60,9 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
 
     //                                                                                       HELPERS
 
+    public View.OnClickListener getOnClickListener() {
+        return onClickListener;
+    }
 
 
     //                                                                                   VIEW HOLDER
@@ -64,23 +70,23 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
     protected static class ViewHolder extends FastAdapter.ViewHolder<ViewProjectHeaderItem> {
 
         private Context context;
+        private AppCompatImageButton optionsButton;
 
         ViewHolder(View view) {
             super(view);
             context = view.getContext();
+            optionsButton = view.findViewById(R.id.button_options);
 
         }
 
         @Override
         public void bindView(@NonNull ViewProjectHeaderItem item, @NonNull List<Object> payloads) {
-
-
+            optionsButton.setOnClickListener(item.getOnClickListener());
         }
 
         @Override
         public void unbindView(@NonNull ViewProjectHeaderItem item) {
-
-
+            optionsButton.setOnClickListener(null);
         }
 
     }

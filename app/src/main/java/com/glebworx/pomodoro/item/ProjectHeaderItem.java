@@ -7,6 +7,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.ProjectModel;
@@ -33,11 +34,13 @@ public class ProjectHeaderItem extends AbstractItem<ProjectHeaderItem, ProjectHe
     private int todayCount;
     private int thisWeekCount;
     private int overdueCount;
+    private View.OnClickListener onClickListener;
 
 
     //                                                                                  CONSTRUCTORS
 
-    public ProjectHeaderItem() {
+    public ProjectHeaderItem(View.OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
         todayCount = 0;
         thisWeekCount = 0;
         overdueCount = 0;
@@ -99,11 +102,19 @@ public class ProjectHeaderItem extends AbstractItem<ProjectHeaderItem, ProjectHe
         return overdueCount;
     }
 
+    public View.OnClickListener getOnClickListener() {
+        return onClickListener;
+    }
+
+
     //                                                                                   VIEW HOLDER
 
     protected static class ViewHolder extends FastAdapter.ViewHolder<ProjectHeaderItem> {
 
         private Context context;
+        private ConstraintLayout todayLayout;
+        private ConstraintLayout thisWeekLayout;
+        private ConstraintLayout overdueLayout;
         private AppCompatTextView todayTextView;
         private AppCompatTextView thisWeekTextView;
         private AppCompatTextView overdueTextView;
@@ -111,10 +122,12 @@ public class ProjectHeaderItem extends AbstractItem<ProjectHeaderItem, ProjectHe
         ViewHolder(View view) {
             super(view);
             context = view.getContext();
+            todayLayout = view.findViewById(R.id.layout_today);
+            thisWeekLayout = view.findViewById(R.id.layout_this_week);
+            overdueLayout = view.findViewById(R.id.layout_overdue);
             todayTextView = view.findViewById(R.id.text_view_task_count_today);
             thisWeekTextView = view.findViewById(R.id.text_view_task_count_this_week);
             overdueTextView = view.findViewById(R.id.text_view_task_count_overdue);
-
         }
 
         @Override
@@ -125,14 +138,17 @@ public class ProjectHeaderItem extends AbstractItem<ProjectHeaderItem, ProjectHe
             count = item.getTodayCount();
             todayTextView.setText(String.valueOf(count));
             todayTextView.setTextColor(context.getColor(count > 0 ? android.R.color.black : R.color.colorHighlight));
+            todayLayout.setOnClickListener(item.getOnClickListener());
 
             count = item.getThisWeekCount();
             thisWeekTextView.setText(String.valueOf(count));
             thisWeekTextView.setTextColor(context.getColor(count > 0 ? android.R.color.black : R.color.colorHighlight));
+            thisWeekLayout.setOnClickListener(item.getOnClickListener());
 
             count = item.getOverdueCount();
             overdueTextView.setText(String.valueOf(count));
             overdueTextView.setTextColor(context.getColor(count > 0 ? R.color.colorError : R.color.colorHighlight));
+            overdueLayout.setOnClickListener(item.getOnClickListener());
 
         }
 
@@ -146,7 +162,11 @@ public class ProjectHeaderItem extends AbstractItem<ProjectHeaderItem, ProjectHe
             todayTextView.setTextColor(context.getColor(android.R.color.black));
             thisWeekTextView.setTextColor(context.getColor(android.R.color.black));
             overdueTextView.setTextColor(context.getColor(R.color.colorHighlight));
-            
+
+            todayLayout.setOnClickListener(null);
+            thisWeekLayout.setOnClickListener(null);
+            overdueLayout.setOnClickListener(null);
+
         }
 
     }

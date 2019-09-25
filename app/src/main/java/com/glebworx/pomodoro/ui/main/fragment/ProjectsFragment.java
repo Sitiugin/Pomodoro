@@ -154,7 +154,19 @@ public class ProjectsFragment extends Fragment {
         //OverScrollDecoratorHelper.setUpOverScroll(recyclerView, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
 
         headerAdapter = new ItemAdapter<>();
-        headerAdapter.add(new ProjectHeaderItem());
+        headerAdapter.add(new ProjectHeaderItem(view -> {
+            switch (view.getId()) {
+                case R.id.layout_today:
+                    // TODO
+                    break;
+                case R.id.layout_this_week:
+                    // TODO
+                    break;
+                case R.id.layout_overdue:
+                    // TODO
+                    break;
+            }
+        }));
         ItemAdapter<AddItem> addAdapter = new ItemAdapter<>();
         addAdapter.add(new AddItem(getString(R.string.add_project_title_add_project)));
 
