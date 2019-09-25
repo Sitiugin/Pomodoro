@@ -26,7 +26,6 @@ import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.item.AddItem;
 import com.glebworx.pomodoro.item.ProjectHeaderItem;
 import com.glebworx.pomodoro.item.TaskItem;
-import com.glebworx.pomodoro.item.ViewProjectDecorativeHeaderItem;
 import com.glebworx.pomodoro.item.ViewProjectHeaderItem;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
@@ -180,15 +179,14 @@ public class ViewProjectFragment extends Fragment {
 
         ItemAdapter<ViewProjectHeaderItem> headerAdapter = new ItemAdapter<>();
         headerAdapter.add(new ViewProjectHeaderItem());
-        ItemAdapter<ViewProjectDecorativeHeaderItem> decorativeHeaderAdapter = new ItemAdapter<>();
-        decorativeHeaderAdapter.add(new ViewProjectDecorativeHeaderItem());
+
         ItemAdapter<AddItem> addAdapter = new ItemAdapter<>();
         addAdapter.add(new AddItem(getString(R.string.view_project_title_add_task), true));
 
         fastAdapter.addAdapter(0, headerAdapter);
-        fastAdapter.addAdapter(1, decorativeHeaderAdapter);
-        fastAdapter.addAdapter(2, taskAdapter);
-        fastAdapter.addAdapter(3, addAdapter);
+        fastAdapter.addAdapter(1, taskAdapter);
+        //fastAdapter.addAdapter(2, completedAdapter);
+        fastAdapter.addAdapter(2, addAdapter);
 
         fastAdapter.setHasStableIds(true);
         fastAdapter.withSelectable(true);
