@@ -130,6 +130,10 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
         return numberFormat.format(progress);
     }
 
+    public boolean isOverdue() {
+        return model.getDueDate().compareTo(new Date()) < 0;
+    }
+
 
     //                                                                                   VIEW HOLDER
 
@@ -159,6 +163,11 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
                     ColorManager.getDrawable(context, item.getColorTag()),
                     null);
             dueDateTextView.setText(item.getDueDateString(context));
+            if (item.isOverdue()) {
+                dueDateTextView.setTextColor(context.getColor(R.color.colorError));
+            } else {
+                dueDateTextView.setTextColor(context.getColor(android.R.color.darker_gray));
+            }
             double progressRatio = item.getProgressRatio();
             progressSeekArc.setProgress((int) Math.round(progressRatio * 100));
             progressTextView.setText(item.getProgressString(progressRatio));
@@ -169,6 +178,7 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
             titleTextView.setText(null);
             titleTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, null, null);
             dueDateTextView.setText(null);
+            dueDateTextView.setTextColor(context.getColor(android.R.color.darker_gray));
             progressSeekArc.setProgress(0);
             progressTextView.setText(null);
         }

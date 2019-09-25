@@ -6,8 +6,8 @@ public class Constants {
 
     private Constants() { }
 
-    public static final String PATTERN_DATE_TIME = "MMM d, y hh:mm a";
-    public static final String PATTERN_DATE = "MMM d, y";
+    public static final String PATTERN_DATE_TIME = "EEEE MMM d, y hh:mm a";
+    public static final String PATTERN_DATE = "EEEE MMM d, y";
 
     public static final String FORMAT_DECIMAL_2PT = "%.2f";
 

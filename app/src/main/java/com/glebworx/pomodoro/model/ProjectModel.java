@@ -42,12 +42,10 @@ public class ProjectModel extends AbstractModel {
 
     private Date dueDate;
     private String colorTag;
-    //@Exclude
-    //private Map<String, TaskModel> tasks; //  TODO remove
-
     private List<String> tasks;
     private int pomodorosAllocated;
     private int pomodorosCompleted;
+    private boolean isCompleted;
 
 
 
@@ -71,6 +69,7 @@ public class ProjectModel extends AbstractModel {
         this.tasks = new ArrayList<>();
         this.pomodorosAllocated = 0;
         this.pomodorosCompleted = 0;
+        this.isCompleted = false;
     }
 
     public ProjectModel(Parcel in) {
@@ -83,6 +82,7 @@ public class ProjectModel extends AbstractModel {
         in.readStringList(this.tasks);
         this.pomodorosAllocated = in.readInt();
         this.pomodorosCompleted = in.readInt();
+        this.isCompleted = in.readInt() == 1;
     }
 
 
@@ -100,6 +100,7 @@ public class ProjectModel extends AbstractModel {
         parcel.writeStringList(tasks);
         parcel.writeInt(pomodorosAllocated);
         parcel.writeInt(pomodorosCompleted);
+        parcel.writeInt(isCompleted ? 1 : 0);
     }
 
     @Exclude
@@ -159,6 +160,14 @@ public class ProjectModel extends AbstractModel {
 
     public void setPomodorosCompleted(int pomodorosCompleted) {
         this.pomodorosCompleted = pomodorosCompleted;
+    }
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
     }
 
     @Exclude

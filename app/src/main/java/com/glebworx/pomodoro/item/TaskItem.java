@@ -1,6 +1,7 @@
 package com.glebworx.pomodoro.item;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -94,6 +95,10 @@ public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> implem
                 String.valueOf(model.getPomodorosAllocated()));
     }
 
+    public boolean isOverdue() {
+        return model.getDueDate().compareTo(new Date()) < 0;
+    }
+
 
     //                                                                                   VIEW HOLDER
 
@@ -116,6 +121,11 @@ public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> implem
         public void bindView(@NonNull TaskItem item, @NonNull List<Object> payloads) {
             titleTextView.setText(item.getTaskName());
             dueDateTextView.setText(item.getDueDateString(context));
+            if (item.isOverdue()) {
+                dueDateTextView.setTextColor(context.getColor(R.color.colorError));
+            } else {
+                dueDateTextView.setTextColor(context.getColor(android.R.color.darker_gray));
+            }
             pomodoroTextView.setText(item.getPomodoroRatio(context));
         }
 
@@ -123,6 +133,7 @@ public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> implem
         public void unbindView(@NonNull TaskItem item) {
             titleTextView.setText(null);
             dueDateTextView.setText(null);
+            dueDateTextView.setTextColor(context.getColor(android.R.color.darker_gray));
             pomodoroTextView.setText(null);
         }
 

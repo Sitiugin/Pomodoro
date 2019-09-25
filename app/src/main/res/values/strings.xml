@@ -11,12 +11,28 @@
     <string name="core_today">Today</string>
     <string name="core_tomorrow">Tomorrow</string>
     <string name="core_yesterday">Yesterday</string>
+    <string-array name="core_date">
+        <item>In 2 days</item>
+        <item>In 3 days</item>
+        <item>In 4 days</item>
+        <item>5 days</item>
+        <item>In 6 days</item>
+        <item>In a week</item>
+    </string-array>
     <string name="core_text_no_data">Nothing to show</string>
     <string name="core_active">Active</string>
     <string name="core_due" formatted="true">Due: %1$s</string>
     <string name="core_due_today">Due: today</string>
     <string name="core_due_tomorrow">Due: tomorrow</string>
     <string name="core_due_yesterday">Due: yesterday</string>
+    <string-array name="core_due_date">
+        <item>In 2 days</item>
+        <item>In 3 days</item>
+        <item>In 4 days</item>
+        <item>5 days</item>
+        <item>In 6 days</item>
+        <item>In a week</item>
+    </string-array>
     <string name="core_ratio" formatted="true">%1$s/%2$s</string>
     <string-array name="core_recurrence">
         <item>Never repeat</item>

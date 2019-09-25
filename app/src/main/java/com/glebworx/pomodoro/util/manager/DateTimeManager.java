@@ -1,6 +1,7 @@
 package com.glebworx.pomodoro.util.manager;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.util.constants.Constants;
@@ -71,50 +72,31 @@ public class DateTimeManager {
     }
 
     public boolean isDateToday() {
-        return currentCalendar.get(Calendar.YEAR) == targetCalendar.get(Calendar.YEAR)
-                && currentCalendar.get(Calendar.DAY_OF_YEAR) == targetCalendar.get(Calendar.DAY_OF_YEAR);
+        return isSameYear() && currentCalendar.get(Calendar.DAY_OF_YEAR) == targetCalendar.get(Calendar.DAY_OF_YEAR);
     }
 
     public boolean isDateTomorrow() {
-        if (currentCalendar.get(Calendar.YEAR) != targetCalendar.get(Calendar.YEAR)) {
-            return false;
-        }
-        return currentCalendar.get(Calendar.DAY_OF_YEAR) + 1 == targetCalendar.get(Calendar.DAY_OF_YEAR);
+        return isSameYear() && currentCalendar.get(Calendar.DAY_OF_YEAR) + 1 == targetCalendar.get(Calendar.DAY_OF_YEAR);
     }
 
     public boolean isDateYesterday() {
-        if (currentCalendar.get(Calendar.YEAR) != targetCalendar.get(Calendar.YEAR)) {
-            return false;
-        }
-        return currentCalendar.get(Calendar.DAY_OF_YEAR) - 1 == targetCalendar.get(Calendar.DAY_OF_YEAR);
+        return isSameYear() && currentCalendar.get(Calendar.DAY_OF_YEAR) - 1 == targetCalendar.get(Calendar.DAY_OF_YEAR);
     }
 
-    public String getDateString() {
+    public boolean isSameYear() {
+        return currentCalendar.get(Calendar.YEAR) != targetCalendar.get(Calendar.YEAR);
+    }
 
-        if (isDateToday()) {
-            return context.getString(R.string.core_today);
-        }
-        if (isDateTomorrow()) {
-            return context.getString(R.string.core_tomorrow);
-        }
-        if (isDateYesterday()) {
-            return context.getString(R.string.core_yesterday);
-        }
+    public boolean isDateWithinAWeek() {
+        return isSameYear() && currentCalendar.get(Calendar.DAY_OF_YEAR) + 7 <= targetCalendar.get(Calendar.DAY_OF_YEAR);
+    }
+
+    public String getDateString() { // TODO use getRelativeDateTimeString
         return dateFormat.format(targetCalendar.getTime());
-
     }
 
     public String getDueDateString() {
 
-        if (isDateToday()) {
-            return context.getString(R.string.core_due_today);
-        }
-        if (isDateTomorrow()) {
-            return context.getString(R.string.core_due_tomorrow);
-        }
-        if (isDateYesterday()) {
-            return context.getString(R.string.core_due_yesterday);
-        }
         return context.getString(R.string.core_due, dateFormat.format(targetCalendar.getTime()));
 
     }
