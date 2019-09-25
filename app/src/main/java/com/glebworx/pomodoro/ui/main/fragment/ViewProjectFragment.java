@@ -26,6 +26,8 @@ import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.item.AddItem;
 import com.glebworx.pomodoro.item.ProjectHeaderItem;
 import com.glebworx.pomodoro.item.TaskItem;
+import com.glebworx.pomodoro.item.ViewProjectDecorativeHeaderItem;
+import com.glebworx.pomodoro.item.ViewProjectHeaderItem;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
@@ -176,13 +178,17 @@ public class ViewProjectFragment extends Fragment {
         recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty));
         recyclerView.setItemAnimator(new SlideInOutLeftAnimator(recyclerView));
 
-        ItemAdapter<ProjectHeaderItem> headerAdapter = new ItemAdapter<>();
-        headerAdapter.add(new ProjectHeaderItem());
+        ItemAdapter<ViewProjectHeaderItem> headerAdapter = new ItemAdapter<>();
+        headerAdapter.add(new ViewProjectHeaderItem());
+        ItemAdapter<ViewProjectDecorativeHeaderItem> decorativeHeaderAdapter = new ItemAdapter<>();
+        decorativeHeaderAdapter.add(new ViewProjectDecorativeHeaderItem());
         ItemAdapter<AddItem> addAdapter = new ItemAdapter<>();
         addAdapter.add(new AddItem(getString(R.string.view_project_title_add_task), true));
 
-        fastAdapter.addAdapter(0, taskAdapter);
-        fastAdapter.addAdapter(1, addAdapter);
+        fastAdapter.addAdapter(0, headerAdapter);
+        fastAdapter.addAdapter(1, decorativeHeaderAdapter);
+        fastAdapter.addAdapter(2, taskAdapter);
+        fastAdapter.addAdapter(3, addAdapter);
 
         fastAdapter.setHasStableIds(true);
         fastAdapter.withSelectable(true);
@@ -196,7 +202,7 @@ public class ViewProjectFragment extends Fragment {
                                    FastAdapter fastAdapter) {
         SimpleSwipeCallback swipeCallback = new SimpleSwipeCallback(
                 (position, direction) -> {
-                    TaskModel taskModel = taskAdapter.getAdapterItem(position).getModel();
+                    TaskModel taskModel = taskAdapter.getAdapterItem(position - 2).getModel();
                     if (direction == ItemTouchHelper.RIGHT) {
                         fragmentListener.onEditTask(projectModel, taskModel);
                         fastAdapter.notifyAdapterItemChanged(position);
