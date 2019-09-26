@@ -229,6 +229,11 @@
         <item name="android:textSize">@dimen/text_size_count</item>
     </style>
 
+    <style name="TextStyle.Count.Small" parent="TextStyle">
+        <item name="android:textColor">@color/colorHighlight</item>
+        <item name="android:textSize">@dimen/text_size_count_small</item>
+    </style>
+
     <style name="TextStyle.Title">
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">@dimen/text_size_title</item>

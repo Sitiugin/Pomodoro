@@ -21,29 +21,29 @@ public class ColorManager {
 
     private ColorManager() { }
 
-    public static Drawable getDrawable(@NonNull Context context, @Nullable String colorTag) {
+    public static int getColor(@NonNull Context context, @Nullable String colorTag) {
         if (colorTag == null) {
-            return null;
+            return context.getColor(android.R.color.transparent);
         }
         switch (colorTag) {
             case COLOR_TURQUOISE_HEX:
-                return context.getDrawable(R.drawable.drawable_dot_turquoise);
+                return context.getColor(R.color.colorTurquoise);
             case COLOR_EMERALD_HEX:
-                return context.getDrawable(R.drawable.drawable_dot_emerald);
+                return context.getColor(R.color.colorEmerald);
             case COLOR_PETER_RIVER_HEX:
-                return context.getDrawable(R.drawable.drawable_dot_peter_river);
+                return context.getColor(R.color.colorPeterRiver);
             case COLOR_AMETHYST_HEX:
-                return context.getDrawable(R.drawable.drawable_dot_amethyst);
+                return context.getColor(R.color.colorAmethyst);
             case COLOR_WET_ASPHALT_HEX:
-                return context.getDrawable(R.drawable.drawable_dot_wet_asphalt);
+                return context.getColor(R.color.colorWetAsphalt);
             case COLOR_SUNFLOWER_HEX:
-                return context.getDrawable(R.drawable.drawable_dot_sunflower);
+                return context.getColor(R.color.colorSunflower);
             case COLOR_CARROT_HEX:
-                return context.getDrawable(R.drawable.drawable_dot_carrot);
+                return context.getColor(R.color.colorCarrot);
             case COLOR_ALIZARIN_HEX:
-                return context.getDrawable(R.drawable.drawable_dot_alizarin);
+                return context.getColor(R.color.colorAlizarin);
             default:
-                return null;
+                return context.getColor(android.R.color.transparent);
         }
     }
 }

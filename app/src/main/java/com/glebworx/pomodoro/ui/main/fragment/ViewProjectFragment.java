@@ -164,10 +164,12 @@ public class ViewProjectFragment extends Fragment {
 
     private void initTitle(Context context) {
         titleTextView.setText(projectModel.getName());
-        titleTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(
+
+        /*titleTextView.setCompoundDrawablesRelativeWithIntrinsicBounds( // TODO set drawable tint dynamically
                 null,
                 null,
-                ColorManager.getDrawable(context, projectModel.getColorTag()), null);
+                ColorManager.getDrawable(context, projectModel.getColorTag()), null);*/
+
     }
 
     private void initRecyclerView(Context context, LinearLayoutManager layoutManager, FastAdapter fastAdapter) {

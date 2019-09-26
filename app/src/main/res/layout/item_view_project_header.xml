@@ -12,6 +12,16 @@
     android:clipChildren="false"
     android:clipToPadding="false">
 
+    <View
+        android:id="@+id/view_color_tag"
+        android:layout_width="@dimen/radius_small"
+        android:layout_height="0dp"
+        android:background="@drawable/drawable_color_tag_view_project"
+        app:layout_constraintVertical_weight="1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/TextStyle"
         android:id="@+id/text_view_summary_section"
@@ -37,7 +47,7 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-        style="@style/TextStyle.Count"
+        style="@style/TextStyle.Count.Small"
         android:id="@+id/text_view_estimated_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -60,7 +70,7 @@
         app:layout_constraintEnd_toEndOf="@+id/text_view_estimated_time"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-        style="@style/TextStyle.Count"
+        style="@style/TextStyle.Count.Small"
         android:id="@+id/text_view_elapsed_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -82,7 +92,7 @@
         app:layout_constraintEnd_toEndOf="@+id/text_view_elapsed_time"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-        style="@style/TextStyle.Count"
+        style="@style/TextStyle.Count.Small"
         android:id="@+id/text_view_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -110,11 +120,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_content_double"
+        android:layout_marginBottom="@dimen/margin_content"
         android:layout_marginStart="@dimen/margin_content"
         android:text="@string/view_project_title_tasks"
         android:drawableStart="@drawable/ic_task_gray_small"
         android:drawablePadding="@dimen/margin_content_quarter"
         app:layout_constraintTop_toBottomOf="@+id/text_view_estimated_time_description"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

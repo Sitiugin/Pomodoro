@@ -4,6 +4,7 @@ package com.glebworx.pomodoro.item;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -140,6 +141,7 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
     protected static class ViewHolder extends FastAdapter.ViewHolder<ProjectItem> {
 
         private Context context;
+        private Drawable colorTagDrawable;
         private AppCompatTextView titleTextView;
         private AppCompatTextView dueDateTextView;
         private SeekArc progressSeekArc;
@@ -148,6 +150,8 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
         ViewHolder(View view) {
             super(view);
             this.context = view.getContext();
+            colorTagDrawable = ((LayerDrawable) view.findViewById(R.id.view_color_tag).getBackground())
+                    .findDrawableByLayerId(R.id.shape_color_tag);
             titleTextView = view.findViewById(R.id.text_view_title);
             dueDateTextView = view.findViewById(R.id.text_view_due_date);
             progressSeekArc = view.findViewById(R.id.seek_arc_progress);
@@ -156,12 +160,8 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
 
         @Override
         public void bindView(@NonNull ProjectItem item, @NonNull List<Object> payloads) {
+            colorTagDrawable.setTint(ColorManager.getColor(context, item.getColorTag()));
             titleTextView.setText(item.getProjectName());
-            titleTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                    null,
-                    null,
-                    ColorManager.getDrawable(context, item.getColorTag()),
-                    null);
             dueDateTextView.setText(item.getDueDateString(context));
             if (item.isOverdue()) {
                 dueDateTextView.setTextColor(context.getColor(R.color.colorError));
@@ -175,8 +175,8 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
 
         @Override
         public void unbindView(@NonNull ProjectItem item) {
+            colorTagDrawable.setTint(ColorManager.getColor(context, null));
             titleTextView.setText(null);
-            titleTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, null, null);
             dueDateTextView.setText(null);
             dueDateTextView.setTextColor(context.getColor(android.R.color.darker_gray));
             progressSeekArc.setProgress(0);
