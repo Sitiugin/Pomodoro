@@ -125,7 +125,7 @@ public class ViewProjectFragment extends Fragment {
             Calendar calendar = Calendar.getInstance(Locale.getDefault());
             calendar.setTime(projectModel.getDueDate());
             dateTimeManager.setTargetCalendar(calendar);
-            updateToday();
+            updateToday(context);
         }
     }
 
@@ -158,7 +158,7 @@ public class ViewProjectFragment extends Fragment {
         super.onResume();
         Context context = getContext();
         if (context != null) {
-            updateToday();
+            updateToday(context);
         }
     }
 
@@ -292,9 +292,14 @@ public class ViewProjectFragment extends Fragment {
         });
     }
 
-    private void updateToday() {
+    private void updateToday(Context context) {
         dateTimeManager.setCurrentCalendar();
         subtitleTextView.setText(dateTimeManager.getDueDateString());
+        if (dateTimeManager.isDateOverdue()) {
+            subtitleTextView.setTextColor(context.getColor(R.color.colorError));
+        } else {
+            subtitleTextView.setTextColor(context.getColor(android.R.color.darker_gray));
+        }
     }
 
     public interface OnViewProjectFragmentInteractionListener {

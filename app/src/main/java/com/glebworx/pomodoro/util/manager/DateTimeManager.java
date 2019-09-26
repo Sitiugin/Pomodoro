@@ -71,6 +71,10 @@ public class DateTimeManager {
 
     }
 
+    public boolean isDateOverdue() {
+        return isDateOverdue(currentCalendar, targetCalendar);
+    }
+
     public boolean isDateToday() {
         return isSameYear() && currentCalendar.get(Calendar.DAY_OF_YEAR) == targetCalendar.get(Calendar.DAY_OF_YEAR);
     }

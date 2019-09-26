@@ -57,6 +57,10 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
         return this;
     }
 
+    @Override
+    public boolean isSelectable() {
+        return false;
+    }
 
     //                                                                                       HELPERS
 

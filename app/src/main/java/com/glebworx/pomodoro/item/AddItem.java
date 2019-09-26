@@ -51,7 +51,7 @@ public class AddItem
 
     @Override
     public int getLayoutRes() {
-        return showRoundedBg ? R.layout.item_add_top_view : R.layout.item_add;
+        return showRoundedBg ? R.layout.item_add_bottom_view : R.layout.item_add;
     }
 
     @Override

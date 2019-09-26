@@ -2,19 +2,19 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/ViewStyle.Rounded.Clickable"
     android:id="@+id/item_view_project_header"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/margin_content_half"
     android:layout_marginHorizontal="@dimen/margin_content"
     android:background="@drawable/drawable_foreground_rounded_small_top"
-    android:elevation="@dimen/elevation_view_high"
     android:clipChildren="false"
     android:clipToPadding="false">
 
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/TextStyle"
-        android:id="@+id/text_view_summary"
+        android:id="@+id/text_view_summary_section"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_content"
@@ -38,60 +38,83 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/TextStyle.Count"
-        android:id="@+id/text_view_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="32"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_summary"
-        app:layout_constraintStart_toStartOf="parent" />
-    <androidx.appcompat.widget.AppCompatTextView
-        style="@style/TextStyle"
-        android:id="@+id/text_view_1_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Elapsed"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_1"
-        app:layout_constraintStart_toStartOf="@+id/text_view_1"
-        app:layout_constraintEnd_toEndOf="@+id/text_view_1"/>
-
-    <com.triggertrap.seekarc.SeekArc
-        android:id="@+id/seek_arc_progress"
-        android:layout_width="@dimen/size_seek_arc_list"
-        android:layout_height="@dimen/size_seek_arc_list"
-        android:layout_marginTop="@dimen/margin_content"
-        android:layout_marginEnd="@dimen/margin_content"
-        app:enabled="false"
-        app:arcColor="@android:color/darker_gray"
-        app:progressColor="@color/colorHighlight"
-        app:rotation="210"
-        app:sweepAngle="300"
-        app:progressWidth="@dimen/size_divider_thick"
-        app:roundEdges="true"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_summary"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        style="@style/TextStyle"
-        android:id="@+id/text_view_progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="375%"
-        app:layout_constraintTop_toTopOf="@+id/seek_arc_progress"
-        app:layout_constraintBottom_toBottomOf="@+id/seek_arc_progress"
-        app:layout_constraintStart_toStartOf="@+id/seek_arc_progress"
-        app:layout_constraintEnd_toEndOf="@+id/seek_arc_progress"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        style="@style/TextStyle"
-        android:id="@+id/text_view_tasks"
+        android:id="@+id/text_view_estimated_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_content"
         android:layout_marginStart="@dimen/margin_content"
+        android:text="3:30"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_summary_section"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/text_view_elapsed_time"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle"
+        android:id="@+id/text_view_estimated_time_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/view_project_title_estimated"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_estimated_time"
+        app:layout_constraintStart_toStartOf="@+id/text_view_estimated_time"
+        app:layout_constraintEnd_toEndOf="@+id/text_view_estimated_time"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle.Count"
+        android:id="@+id/text_view_elapsed_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_content"
+        android:text="3:30"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_summary_section"
+        app:layout_constraintStart_toEndOf="@+id/text_view_estimated_time"
+        app:layout_constraintEnd_toStartOf="@+id/text_view_progress"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle"
+        android:id="@+id/text_view_elapsed_time_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/view_project_title_elapsed"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_elapsed_time"
+        app:layout_constraintStart_toStartOf="@+id/text_view_elapsed_time"
+        app:layout_constraintEnd_toEndOf="@+id/text_view_elapsed_time"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle.Count"
+        android:id="@+id/text_view_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_content"
+        android:layout_marginEnd="@dimen/margin_content"
+        android:text="37.5%"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_summary_section"
+        app:layout_constraintStart_toEndOf="@+id/text_view_elapsed_time"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle"
+        android:id="@+id/text_view_progress_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/view_project_title_progress"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_progress"
+        app:layout_constraintStart_toStartOf="@+id/text_view_progress"
+        app:layout_constraintEnd_toEndOf="@+id/text_view_progress"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle"
+        android:id="@+id/text_view_tasks_section"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_content_double"
+        android:layout_marginStart="@dimen/margin_content"
         android:text="@string/view_project_title_tasks"
         android:drawableStart="@drawable/ic_task_gray_small"
         android:drawablePadding="@dimen/margin_content_quarter"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_summary"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_estimated_time_description"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
