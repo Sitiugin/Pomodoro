@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.text.format.DateUtils;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.util.constants.Constants;
 import com.glebworx.pomodoro.util.manager.ColorManager;
+import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.fastadapter_extensions.swipe.ISwipeable;
@@ -31,23 +33,14 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_ALIZARIN_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_AMETHYST_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_CARROT_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_EMERALD_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_PETER_RIVER_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_SUNFLOWER_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_TURQUOISE_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_WET_ASPHALT_HEX;
 
 public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolder> implements ISwipeable<ProjectItem, ProjectItem> {
 
 
     //                                                                                    ATTRIBUTES
 
-    private static SimpleDateFormat dateFormat =
-            new SimpleDateFormat(Constants.PATTERN_DATE, Locale.getDefault());
     private static NumberFormat numberFormat = NumberFormat.getPercentInstance(Locale.getDefault());
+    private static Date currentDate = new Date();
 
     private ProjectModel model;
 
@@ -119,8 +112,7 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
         if (model.getDueDate() == null) {
             return null;
         }
-        Date dueDate = model.getDueDate();
-        return context.getString(R.string.core_due, dateFormat.format(dueDate));
+        return DateTimeManager.getDueDateString(context, model.getDueDate(), currentDate);
     }
 
     public double getProgressRatio() {

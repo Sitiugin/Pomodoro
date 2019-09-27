@@ -71,6 +71,14 @@ public class DateTimeManager {
 
     }
 
+    public static String getDueDateString(Context context, Date date, Date currentDate) {
+        return context.getString(R.string.core_due, DateUtils.getRelativeTimeSpanString(
+                date.getTime(),
+                currentDate.getTime(),
+                DateUtils.DAY_IN_MILLIS,
+                DateUtils.FORMAT_ABBREV_ALL));
+    }
+
     public boolean isDateOverdue() {
         return isDateOverdue(currentCalendar, targetCalendar);
     }

@@ -47,6 +47,7 @@ import com.mikepenz.itemanimators.SlideInOutLeftAnimator;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -61,9 +62,6 @@ public class ViewProjectFragment extends Fragment {
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
     private static final String ARG_PROJECT_MODEL = "project_model";
-
-    private static SimpleDateFormat dateFormat =
-            new SimpleDateFormat(Constants.PATTERN_DATE, Locale.getDefault());
 
     private ProjectModel projectModel;
     private FastAdapter<AbstractItem> fastAdapter;
@@ -301,7 +299,7 @@ public class ViewProjectFragment extends Fragment {
 
     private void updateToday(Context context) {
         dateTimeManager.setCurrentCalendar();
-        subtitleTextView.setText(dateTimeManager.getDueDateString());
+        subtitleTextView.setText(DateTimeManager.getDueDateString(context, projectModel.getDueDate(), new Date()));
         if (dateTimeManager.isDateOverdue()) {
             subtitleTextView.setTextColor(context.getColor(R.color.colorError));
         } else {

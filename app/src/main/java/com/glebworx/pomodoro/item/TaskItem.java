@@ -13,6 +13,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.util.constants.Constants;
+import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.fastadapter_extensions.swipe.ISwipeable;
@@ -29,8 +30,8 @@ public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> implem
 
     //                                                                                    ATTRIBUTES
 
-    private static SimpleDateFormat dateFormat =
-            new SimpleDateFormat(Constants.PATTERN_DATE, Locale.getDefault());
+    private static Date currentDate = new Date();
+
     private TaskModel model;
 
 
@@ -84,8 +85,7 @@ public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> implem
         if (model.getDueDate() == null) {
             return null;
         }
-        Date dueDate = model.getDueDate();
-        return context.getString(R.string.core_due, dateFormat.format(dueDate));
+        return DateTimeManager.getDueDateString(context, model.getDueDate(), currentDate);
     }
 
     public @NonNull String getPomodoroRatio(Context context) {
