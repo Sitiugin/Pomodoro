@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.glebworx.pomodoro.R;
+import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.util.manager.ColorManager;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
@@ -22,14 +23,14 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
 
     //                                                                                    ATTRIBUTES
 
-    private String colorTag;
+    private ProjectModel model;
     private View.OnClickListener onClickListener;
 
 
     //                                                                                  CONSTRUCTORS
 
-    public ViewProjectHeaderItem(String colorTag, View.OnClickListener onClickListener) {
-        this.colorTag = colorTag;
+    public ViewProjectHeaderItem(ProjectModel model, View.OnClickListener onClickListener) {
+        this.model = model;
         this.onClickListener = onClickListener;
     }
 
@@ -68,12 +69,9 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
     }
 
     public String getColorTag() {
-        return this.colorTag;
+        return this.model.getColorTag();
     }
 
-    public void setColorTag(String colorTag) {
-        this.colorTag = colorTag;
-    }
 
     //                                                                                       HELPERS
 

@@ -169,11 +169,10 @@ public class ViewProjectFragment extends Fragment {
 
     private void initTitle() {
         titleTextView.setText(projectModel.getName());
-        fastAdapter.notifyAdapterItemChanged(0);
     }
 
     private void initColorTag() {
-        headerAdapter.getAdapterItems().get(0).setColorTag(projectModel.getColorTag());
+        fastAdapter.notifyAdapterItemChanged(0);
     }
 
     private void initRecyclerView(Context context, LinearLayoutManager layoutManager, FastAdapter fastAdapter) {
@@ -182,7 +181,7 @@ public class ViewProjectFragment extends Fragment {
         recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty));
         recyclerView.setItemAnimator(new SlideInOutLeftAnimator(recyclerView));
 
-        headerAdapter.add(new ViewProjectHeaderItem(projectModel.getColorTag(), view -> {
+        headerAdapter.add(new ViewProjectHeaderItem(projectModel, view -> {
             switch (view.getId()) {
                 case R.id.button_options:
                     showOptionsPopup(context);
@@ -210,7 +209,7 @@ public class ViewProjectFragment extends Fragment {
                                    FastAdapter fastAdapter) {
         SimpleSwipeCallback swipeCallback = new SimpleSwipeCallback(
                 (position, direction) -> {
-                    TaskModel taskModel = taskAdapter.getAdapterItem(position - 2).getModel();
+                    TaskModel taskModel = taskAdapter.getAdapterItem(position - 1).getModel();
                     if (direction == ItemTouchHelper.RIGHT) {
                         fragmentListener.onEditTask(projectModel, taskModel);
                         fastAdapter.notifyAdapterItemChanged(position);
