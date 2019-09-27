@@ -70,7 +70,7 @@ public class ViewProjectFragment extends Fragment {
     private EventListener<QuerySnapshot> eventListener;
     private OnViewProjectFragmentInteractionListener fragmentListener;
     private InitTasksTask initTasksTask;
-    private DateTimeManager dateTimeManager;
+    //private DateTimeManager dateTimeManager;
 
     public ViewProjectFragment() { }
 
@@ -101,10 +101,10 @@ public class ViewProjectFragment extends Fragment {
             return rootView;
         }
 
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        calendar.setTime(projectModel.getDueDate());
-        DateTimeManager.clearTime(calendar);
-        dateTimeManager = new DateTimeManager(context, calendar);
+        //Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        //calendar.setTime(projectModel.getDueDate());
+        //DateTimeManager.clearTime(calendar);
+        //dateTimeManager = new DateTimeManager(context, calendar);
 
         fastAdapter = new FastAdapter<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
@@ -126,9 +126,9 @@ public class ViewProjectFragment extends Fragment {
         if (context != null && !hidden) {
             initTitle();
             initColorTag();
-            Calendar calendar = Calendar.getInstance(Locale.getDefault());
-            calendar.setTime(projectModel.getDueDate());
-            dateTimeManager.setTargetCalendar(calendar);
+            //Calendar calendar = Calendar.getInstance(Locale.getDefault());
+            //calendar.setTime(projectModel.getDueDate());
+            //dateTimeManager.setTargetCalendar(calendar);
             updateToday(context);
         }
     }
@@ -298,9 +298,10 @@ public class ViewProjectFragment extends Fragment {
     }
 
     private void updateToday(Context context) {
-        dateTimeManager.setCurrentCalendar();
-        subtitleTextView.setText(DateTimeManager.getDueDateString(context, projectModel.getDueDate(), new Date()));
-        if (dateTimeManager.isDateOverdue()) {
+        //dateTimeManager.setCurrentCalendar();
+        Date newDate = new Date();
+        subtitleTextView.setText(DateTimeManager.getDueDateString(context, projectModel.getDueDate(), newDate));
+        if (projectModel.getDueDate().compareTo(newDate) < 0) {
             subtitleTextView.setTextColor(context.getColor(R.color.colorError));
         } else {
             subtitleTextView.setTextColor(context.getColor(android.R.color.darker_gray));
