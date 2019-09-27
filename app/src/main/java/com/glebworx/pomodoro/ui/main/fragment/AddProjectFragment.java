@@ -35,6 +35,7 @@ import com.google.android.material.chip.ChipGroup;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -79,8 +80,8 @@ public class AddProjectFragment extends Fragment {
     private OnAddProjectFragmentInteractionListener fragmentListener;
     private ConstraintSet constraintSet;
     private ProjectModel projectModel;
-    private Calendar targetCalendar;
-    private DateTimeManager dateTimeManager;
+    //private Calendar targetCalendar;
+    //private DateTimeManager dateTimeManager;
     private boolean isEditing;
 
 
@@ -120,9 +121,9 @@ public class AddProjectFragment extends Fragment {
             return rootView;
         }
 
-        targetCalendar = Calendar.getInstance(Locale.getDefault());
-        DateTimeManager.clearTime(targetCalendar);
-        dateTimeManager = new DateTimeManager(context, targetCalendar);
+        //targetCalendar = Calendar.getInstance(Locale.getDefault());
+        //DateTimeManager.clearTime(targetCalendar);
+        //dateTimeManager = new DateTimeManager(context, targetCalendar);
 
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -140,14 +141,15 @@ public class AddProjectFragment extends Fragment {
             projectNameSectionTextView.setVisibility(View.GONE);
             titleTextView.setText(context.getString(R.string.core_edit_something, projectModel.getName()));
             checkColorTag(projectModel.getColorTag());
-            targetCalendar.setTime(projectModel.getDueDate());
-            DateTimeManager.clearTime(targetCalendar);
-            dueDateButton.setText(dateTimeManager.getDateString());
+            //targetCalendar.setTime(projectModel.getDueDate());
+            //DateTimeManager.clearTime(targetCalendar);
+            //dueDateButton.setText(dateTimeManager.getDateString());
+            dueDateButton.setText(DateTimeManager.getDateString(projectModel.getDueDate(), new Date()));
             saveButton.setText(R.string.add_project_title_update_project);
         } else {
-            DateTimeManager.clearTime(targetCalendar);
-            projectModel.setDueDate(targetCalendar.getTime());
-            dueDateButton.setText(getString(R.string.core_today));
+            //DateTimeManager.clearTime(targetCalendar);
+            projectModel.setDueDate(new Date());
+            dueDateButton.setText(DateTimeManager.getDateString(projectModel.getDueDate(), new Date()));
             initEditText(activity);
         }
 
@@ -161,10 +163,7 @@ public class AddProjectFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Context context = getContext();
-        if (context != null) {
-            updateToday(context);
-        }
+        dueDateButton.setText(DateTimeManager.getDateString(projectModel.getDueDate(), new Date()));
     }
 
     @Override
@@ -301,20 +300,23 @@ public class AddProjectFragment extends Fragment {
     private void showDatePickerDialog(Activity activity) {
         AlertDialog alertDialog = DialogManager.showDialog(activity, R.id.container_main, R.layout.dialog_date_picker);
         DatePicker datePicker = alertDialog.findViewById(R.id.date_picker);
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        calendar.setTime(projectModel.getDueDate());
         if (datePicker != null) {
             datePicker.init(
-                    targetCalendar.get(Calendar.YEAR),
-                    targetCalendar.get(Calendar.MONTH),
-                    targetCalendar.get(Calendar.DAY_OF_MONTH),
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH),
                     getDateChangeListener(activity, alertDialog));
         }
     }
 
     private DatePicker.OnDateChangedListener getDateChangeListener(Context context, AlertDialog alertDialog) {
         return (view, year, monthOfYear, dayOfMonth) -> {
-            targetCalendar.set(year, monthOfYear, dayOfMonth, 0, 0, 0);
-            projectModel.setDueDate(targetCalendar.getTime());
-            dueDateButton.setText(dateTimeManager.getDateString());
+            Calendar calendar = Calendar.getInstance(Locale.getDefault());
+            calendar.set(year, monthOfYear, dayOfMonth, 0, 0, 0);
+            projectModel.setDueDate(calendar.getTime());
+            dueDateButton.setText(DateTimeManager.getDateString(projectModel.getDueDate(), new Date()));
             alertDialog.dismiss();
         };
     }
@@ -358,11 +360,6 @@ public class AddProjectFragment extends Fragment {
         constraintSet.setVisibility(R.id.spin_kit_view, ConstraintSet.INVISIBLE);
         constraintSet.setVisibility(R.id.button_save, ConstraintSet.VISIBLE);
         constraintSet.applyTo(addProjectLayout);
-    }
-
-    private void updateToday(Context context) {
-        dateTimeManager.setCurrentCalendar();
-        dueDateButton.setText(dateTimeManager.getDateString());
     }
 
     private void clearEditTextFocus(Activity activity) {

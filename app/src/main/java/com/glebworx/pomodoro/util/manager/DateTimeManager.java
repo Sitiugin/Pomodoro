@@ -79,38 +79,17 @@ public class DateTimeManager {
                 DateUtils.FORMAT_ABBREV_ALL));
     }
 
+    public static String getDateString(Date date, Date currentDate) {
+        return String.valueOf(DateUtils.getRelativeTimeSpanString(
+                date.getTime(),
+                currentDate.getTime(),
+                DateUtils.DAY_IN_MILLIS,
+                DateUtils.FORMAT_ABBREV_ALL));
+    }
+
+
     public boolean isDateOverdue() {
         return isDateOverdue(currentCalendar, targetCalendar);
-    }
-
-    public boolean isDateToday() {
-        return isSameYear() && currentCalendar.get(Calendar.DAY_OF_YEAR) == targetCalendar.get(Calendar.DAY_OF_YEAR);
-    }
-
-    public boolean isDateTomorrow() {
-        return isSameYear() && currentCalendar.get(Calendar.DAY_OF_YEAR) + 1 == targetCalendar.get(Calendar.DAY_OF_YEAR);
-    }
-
-    public boolean isDateYesterday() {
-        return isSameYear() && currentCalendar.get(Calendar.DAY_OF_YEAR) - 1 == targetCalendar.get(Calendar.DAY_OF_YEAR);
-    }
-
-    public boolean isSameYear() {
-        return currentCalendar.get(Calendar.YEAR) != targetCalendar.get(Calendar.YEAR);
-    }
-
-    public boolean isDateWithinAWeek() {
-        return isSameYear() && currentCalendar.get(Calendar.DAY_OF_YEAR) + 7 <= targetCalendar.get(Calendar.DAY_OF_YEAR);
-    }
-
-    public String getDateString() { // TODO use getRelativeDateTimeString
-        return dateFormat.format(targetCalendar.getTime());
-    }
-
-    public String getDueDateString() {
-
-        return context.getString(R.string.core_due, dateFormat.format(targetCalendar.getTime()));
-
     }
 
 }
