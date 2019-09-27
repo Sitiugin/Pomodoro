@@ -2,6 +2,8 @@ package com.glebworx.pomodoro.ui.main.fragment;
 
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -64,6 +66,8 @@ public class ViewProjectFragment extends Fragment {
             new SimpleDateFormat(Constants.PATTERN_DATE, Locale.getDefault());
 
     private ProjectModel projectModel;
+    private FastAdapter<AbstractItem> fastAdapter;
+    private ItemAdapter<ViewProjectHeaderItem> headerAdapter;
     private ItemAdapter<TaskItem> taskAdapter;
     private EventListener<QuerySnapshot> eventListener;
     private OnViewProjectFragmentInteractionListener fragmentListener;
@@ -104,11 +108,12 @@ public class ViewProjectFragment extends Fragment {
         DateTimeManager.clearTime(calendar);
         dateTimeManager = new DateTimeManager(context, calendar);
 
-        FastAdapter<AbstractItem> fastAdapter = new FastAdapter<>();
+        fastAdapter = new FastAdapter<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
 
-        initTitle(context);
+        initTitle();
         initRecyclerView(context, layoutManager, fastAdapter);
+        initColorTag();
         initClickEvents(context, fastAdapter);
 
         TaskApi.addTaskEventListener(projectModel.getName(), eventListener);
@@ -121,7 +126,8 @@ public class ViewProjectFragment extends Fragment {
         super.onHiddenChanged(hidden);
         Context context = getContext();
         if (context != null && !hidden) {
-            initTitle(context);
+            initTitle();
+            initColorTag();
             Calendar calendar = Calendar.getInstance(Locale.getDefault());
             calendar.setTime(projectModel.getDueDate());
             dateTimeManager.setTargetCalendar(calendar);
@@ -131,6 +137,7 @@ public class ViewProjectFragment extends Fragment {
 
     @Override
     public void onAttach(@NonNull Context context) {
+        headerAdapter = new ItemAdapter<>();
         taskAdapter = new ItemAdapter<>();
         super.onAttach(context);
         eventListener = (snapshots, e) -> {
@@ -162,14 +169,13 @@ public class ViewProjectFragment extends Fragment {
         }
     }
 
-    private void initTitle(Context context) {
+    private void initTitle() {
         titleTextView.setText(projectModel.getName());
+        fastAdapter.notifyAdapterItemChanged(0);
+    }
 
-        /*titleTextView.setCompoundDrawablesRelativeWithIntrinsicBounds( // TODO set drawable tint dynamically
-                null,
-                null,
-                ColorManager.getDrawable(context, projectModel.getColorTag()), null);*/
-
+    private void initColorTag() {
+        headerAdapter.getAdapterItems().get(0).setColorTag(projectModel.getColorTag());
     }
 
     private void initRecyclerView(Context context, LinearLayoutManager layoutManager, FastAdapter fastAdapter) {
@@ -178,8 +184,7 @@ public class ViewProjectFragment extends Fragment {
         recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty));
         recyclerView.setItemAnimator(new SlideInOutLeftAnimator(recyclerView));
 
-        ItemAdapter<ViewProjectHeaderItem> headerAdapter = new ItemAdapter<>();
-        headerAdapter.add(new ViewProjectHeaderItem(view -> {
+        headerAdapter.add(new ViewProjectHeaderItem(projectModel.getColorTag(), view -> {
             switch (view.getId()) {
                 case R.id.button_options:
                     showOptionsPopup(context);
