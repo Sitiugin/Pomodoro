@@ -192,6 +192,10 @@ public class AddProjectFragment extends Fragment {
     private void initColorChips(Activity activity) {
         colorTagChipGroup.setOnCheckedChangeListener((group, checkedId) -> {
             clearEditTextFocus(activity);
+            if (group.getCheckedChipId() == View.NO_ID) {
+                projectModel.setColorTag(null);
+                return;
+            }
             switch (checkedId) {
                 case R.id.chip_turquoise:
                     projectModel.setColorTag(COLOR_TURQUOISE_HEX);

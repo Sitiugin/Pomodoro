@@ -32,7 +32,6 @@ public class TaskApi extends BaseApi {
 
     public static void addTask(@NonNull ProjectModel projectModel,
                                @NonNull TaskModel taskModel,
-                               //@Nullable TaskModel oldTaskModel,
                                @Nullable OnCompleteListener<Void> onCompleteListener) {
 
         WriteBatch batch = getWriteBatch();

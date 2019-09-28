@@ -112,7 +112,8 @@ public class MainActivity
 
     @Override
     public void onSelectTask(TaskModel taskModel) {
-        // TODO implement
+        // TODO
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
     @Override

@@ -87,9 +87,9 @@ public class AddTaskFragment extends Fragment {
     private ConstraintSet constraintSet;
     private ProjectModel projectModel;
     private TaskModel taskModel;
-    //private Calendar targetCalendar;
-    //private DateTimeManager dateTimeManager;
     private boolean isEditing;
+    private int pomodorosAllocated;
+    private int pomodorosCompleted;
 
 
     //                                                                                  CONSTRUCTORS
@@ -133,10 +133,6 @@ public class AddTaskFragment extends Fragment {
             return rootView;
         }
 
-        //targetCalendar = Calendar.getInstance(Locale.getDefault());
-        //DateTimeManager.clearTime(targetCalendar);
-        //dateTimeManager = new DateTimeManager(context, targetCalendar);
-
         Bundle arguments = getArguments();
         if (arguments == null) {
             return rootView;
@@ -158,17 +154,14 @@ public class AddTaskFragment extends Fragment {
             taskNameEditText.setVisibility(View.GONE);
             taskNameSectionTextView.setVisibility(View.GONE);
             titleTextView.setText(context.getString(R.string.core_edit_something, taskModel.getName()));
-            //targetCalendar.setTime(taskModel.getDueDate());
-            //DateTimeManager.clearTime(targetCalendar);
-            //dueDateButton.setText(dateTimeManager.getDateString());
             dueDateButton.setText(DateTimeManager.getDateString(taskModel.getDueDate(), new Date()));
             allocatedTimeSpinner.setSelection(taskModel.getPomodorosAllocated() - 1, true);
             selectRecurrence(taskModel.getRecurrence());
             saveButton.setText(R.string.add_task_title_update_task);
+            pomodorosAllocated = taskModel.getPomodorosAllocated();
+            pomodorosCompleted = taskModel.getPomodorosCompleted();
         } else {
-            //DateTimeManager.clearTime(targetCalendar);
             taskModel.setDueDate(new Date());
-            //dueDateButton.setText(getString(R.string.core_today));
             dueDateButton.setText(DateTimeManager.getDateString(taskModel.getDueDate(), new Date()));
             taskModel.setPomodorosAllocated(1);
             initEditText(activity);
@@ -272,6 +265,7 @@ public class AddTaskFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) { }
+
         });
         recurrenceSpinner.setOnTouchListener((view, motionEvent) -> {
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
@@ -394,7 +388,11 @@ public class AddTaskFragment extends Fragment {
 
     private void saveTask(Context context) {
         startSaveStartedAnimation();
-        projectModel.addTask(taskModel);
+        if (isEditing) {
+            projectModel.setTask(taskModel, pomodorosAllocated, pomodorosCompleted);
+        } else {
+            projectModel.addTask(taskModel);
+        }
         TaskApi.addTask(projectModel, taskModel, task -> {
             if (context == null) {
                 startSaveCanceledAnimation();

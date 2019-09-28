@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 import static com.glebworx.pomodoro.util.manager.DateTimeManager.POMODORO_LENGTH;
 
@@ -143,6 +144,22 @@ public class ProjectModel extends AbstractModel {
         tasks.add(taskModel.getName());
         pomodorosAllocated += taskModel.getPomodorosAllocated();
         pomodorosCompleted += taskModel.getPomodorosCompleted();
+    }
+
+    @Exclude
+    public void setTask(TaskModel taskModel, int pomodorosAllocated, int pomodorosCompleted) {
+        this.pomodorosAllocated -= pomodorosAllocated;
+        this.pomodorosCompleted -= pomodorosCompleted;
+        this.pomodorosAllocated += taskModel.getPomodorosAllocated();
+        this.pomodorosCompleted += taskModel.getPomodorosCompleted();
+
+    }
+
+    @Exclude
+    private int getTaskItemIndex(@NonNull String name) {
+        return IntStream.range(0, tasks.size())
+                .filter(i -> name.equals(tasks.get(i)))
+                .findFirst().orElse(-1);
     }
 
     @Exclude
