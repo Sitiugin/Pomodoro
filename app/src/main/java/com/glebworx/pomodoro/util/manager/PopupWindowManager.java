@@ -49,7 +49,7 @@ public class PopupWindowManager {
             : new PopupWindow(context);
 
         popupWindow.setContentView(popupView);
-        popupWindow.setBackgroundDrawable(context.getDrawable(R.drawable.drawable_foreground));
+        popupWindow.setBackgroundDrawable(context.getDrawable(R.drawable.drawable_foreground_rounded_small));
         popupWindow.setElevation(context.getResources().getDimensionPixelSize(R.dimen.elevation_popup));
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(true);

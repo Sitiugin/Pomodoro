@@ -39,6 +39,17 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/TextStyle"
+            android:id="@+id/text_view_pomodoro_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:text="Pomodoro: 1/2"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_task"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/TextStyle"
             android:id="@+id/text_view_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,6 +75,29 @@
             android:src="@drawable/ic_play_highlight"
             app:layout_constraintTop_toTopOf="@+id/text_view_task"
             app:layout_constraintBottom_toBottomOf="@+id/text_view_task"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/TextStyle.Count"
+            android:id="@+id/text_view_distractions_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorError"
+            android:layout_marginBottom="@dimen/margin_content"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/text_view_time_remaining_large"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="3"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/TextStyle"
+            android:id="@+id/text_view_distractions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:text="Distractions"
+            app:layout_constraintBottom_toTopOf="@+id/text_view_time_remaining_large"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <TextView

@@ -40,6 +40,8 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.fastadapter_extensions.UndoHelper;
 import com.mikepenz.fastadapter_extensions.swipe.SimpleSwipeCallback;
+import com.mikepenz.itemanimators.AlphaCrossFadeAnimator;
+import com.mikepenz.itemanimators.AlphaInAnimator;
 import com.mikepenz.itemanimators.SlideInOutLeftAnimator;
 
 import java.text.NumberFormat;
@@ -190,7 +192,7 @@ public class ViewProjectFragment extends Fragment {
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty));
-        recyclerView.setItemAnimator(new SlideInOutLeftAnimator(recyclerView));
+        recyclerView.setItemAnimator(new AlphaCrossFadeAnimator());
 
         headerAdapter.add(new ViewProjectHeaderItem(projectModel, view -> {
             switch (view.getId()) {

@@ -176,6 +176,11 @@ public class MainActivity
                 ConstraintSet.PARENT_ID,
                 ConstraintSet.END);
 
+        // animate distractions
+        constraintSet.setVisibility(R.id.text_view_distractions, ConstraintSet.VISIBLE);
+        constraintSet.setVisibility(R.id.text_view_distractions_count, ConstraintSet.VISIBLE);
+        constraintSet.setVisibility(R.id.text_view_pomodoro_number, ConstraintSet.VISIBLE);
+
         // animate buttons
         constraintSet.setVisibility(R.id.button_start_stop, ConstraintSet.INVISIBLE);
         constraintSet.setVisibility(R.id.fab_start_stop_large, ConstraintSet.VISIBLE);
@@ -213,6 +218,11 @@ public class MainActivity
                 ConstraintSet.PARENT_ID,
                 ConstraintSet.TOP);
         constraintSet.clear(R.id.text_view_task, ConstraintSet.END);
+
+        // animate distractions & pomodoro number
+        constraintSet.setVisibility(R.id.text_view_distractions, ConstraintSet.INVISIBLE);
+        constraintSet.setVisibility(R.id.text_view_distractions_count, ConstraintSet.INVISIBLE);
+        constraintSet.setVisibility(R.id.text_view_pomodoro_number, ConstraintSet.INVISIBLE);
 
         // animate buttons
         constraintSet.setVisibility(R.id.button_start_stop, ConstraintSet.VISIBLE);
