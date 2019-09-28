@@ -148,8 +148,8 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
             optionsButton.setOnClickListener(item.getOnClickListener());
             colorTagDrawable.setTint(ColorManager.getColor(context, item.getColorTag()));
 
-            estimatedTimeTextView.setText(DateTimeManager.getTime(context, item.getEstimatedTime()));
-            elapsedTimeTextView.setText(DateTimeManager.getTime(context, item.getElapsedTime()));
+            estimatedTimeTextView.setText(DateTimeManager.formatTimeString(context, item.getEstimatedTime()));
+            elapsedTimeTextView.setText(DateTimeManager.formatTimeString(context, item.getElapsedTime()));
             progressTextView.setText(numberFormat.format(item.getProgress()));
 
         }

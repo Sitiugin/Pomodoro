@@ -57,7 +57,7 @@ public class ViewProjectFragment extends Fragment {
 
     private static final String ARG_PROJECT_MODEL = "project_model";
 
-    private static NumberFormat numberFormat = NumberFormat.getPercentInstance(Locale.getDefault());
+    //private static NumberFormat numberFormat = NumberFormat.getPercentInstance(Locale.getDefault());
 
     private ProjectModel projectModel;
     private FastAdapter<AbstractItem> fastAdapter;
@@ -66,7 +66,6 @@ public class ViewProjectFragment extends Fragment {
     private EventListener<QuerySnapshot> eventListener;
     private OnViewProjectFragmentInteractionListener fragmentListener;
     private InitTasksTask initTasksTask;
-    //private DateTimeManager dateTimeManager;
 
     public ViewProjectFragment() { }
 
@@ -97,11 +96,6 @@ public class ViewProjectFragment extends Fragment {
             return rootView;
         }
 
-        //Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        //calendar.setTime(projectModel.getDueDate());
-        //DateTimeManager.clearTime(calendar);
-        //dateTimeManager = new DateTimeManager(context, calendar);
-
         fastAdapter = new FastAdapter<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
 
@@ -113,6 +107,7 @@ public class ViewProjectFragment extends Fragment {
         TaskApi.addTaskEventListener(projectModel.getName(), eventListener);
 
         return rootView;
+
     }
 
     @Override
@@ -122,9 +117,6 @@ public class ViewProjectFragment extends Fragment {
         if (context != null && !hidden) {
             initTitle();
             notifyHeaderItemChanged();
-            //Calendar calendar = Calendar.getInstance(Locale.getDefault());
-            //calendar.setTime(projectModel.getDueDate());
-            //dateTimeManager.setTargetCalendar(calendar);
             updateToday(context);
         }
     }

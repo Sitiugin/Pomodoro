@@ -373,6 +373,7 @@ public class AddTaskFragment extends Fragment {
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.setTime(taskModel.getDueDate());
         if (datePicker != null) {
+            datePicker.setMinDate(System.currentTimeMillis() - 1000);
             datePicker.init(
                     calendar.get(Calendar.YEAR),
                     calendar.get(Calendar.MONTH),

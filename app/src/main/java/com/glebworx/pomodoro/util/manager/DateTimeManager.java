@@ -90,14 +90,13 @@ public class DateTimeManager {
                 DateUtils.FORMAT_ABBREV_ALL));
     }
 
-    public static String getTime(Context context, int pomodoros) {
-        int minutes = pomodoros * POMODORO_LENGTH;
+    public static String formatTimeString(Context context, int minutes) {
         return context.getString(R.string.core_time,
                 String.valueOf(minutes / HOUR_LENGTH),
                 String.valueOf(minutes % HOUR_LENGTH));
     }
 
-    public static int getTime(int pomodoros) {
+    public static int formatTimeString(int pomodoros) {
         return pomodoros * POMODORO_LENGTH;
     }
 
