@@ -132,7 +132,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        style="@style/ExtendedFloatingActionButtonStyle"
+        android:id="@+id/button_save"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_app_bar"
+        android:layout_marginTop="@dimen/margin_content_double"
+        android:text="@string/add_task_title_add_task"
+        android:outlineAmbientShadowColor="@color/colorHighlight"
+        android:outlineSpotShadowColor="@color/colorHighlight"
+        app:iconGravity="end"
+        app:icon="@drawable/ic_check_highlight"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:targetApi="p" />
+    <!--<androidx.appcompat.widget.AppCompatButton
         style="@style/ButtonStyle.Borderless.Colored"
         android:id="@+id/button_save"
         android:layout_width="match_parent"
@@ -141,6 +154,6 @@
         android:drawableEnd="@drawable/ic_check_highlight"
         android:gravity="start"
         android:transitionName="@string/shared_element_add_btn"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

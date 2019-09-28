@@ -32,6 +32,7 @@ import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.KeyboardManager;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -64,7 +65,7 @@ public class AddProjectFragment extends Fragment {
     @BindView(R.id.edit_text_name) AppCompatEditText projectNameEditText;
     @BindView(R.id.chip_group_color) ChipGroup colorTagChipGroup;
     @BindView(R.id.button_due_date) AppCompatButton dueDateButton;
-    @BindView(R.id.button_save) AppCompatButton saveButton;
+    @BindView(R.id.button_save) ExtendedFloatingActionButton saveButton;
     @BindView(R.id.spin_kit_view) SpinKitView spinKitView;
 
 

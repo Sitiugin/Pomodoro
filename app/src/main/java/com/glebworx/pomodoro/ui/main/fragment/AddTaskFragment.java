@@ -35,6 +35,7 @@ import com.glebworx.pomodoro.util.constants.Constants;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.KeyboardManager;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -70,7 +71,7 @@ public class AddTaskFragment extends Fragment {
     @BindView(R.id.button_due_date) AppCompatButton dueDateButton;
     @BindView(R.id.spinner_pomodoros_allocated) AppCompatSpinner allocatedTimeSpinner;
     @BindView(R.id.spinner_recurrence) AppCompatSpinner recurrenceSpinner;
-    @BindView(R.id.button_save) AppCompatButton saveButton;
+    @BindView(R.id.button_save) ExtendedFloatingActionButton saveButton;
     @BindView(R.id.spin_kit_view) SpinKitView spinKitView;
 
 

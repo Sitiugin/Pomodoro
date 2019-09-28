@@ -31,15 +31,22 @@ import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
 import com.glebworx.pomodoro.util.tasks.InitProjectsTask;
 import com.glebworx.pomodoro.util.tasks.InitTaskCountTask;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.IItemAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.adapters.ItemFilter;
 import com.mikepenz.fastadapter.items.AbstractItem;
+import com.mikepenz.fastadapter_extensions.UndoHelper;
 import com.mikepenz.fastadapter_extensions.swipe.SimpleSwipeCallback;
 import com.mikepenz.itemanimators.SlideInOutLeftAnimator;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,6 +69,7 @@ public class ProjectsFragment extends Fragment {
     private ItemAdapter<ProjectHeaderItem> headerAdapter;
     private ItemAdapter<ProjectItem> projectAdapter;
     private FastAdapter<AbstractItem> fastAdapter;
+    UndoHelper<AbstractItem> undoHelper;
     private EventListener<QuerySnapshot> taskCountEventListener;
     private EventListener<QuerySnapshot> projectsEventListener;
     private OnProjectFragmentInteractionListener fragmentListener;
@@ -95,6 +103,7 @@ public class ProjectsFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
 
         initRecyclerView(context, layoutManager, fastAdapter);
+        initUndoHelper();
         initSearchView();
         initClickEvents(context, fastAdapter);
 
@@ -110,6 +119,11 @@ public class ProjectsFragment extends Fragment {
 
         projectAdapter = new ItemAdapter<>();
         fastAdapter = new FastAdapter<>();
+        undoHelper = new UndoHelper<>(fastAdapter, (positions, removed) -> {
+            // TODO implement
+            //
+
+        });
 
         super.onAttach(context);
 
@@ -180,6 +194,11 @@ public class ProjectsFragment extends Fragment {
 
     }
 
+    private void initUndoHelper() {
+
+        undoHelper.withSnackBar(Snackbar.make(recyclerView, "Project Deleted", Snackbar.LENGTH_LONG), "Project deleted");
+    }
+
     private void attachSwipeHelper(Context context,
                                    RecyclerView recyclerView) {
         SimpleSwipeCallback swipeCallback = new SimpleSwipeCallback(
@@ -189,10 +208,13 @@ public class ProjectsFragment extends Fragment {
                         fragmentListener.onEditProject(projectModel);
                         fastAdapter.notifyAdapterItemChanged(position);
                     } else if (direction == ItemTouchHelper.LEFT) {
-                        deleteProject(context, projectModel, position);
+                        Set<Integer> positionSet = new HashSet<>();
+                        positionSet.add(position);
+                        undoHelper.remove(positionSet);
+                        //deleteProject(context, projectModel, position);
                     }
                 },
-                context.getDrawable(R.drawable.ic_delete_black),
+                context.getDrawable(R.drawable.ic_delete_red),
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT,
                 context.getColor(android.R.color.transparent))
                 .withLeaveBehindSwipeRight(context.getDrawable(R.drawable.ic_edit_black));

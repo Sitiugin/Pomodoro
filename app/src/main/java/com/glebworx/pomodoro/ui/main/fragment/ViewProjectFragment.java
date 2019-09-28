@@ -200,7 +200,7 @@ public class ViewProjectFragment extends Fragment {
                                    RecyclerView recyclerView) {
         SimpleSwipeCallback swipeCallback = new SimpleSwipeCallback(
                 (position, direction) -> executeSwipeAction(context, position, direction),
-                context.getDrawable(R.drawable.ic_delete_black),
+                context.getDrawable(R.drawable.ic_delete_red),
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT,
                 context.getColor(android.R.color.transparent))
                 .withLeaveBehindSwipeRight(context.getDrawable(R.drawable.ic_edit_black));
