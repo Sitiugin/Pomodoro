@@ -4,7 +4,7 @@
 
     <!--                                                                               UI COLORS -->
 
-    <color name="colorHighlight">#3498db</color>
+    <color name="colorHighlight">#263238</color>
     <color name="colorForeground">#ffffff</color>
     <color name="colorBackground">#fafafa</color>
     <color name="colorError">#e74c3c</color>

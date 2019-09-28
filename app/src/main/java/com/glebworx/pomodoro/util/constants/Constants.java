@@ -13,6 +13,8 @@ public class Constants {
 
     public static final int ANIM_DURATION = 400;
 
+    public static final int LENGTH_SNACK_BAR = 5000;
+
     public static final String SANS_SERIF_LIGHT = "sans-serif-light";
 
     public static final Typeface TYPEFACE = Typeface.create(SANS_SERIF_LIGHT, Typeface.NORMAL);

@@ -53,7 +53,7 @@
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/button_options"/>
+                    app:layout_constraintEnd_toStartOf="@+id/button_report"/>
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     style="@style/ImageButtonStyle.Borderless"

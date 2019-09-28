@@ -51,6 +51,9 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.widget.Toast.LENGTH_LONG;
+import static com.glebworx.pomodoro.util.constants.Constants.LENGTH_SNACK_BAR;
+
 // TODO add project when filter is on is wrong
 // TODO overdue projects and tasks must be red
 public class ProjectsFragment extends Fragment {
@@ -103,7 +106,6 @@ public class ProjectsFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
 
         initRecyclerView(context, layoutManager, fastAdapter);
-        initUndoHelper();
         initSearchView();
         initClickEvents(context, fastAdapter);
 
@@ -120,8 +122,14 @@ public class ProjectsFragment extends Fragment {
         projectAdapter = new ItemAdapter<>();
         fastAdapter = new FastAdapter<>();
         undoHelper = new UndoHelper<>(fastAdapter, (positions, removed) -> {
-            // TODO implement
-            //
+            for (FastAdapter.RelativeInfo<AbstractItem> relativeInfo: removed) {
+                deleteProject(context, ((ProjectItem) relativeInfo.item).getModel(), relativeInfo.position);
+            }
+            /*ProjectItem item;
+            for (int position: positions) {
+                item = projectAdapter.getAdapterItem(position - 1);
+                deleteProject(context, item.getModel(), position);
+            }*/
 
         });
 
@@ -194,11 +202,6 @@ public class ProjectsFragment extends Fragment {
 
     }
 
-    private void initUndoHelper() {
-
-        undoHelper.withSnackBar(Snackbar.make(recyclerView, "Project Deleted", Snackbar.LENGTH_LONG), "Project deleted");
-    }
-
     private void attachSwipeHelper(Context context,
                                    RecyclerView recyclerView) {
         SimpleSwipeCallback swipeCallback = new SimpleSwipeCallback(
@@ -210,8 +213,12 @@ public class ProjectsFragment extends Fragment {
                     } else if (direction == ItemTouchHelper.LEFT) {
                         Set<Integer> positionSet = new HashSet<>();
                         positionSet.add(position);
-                        undoHelper.remove(positionSet);
-                        //deleteProject(context, projectModel, position);
+                        undoHelper.remove(
+                                recyclerView,
+                                getString(R.string.main_toast_project_delete_success),
+                                getString(R.string.core_undo),
+                                LENGTH_SNACK_BAR,
+                                positionSet);
                     }
                 },
                 context.getDrawable(R.drawable.ic_delete_red),
@@ -225,11 +232,9 @@ public class ProjectsFragment extends Fragment {
     private void deleteProject(Context context, ProjectModel projectModel, int position) {
         searchView.setQuery(null, true);
         ProjectApi.deleteProject(projectModel, task -> {
-            if (task.isSuccessful()) {
-                Toast.makeText(context, R.string.view_project_toast_project_delete_success, Toast.LENGTH_SHORT).show();
-            } else {
+            if (!task.isSuccessful()) {
                 fastAdapter.notifyAdapterItemChanged(position);
-                Toast.makeText(context, R.string.view_project_toast_project_delete_failed, Toast.LENGTH_LONG).show();
+                Toast.makeText(context, R.string.view_project_toast_project_delete_failed, LENGTH_LONG).show();
             }
         });
     }

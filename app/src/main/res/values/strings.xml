@@ -8,6 +8,7 @@
     <string name="core_add">Add</string>
     <string name="core_edit_something" formatted="true">Edit %1$s</string>
     <string name="core_filter">Filter</string>
+    <string name="core_undo">Undo</string>
     <string name="core_time" formatted="true">%1$s:%2$s</string>
     <string name="core_text_no_data">Nothing to show</string>
     <string name="core_active">Active</string>
@@ -98,6 +99,7 @@
     <string name="main_text_today">Today</string>
     <string name="main_text_this_week">This week</string>
     <string name="main_text_overdue">Overdue</string>
+    <string name="main_toast_project_delete_success">Project deleted</string>
 
 
     <!--                                                                             ADD PROJECT -->
