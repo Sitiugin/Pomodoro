@@ -72,7 +72,7 @@ public class ProjectsFragment extends Fragment {
     private ItemAdapter<ProjectHeaderItem> headerAdapter;
     private ItemAdapter<ProjectItem> projectAdapter;
     private FastAdapter<AbstractItem> fastAdapter;
-    UndoHelper<AbstractItem> undoHelper;
+    private UndoHelper<AbstractItem> undoHelper;
     private EventListener<QuerySnapshot> taskCountEventListener;
     private EventListener<QuerySnapshot> projectsEventListener;
     private OnProjectFragmentInteractionListener fragmentListener;

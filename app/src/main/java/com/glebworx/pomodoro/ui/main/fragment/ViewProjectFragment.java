@@ -24,6 +24,7 @@ import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.item.AddItem;
+import com.glebworx.pomodoro.item.ProjectItem;
 import com.glebworx.pomodoro.item.TaskItem;
 import com.glebworx.pomodoro.item.ViewProjectHeaderItem;
 import com.glebworx.pomodoro.model.ProjectModel;
@@ -37,15 +38,20 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
+import com.mikepenz.fastadapter_extensions.UndoHelper;
 import com.mikepenz.fastadapter_extensions.swipe.SimpleSwipeCallback;
 import com.mikepenz.itemanimators.SlideInOutLeftAnimator;
 
 import java.text.NumberFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.glebworx.pomodoro.util.constants.Constants.LENGTH_SNACK_BAR;
 
 
 public class ViewProjectFragment extends Fragment {
@@ -63,6 +69,7 @@ public class ViewProjectFragment extends Fragment {
     private FastAdapter<AbstractItem> fastAdapter;
     private ItemAdapter<ViewProjectHeaderItem> headerAdapter;
     private ItemAdapter<TaskItem> taskAdapter;
+    private UndoHelper<AbstractItem> undoHelper;
     private EventListener<QuerySnapshot> eventListener;
     private OnViewProjectFragmentInteractionListener fragmentListener;
     private InitTasksTask initTasksTask;
@@ -96,7 +103,6 @@ public class ViewProjectFragment extends Fragment {
             return rootView;
         }
 
-        fastAdapter = new FastAdapter<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
 
         initTitle();
@@ -125,6 +131,19 @@ public class ViewProjectFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         headerAdapter = new ItemAdapter<>();
         taskAdapter = new ItemAdapter<>();
+        fastAdapter = new FastAdapter<>();
+        undoHelper = new UndoHelper<>(fastAdapter, (positions, removed) -> {
+            for (FastAdapter.RelativeInfo<AbstractItem> relativeInfo: removed) {
+                deleteTask(context, ((TaskItem) relativeInfo.item).getModel(), fastAdapter, relativeInfo.position);
+            }
+            /*ProjectItem item;
+            for (int position: positions) {
+                item = projectAdapter.getAdapterItem(position - 1);
+                deleteProject(context, item.getModel(), position);
+            }*/
+
+        });
+
         super.onAttach(context);
         eventListener = (snapshots, e) -> {
             if (initTasksTask != null && initTasksTask.getStatus() != AsyncTask.Status.FINISHED) {
@@ -213,7 +232,14 @@ public class ViewProjectFragment extends Fragment {
         if (direction == ItemTouchHelper.RIGHT) {
             fragmentListener.onEditTask(projectModel, taskModel);
         } else if (direction == ItemTouchHelper.LEFT) {
-            deleteTask(context, taskModel, fastAdapter, position);
+            Set<Integer> positionSet = new HashSet<>();
+            positionSet.add(position);
+            undoHelper.remove(
+                    recyclerView,
+                    getString(R.string.view_project_toast_task_delete_success),
+                    getString(R.string.core_undo),
+                    LENGTH_SNACK_BAR,
+                    positionSet);
         }
         fastAdapter.notifyAdapterItemChanged(position);
     }
