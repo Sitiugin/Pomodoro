@@ -19,6 +19,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import static com.glebworx.pomodoro.util.manager.DateTimeManager.POMODORO_LENGTH;
+
 
 public class ProjectModel extends AbstractModel {
 
@@ -45,6 +47,7 @@ public class ProjectModel extends AbstractModel {
     private List<String> tasks;
     private int pomodorosAllocated;
     private int pomodorosCompleted;
+    private int elapsedTime;
     private boolean isCompleted;
 
 
@@ -69,6 +72,7 @@ public class ProjectModel extends AbstractModel {
         this.tasks = new ArrayList<>();
         this.pomodorosAllocated = 0;
         this.pomodorosCompleted = 0;
+        this.elapsedTime = 0;
         this.isCompleted = false;
     }
 
@@ -82,6 +86,7 @@ public class ProjectModel extends AbstractModel {
         in.readStringList(this.tasks);
         this.pomodorosAllocated = in.readInt();
         this.pomodorosCompleted = in.readInt();
+        this.elapsedTime = in.readInt();
         this.isCompleted = in.readInt() == 1;
     }
 
@@ -100,6 +105,7 @@ public class ProjectModel extends AbstractModel {
         parcel.writeStringList(tasks);
         parcel.writeInt(pomodorosAllocated);
         parcel.writeInt(pomodorosCompleted);
+        parcel.writeInt(elapsedTime);
         parcel.writeInt(isCompleted ? 1 : 0);
     }
 
@@ -160,6 +166,20 @@ public class ProjectModel extends AbstractModel {
 
     public void setPomodorosCompleted(int pomodorosCompleted) {
         this.pomodorosCompleted = pomodorosCompleted;
+    }
+
+    @Exclude
+    public int getEstimatedTime() {
+        return pomodorosAllocated * POMODORO_LENGTH;
+    }
+
+    public int getElapsedTime() {
+        return elapsedTime;
+    }
+
+    @Exclude
+    public void addElapsedTime(int elapsedTime) {
+        this.elapsedTime += elapsedTime;
     }
 
     public boolean isCompleted() {

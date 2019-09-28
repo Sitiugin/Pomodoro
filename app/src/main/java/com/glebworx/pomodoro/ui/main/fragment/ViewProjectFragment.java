@@ -2,8 +2,6 @@ package com.glebworx.pomodoro.ui.main.fragment;
 
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -26,14 +24,11 @@ import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.item.AddItem;
-import com.glebworx.pomodoro.item.ProjectHeaderItem;
 import com.glebworx.pomodoro.item.TaskItem;
 import com.glebworx.pomodoro.item.ViewProjectHeaderItem;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
-import com.glebworx.pomodoro.util.constants.Constants;
-import com.glebworx.pomodoro.util.manager.ColorManager;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
 import com.glebworx.pomodoro.util.tasks.InitTasksTask;
@@ -45,8 +40,7 @@ import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.fastadapter_extensions.swipe.SimpleSwipeCallback;
 import com.mikepenz.itemanimators.SlideInOutLeftAnimator;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.text.NumberFormat;
 import java.util.Date;
 import java.util.Locale;
 
@@ -62,6 +56,8 @@ public class ViewProjectFragment extends Fragment {
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
     private static final String ARG_PROJECT_MODEL = "project_model";
+
+    private static NumberFormat numberFormat = NumberFormat.getPercentInstance(Locale.getDefault());
 
     private ProjectModel projectModel;
     private FastAdapter<AbstractItem> fastAdapter;
@@ -111,7 +107,7 @@ public class ViewProjectFragment extends Fragment {
 
         initTitle();
         initRecyclerView(context, layoutManager, fastAdapter);
-        initColorTag();
+        notifyHeaderItemChanged();
         initClickEvents(context, fastAdapter);
 
         TaskApi.addTaskEventListener(projectModel.getName(), eventListener);
@@ -125,7 +121,7 @@ public class ViewProjectFragment extends Fragment {
         Context context = getContext();
         if (context != null && !hidden) {
             initTitle();
-            initColorTag();
+            notifyHeaderItemChanged();
             //Calendar calendar = Calendar.getInstance(Locale.getDefault());
             //calendar.setTime(projectModel.getDueDate());
             //dateTimeManager.setTargetCalendar(calendar);
@@ -171,7 +167,11 @@ public class ViewProjectFragment extends Fragment {
         titleTextView.setText(projectModel.getName());
     }
 
-    private void initColorTag() {
+    private void notifyHeaderItemChanged() {
+        ViewProjectHeaderItem item = headerAdapter.getAdapterItem(0);
+        item.setEstimatedTime(projectModel.getEstimatedTime());
+        item.setElapsedTime(projectModel.getElapsedTime());
+        item.setProgress(projectModel.getProgressRatio());
         fastAdapter.notifyAdapterItemChanged(0);
     }
 
@@ -199,31 +199,31 @@ public class ViewProjectFragment extends Fragment {
 
         fastAdapter.setHasStableIds(true);
         fastAdapter.withSelectable(true);
-        attachSwipeHelper(context, recyclerView, fastAdapter);
+        attachSwipeHelper(context, recyclerView);
         recyclerView.setAdapter(fastAdapter);
 
     }
 
     private void attachSwipeHelper(Context context,
-                                   RecyclerView recyclerView,
-                                   FastAdapter fastAdapter) {
+                                   RecyclerView recyclerView) {
         SimpleSwipeCallback swipeCallback = new SimpleSwipeCallback(
-                (position, direction) -> {
-                    TaskModel taskModel = taskAdapter.getAdapterItem(position - 1).getModel();
-                    if (direction == ItemTouchHelper.RIGHT) {
-                        fragmentListener.onEditTask(projectModel, taskModel);
-                        fastAdapter.notifyAdapterItemChanged(position);
-                    } else if (direction == ItemTouchHelper.LEFT) {
-                        deleteTask(context, taskModel, fastAdapter, position);
-                    }
-                    fastAdapter.notifyAdapterItemChanged(position);
-                },
+                (position, direction) -> executeSwipeAction(context, position, direction),
                 context.getDrawable(R.drawable.ic_delete_black),
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT,
                 context.getColor(android.R.color.transparent))
                 .withLeaveBehindSwipeRight(context.getDrawable(R.drawable.ic_edit_black));
         ItemTouchHelper touchHelper = new ItemTouchHelper(swipeCallback);
         touchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    private void executeSwipeAction(Context context, int position, int direction) {
+        TaskModel taskModel = taskAdapter.getAdapterItem(position - 1).getModel();
+        if (direction == ItemTouchHelper.RIGHT) {
+            fragmentListener.onEditTask(projectModel, taskModel);
+        } else if (direction == ItemTouchHelper.LEFT) {
+            deleteTask(context, taskModel, fastAdapter, position);
+        }
+        fastAdapter.notifyAdapterItemChanged(position);
     }
 
     private void deleteTask(Context context, TaskModel taskModel, FastAdapter fastAdapter, int position) {

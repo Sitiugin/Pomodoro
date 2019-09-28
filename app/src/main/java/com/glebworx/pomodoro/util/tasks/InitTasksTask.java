@@ -60,13 +60,14 @@ public class InitTasksTask extends AsyncTask<Void, DocumentChange, Void> {
                     case MODIFIED:
                         index = getTaskItemIndex(item.getTaskName());
                         if (index != -1) {
-                            itemAdapter.set(getTaskItemIndex(item.getTaskName()), item);
+                            itemAdapter.set(index + 1, item);
+                            //itemAdapter.set(getTaskItemIndex(item.getTaskName()), item);
                         }
                         break;
                     case REMOVED:
                         index = getTaskItemIndex(item.getTaskName());
                         if (index != -1) {
-                            itemAdapter.remove(index);
+                            itemAdapter.remove(index + 1);
                         }
                         break;
                 }

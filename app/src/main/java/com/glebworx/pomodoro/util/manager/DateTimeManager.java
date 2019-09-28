@@ -97,4 +97,8 @@ public class DateTimeManager {
                 String.valueOf(minutes % HOUR_LENGTH));
     }
 
+    public static int getTime(int pomodoros) {
+        return pomodoros * POMODORO_LENGTH;
+    }
+
 }
