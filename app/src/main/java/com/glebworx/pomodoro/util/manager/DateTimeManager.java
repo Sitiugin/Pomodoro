@@ -15,6 +15,9 @@ import java.util.Locale;
 
 public class DateTimeManager {
 
+    public static final int POMODORO_LENGTH = 25;
+    public static final int HOUR_LENGTH = 60;
+
     private static SimpleDateFormat dateFormat =
             new SimpleDateFormat(Constants.PATTERN_DATE, Locale.getDefault());
 
@@ -87,9 +90,11 @@ public class DateTimeManager {
                 DateUtils.FORMAT_ABBREV_ALL));
     }
 
-
-    public boolean isDateOverdue() {
-        return isDateOverdue(currentCalendar, targetCalendar);
+    public static String getTime(Context context, int pomodoros) {
+        int minutes = pomodoros * POMODORO_LENGTH;
+        return context.getString(R.string.core_time,
+                String.valueOf(minutes / HOUR_LENGTH),
+                String.valueOf(minutes % HOUR_LENGTH));
     }
 
 }
