@@ -4,29 +4,24 @@ import android.graphics.Color;
 
 public class ColorConstants {
 
-    public static final String COLOR_HIGHLIGHT_HEX = "#ff5349";
-    public static final int COLOR_HIGHLIGHT_INT = rgb(COLOR_HIGHLIGHT_HEX);
+    public static final String COLOR_HIGHLIGHT_HEX = "#84FFFF";
 
-    public static final int COLOR_WHITE_INT = Color.parseColor("#FFFFFF");
-    public static final int COLOR_BLACK_INT = Color.parseColor("#000000");
-
-    public static final String COLOR_TURQUOISE_HEX = "#1abc9c"; // yellow-green
-    public static final String COLOR_EMERALD_HEX = "#2ecc71"; // green
-    public static final String COLOR_PETER_RIVER_HEX = "#3498d";
-    public static final String COLOR_AMETHYST_HEX = "#9b59b6";
-    public static final String COLOR_WET_ASPHALT_HEX = "#34495e";
-    public static final String COLOR_SUNFLOWER_HEX = "#f1c40f"; // yellow
-    public static final String COLOR_CARROT_HEX = "#e67e22"; // orange
-    public static final String COLOR_ALIZARIN_HEX = "#e74c3c"; // red
-
-    public static final int COLOR_TURQUOISE_INT = rgb(COLOR_TURQUOISE_HEX);
-    public static final int COLOR_EMERALD_INT = rgb(COLOR_EMERALD_HEX);
-    public static final int COLOR_PETER_RIVER_INT = rgb(COLOR_PETER_RIVER_HEX);
-    public static final int COLOR_AMETHYST_INT = rgb(COLOR_AMETHYST_HEX);
-    public static final int COLOR_WET_ASPHALT_INT = rgb(COLOR_WET_ASPHALT_HEX);
-    public static final int COLOR_SUNFLOWER_INT = rgb(COLOR_SUNFLOWER_HEX);
-    public static final int COLOR_CARROT_INT = rgb(COLOR_CARROT_HEX);
-    public static final int COLOR_ALIZARIN_INT = rgb(COLOR_ALIZARIN_HEX);
+    public static final String COLOR_RED_HEX = "#ff8a80";
+    public static final String COLOR_PINK_HEX = "#FF80AB";
+    public static final String COLOR_PURPLE_HEX = "#EA80FC";
+    public static final String COLOR_DEEP_PURPLE_HEX = "#B388FF";
+    public static final String COLOR_INDIGO_HEX = "#8C9EFF";
+    public static final String COLOR_BLUE_HEX = "#82B1FF";
+    public static final String COLOR_LIGHT_BLUE_HEX = "#80D8FF";
+    public static final String COLOR_CYAN_HEX = "#84FFFF";
+    public static final String COLOR_TEAL_HEX = "#A7FFEB";
+    public static final String COLOR_GREEN_HEX = "#B9F6CA";
+    public static final String COLOR_LIGHT_GREEN_HEX = "#CCFF90";
+    public static final String COLOR_LIME_HEX = "#F4FF81";
+    public static final String COLOR_YELLOW_HEX = "#FFFF8D";
+    public static final String COLOR_AMBER_HEX = "#FFE57F";
+    public static final String COLOR_ORANGE_HEX = "#FFD180";
+    public static final String COLOR_DEEP_ORANGE_HEX = "#FF9E80";
 
     private ColorConstants() { }
 

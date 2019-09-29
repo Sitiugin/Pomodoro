@@ -212,6 +212,7 @@ public class ProjectsFragment extends Fragment {
                         fragmentListener.onEditProject(projectModel);
                         fastAdapter.notifyAdapterItemChanged(position);
                     } else if (direction == ItemTouchHelper.LEFT) {
+                        //searchView.setQuery(null, true); // TODO what to do about it?
                         Set<Integer> positionSet = new HashSet<>();
                         positionSet.add(position);
                         undoHelper.remove(
@@ -231,7 +232,6 @@ public class ProjectsFragment extends Fragment {
     }
 
     private void deleteProject(Context context, ProjectModel projectModel, int position) {
-        searchView.setQuery(null, true);
         ProjectApi.deleteProject(projectModel, task -> {
             if (!task.isSuccessful()) {
                 fastAdapter.notifyAdapterItemChanged(position);

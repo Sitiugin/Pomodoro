@@ -11,7 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_EMERALD_HEX;
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_RED_HEX;
+
 
 public class DummyDataProvider { // TODO temp class for testing
 
@@ -35,7 +36,7 @@ public class DummyDataProvider { // TODO temp class for testing
                 model.setPomodorosCompleted(3);
                 taskModels.put(model.getName(), model);
             }
-            ProjectModel model = new ProjectModel("Some Project", new Date(), COLOR_EMERALD_HEX);
+            ProjectModel model = new ProjectModel("Some Project", new Date(), COLOR_RED_HEX);
             result.add(new ProjectItem(model));
         }
         return result;

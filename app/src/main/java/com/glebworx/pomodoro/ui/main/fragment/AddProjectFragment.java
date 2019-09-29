@@ -43,14 +43,22 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_ALIZARIN_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_AMETHYST_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_CARROT_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_EMERALD_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_PETER_RIVER_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_SUNFLOWER_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_TURQUOISE_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_WET_ASPHALT_HEX;
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_AMBER_HEX;
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_BLUE_HEX;
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_CYAN_HEX;
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_DEEP_ORANGE_HEX;
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_DEEP_PURPLE_HEX;
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_GREEN_HEX;
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_INDIGO_HEX;
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_LIGHT_BLUE_HEX;
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_LIGHT_GREEN_HEX;
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_LIME_HEX;
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_ORANGE_HEX;
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_PINK_HEX;
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_PURPLE_HEX;
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_RED_HEX;
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_TEAL_HEX;
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_YELLOW_HEX;
 
 
 public class AddProjectFragment extends Fragment {
@@ -198,29 +206,53 @@ public class AddProjectFragment extends Fragment {
                 return;
             }
             switch (checkedId) {
-                case R.id.chip_turquoise:
-                    projectModel.setColorTag(COLOR_TURQUOISE_HEX);
+                case R.id.chip_red:
+                    projectModel.setColorTag(COLOR_RED_HEX);
                     break;
-                case R.id.chip_emerald:
-                    projectModel.setColorTag(COLOR_EMERALD_HEX);
+                case R.id.chip_pink:
+                    projectModel.setColorTag(COLOR_PINK_HEX);
                     break;
-                case R.id.chip_peter_river:
-                    projectModel.setColorTag(COLOR_PETER_RIVER_HEX);
+                case R.id.chip_purple:
+                    projectModel.setColorTag(COLOR_PURPLE_HEX);
                     break;
-                case R.id.chip_amethyst:
-                    projectModel.setColorTag(COLOR_AMETHYST_HEX);
+                case R.id.chip_deep_purple:
+                    projectModel.setColorTag(COLOR_DEEP_PURPLE_HEX);
                     break;
-                case R.id.chip_wet_asphalt:
-                    projectModel.setColorTag(COLOR_WET_ASPHALT_HEX);
+                case R.id.chip_indigo:
+                    projectModel.setColorTag(COLOR_INDIGO_HEX);
                     break;
-                case R.id.chip_sunflower:
-                    projectModel.setColorTag(COLOR_SUNFLOWER_HEX);
+                case R.id.chip_blue:
+                    projectModel.setColorTag(COLOR_BLUE_HEX);
                     break;
-                case R.id.chip_carrot:
-                    projectModel.setColorTag(COLOR_CARROT_HEX);
+                case R.id.chip_light_blue:
+                    projectModel.setColorTag(COLOR_LIGHT_BLUE_HEX);
                     break;
-                case R.id.chip_alizarin:
-                    projectModel.setColorTag(COLOR_ALIZARIN_HEX);
+                case R.id.chip_cyan:
+                    projectModel.setColorTag(COLOR_CYAN_HEX);
+                    break;
+                case R.id.chip_teal:
+                    projectModel.setColorTag(COLOR_TEAL_HEX);
+                    break;
+                case R.id.chip_green:
+                    projectModel.setColorTag(COLOR_GREEN_HEX);
+                    break;
+                case R.id.chip_light_green:
+                    projectModel.setColorTag(COLOR_LIGHT_GREEN_HEX);
+                    break;
+                case R.id.chip_lime:
+                    projectModel.setColorTag(COLOR_LIME_HEX);
+                    break;
+                case R.id.chip_yellow:
+                    projectModel.setColorTag(COLOR_YELLOW_HEX);
+                    break;
+                case R.id.chip_amber:
+                    projectModel.setColorTag(COLOR_AMBER_HEX);
+                    break;
+                case R.id.chip_orange:
+                    projectModel.setColorTag(COLOR_ORANGE_HEX);
+                    break;
+                case R.id.chip_deep_orange:
+                    projectModel.setColorTag(COLOR_DEEP_ORANGE_HEX);
                     break;
             }
         });
@@ -231,29 +263,53 @@ public class AddProjectFragment extends Fragment {
             return;
         }
         switch (colorTagHex) {
-            case COLOR_TURQUOISE_HEX:
-                colorTagChipGroup.check(R.id.chip_turquoise);
+            case COLOR_RED_HEX:
+                colorTagChipGroup.check(R.id.chip_red);
                 break;
-            case COLOR_EMERALD_HEX:
-                colorTagChipGroup.check(R.id.chip_emerald);
+            case COLOR_PINK_HEX:
+                colorTagChipGroup.check(R.id.chip_pink);
                 break;
-            case COLOR_PETER_RIVER_HEX:
-                colorTagChipGroup.check(R.id.chip_peter_river);
+            case COLOR_PURPLE_HEX:
+                colorTagChipGroup.check(R.id.chip_purple);
                 break;
-            case COLOR_AMETHYST_HEX:
-                colorTagChipGroup.check(R.id.chip_amethyst);
+            case COLOR_DEEP_PURPLE_HEX:
+                colorTagChipGroup.check(R.id.chip_deep_purple);
                 break;
-            case COLOR_WET_ASPHALT_HEX:
-                colorTagChipGroup.check(R.id.chip_wet_asphalt);
+            case COLOR_INDIGO_HEX:
+                colorTagChipGroup.check(R.id.chip_indigo);
                 break;
-            case COLOR_SUNFLOWER_HEX:
-                colorTagChipGroup.check(R.id.chip_sunflower);
+            case COLOR_BLUE_HEX:
+                colorTagChipGroup.check(R.id.chip_blue);
                 break;
-            case COLOR_CARROT_HEX:
-                colorTagChipGroup.check(R.id.chip_carrot);
+            case COLOR_LIGHT_BLUE_HEX:
+                colorTagChipGroup.check(R.id.chip_light_blue);
                 break;
-            case COLOR_ALIZARIN_HEX:
-                colorTagChipGroup.check(R.id.chip_alizarin);
+            case COLOR_CYAN_HEX:
+                colorTagChipGroup.check(R.id.chip_cyan);
+                break;
+            case COLOR_TEAL_HEX:
+                colorTagChipGroup.check(R.id.chip_teal);
+                break;
+            case COLOR_GREEN_HEX:
+                colorTagChipGroup.check(R.id.chip_green);
+                break;
+            case COLOR_LIGHT_GREEN_HEX:
+                colorTagChipGroup.check(R.id.chip_light_green);
+                break;
+            case COLOR_LIME_HEX:
+                colorTagChipGroup.check(R.id.chip_lime);
+                break;
+            case COLOR_YELLOW_HEX:
+                colorTagChipGroup.check(R.id.chip_yellow);
+                break;
+            case COLOR_AMBER_HEX:
+                colorTagChipGroup.check(R.id.chip_amber);
+                break;
+            case COLOR_ORANGE_HEX:
+                colorTagChipGroup.check(R.id.chip_orange);
+                break;
+            case COLOR_DEEP_ORANGE_HEX:
+                colorTagChipGroup.check(R.id.chip_deep_orange);
                 break;
         }
     }

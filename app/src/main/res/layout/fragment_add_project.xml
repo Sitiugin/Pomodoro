@@ -80,52 +80,100 @@
         app:layout_constraintStart_toStartOf="parent">
         <com.google.android.material.chip.Chip
             style="@style/ChipStyle"
-            android:id="@+id/chip_turquoise"
+            android:id="@+id/chip_red"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:chipIconTint="@color/colorTurquoise" />
+            app:chipIconTint="@color/colorRed" />
         <com.google.android.material.chip.Chip
             style="@style/ChipStyle"
-            android:id="@+id/chip_emerald"
+            android:id="@+id/chip_pink"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:chipIconTint="@color/colorEmerald" />
+            app:chipIconTint="@color/colorPink" />
         <com.google.android.material.chip.Chip
             style="@style/ChipStyle"
-            android:id="@+id/chip_peter_river"
+            android:id="@+id/chip_purple"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:chipIconTint="@color/colorPeterRiver" />
+            app:chipIconTint="@color/colorPurple" />
         <com.google.android.material.chip.Chip
             style="@style/ChipStyle"
-            android:id="@+id/chip_amethyst"
+            android:id="@+id/chip_deep_purple"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:chipIconTint="@color/colorAmethyst" />
+            app:chipIconTint="@color/colorDeepPurple" />
         <com.google.android.material.chip.Chip
             style="@style/ChipStyle"
-            android:id="@+id/chip_wet_asphalt"
+            android:id="@+id/chip_indigo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:chipIconTint="@color/colorWetAsphalt" />
+            app:chipIconTint="@color/colorIndigo" />
         <com.google.android.material.chip.Chip
             style="@style/ChipStyle"
-            android:id="@+id/chip_sunflower"
+            android:id="@+id/chip_blue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:chipIconTint="@color/colorSunflower" />
+            app:chipIconTint="@color/colorBlue" />
         <com.google.android.material.chip.Chip
             style="@style/ChipStyle"
-            android:id="@+id/chip_carrot"
+            android:id="@+id/chip_light_blue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:chipIconTint="@color/colorCarrot" />
+            app:chipIconTint="@color/colorLightBlue" />
         <com.google.android.material.chip.Chip
             style="@style/ChipStyle"
-            android:id="@+id/chip_alizarin"
+            android:id="@+id/chip_cyan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:chipIconTint="@color/colorAlizarin" />
+            app:chipIconTint="@color/colorCyan" />
+        <com.google.android.material.chip.Chip
+            style="@style/ChipStyle"
+            android:id="@+id/chip_teal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipIconTint="@color/colorTeal" />
+        <com.google.android.material.chip.Chip
+            style="@style/ChipStyle"
+            android:id="@+id/chip_green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipIconTint="@color/colorGreen" />
+        <com.google.android.material.chip.Chip
+            style="@style/ChipStyle"
+            android:id="@+id/chip_light_green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipIconTint="@color/colorLightGreen" />
+        <com.google.android.material.chip.Chip
+            style="@style/ChipStyle"
+            android:id="@+id/chip_lime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipIconTint="@color/colorLime" />
+        <com.google.android.material.chip.Chip
+            style="@style/ChipStyle"
+            android:id="@+id/chip_yellow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipIconTint="@color/colorYellow" />
+        <com.google.android.material.chip.Chip
+            style="@style/ChipStyle"
+            android:id="@+id/chip_amber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipIconTint="@color/colorAmber" />
+        <com.google.android.material.chip.Chip
+            style="@style/ChipStyle"
+            android:id="@+id/chip_orange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipIconTint="@color/colorOrange" />
+        <com.google.android.material.chip.Chip
+            style="@style/ChipStyle"
+            android:id="@+id/chip_deep_orange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipIconTint="@color/colorDeepOrange" />
     </com.google.android.material.chip.ChipGroup>
 
     <androidx.appcompat.widget.AppCompatTextView
