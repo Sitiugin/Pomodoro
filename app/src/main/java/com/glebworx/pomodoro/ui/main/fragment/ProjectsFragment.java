@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +49,7 @@ import com.mikepenz.itemanimators.SlideInOutLeftAnimator;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -126,6 +128,7 @@ public class ProjectsFragment extends Fragment {
             for (FastAdapter.RelativeInfo<AbstractItem> relativeInfo: removed) {
                 deleteProject(context, ((ProjectItem) relativeInfo.item).getModel(), relativeInfo.position);
             }
+            //searchView.setEnabled(false);
             /*ProjectItem item;
             for (int position: positions) {
                 item = projectAdapter.getAdapterItem(position - 1);
@@ -207,14 +210,25 @@ public class ProjectsFragment extends Fragment {
                                    RecyclerView recyclerView) {
         SimpleSwipeCallback swipeCallback = new SimpleSwipeCallback(
                 (position, direction) -> {
-                    ProjectModel projectModel = projectAdapter.getAdapterItem(position - 1).getModel();
+
+                    searchView.clearFocus();
+
+                    ProjectItem item = projectAdapter.getAdapterItem(position - 1);
+
                     if (direction == ItemTouchHelper.RIGHT) {
-                        fragmentListener.onEditProject(projectModel);
+                        fragmentListener.onEditProject(item.getModel());
                         fastAdapter.notifyAdapterItemChanged(position);
                     } else if (direction == ItemTouchHelper.LEFT) {
-                        //searchView.setQuery(null, true); // TODO what to do about it?
+                        //searchView.setEnabled(false);
+                        /*searchView.setQuery(null, false); // TODO what to do about it?
+                        projectAdapter.getItemFilter().filter(null);
+                        fastAdapter.notifyDataSetChanged();
+                        int index = getProjectItemIndex(item.getProjectName());
+                        Set<Integer> positionSet = new HashSet<>();
+                        positionSet.add(index + 1);*/
                         Set<Integer> positionSet = new HashSet<>();
                         positionSet.add(position);
+                        searchView.setEnabled(false);
                         undoHelper.remove(
                                 recyclerView,
                                 getString(R.string.main_toast_project_delete_success),
@@ -222,6 +236,7 @@ public class ProjectsFragment extends Fragment {
                                 LENGTH_SNACK_BAR,
                                 positionSet);
                     }
+
                 },
                 context.getDrawable(R.drawable.ic_delete_red),
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT,
@@ -229,6 +244,12 @@ public class ProjectsFragment extends Fragment {
                 .withLeaveBehindSwipeRight(context.getDrawable(R.drawable.ic_edit_black));
         ItemTouchHelper touchHelper = new ItemTouchHelper(swipeCallback);
         touchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    private int getProjectItemIndex(@NonNull String name) {
+        return IntStream.range(0, projectAdapter.getAdapterItems().size())
+                .filter(i -> name.equals(projectAdapter.getAdapterItems().get(i).getProjectName()))
+                .findFirst().orElse(-1);
     }
 
     private void deleteProject(Context context, ProjectModel projectModel, int position) {
@@ -252,16 +273,19 @@ public class ProjectsFragment extends Fragment {
 
         ItemFilter<ProjectItem, ProjectItem> itemFilter =
                 new ItemFilter<ProjectItem, ProjectItem>(projectAdapter).withFilterPredicate(predicate);
-
         projectAdapter.withItemFilter(itemFilter);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if (undoHelper.getSnackBar() != null && undoHelper.getSnackBar().isShown()) {
+                    undoHelper.getSnackBar().dismiss();
+                }
                 projectAdapter.filter(newText);
                 return true;
             }
