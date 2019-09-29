@@ -63,7 +63,7 @@
 
     <style name="FloatingActionButtonStyle.Small">
         <item name="backgroundTint">@android:color/white</item>
-        <item name="tint">@android:color/black</item>
+        <item name="tint">@color/colorDark</item>
         <item name="rippleColor">@color/colorRipple</item>
         <item name="elevation">@dimen/elevation_fab</item>
         <item name="pressedTranslationZ">@dimen/elevation_fab_high</item>
@@ -91,7 +91,7 @@
         <item name="android:minWidth">0dp</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:fontFamily">@string/font_sans_serif_normal</item>
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColor">@color/colorDark</item>
         <item name="android:textSize">@dimen/text_size_title</item>
         <item name="android:padding">@dimen/margin_content</item>
     </style>
@@ -122,7 +122,7 @@
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColor">@color/colorDark</item>
         <item name="android:textSize">@dimen/text_size_title</item>
         <item name="android:fontFamily">@string/font_sans_serif_thin</item>
         <item name="android:textStyle">bold</item>
@@ -218,7 +218,7 @@
     </style>
 
     <style name="TextStyle.AppBar" parent="TextStyle">
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColor">@color/colorDark</item>
         <item name="android:textSize">@dimen/text_size_app_bar</item>
     </style>
 
@@ -238,7 +238,7 @@
     </style>
 
     <style name="TextStyle.Title">
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColor">@color/colorDark</item>
         <item name="android:textSize">@dimen/text_size_title</item>
         <item name="android:fontFamily">@string/font_sans_serif_normal</item>
     </style>
@@ -248,7 +248,7 @@
     </style>
 
     <style name="TextStyle.Time">
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColor">@color/colorDark</item>
         <item name="android:textSize">@dimen/text_size_giant</item>
         <item name="android:fontFamily">@string/font_sans_serif_thin</item>
     </style>
@@ -308,13 +308,13 @@
     <style name="SpinnerItemStyle">
         <item name="android:textAllCaps">false</item>
         <item name="android:fontFamily">@string/font_sans_serif_normal</item>
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColor">@color/colorDark</item>
         <item name="android:textSize">@dimen/text_size_title</item>
     </style>
 
     <style name="SpinnerDropdownItemStyle">
         <item name="android:textAllCaps">false</item>
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColor">@color/colorDark</item>
         <item name="android:textSize">@dimen/text_size_body</item>
     </style>
 

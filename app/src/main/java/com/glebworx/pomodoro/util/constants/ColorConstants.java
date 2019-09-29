@@ -6,22 +6,22 @@ public class ColorConstants {
 
     public static final String COLOR_HIGHLIGHT_HEX = "#84FFFF";
 
-    public static final String COLOR_RED_HEX = "#ff8a80";
-    public static final String COLOR_PINK_HEX = "#FF80AB";
-    public static final String COLOR_PURPLE_HEX = "#EA80FC";
-    public static final String COLOR_DEEP_PURPLE_HEX = "#B388FF";
-    public static final String COLOR_INDIGO_HEX = "#8C9EFF";
-    public static final String COLOR_BLUE_HEX = "#82B1FF";
-    public static final String COLOR_LIGHT_BLUE_HEX = "#80D8FF";
-    public static final String COLOR_CYAN_HEX = "#84FFFF";
-    public static final String COLOR_TEAL_HEX = "#A7FFEB";
-    public static final String COLOR_GREEN_HEX = "#B9F6CA";
-    public static final String COLOR_LIGHT_GREEN_HEX = "#CCFF90";
-    public static final String COLOR_LIME_HEX = "#F4FF81";
-    public static final String COLOR_YELLOW_HEX = "#FFFF8D";
-    public static final String COLOR_AMBER_HEX = "#FFE57F";
-    public static final String COLOR_ORANGE_HEX = "#FFD180";
-    public static final String COLOR_DEEP_ORANGE_HEX = "#FF9E80";
+    public static final String COLOR_RED_HEX = "#ff5252";
+    public static final String COLOR_PINK_HEX = "#FF4081";
+    public static final String COLOR_PURPLE_HEX = "#E040FB";
+    public static final String COLOR_DEEP_PURPLE_HEX = "#7C4DFF";
+    public static final String COLOR_INDIGO_HEX = "#536DFE";
+    public static final String COLOR_BLUE_HEX = "#448AFF";
+    public static final String COLOR_LIGHT_BLUE_HEX = "#40C4FF";
+    public static final String COLOR_CYAN_HEX = "#18FFFF";
+    public static final String COLOR_TEAL_HEX = "#64FFDA";
+    public static final String COLOR_GREEN_HEX = "#69F0AE";
+    public static final String COLOR_LIGHT_GREEN_HEX = "#B2FF59";
+    public static final String COLOR_LIME_HEX = "#EEFF41";
+    public static final String COLOR_YELLOW_HEX = "#FFFF00";
+    public static final String COLOR_AMBER_HEX = "#FFD740";
+    public static final String COLOR_ORANGE_HEX = "#FFAB40";
+    public static final String COLOR_DEEP_ORANGE_HEX = "#FF6E40";
 
     private ColorConstants() { }
 

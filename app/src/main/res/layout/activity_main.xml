@@ -28,6 +28,15 @@
         app:behavior_peekHeight="@dimen/height_app_bar"
         app:layout_behavior="@string/bottom_sheet_behavior">
 
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progress="50"
+            android:progressBackgroundTint="@android:color/darker_gray"
+            android:progressTint="@color/colorHighlight"
+            app:layout_constraintTop_toTopOf="parent"/>
+
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/TextStyle.Title"
             android:id="@+id/text_view_task"

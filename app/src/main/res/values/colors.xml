@@ -4,32 +4,34 @@
 
     <!--                                                                               UI COLORS -->
 
-    <color name="colorHighlight">#82B1FF</color>
+    <color name="colorHighlight">#263238</color>
     <color name="colorForeground">#ffffff</color>
     <color name="colorBackground">#fafafa</color>
-    <color name="colorError">#ff8a80</color>
+    <color name="colorError">#ff5252</color>
     <color name="colorRipple">#42000000</color>
     <color name="colorRippleLight">#AAFFFFFF</color>
+
+    <color name="colorDark">#263238</color>
 
 
     <!--                                                                             DATA COLORS -->
 
-    <color name="colorRed">#ff8a80</color>
-    <color name="colorPink">#FF80AB</color>
-    <color name="colorPurple">#EA80FC</color>
-    <color name="colorDeepPurple">#B388FF</color>
-    <color name="colorIndigo">#8C9EFF</color>
-    <color name="colorBlue">#82B1FF</color>
-    <color name="colorLightBlue">#80D8FF</color>
-    <color name="colorCyan">#84FFFF</color>
-    <color name="colorTeal">#A7FFEB</color>
-    <color name="colorGreen">#B9F6CA</color>
-    <color name="colorLightGreen">#CCFF90</color>
-    <color name="colorLime">#F4FF81</color>
-    <color name="colorYellow">#FFFF8D</color>
-    <color name="colorAmber">#FFE57F</color>
-    <color name="colorOrange">#FFD180</color>
-    <color name="colorDeepOrange">#FF9E80</color>
+    <color name="colorRed">#ff5252</color>
+    <color name="colorPink">#FF4081</color>
+    <color name="colorPurple">#E040FB</color>
+    <color name="colorDeepPurple">#7C4DFF</color>
+    <color name="colorIndigo">#536DFE</color>
+    <color name="colorBlue">#448AFF</color>
+    <color name="colorLightBlue">#40C4FF</color>
+    <color name="colorCyan">#18FFFF</color>
+    <color name="colorTeal">#64FFDA</color>
+    <color name="colorGreen">#69F0AE</color>
+    <color name="colorLightGreen">#B2FF59</color>
+    <color name="colorLime">#EEFF41</color>
+    <color name="colorYellow">#FFFF00</color>
+    <color name="colorAmber">#FFD740</color>
+    <color name="colorOrange">#FFAB40</color>
+    <color name="colorDeepOrange">#FF6E40</color>
 
     <!--
     <color name="colorTurquoise">#1abc9c</color>

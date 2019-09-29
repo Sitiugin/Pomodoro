@@ -13,7 +13,7 @@
                 android:width="8dp"
                 android:height="8dp"/>
             <corners android:radius="4dp" />
-            <solid android:color="@android:color/black" />
+            <solid android:color="@color/colorDark" />
         </shape>
     </item>
 </layer-list>
