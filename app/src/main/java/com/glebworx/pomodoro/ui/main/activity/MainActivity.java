@@ -145,8 +145,9 @@ public class MainActivity
         TransitionManager.beginDelayedTransition(bottomSheet);
         constraintSet.clone(bottomSheet);
 
-        // animate seek arc
+        // animate progress
         constraintSet.setVisibility(R.id.seek_arc, ConstraintSet.VISIBLE);
+        constraintSet.setVisibility(R.id.progress_bar, ConstraintSet.INVISIBLE);
 
         // animate remaining time
         constraintSet.setVisibility(R.id.text_view_time_remaining, ConstraintSet.INVISIBLE);
@@ -158,6 +159,10 @@ public class MainActivity
                 ConstraintSet.TOP,
                 R.id.text_view_time_remaining_large,
                 ConstraintSet.BOTTOM);
+        constraintSet.connect(R.id.text_view_status,
+                ConstraintSet.START,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.START);
         constraintSet.connect(
                 R.id.text_view_status,
                 ConstraintSet.END,
@@ -196,8 +201,9 @@ public class MainActivity
         TransitionManager.beginDelayedTransition(bottomSheet);
         constraintSet.clone(bottomSheet);
 
-        // animate seek arc
+        // animate progress
         constraintSet.setVisibility(R.id.seek_arc, ConstraintSet.INVISIBLE);
+        constraintSet.setVisibility(R.id.progress_bar, ConstraintSet.VISIBLE);
 
         // animate remaining time
         constraintSet.setVisibility(R.id.text_view_time_remaining, ConstraintSet.VISIBLE);
@@ -209,6 +215,10 @@ public class MainActivity
                 ConstraintSet.TOP,
                 R.id.text_view_task,
                 ConstraintSet.BOTTOM);
+        constraintSet.connect(R.id.text_view_status,
+                ConstraintSet.START,
+                R.id.text_view_task,
+                ConstraintSet.START);
         constraintSet.clear(R.id.text_view_status, ConstraintSet.END);
 
         // animate task
