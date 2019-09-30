@@ -2,6 +2,8 @@ package com.glebworx.pomodoro.ui.main.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.transition.TransitionManager;
@@ -21,10 +23,13 @@ import com.glebworx.pomodoro.ui.main.fragment.ReportFragment;
 import com.glebworx.pomodoro.ui.main.fragment.ViewProjectFragment;
 import com.glebworx.pomodoro.util.manager.TransitionFragmentManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.core.Repo;
+import com.triggertrap.seekarc.SeekArc;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 
 public class MainActivity
@@ -38,6 +43,19 @@ public class MainActivity
     //                                                                                       BINDING
 
     @BindView(R.id.bottom_sheet) ConstraintLayout bottomSheet;
+    @BindView(R.id.progress_bar) MaterialProgressBar progressBar;
+    @BindView(R.id.text_view_task) AppCompatTextView taskTextView;
+    @BindView(R.id.text_view_pomodoro_number) AppCompatTextView pomodoroNumberTextView;
+    @BindView(R.id.text_view_status) AppCompatTextView statusTextView;
+    @BindView(R.id.text_view_time_remaining) AppCompatTextView timeRemainingTextView;
+    @BindView(R.id.button_start_stop) AppCompatImageButton startStopButton;
+    @BindView(R.id.text_view_distractions_count) AppCompatTextView distractionsCountTextView;
+    @BindView(R.id.text_view_distractions) AppCompatTextView distractionsTextView;
+    @BindView(R.id.text_view_time_remaining_large) AppCompatTextView timeRemainingLargeTextView;
+    @BindView(R.id.seek_arc) SeekArc seekArc;
+    @BindView(R.id.fab_start_stop_large) FloatingActionButton startStopFab;
+    @BindView(R.id.button_cancel) AppCompatImageButton cancelButton;
+    @BindView(R.id.button_complete) AppCompatImageButton completeButton;
 
 
     //                                                                                    ATTRIBUTES
