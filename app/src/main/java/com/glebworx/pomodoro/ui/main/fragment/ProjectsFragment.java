@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,11 +31,9 @@ import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
 import com.glebworx.pomodoro.util.tasks.InitProjectsTask;
 import com.glebworx.pomodoro.util.tasks.InitTaskCountTask;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mikepenz.fastadapter.FastAdapter;
-import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.IItemAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.adapters.ItemFilter;
@@ -44,9 +41,7 @@ import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.fastadapter_extensions.UndoHelper;
 import com.mikepenz.fastadapter_extensions.swipe.SimpleSwipeCallback;
 import com.mikepenz.itemanimators.AlphaCrossFadeAnimator;
-import com.mikepenz.itemanimators.SlideInOutLeftAnimator;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.IntStream;
@@ -231,7 +226,7 @@ public class ProjectsFragment extends Fragment {
                         searchView.setEnabled(false);
                         undoHelper.remove(
                                 recyclerView,
-                                getString(R.string.main_toast_project_delete_success),
+                                getString(R.string.projects_toast_project_delete_success),
                                 getString(R.string.core_undo),
                                 LENGTH_SNACK_BAR,
                                 positionSet);

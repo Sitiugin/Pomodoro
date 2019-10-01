@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/margin_content"
-        android:text="@string/main_title_sort"/>
+        android:text="@string/projects_title_sort"/>
     <androidx.appcompat.widget.AppCompatButton
         style="@style/ButtonStyle.Borderless"
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/margin_content"
-        android:text="@string/main_title_other"/>
+        android:text="@string/projects_title_other"/>
     <androidx.appcompat.widget.AppCompatButton
         style="@style/ButtonStyle.Borderless"
         android:layout_width="match_parent"

@@ -6,6 +6,7 @@
     <string name="core_cancel">Cancel</string>
     <string name="core_save">Save</string>
     <string name="core_add">Add</string>
+    <string name="core_complete">Complete</string>
     <string name="core_edit_something" formatted="true">Edit %1$s</string>
     <string name="core_filter">Filter</string>
     <string name="core_undo">Undo</string>
@@ -13,9 +14,6 @@
     <string name="core_text_no_data">Nothing to show</string>
     <string name="core_active">Active</string>
     <string name="core_due" formatted="true">Due: %1$s</string>
-    <string name="core_due_today">Due: today</string>
-    <string name="core_due_tomorrow">Due: tomorrow</string>
-    <string name="core_due_yesterday">Due: yesterday</string>
     <string name="core_ratio" formatted="true">%1$s/%2$s</string>
     <string-array name="core_layout">
         <item>List</item>
@@ -24,16 +22,16 @@
     </string-array>
     <string-array name="core_recurrence">
         <item>Never repeat</item>
-        <item>Repeat every day</item>
-        <item>Repeat every two days</item>
-        <item>Repeat every three days</item>
-        <item>Repeat every four days</item>
-        <item>Repeat every five days</item>
-        <item>Repeat every six days</item>
-        <item>Repeat every week</item>
-        <item>Repeat on weekdays</item>
-        <item>Repeat on weekends</item>
-        <item>Repeat every month</item>
+        <item>Every day</item>
+        <item>Every two days</item>
+        <item>Every three days</item>
+        <item>Every four days</item>
+        <item>Every five days</item>
+        <item>Every six days</item>
+        <item>Every week</item>
+        <item>On weekdays</item>
+        <item>On weekends</item>
+        <item>Every month</item>
     </string-array>
     <string-array name="core_pomodoro_count">
         <item>1 pomodoro</item><item>2 pomodoros</item>
@@ -96,15 +94,23 @@
 
     <!--                                                                                    MAIN -->
 
-    <string name="main_title_tasks">Tasks</string>
-    <string name="main_title_projects">Projects</string>
-    <string name="main_title_report">Report</string>
-    <string name="main_title_sort">Sort</string>
-    <string name="main_title_other">Other</string>
-    <string name="main_text_today">Today</string>
-    <string name="main_text_this_week">This week</string>
-    <string name="main_text_overdue">Overdue</string>
-    <string name="main_toast_project_delete_success">Project deleted</string>
+    <string name="main_title_cancel_task">Cancel Task</string>
+    <string name="main_title_complete_task">Complete Task</string>
+    <string name="main_text_cancel_task">Cancel Task</string>
+    <string name="main_complete_cancel_task">Cancel Task</string>
+
+
+    <!--                                                                                PROJECTS -->
+
+    <string name="projects_title_tasks">Tasks</string>
+    <string name="projects_title_projects">Projects</string>
+    <string name="projects_title_report">Report</string>
+    <string name="projects_title_sort">Sort</string>
+    <string name="projects_title_other">Other</string>
+    <string name="projects_text_today">Today</string>
+    <string name="projects_text_this_week">This week</string>
+    <string name="projects_text_overdue">Overdue</string>
+    <string name="projects_toast_project_delete_success">Project deleted</string>
 
 
     <!--                                                                             ADD PROJECT -->

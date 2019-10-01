@@ -8,18 +8,18 @@
         android:id="@+id/navigation_tasks"
         android:enabled="true"
         android:icon="@drawable/ic_task_black"
-        android:title="@string/main_title_tasks"
+        android:title="@string/projects_title_tasks"
         app:showAsAction="always|withText" />
     <item
         android:id="@+id/navigation_projects"
         android:enabled="true"
         android:icon="@drawable/ic_project_black"
-        android:title="@string/main_title_projects"
+        android:title="@string/projects_title_projects"
         app:showAsAction="always|withText" />
     <item
         android:id="@+id/navigation_report"
         android:enabled="true"
         android:icon="@drawable/ic_report_black"
-        android:title="@string/main_title_report"
+        android:title="@string/projects_title_report"
         app:showAsAction="always|withText" />
 </menu>

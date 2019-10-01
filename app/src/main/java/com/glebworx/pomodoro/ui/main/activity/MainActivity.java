@@ -175,12 +175,15 @@ public class MainActivity
             countDownTimer.onFinish();
         }
         final String[] minutesUntilFinished = new String[1];
-        countDownTimer = new PomodoroTimer(POMODORO_LENGTH * 60000, 1000) {
+        int duration = POMODORO_LENGTH * 60000;
+        int durationPercent = duration / 100;
+        countDownTimer = new PomodoroTimer(duration, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 minutesUntilFinished[0] = DateTimeManager.formatMMSSString(MainActivity.this, (int) (millisUntilFinished / 1000));
                 timeRemainingTextView.setText(minutesUntilFinished[0]);
                 timeRemainingLargeTextView.setText(minutesUntilFinished[0]);
+                seekArc.setProgress(100 - (int) (millisUntilFinished / durationPercent));
             }
 
             @Override
