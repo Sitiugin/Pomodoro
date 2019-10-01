@@ -45,6 +45,7 @@ public class ProjectModel extends AbstractModel {
 
     private Date dueDate;
     private String colorTag;
+    private List<String> sections;
     private List<String> tasks;
     private int pomodorosAllocated;
     private int pomodorosCompleted;
@@ -71,6 +72,7 @@ public class ProjectModel extends AbstractModel {
         }
         this.colorTag = colorTag;
         this.tasks = new ArrayList<>();
+        this.sections = new ArrayList<>();
         this.pomodorosAllocated = 0;
         this.pomodorosCompleted = 0;
         this.elapsedTime = 0;
@@ -85,6 +87,7 @@ public class ProjectModel extends AbstractModel {
         }
         this.colorTag = in.readString();
         in.readStringList(this.tasks);
+        in.readStringList(this.sections);
         this.pomodorosAllocated = in.readInt();
         this.pomodorosCompleted = in.readInt();
         this.elapsedTime = in.readInt();
@@ -104,6 +107,7 @@ public class ProjectModel extends AbstractModel {
         }
         parcel.writeString(colorTag);
         parcel.writeStringList(tasks);
+        parcel.writeStringList(sections);
         parcel.writeInt(pomodorosAllocated);
         parcel.writeInt(pomodorosCompleted);
         parcel.writeInt(elapsedTime);
@@ -141,18 +145,20 @@ public class ProjectModel extends AbstractModel {
 
     @Exclude
     public void addTask(TaskModel taskModel) {
+        if (!sections.contains(taskModel.getSection())) {
+            sections.add(taskModel.getSection());
+        }
         tasks.add(taskModel.getName());
         pomodorosAllocated += taskModel.getPomodorosAllocated();
         pomodorosCompleted += taskModel.getPomodorosCompleted();
     }
 
     @Exclude
-    public void setTask(TaskModel taskModel, int pomodorosAllocated, int pomodorosCompleted) {
-        this.pomodorosAllocated -= pomodorosAllocated;
-        this.pomodorosCompleted -= pomodorosCompleted;
+    public void setTask(TaskModel oldTaskModel, TaskModel taskModel) {
+        this.pomodorosAllocated -= oldTaskModel.getPomodorosAllocated();
+        this.pomodorosCompleted -= oldTaskModel.getPomodorosCompleted();
         this.pomodorosAllocated += taskModel.getPomodorosAllocated();
         this.pomodorosCompleted += taskModel.getPomodorosCompleted();
-
     }
 
     @Exclude

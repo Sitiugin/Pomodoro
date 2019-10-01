@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.transition.TransitionManager;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Toast;
 
@@ -21,6 +22,8 @@ import com.glebworx.pomodoro.ui.main.fragment.AddTaskFragment;
 import com.glebworx.pomodoro.ui.main.fragment.ProjectsFragment;
 import com.glebworx.pomodoro.ui.main.fragment.ReportFragment;
 import com.glebworx.pomodoro.ui.main.fragment.ViewProjectFragment;
+import com.glebworx.pomodoro.util.PomodoroTimer;
+import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.TransitionFragmentManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -60,9 +63,16 @@ public class MainActivity
 
     //                                                                                    ATTRIBUTES
 
+    private static final int STATUS_ACTIVE = 1;
+    private static final int STATUS_PAUSED = 0;
+    private static final int STATUS_IDLE = -1;
+
     private BottomSheetBehavior bottomSheetBehavior;
     private ConstraintSet constraintSet;
     private TransitionFragmentManager fragmentManager;
+    private PomodoroTimer countDownTimer;
+    private TaskModel activeTask;
+    private int status;
 
     //                                                                                     LIFECYCLE
 
@@ -130,7 +140,9 @@ public class MainActivity
 
     @Override
     public void onSelectTask(TaskModel taskModel) {
-        // TODO
+        this.activeTask = taskModel;
+
+        attachTaskToBottomSheet(taskModel);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
@@ -156,6 +168,39 @@ public class MainActivity
             @Override
             public void onSlide(@NonNull View view, float v) { }
         });
+    }
+
+    private void attachTaskToBottomSheet(TaskModel taskModel) {
+        if (countDownTimer != null) {
+            //countDownTimer.cancel();
+            countDownTimer.onFinish();
+        }
+        final String[] minutesUntilFinished = new String[1];
+        countDownTimer = new PomodoroTimer(3000 * DateTimeManager.HOUR_LENGTH, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                minutesUntilFinished[0] = DateTimeManager.formatTimeString(MainActivity.this, (int) (millisUntilFinished / 60000));
+                timeRemainingTextView.setText(minutesUntilFinished[0]);
+                timeRemainingLargeTextView.setText(minutesUntilFinished[0]);
+            }
+
+            @Override
+            public void onFinish() {
+                countDownTimer.onFinish();
+            }
+        };
+        /*countDownTimer = new CountDownTimer(3000 * DateTimeManager.HOUR_LENGTH, 1000) {
+            @Override
+            public void onTick(long l) {
+                timeRemainingTextView.setText(String.valueOf(l));
+                timeRemainingLargeTextView.setText(String.valueOf(l));
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        };*/
     }
 
     private void expandBottomSheetViews() {
@@ -264,16 +309,33 @@ public class MainActivity
 
     private void initClickEvents() {
         View.OnClickListener onClickListener = view -> {
-            if (view.getId() == R.id.bottom_sheet) {
-                int state = bottomSheetBehavior.getState();
-                if (state == BottomSheetBehavior.STATE_COLLAPSED) {
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                } else if (state == BottomSheetBehavior.STATE_EXPANDED) {
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                }
+            switch (view.getId()) {
+                case R.id.bottom_sheet:
+                    onBottomSheetClick();
+                    break;
+                case R.id.fab_start_stop_large:
+                    onStartStopLargeClick();
+                    break;
             }
         };
         bottomSheet.setOnClickListener(onClickListener);
+        startStopFab.setOnClickListener(onClickListener);
+    }
+
+    private void onBottomSheetClick() {
+        int state = bottomSheetBehavior.getState();
+        if (state == BottomSheetBehavior.STATE_COLLAPSED) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        } else if (state == BottomSheetBehavior.STATE_EXPANDED) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        }
+    }
+
+    private void onStartStopLargeClick() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            countDownTimer.start();
+        }
     }
 
     private void addProjectsFragment() {

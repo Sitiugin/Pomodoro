@@ -48,6 +48,7 @@ public class TaskModel extends AbstractModel {
     private int pomodorosAllocated;
     private int pomodorosCompleted;
     private Date dueDate;
+    private String section;
     private String recurrence;
     private boolean isCompleted;
 
@@ -61,6 +62,7 @@ public class TaskModel extends AbstractModel {
     public TaskModel(@NonNull String name,
                      int pomodorosAllocated,
                      @Nullable Date dueDate,
+                     @NonNull String section,
                      @Nullable String recurrence) {
         super(name);
         this.pomodorosAllocated = pomodorosAllocated;
@@ -70,6 +72,7 @@ public class TaskModel extends AbstractModel {
         } else {
             this.dueDate = null;
         }
+        this.section = section;
         if (recurrence != null) {
             this.recurrence = recurrence;
         } else {
@@ -86,8 +89,19 @@ public class TaskModel extends AbstractModel {
         if (dueDate != -1) {
             this.dueDate = new Date(dueDate);
         }
+        this.section = in.readString();
         this.recurrence = in.readString();
         this.isCompleted = in.readInt() == 1;
+    }
+
+    public TaskModel(@NonNull TaskModel taskModel) {
+        this(taskModel.getName(),
+        taskModel.getPomodorosAllocated(),
+        taskModel.getDueDate(),
+        taskModel.getSection(),
+        taskModel.getRecurrence());
+        this.pomodorosCompleted = taskModel.getPomodorosCompleted();
+        this.isCompleted = taskModel.isCompleted;
     }
 
 
@@ -103,6 +117,7 @@ public class TaskModel extends AbstractModel {
         } else {
             parcel.writeLong(-1);
         }
+        parcel.writeString(section);
         parcel.writeString(recurrence);
         parcel.writeInt(isCompleted ? 1 : 0);
     }
@@ -138,6 +153,14 @@ public class TaskModel extends AbstractModel {
 
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public String getSection() {
+        return section;
+    }
+
+    public void setSection(String section) {
+        this.section = section;
     }
 
     public String getRecurrence() {

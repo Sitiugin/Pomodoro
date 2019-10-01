@@ -56,6 +56,7 @@ import butterknife.ButterKnife;
 import static com.glebworx.pomodoro.util.constants.Constants.LENGTH_SNACK_BAR;
 
 
+// TODO add board and calendar view
 public class ViewProjectFragment extends Fragment {
 
     @BindView(R.id.text_view_title) AppCompatTextView titleTextView;

@@ -21,7 +21,7 @@ public class DummyDataProvider { // TODO temp class for testing
     public static List<TaskItem> getTasks() {
         List<TaskItem> result = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            TaskModel model = new TaskModel("Some task", 5, new Date(), TaskModel.RECURRENCE_EVERY_DAY);
+            TaskModel model = new TaskModel("Some task", 5, new Date(), "Section 1", TaskModel.RECURRENCE_EVERY_DAY);
             result.add(new TaskItem(model));
         }
         return result;
@@ -30,12 +30,6 @@ public class DummyDataProvider { // TODO temp class for testing
     public static List<ProjectItem> getProjects() {
         List<ProjectItem> result  = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            Map<String, TaskModel> taskModels = new HashMap<>();
-            for (int j = 0; j < 10; j++) {
-                TaskModel model = new TaskModel("Some task", 5, null, null);
-                model.setPomodorosCompleted(3);
-                taskModels.put(model.getName(), model);
-            }
             ProjectModel model = new ProjectModel("Some Project", new Date(), COLOR_RED_HEX);
             result.add(new ProjectItem(model));
         }

@@ -87,6 +87,7 @@ public class AddTaskFragment extends Fragment {
     private OnAddTaskFragmentInteractionListener fragmentListener;
     private ConstraintSet constraintSet;
     private ProjectModel projectModel;
+    private TaskModel oldTaskModel;
     private TaskModel taskModel;
     private boolean isEditing;
     private int pomodorosAllocated;
@@ -149,6 +150,7 @@ public class AddTaskFragment extends Fragment {
             isEditing = false;
         } else {
             isEditing = true;
+            oldTaskModel = new TaskModel(taskModel);
         }
 
         if (isEditing) {
@@ -390,7 +392,7 @@ public class AddTaskFragment extends Fragment {
     private void saveTask(Context context) {
         startSaveStartedAnimation();
         if (isEditing) {
-            projectModel.setTask(taskModel, pomodorosAllocated, pomodorosCompleted);
+            projectModel.setTask(oldTaskModel, taskModel);
         } else {
             projectModel.addTask(taskModel);
         }
