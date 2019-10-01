@@ -62,7 +62,7 @@ public class TaskModel extends AbstractModel {
     public TaskModel(@NonNull String name,
                      int pomodorosAllocated,
                      @Nullable Date dueDate,
-                     @NonNull String section,
+                     @Nullable String section,
                      @Nullable String recurrence) {
         super(name);
         this.pomodorosAllocated = pomodorosAllocated;
@@ -72,7 +72,11 @@ public class TaskModel extends AbstractModel {
         } else {
             this.dueDate = null;
         }
-        this.section = section;
+        if (section != null) {
+            this.section = section;
+        } else {
+            this.section = null;
+        }
         if (recurrence != null) {
             this.recurrence = recurrence;
         } else {
