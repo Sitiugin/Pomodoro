@@ -17,6 +17,11 @@
     <string name="core_due_tomorrow">Due: tomorrow</string>
     <string name="core_due_yesterday">Due: yesterday</string>
     <string name="core_ratio" formatted="true">%1$s/%2$s</string>
+    <string-array name="core_layout">
+        <item>List</item>
+        <item>Board</item>
+        <item>Calendar</item>
+    </string-array>
     <string-array name="core_recurrence">
         <item>Never repeat</item>
         <item>Repeat every day</item>
@@ -106,9 +111,13 @@
 
     <string name="add_project_title_add_project">Add Project</string>
     <string name="add_project_title_update_project">Update Project</string>
+    <string name="add_project_title_layout_board">Board Layout</string>
+    <string name="add_project_title_layout_list">List Layout</string>
+    <string name="add_project_title_layout_calendar">Calendar Layout</string>
     <string name="add_project_text_name">Name</string>
     <string name="add_project_text_color_tag">Color Tag</string>
     <string name="add_project_text_due">Due</string>
+    <string name="add_project_text_layout">Layout</string>
     <string name="add_project_hint_name">Enter a name for your project</string>
     <string name="add_project_toast_add_success">Project Added</string>
     <string name="add_project_toast_add_failed">Could not add project. Please try again later.</string>

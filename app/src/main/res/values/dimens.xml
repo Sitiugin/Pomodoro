@@ -46,10 +46,10 @@
     <!--                                                                              TEXT SIZES -->
 
     <dimen name="text_size_body">12sp</dimen>
-    <dimen name="text_size_title">16sp</dimen>
-    <dimen name="text_size_app_bar">24sp</dimen>
-    <dimen name="text_size_count_small">24sp</dimen>
-    <dimen name="text_size_count">32sp</dimen>
+    <dimen name="text_size_title">14sp</dimen>
+    <dimen name="text_size_app_bar">16sp</dimen>
+    <dimen name="text_size_count_small">18sp</dimen>
+    <dimen name="text_size_count">24sp</dimen>
     <dimen name="text_size_giant">64sp</dimen>
 
 </resources>

@@ -28,6 +28,10 @@ public class ProjectModel extends AbstractModel {
 
     //                                                                                     CONSTANTS
 
+    public static final String LAYOUT_LIST = "list";
+    public static final String LAYOUT_BOARD = "board";
+    public static final String LAYOUT_CALENDAR = "calendar";
+
     public static final Parcelable.Creator<ProjectModel> CREATOR = new Parcelable.Creator<ProjectModel>() {
         @Override
         public ProjectModel createFromParcel(Parcel in) {
@@ -50,6 +54,7 @@ public class ProjectModel extends AbstractModel {
     private int pomodorosAllocated;
     private int pomodorosCompleted;
     private int elapsedTime;
+    private String layout;
     private boolean isCompleted;
 
 
@@ -59,11 +64,13 @@ public class ProjectModel extends AbstractModel {
     public ProjectModel() {
         super();
         this.tasks = new ArrayList<>();
+        this.layout = LAYOUT_LIST;
     }
 
     public ProjectModel(@NonNull String name,
                         @Nullable Date dueDate,
-                        @Nullable String colorTag) {
+                        @Nullable String colorTag,
+                        @Nullable String layout) {
         super(name);
         if (dueDate != null) {
             this.dueDate = dueDate;
@@ -76,6 +83,11 @@ public class ProjectModel extends AbstractModel {
         this.pomodorosAllocated = 0;
         this.pomodorosCompleted = 0;
         this.elapsedTime = 0;
+        if (this.layout != null) {
+            this.layout = layout;
+        } else {
+            this.layout = LAYOUT_LIST;
+        }
         this.isCompleted = false;
     }
 
@@ -91,6 +103,7 @@ public class ProjectModel extends AbstractModel {
         this.pomodorosAllocated = in.readInt();
         this.pomodorosCompleted = in.readInt();
         this.elapsedTime = in.readInt();
+        this.layout = in.readString();
         this.isCompleted = in.readInt() == 1;
     }
 
@@ -111,6 +124,7 @@ public class ProjectModel extends AbstractModel {
         parcel.writeInt(pomodorosAllocated);
         parcel.writeInt(pomodorosCompleted);
         parcel.writeInt(elapsedTime);
+        parcel.writeString(layout);
         parcel.writeInt(isCompleted ? 1 : 0);
     }
 
@@ -198,6 +212,14 @@ public class ProjectModel extends AbstractModel {
 
     public int getElapsedTime() {
         return elapsedTime;
+    }
+
+    public String getLayout() {
+        return layout;
+    }
+
+    public void setLayout(String layout) {
+        this.layout = layout;
     }
 
     @Exclude

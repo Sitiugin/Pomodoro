@@ -30,7 +30,7 @@ public class DummyDataProvider { // TODO temp class for testing
     public static List<ProjectItem> getProjects() {
         List<ProjectItem> result  = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            ProjectModel model = new ProjectModel("Some Project", new Date(), COLOR_RED_HEX);
+            ProjectModel model = new ProjectModel("Some Project", new Date(), COLOR_RED_HEX, null);
             result.add(new ProjectItem(model));
         }
         return result;

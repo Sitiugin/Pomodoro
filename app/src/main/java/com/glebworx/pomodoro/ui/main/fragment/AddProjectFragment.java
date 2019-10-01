@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -17,9 +18,11 @@ import androidx.fragment.app.Fragment;
 import androidx.transition.TransitionManager;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
@@ -43,6 +46,9 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.glebworx.pomodoro.model.ProjectModel.LAYOUT_BOARD;
+import static com.glebworx.pomodoro.model.ProjectModel.LAYOUT_CALENDAR;
+import static com.glebworx.pomodoro.model.ProjectModel.LAYOUT_LIST;
 import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_AMBER_HEX;
 import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_BLUE_HEX;
 import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_CYAN_HEX;
@@ -73,6 +79,7 @@ public class AddProjectFragment extends Fragment {
     @BindView(R.id.edit_text_name) AppCompatEditText projectNameEditText;
     @BindView(R.id.chip_group_color) ChipGroup colorTagChipGroup;
     @BindView(R.id.button_due_date) AppCompatButton dueDateButton;
+    @BindView(R.id.spinner_layout) AppCompatSpinner layoutSpinner;
     @BindView(R.id.button_save) ExtendedFloatingActionButton saveButton;
     @BindView(R.id.spin_kit_view) SpinKitView spinKitView;
 
@@ -130,10 +137,6 @@ public class AddProjectFragment extends Fragment {
             return rootView;
         }
 
-        //targetCalendar = Calendar.getInstance(Locale.getDefault());
-        //DateTimeManager.clearTime(targetCalendar);
-        //dateTimeManager = new DateTimeManager(context, targetCalendar);
-
         Bundle arguments = getArguments();
         if (arguments != null) {
             projectModel = arguments.getParcelable(ARG_PROJECT_MODEL);
@@ -150,19 +153,29 @@ public class AddProjectFragment extends Fragment {
             projectNameSectionTextView.setVisibility(View.GONE);
             titleTextView.setText(context.getString(R.string.core_edit_something, projectModel.getName()));
             checkColorTag(projectModel.getColorTag());
-            //targetCalendar.setTime(projectModel.getDueDate());
-            //DateTimeManager.clearTime(targetCalendar);
-            //dueDateButton.setText(dateTimeManager.getDateString());
             dueDateButton.setText(DateTimeManager.getDateString(projectModel.getDueDate(), new Date()));
+            switch (projectModel.getLayout()) {
+                case LAYOUT_BOARD:
+                    layoutSpinner.setSelection(1);
+                    break;
+                case LAYOUT_CALENDAR:
+                    layoutSpinner.setSelection(2);
+                    break;
+                case LAYOUT_LIST:
+                default:
+                    layoutSpinner.setSelection(0);
+                    break;
+
+            }
             saveButton.setText(R.string.add_project_title_update_project);
         } else {
-            //DateTimeManager.clearTime(targetCalendar);
             projectModel.setDueDate(new Date());
             dueDateButton.setText(DateTimeManager.getDateString(projectModel.getDueDate(), new Date()));
             initEditText(activity);
         }
 
         initColorChips(activity);
+        initSpinners(activity);
         initClickEvents(activity);
 
         return rootView;
@@ -255,6 +268,38 @@ public class AddProjectFragment extends Fragment {
                     projectModel.setColorTag(COLOR_DEEP_ORANGE_HEX);
                     break;
             }
+        });
+    }
+
+    private void initSpinners(Activity activity) {
+        layoutSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        projectModel.setLayout(ProjectModel.LAYOUT_LIST);
+                        break;
+                    case 1:
+                        projectModel.setLayout(LAYOUT_BOARD);
+                        break;
+                    case 2:
+                        projectModel.setLayout(ProjectModel.LAYOUT_CALENDAR);
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) { }
+        });
+        layoutSpinner.setOnTouchListener((view, motionEvent) -> {
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                clearEditTextFocus(activity);
+                return true;
+            } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                view.performClick();
+                return true;
+            }
+            return false;
         });
     }
 
