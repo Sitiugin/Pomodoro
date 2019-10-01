@@ -90,14 +90,20 @@ public class DateTimeManager {
                 DateUtils.FORMAT_ABBREV_ALL));
     }
 
-    public static String formatTimeString(Context context, int minutes) {
+    public static String formatHHMMString(Context context, int minutes) {
         return context.getString(R.string.core_time,
                 String.valueOf(minutes / HOUR_LENGTH),
                 String.valueOf(minutes % HOUR_LENGTH));
     }
 
-    public static int formatTimeString(int pomodoros) {
+    public static int formatHHMMString(int pomodoros) {
         return pomodoros * POMODORO_LENGTH;
+    }
+
+    public static String formatMMSSString(Context context, int seconds) {
+        return context.getString(R.string.core_time,
+                String.valueOf(seconds / 60),
+                String.valueOf(seconds % 60));
     }
 
 }

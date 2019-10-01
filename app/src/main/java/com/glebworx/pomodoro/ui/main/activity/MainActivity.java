@@ -9,12 +9,9 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.transition.TransitionManager;
 
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.view.View;
-import android.widget.Toast;
 
 import com.glebworx.pomodoro.R;
-import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.ui.main.fragment.AddProjectFragment;
@@ -27,12 +24,13 @@ import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.TransitionFragmentManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.database.core.Repo;
 import com.triggertrap.seekarc.SeekArc;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
+
+import static com.glebworx.pomodoro.util.manager.DateTimeManager.POMODORO_LENGTH;
 
 
 public class MainActivity
@@ -142,6 +140,7 @@ public class MainActivity
     public void onSelectTask(TaskModel taskModel) {
         this.activeTask = taskModel;
 
+        bottomSheet.setVisibility(View.VISIBLE);
         attachTaskToBottomSheet(taskModel);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
@@ -176,31 +175,17 @@ public class MainActivity
             countDownTimer.onFinish();
         }
         final String[] minutesUntilFinished = new String[1];
-        countDownTimer = new PomodoroTimer(3000 * DateTimeManager.HOUR_LENGTH, 1000) {
+        countDownTimer = new PomodoroTimer(POMODORO_LENGTH * 60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                minutesUntilFinished[0] = DateTimeManager.formatTimeString(MainActivity.this, (int) (millisUntilFinished / 60000));
+                minutesUntilFinished[0] = DateTimeManager.formatMMSSString(MainActivity.this, (int) (millisUntilFinished / 1000));
                 timeRemainingTextView.setText(minutesUntilFinished[0]);
                 timeRemainingLargeTextView.setText(minutesUntilFinished[0]);
             }
 
             @Override
-            public void onFinish() {
-                countDownTimer.onFinish();
-            }
+            public void onFinish() { }
         };
-        /*countDownTimer = new CountDownTimer(3000 * DateTimeManager.HOUR_LENGTH, 1000) {
-            @Override
-            public void onTick(long l) {
-                timeRemainingTextView.setText(String.valueOf(l));
-                timeRemainingLargeTextView.setText(String.valueOf(l));
-            }
-
-            @Override
-            public void onFinish() {
-
-            }
-        };*/
     }
 
     private void expandBottomSheetViews() {
