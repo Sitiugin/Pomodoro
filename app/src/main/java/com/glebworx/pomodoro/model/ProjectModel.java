@@ -64,6 +64,7 @@ public class ProjectModel extends AbstractModel {
     public ProjectModel() {
         super();
         this.tasks = new ArrayList<>();
+        this.sections = new ArrayList<>();
         this.layout = LAYOUT_LIST;
     }
 

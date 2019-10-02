@@ -24,8 +24,7 @@
         android:layout_marginTop="@dimen/margin_content"
         android:layout_marginHorizontal="@dimen/margin_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="Some task"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/TextStyle"
@@ -44,8 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/text_view_task"
-        app:layout_constraintStart_toStartOf="@+id/text_view_task"
-        android:text="Paused"/>
+        app:layout_constraintStart_toStartOf="@+id/text_view_task" />
 
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/TextStyle"

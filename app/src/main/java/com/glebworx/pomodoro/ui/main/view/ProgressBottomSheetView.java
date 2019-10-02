@@ -1,14 +1,7 @@
 package com.glebworx.pomodoro.ui.main.view;
 
 import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
-import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -49,12 +42,18 @@ public class ProgressBottomSheetView extends ConstraintLayout implements View.On
     @BindView(R.id.button_cancel) AppCompatImageButton cancelButton;
     @BindView(R.id.button_complete) AppCompatImageButton completeButton;
 
+    private static final int PROGRESS_STATE_IDLE = 0;
+    private static final int PROGRESS_STATE_PAUSED = 1;
+    private static final int PROGRESS_STATE_ACTIVE = 2;
+
     private ConstraintSet constraintSet;
     private OnBottomSheetInteractionListener bottomSheetListener;
     private PomodoroTimer timer;
     private Unbinder unbinder;
-    private int state;
+    private int bottomSheetState;
+    private int progressState;
     private TaskModel taskModel;
+    private final Object object = new Object();
 
     public ProgressBottomSheetView(Context context) {
         super(context);
@@ -72,11 +71,13 @@ public class ProgressBottomSheetView extends ConstraintLayout implements View.On
     }
 
     private void init(Context context, AttributeSet attrs, int defStyle) {
+
         inflate(context, R.layout.view_progress_bottom_sheet, this);
 
-        state = BottomSheetBehavior.STATE_COLLAPSED;
-
+        bottomSheetState = BottomSheetBehavior.STATE_COLLAPSED;
         constraintSet = new ConstraintSet();
+
+        initTimer();
 
     }
 
@@ -112,26 +113,64 @@ public class ProgressBottomSheetView extends ConstraintLayout implements View.On
         switch (view.getId()) {
             case R.id.button_start_stop:
             case R.id.fab_start_stop_large:
-                if (timer != null) {
-                    timer.cancel();
-                    timer.start();
+                if (progressState == PROGRESS_STATE_ACTIVE) {
+                    pauseTask();
+                } else {
+                    startTask();
                 }
                 break;
             case R.id.button_cancel:
+                cancelTask();
                 break;
             case R.id.button_complete:
                 break;
         }
     }
 
+    private void startTask() {
+        synchronized (object) {
+            if (progressState == PROGRESS_STATE_IDLE) {
+                timer.onFinish();
+            }
+            progressState = PROGRESS_STATE_ACTIVE;
+            timer.start();
+            startStopButton.setImageResource(R.drawable.ic_pause_highlight);
+            startStopFab.setImageResource(R.drawable.ic_pause_black);
+            statusTextView.setText(R.string.main_text_status_active);
+        }
+        //startStopFab.setIco
+    }
+
+    private void pauseTask() {
+        synchronized (object) {
+            progressState = PROGRESS_STATE_PAUSED;
+            timer.cancel();
+            startStopButton.setImageResource(R.drawable.ic_play_highlight);
+            startStopFab.setImageResource(R.drawable.ic_play_black);
+            statusTextView.setText(R.string.main_text_status_paused);
+        }
+    }
+
+    private void cancelTask() {
+        synchronized (object) {
+            timer.cancel();
+            progressState = PROGRESS_STATE_IDLE;
+            statusTextView.setText(R.string.main_text_status_idle);
+        }
+        bottomSheetListener.onCancelTask(taskModel);
+    }
+
     public void setTask(TaskModel taskModel) {
-        this.taskModel = taskModel;
-        initTimer();
+        synchronized (object) {
+            this.taskModel = taskModel;
+            taskTextView.setText(taskModel.getName());
+            statusTextView.setText(R.string.main_text_status_idle);
+        }
     }
 
     public void expandBottomSheetViews() {
 
-        this.state = BottomSheetBehavior.STATE_EXPANDED;
+        this.bottomSheetState = BottomSheetBehavior.STATE_EXPANDED;
 
         TransitionManager.beginDelayedTransition(this);
         constraintSet.clone(this);
@@ -189,7 +228,7 @@ public class ProgressBottomSheetView extends ConstraintLayout implements View.On
 
     public void collapseBottomSheetViews() {
 
-        this.state = BottomSheetBehavior.STATE_COLLAPSED;
+        this.bottomSheetState = BottomSheetBehavior.STATE_COLLAPSED;
 
         TransitionManager.beginDelayedTransition(this);
         constraintSet.clone(this);
@@ -239,10 +278,6 @@ public class ProgressBottomSheetView extends ConstraintLayout implements View.On
 
     private void initTimer() {
 
-        if (timer != null) {
-            timer.onFinish();
-        }
-
         final String[] minutesUntilFinished = new String[1];
         int duration = POMODORO_LENGTH * 60000;
         int durationPercent = duration / 100;
@@ -255,12 +290,16 @@ public class ProgressBottomSheetView extends ConstraintLayout implements View.On
                 minutesUntilFinished[0] = DateTimeManager.formatMMSSString(getContext(), (int) (millisUntilFinished / 1000));
                 progress[0] = 100 - (int) (millisUntilFinished / durationPercent);
 
-                if (state == BottomSheetBehavior.STATE_EXPANDED) {
-                    timeRemainingLargeTextView.setText(minutesUntilFinished[0]);
-                    seekArc.setProgress(progress[0]);
-                } else if (state == BottomSheetBehavior.STATE_COLLAPSED) {
-                    timeRemainingTextView.setText(minutesUntilFinished[0]);
-                    progressBar.setProgress(progress[0]);
+                if (bottomSheetState == BottomSheetBehavior.STATE_EXPANDED) {
+                    synchronized (object) {
+                        timeRemainingLargeTextView.setText(minutesUntilFinished[0]);
+                        seekArc.setProgress(progress[0]);
+                    }
+                } else if (bottomSheetState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    synchronized (object) {
+                        timeRemainingTextView.setText(minutesUntilFinished[0]);
+                        progressBar.setProgress(progress[0]);
+                    }
                 }
 
             }

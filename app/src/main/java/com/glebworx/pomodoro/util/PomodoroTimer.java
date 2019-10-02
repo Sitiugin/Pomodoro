@@ -113,11 +113,6 @@ public abstract class PomodoroTimer {
 
     private static final int MSG = 1;
 
-
-    private static class PomodoroHandler {
-
-    }
-
     // handles counting down
     private Handler mHandler = new Handler() {
 
@@ -150,4 +145,5 @@ public abstract class PomodoroTimer {
             }
         }
     };
+
 }

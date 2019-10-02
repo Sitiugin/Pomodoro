@@ -38,7 +38,7 @@ public class MainActivity
 
     //                                                                                       BINDING
 
-    @BindView(R.id.bottom_sheet) ProgressBottomSheetView bottomSheet;
+    @BindView(R.id.bottom_sheet) ProgressBottomSheetView bottomSheetView;
 
 
     //                                                                                    ATTRIBUTES
@@ -58,7 +58,7 @@ public class MainActivity
 
         fragmentManager =
                 new TransitionFragmentManager(getSupportFragmentManager(), R.id.container_main);
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
 
         initBottomSheet();
 
@@ -86,8 +86,42 @@ public class MainActivity
     }
 
     @Override
+    public void onEditProject(ProjectModel projectModel) {
+        fragmentManager.pushToBackStack(AddProjectFragment.newInstance(projectModel));
+    }
+
+    @Override
     public void onViewProject(ProjectModel projectModel) {
         fragmentManager.pushToBackStack(ViewProjectFragment.newInstance(projectModel));
+    }
+
+    @Override
+    public void onAddTask(ProjectModel projectModel) {
+        fragmentManager.pushToBackStack(AddTaskFragment.newInstance(projectModel));
+    }
+
+    @Override
+    public void onEditTask(ProjectModel projectModel, TaskModel taskModel) {
+        fragmentManager.pushToBackStack(AddTaskFragment.newInstance(projectModel, taskModel));
+    }
+
+    @Override
+    public void onSelectTask(TaskModel taskModel) {
+        bottomSheetView.setVisibility(View.VISIBLE);
+        bottomSheetView.setTask(taskModel);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    }
+
+    @Override
+    public void onCancelTask(TaskModel taskModel) {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        bottomSheetView.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onCompleteTask(TaskModel taskModel) {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        bottomSheetView.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -100,56 +134,26 @@ public class MainActivity
         fragmentManager.popFromBackStack();
     }
 
-    @Override
-    public void onEditProject(ProjectModel projectModel) {
-        fragmentManager.pushToBackStack(AddProjectFragment.newInstance(projectModel));
-    }
-
-    @Override
-    public void onAddTask(ProjectModel projectModel) {
-        fragmentManager.pushToBackStack(AddTaskFragment.newInstance(projectModel));
-    }
-
-    @Override
-    public void onSelectTask(TaskModel taskModel) {
-        bottomSheet.setVisibility(View.VISIBLE);
-        bottomSheet.setTask(taskModel);
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-    }
-
-    @Override
-    public void onEditTask(ProjectModel projectModel, TaskModel taskModel) {
-        fragmentManager.pushToBackStack(AddTaskFragment.newInstance(projectModel, taskModel));
-    }
-
-    @Override
-    public void onCancelTask(TaskModel taskModel) {
-
-    }
-
-    @Override
-    public void onCompleteTask(TaskModel taskModel) {
-
-    }
-
 
     //                                                                                       HELPERS
 
     private void initBottomSheet() {
+
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View view, int newState) {
                 if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                    bottomSheet.expandBottomSheetViews();
+                    bottomSheetView.expandBottomSheetViews();
                 } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    bottomSheet.collapseBottomSheetViews();
+                    bottomSheetView.collapseBottomSheetViews();
                 }
             }
 
             @Override
             public void onSlide(@NonNull View view, float v) { }
         });
-        bottomSheet.setOnClickListener(view -> {
+
+        bottomSheetView.setOnClickListener(view -> {
             int state = bottomSheetBehavior.getState();
             if (state == BottomSheetBehavior.STATE_COLLAPSED) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -157,6 +161,7 @@ public class MainActivity
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         });
+
     }
 
 }

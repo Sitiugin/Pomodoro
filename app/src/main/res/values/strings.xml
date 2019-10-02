@@ -96,8 +96,11 @@
 
     <string name="main_title_cancel_task">Cancel Task</string>
     <string name="main_title_complete_task">Complete Task</string>
-    <string name="main_text_cancel_task">Cancel Task</string>
-    <string name="main_complete_cancel_task">Cancel Task</string>
+    <string name="main_text_complete_task" formatted="true">Complete %1$s and move on to the next task?</string>
+    <string name="main_text_cancel_task" formatted="true">Are you sure you want to cancel %1$s</string>
+    <string name="main_text_status_idle">Ready</string>
+    <string name="main_text_status_paused">Paused</string>
+    <string name="main_text_status_active">Working</string>
 
 
     <!--                                                                                PROJECTS -->
