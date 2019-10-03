@@ -15,6 +15,7 @@ import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.util.PomodoroTimer;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
+import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.triggertrap.seekarc.SeekArc;
@@ -156,16 +157,10 @@ public class ProgressBottomSheetView extends ConstraintLayout implements View.On
     }
 
     private void cancelTask() {
+        //DialogManager.showDialog(getContext())
         synchronized (object) {
             timer.cancel();
-            progressStatus = PROGRESS_STATUS_IDLE;
-            startStopButton.setImageResource(R.drawable.ic_play_highlight);
-            startStopFab.setImageResource(R.drawable.ic_play_black);
-            statusTextView.setText(R.string.main_text_status_idle);
-            timeRemainingLargeTextView.setText(null);
-            timeRemainingTextView.setText(null);
-            seekArc.setProgress(0);
-            progressBar.setProgress(0);
+            clearViews();
         }
         bottomSheetListener.onCancelTask(taskModel);
     }
@@ -341,9 +336,22 @@ public class ProgressBottomSheetView extends ConstraintLayout implements View.On
             }
 
             @Override
-            public void onFinish() { }
+            public void onFinish() {
+                clearViews();
+            }
         };
 
+    }
+
+    private void clearViews() {
+        progressStatus = PROGRESS_STATUS_IDLE;
+        startStopButton.setImageResource(R.drawable.ic_play_highlight);
+        startStopFab.setImageResource(R.drawable.ic_play_black);
+        statusTextView.setText(R.string.main_text_status_idle);
+        timeRemainingLargeTextView.setText(null);
+        timeRemainingTextView.setText(null);
+        seekArc.setProgress(0);
+        progressBar.setProgress(0);
     }
 
     public interface OnBottomSheetInteractionListener {

@@ -113,7 +113,7 @@ public abstract class PomodoroTimer {
 
 
     // handles counting down
-    private Handler mHandler = new Handler() {
+    private Handler mHandler = new Handler() { // TODO this should be a static class
 
         @Override
         public void handleMessage(Message msg) {
