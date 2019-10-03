@@ -28,17 +28,6 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/TextStyle"
-        android:id="@+id/text_view_pomodoro_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        android:text="Pomodoro: 1/2"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_task"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        style="@style/TextStyle"
         android:id="@+id/text_view_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,11 +37,21 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/TextStyle"
+        android:id="@+id/text_view_pomodoro_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pomodoro: 1/2"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_task"
+        app:layout_constraintStart_toEndOf="@+id/text_view_task" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle"
         android:id="@+id/text_view_time_remaining"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/margin_content"
         app:layout_constraintTop_toBottomOf="@+id/text_view_task"
-        app:layout_constraintStart_toEndOf="@+id/text_view_status" />
+        app:layout_constraintStart_toEndOf="@+id/text_view_pomodoro_number" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         style="@style/ImageButtonStyle.Borderless"
