@@ -175,6 +175,9 @@ public class ProgressBottomSheetView extends ConstraintLayout implements View.On
             this.taskModel = taskModel;
             taskTextView.setText(taskModel.getName());
             statusTextView.setText(R.string.main_text_status_idle);
+            String timeRemainingString = DateTimeManager.formatMMSSString(getContext(), POMODORO_LENGTH * 60);
+            timeRemainingLargeTextView.setText(timeRemainingString);
+            timeRemainingTextView.setText(timeRemainingString);
         }
     }
 
