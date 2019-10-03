@@ -42,16 +42,16 @@ public class ProgressBottomSheetView extends ConstraintLayout implements View.On
     @BindView(R.id.button_cancel) AppCompatImageButton cancelButton;
     @BindView(R.id.button_complete) AppCompatImageButton completeButton;
 
-    private static final int PROGRESS_STATE_IDLE = 0;
-    private static final int PROGRESS_STATE_PAUSED = 1;
-    private static final int PROGRESS_STATE_ACTIVE = 2;
+    public static final int PROGRESS_STATUS_IDLE = 0;
+    public static final int PROGRESS_STATUS_PAUSED = 1;
+    public static final int PROGRESS_STATUS_ACTIVE = 2;
 
     private ConstraintSet constraintSet;
     private OnBottomSheetInteractionListener bottomSheetListener;
     private PomodoroTimer timer;
     private Unbinder unbinder;
     private int bottomSheetState;
-    private int progressState;
+    private int progressStatus;
     private TaskModel taskModel;
     private final Object object = new Object();
 
@@ -113,7 +113,7 @@ public class ProgressBottomSheetView extends ConstraintLayout implements View.On
         switch (view.getId()) {
             case R.id.button_start_stop:
             case R.id.fab_start_stop_large:
-                if (progressState == PROGRESS_STATE_ACTIVE) {
+                if (progressStatus == PROGRESS_STATUS_ACTIVE) {
                     pauseTask();
                 } else {
                     startTask();
@@ -129,11 +129,13 @@ public class ProgressBottomSheetView extends ConstraintLayout implements View.On
 
     private void startTask() {
         synchronized (object) {
-            if (progressState == PROGRESS_STATE_IDLE) {
-                timer.onFinish();
+            if (progressStatus == PROGRESS_STATUS_IDLE) {
+                timer.cancel();
+                timer.start();
+            } else {
+                timer.resume();
             }
-            progressState = PROGRESS_STATE_ACTIVE;
-            timer.start();
+            progressStatus = PROGRESS_STATUS_ACTIVE;
             startStopButton.setImageResource(R.drawable.ic_pause_highlight);
             startStopFab.setImageResource(R.drawable.ic_pause_black);
             statusTextView.setText(R.string.main_text_status_active);
@@ -143,8 +145,8 @@ public class ProgressBottomSheetView extends ConstraintLayout implements View.On
 
     private void pauseTask() {
         synchronized (object) {
-            progressState = PROGRESS_STATE_PAUSED;
-            timer.cancel();
+            progressStatus = PROGRESS_STATUS_PAUSED;
+            timer.pause();
             startStopButton.setImageResource(R.drawable.ic_play_highlight);
             startStopFab.setImageResource(R.drawable.ic_play_black);
             statusTextView.setText(R.string.main_text_status_paused);
@@ -154,7 +156,7 @@ public class ProgressBottomSheetView extends ConstraintLayout implements View.On
     private void cancelTask() {
         synchronized (object) {
             timer.cancel();
-            progressState = PROGRESS_STATE_IDLE;
+            progressStatus = PROGRESS_STATUS_IDLE;
             statusTextView.setText(R.string.main_text_status_idle);
         }
         bottomSheetListener.onCancelTask(taskModel);
@@ -274,6 +276,10 @@ public class ProgressBottomSheetView extends ConstraintLayout implements View.On
 
         constraintSet.applyTo(this);
 
+    }
+
+    public int getProgressStatus() {
+        return progressStatus;
     }
 
     private void initTimer() {

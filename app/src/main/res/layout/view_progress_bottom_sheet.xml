@@ -52,8 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_content"
         app:layout_constraintTop_toBottomOf="@+id/text_view_task"
-        app:layout_constraintStart_toEndOf="@+id/text_view_status"
-        android:text="23 min remains"/>
+        app:layout_constraintStart_toEndOf="@+id/text_view_status" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         style="@style/ImageButtonStyle.Borderless"
@@ -119,7 +118,7 @@
 
     <com.github.ybq.android.spinkit.SpinKitView
         style="@style/SpinKitView.Large.Pulse"
-        android:id="@+id/spin_kit_view"
+        android:id="@+id/spin_kit_view_large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:SpinKit_Color="@color/colorHighlight"
