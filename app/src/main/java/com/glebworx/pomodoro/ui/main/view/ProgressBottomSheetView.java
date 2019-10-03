@@ -10,6 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.transition.TransitionManager;
 
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.util.PomodoroTimer;
@@ -131,6 +132,7 @@ public class ProgressBottomSheetView extends ConstraintLayout implements View.On
         synchronized (object) {
             if (progressStatus == PROGRESS_STATUS_IDLE) {
                 timer.cancel();
+                initTimer();
                 timer.start();
             } else {
                 timer.resume();
@@ -145,8 +147,8 @@ public class ProgressBottomSheetView extends ConstraintLayout implements View.On
 
     private void pauseTask() {
         synchronized (object) {
-            progressStatus = PROGRESS_STATUS_PAUSED;
             timer.pause();
+            progressStatus = PROGRESS_STATUS_PAUSED;
             startStopButton.setImageResource(R.drawable.ic_play_highlight);
             startStopFab.setImageResource(R.drawable.ic_play_black);
             statusTextView.setText(R.string.main_text_status_paused);
@@ -157,7 +159,13 @@ public class ProgressBottomSheetView extends ConstraintLayout implements View.On
         synchronized (object) {
             timer.cancel();
             progressStatus = PROGRESS_STATUS_IDLE;
+            startStopButton.setImageResource(R.drawable.ic_play_highlight);
+            startStopFab.setImageResource(R.drawable.ic_play_black);
             statusTextView.setText(R.string.main_text_status_idle);
+            timeRemainingLargeTextView.setText(null);
+            timeRemainingTextView.setText(null);
+            seekArc.setProgress(0);
+            progressBar.setProgress(0);
         }
         bottomSheetListener.onCancelTask(taskModel);
     }
@@ -299,12 +307,16 @@ public class ProgressBottomSheetView extends ConstraintLayout implements View.On
                 if (bottomSheetState == BottomSheetBehavior.STATE_EXPANDED) {
                     synchronized (object) {
                         timeRemainingLargeTextView.setText(minutesUntilFinished[0]);
-                        seekArc.setProgress(progress[0]);
+                        if (seekArc.getProgress() != progress[0]) {
+                            seekArc.setProgress(progress[0]);
+                        }
                     }
                 } else if (bottomSheetState == BottomSheetBehavior.STATE_COLLAPSED) {
                     synchronized (object) {
                         timeRemainingTextView.setText(minutesUntilFinished[0]);
-                        progressBar.setProgress(progress[0]);
+                        if (progressBar.getProgress() != progress[0]) {
+                            progressBar.setProgress(progress[0]);
+                        }
                     }
                 }
 

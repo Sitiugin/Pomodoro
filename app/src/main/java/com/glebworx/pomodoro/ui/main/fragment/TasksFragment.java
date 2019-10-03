@@ -34,6 +34,7 @@ import javax.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 
 public class TasksFragment extends Fragment {
@@ -47,8 +48,8 @@ public class TasksFragment extends Fragment {
     @BindView(R.id.fab_start) FloatingActionButton startPomodoroButton;
 
     private boolean isTaskRunning;
-
     private ItemAdapter<TaskItem> todayAdapter;
+    private Unbinder unbinder;
 
     public TasksFragment() { }
 
@@ -58,7 +59,7 @@ public class TasksFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_tasks, container, false);
-        ButterKnife.bind(this, rootView);
+        unbinder = ButterKnife.bind(this, rootView);
 
         Context context = getContext();
         Activity activity = getActivity();
@@ -77,6 +78,12 @@ public class TasksFragment extends Fragment {
 
         return rootView;
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     private void initRecyclerView(Context context,

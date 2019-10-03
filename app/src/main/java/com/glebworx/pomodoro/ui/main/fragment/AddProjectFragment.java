@@ -45,6 +45,7 @@ import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 import static com.glebworx.pomodoro.model.ProjectModel.LAYOUT_BOARD;
 import static com.glebworx.pomodoro.model.ProjectModel.LAYOUT_CALENDAR;
@@ -99,6 +100,7 @@ public class AddProjectFragment extends Fragment {
     //private Calendar targetCalendar;
     //private DateTimeManager dateTimeManager;
     private boolean isEditing;
+    private Unbinder unbinder;
 
 
     //                                                                                  CONSTRUCTORS
@@ -127,7 +129,7 @@ public class AddProjectFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_add_project, container, false);
-        ButterKnife.bind(this, rootView);
+        unbinder = ButterKnife.bind(this, rootView);
 
         constraintSet = new ConstraintSet();
 
@@ -180,6 +182,12 @@ public class AddProjectFragment extends Fragment {
 
         return rootView;
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override

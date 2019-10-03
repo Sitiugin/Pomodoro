@@ -52,6 +52,7 @@ import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 import static com.glebworx.pomodoro.util.constants.Constants.LENGTH_SNACK_BAR;
 
@@ -76,6 +77,7 @@ public class ViewProjectFragment extends Fragment {
     private EventListener<QuerySnapshot> eventListener;
     private OnViewProjectFragmentInteractionListener fragmentListener;
     private InitTasksTask initTasksTask;
+    private Unbinder unbinder;
 
     public ViewProjectFragment() { }
 
@@ -94,7 +96,7 @@ public class ViewProjectFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_view_project, container, false);
-        ButterKnife.bind(this, rootView);
+        unbinder = ButterKnife.bind(this, rootView);
 
         Bundle arguments = getArguments();
         Context context = getContext();
@@ -117,6 +119,12 @@ public class ViewProjectFragment extends Fragment {
 
         return rootView;
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override

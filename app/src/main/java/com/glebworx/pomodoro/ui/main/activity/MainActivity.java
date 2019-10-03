@@ -22,6 +22,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 import static com.glebworx.pomodoro.util.manager.DateTimeManager.POMODORO_LENGTH;
 
@@ -45,7 +46,7 @@ public class MainActivity
 
     private TransitionFragmentManager fragmentManager;
     private BottomSheetBehavior bottomSheetBehavior;
-
+    private Unbinder unbinder;
 
     //                                                                                     LIFECYCLE
 
@@ -54,7 +55,7 @@ public class MainActivity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
 
         fragmentManager =
                 new TransitionFragmentManager(getSupportFragmentManager(), R.id.container_main);
@@ -64,6 +65,12 @@ public class MainActivity
 
         fragmentManager.addRootFragment(ProjectsFragment.newInstance());
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
     }
 
     @Override

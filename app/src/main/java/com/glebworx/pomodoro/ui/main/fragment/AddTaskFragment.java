@@ -45,6 +45,7 @@ import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_DAY;
 import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_FIVE_DAYS;
@@ -92,6 +93,7 @@ public class AddTaskFragment extends Fragment {
     private boolean isEditing;
     private int pomodorosAllocated;
     private int pomodorosCompleted;
+    private Unbinder unbinder;
 
 
     //                                                                                  CONSTRUCTORS
@@ -125,7 +127,7 @@ public class AddTaskFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_add_task, container, false);
-        ButterKnife.bind(this, rootView);
+        unbinder = ButterKnife.bind(this, rootView);
 
         constraintSet = new ConstraintSet();
 
@@ -175,6 +177,12 @@ public class AddTaskFragment extends Fragment {
 
         return rootView;
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override

@@ -48,6 +48,7 @@ import java.util.stream.IntStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static com.glebworx.pomodoro.util.constants.Constants.LENGTH_SNACK_BAR;
@@ -76,6 +77,7 @@ public class ProjectsFragment extends Fragment {
     private OnProjectFragmentInteractionListener fragmentListener;
     private InitTaskCountTask initTaskCountTask;
     private InitProjectsTask initProjectsTask;
+    private Unbinder unbinder;
 
 
     //                                                                                     LIFECYCLE
@@ -93,7 +95,7 @@ public class ProjectsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_projects, container, false);
-        ButterKnife.bind(this, rootView);
+        unbinder = ButterKnife.bind(this, rootView);
 
         Context context = getContext();
         if (context == null) {
@@ -112,6 +114,12 @@ public class ProjectsFragment extends Fragment {
 
         return rootView;
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override

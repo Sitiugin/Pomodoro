@@ -13,9 +13,12 @@ import android.view.ViewGroup;
 import com.glebworx.pomodoro.R;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 
 public class ReportFragment extends Fragment {
+
+    private Unbinder unbinder;
 
     public ReportFragment() { }
 
@@ -29,9 +32,15 @@ public class ReportFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_report, container, false);
-        ButterKnife.bind(this, rootView);
+        unbinder = ButterKnife.bind(this, rootView);
         return rootView;
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
 }

@@ -91,9 +91,10 @@ public class DateTimeManager {
     }
 
     public static String formatHHMMString(Context context, int minutes) {
-        return context.getString(R.string.core_time,
+        return String.format(Locale.getDefault(), "%d:%02d", minutes / 60, minutes % 60);
+        /*return context.getString(R.string.core_time,
                 String.valueOf(minutes / HOUR_LENGTH),
-                String.valueOf(minutes % HOUR_LENGTH));
+                String.valueOf(minutes % HOUR_LENGTH));*/
     }
 
     public static int formatHHMMString(int pomodoros) {
@@ -101,9 +102,10 @@ public class DateTimeManager {
     }
 
     public static String formatMMSSString(Context context, int seconds) {
-        return context.getString(R.string.core_time,
+        return String.format(Locale.getDefault(), "%d:%02d", seconds / 60, seconds % 60);
+        /*return context.getString(R.string.core_time,
                 String.valueOf(seconds / 60),
-                String.valueOf(seconds % 60));
+                String.valueOf(seconds % 60)); */
     }
 
 }
