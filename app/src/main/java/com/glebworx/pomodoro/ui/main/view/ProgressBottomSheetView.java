@@ -10,12 +10,10 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.transition.TransitionManager;
 
-import com.github.ybq.android.spinkit.SpinKitView;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.util.PomodoroTimer;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
-import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.triggertrap.seekarc.SeekArc;
@@ -73,14 +71,10 @@ public class ProgressBottomSheetView extends ConstraintLayout implements View.On
     }
 
     private void init(Context context, AttributeSet attrs, int defStyle) {
-
         inflate(context, R.layout.view_progress_bottom_sheet, this);
-
         bottomSheetState = BottomSheetBehavior.STATE_COLLAPSED;
         constraintSet = new ConstraintSet();
-
         initTimer();
-
     }
 
     @Override
@@ -143,7 +137,6 @@ public class ProgressBottomSheetView extends ConstraintLayout implements View.On
             startStopFab.setImageResource(R.drawable.ic_pause_black);
             statusTextView.setText(R.string.main_text_status_active);
         }
-        //startStopFab.setIco
     }
 
     private void pauseTask() {
@@ -153,6 +146,13 @@ public class ProgressBottomSheetView extends ConstraintLayout implements View.On
             startStopButton.setImageResource(R.drawable.ic_play_highlight);
             startStopFab.setImageResource(R.drawable.ic_play_black);
             statusTextView.setText(R.string.main_text_status_paused);
+            if (bottomSheetState == BottomSheetBehavior.STATE_EXPANDED) {
+                timeRemainingTextView.setText(timeRemainingLargeTextView.getText());
+                progressBar.setProgress(seekArc.getProgress());
+            } else if (bottomSheetState == BottomSheetBehavior.STATE_COLLAPSED) {
+                timeRemainingLargeTextView.setText(timeRemainingTextView.getText());
+                seekArc.setProgress(progressBar.getProgress());
+            }
         }
     }
 
