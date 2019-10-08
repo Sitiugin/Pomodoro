@@ -190,40 +190,12 @@
     <androidx.appcompat.widget.AppCompatButton
         style="@style/ButtonStyle"
         android:id="@+id/button_due_date"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_content"
         android:layout_marginEnd="@dimen/margin_content"
         android:gravity="start"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_section_due_date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/spinner_layout"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        style="@style/TextStyle"
-        android:id="@+id/text_view_section_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add_project_text_layout"
-        android:drawableStart="@drawable/ic_list_gray_small"
-        android:drawablePadding="@dimen/margin_content_quarter"
-        app:layout_constraintTop_toBottomOf="@+id/chip_group_color"
-        app:layout_constraintStart_toStartOf="@+id/spinner_layout"/>
-    <androidx.appcompat.widget.AppCompatSpinner
-        style="@style/SpinnerStyle"
-        android:id="@+id/spinner_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_content"
-        android:gravity="start"
-        android:entries="@array/core_layout"
-        android:spinnerMode="dialog"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_section_layout"
-        app:layout_constraintStart_toEndOf="@+id/button_due_date"
-        app:layout_constraintEnd_toEndOf="parent" />
-
+        app:layout_constraintTop_toBottomOf="@+id/text_view_section_due_date" />
 
     <com.github.ybq.android.spinkit.SpinKitView
         style="@style/SpinKitView.Large.Pulse"
