@@ -1,4 +1,4 @@
-package com.glebworx.pomodoro.ui.main.fragment;
+package com.glebworx.pomodoro.ui.main.fragment.add_project;
 
 import android.os.Bundle;
 import android.util.SparseArray;
@@ -16,7 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import static com.glebworx.pomodoro.ui.main.fragment.AddProjectFragment.ARG_PROJECT_MODEL;
+import static com.glebworx.pomodoro.ui.main.fragment.add_project.AddProjectFragment.ARG_PROJECT_MODEL;
 import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_AMBER_HEX;
 import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_BLUE_HEX;
 import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_CYAN_HEX;

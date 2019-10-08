@@ -1,4 +1,4 @@
-package com.glebworx.pomodoro.ui.main.fragment;
+package com.glebworx.pomodoro.ui.main.fragment.report;
 
 
 import android.os.Bundle;

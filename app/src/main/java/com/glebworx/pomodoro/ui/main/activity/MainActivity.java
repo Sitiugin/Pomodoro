@@ -9,22 +9,18 @@ import android.view.View;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
-import com.glebworx.pomodoro.ui.main.fragment.AddProjectFragment;
-import com.glebworx.pomodoro.ui.main.fragment.AddTaskFragment;
-import com.glebworx.pomodoro.ui.main.fragment.ProjectsFragment;
-import com.glebworx.pomodoro.ui.main.fragment.ReportFragment;
-import com.glebworx.pomodoro.ui.main.fragment.ViewProjectFragment;
+import com.glebworx.pomodoro.ui.main.fragment.add_project.AddProjectFragment;
+import com.glebworx.pomodoro.ui.main.fragment.add_task.AddTaskFragment;
+import com.glebworx.pomodoro.ui.main.fragment.projects.ProjectsFragment;
+import com.glebworx.pomodoro.ui.main.fragment.report.ReportFragment;
+import com.glebworx.pomodoro.ui.main.fragment.view_project.ViewProjectFragment;
 import com.glebworx.pomodoro.ui.main.view.ProgressBottomSheetView;
-import com.glebworx.pomodoro.util.PomodoroTimer;
-import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.TransitionFragmentManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-
-import static com.glebworx.pomodoro.util.manager.DateTimeManager.POMODORO_LENGTH;
 
 
 // TODO don't forget to unbind

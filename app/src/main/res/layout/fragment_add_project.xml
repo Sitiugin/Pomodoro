@@ -10,7 +10,7 @@
     android:padding="@dimen/margin_content"
     android:clipChildren="false"
     android:clipToPadding="false"
-    tools:context=".ui.main.fragment.AddProjectFragment">
+    tools:context=".ui.main.fragment.add_project.AddProjectFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/TextStyle.AppBar"

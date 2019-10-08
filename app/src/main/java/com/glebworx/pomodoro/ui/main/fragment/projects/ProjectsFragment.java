@@ -1,4 +1,4 @@
-package com.glebworx.pomodoro.ui.main.fragment;
+package com.glebworx.pomodoro.ui.main.fragment.projects;
 
 
 import android.content.Context;

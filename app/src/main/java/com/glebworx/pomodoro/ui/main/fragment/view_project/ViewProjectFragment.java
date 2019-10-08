@@ -1,4 +1,4 @@
-package com.glebworx.pomodoro.ui.main.fragment;
+package com.glebworx.pomodoro.ui.main.fragment.view_project;
 
 
 import android.content.Context;
@@ -24,7 +24,6 @@ import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.item.AddItem;
-import com.glebworx.pomodoro.item.ProjectItem;
 import com.glebworx.pomodoro.item.TaskItem;
 import com.glebworx.pomodoro.item.ViewProjectHeaderItem;
 import com.glebworx.pomodoro.model.ProjectModel;
@@ -41,13 +40,9 @@ import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.fastadapter_extensions.UndoHelper;
 import com.mikepenz.fastadapter_extensions.swipe.SimpleSwipeCallback;
 import com.mikepenz.itemanimators.AlphaCrossFadeAnimator;
-import com.mikepenz.itemanimators.AlphaInAnimator;
-import com.mikepenz.itemanimators.SlideInOutLeftAnimator;
 
-import java.text.NumberFormat;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Set;
 
 import butterknife.BindView;

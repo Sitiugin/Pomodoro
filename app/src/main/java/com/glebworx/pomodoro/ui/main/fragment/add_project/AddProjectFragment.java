@@ -1,4 +1,4 @@
-package com.glebworx.pomodoro.ui.main.fragment;
+package com.glebworx.pomodoro.ui.main.fragment.add_project;
 
 
 import android.app.Activity;
@@ -26,7 +26,6 @@ import android.widget.Toast;
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.ProjectModel;
-import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.KeyboardManager;
 import com.google.android.material.chip.ChipGroup;
