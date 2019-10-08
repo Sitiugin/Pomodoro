@@ -1,29 +1,21 @@
-package com.glebworx.pomodoro.item;
+package com.glebworx.pomodoro.ui.main.fragment.projects;
 
 
 import android.content.Context;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.glebworx.pomodoro.R;
-import com.glebworx.pomodoro.model.ProjectModel;
-import com.glebworx.pomodoro.util.constants.Constants;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.fastadapter_extensions.swipe.ISwipeable;
-import com.triggertrap.seekarc.SeekArc;
 
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import javax.annotation.Nonnull;
 
 public class ProjectHeaderItem extends AbstractItem<ProjectHeaderItem, ProjectHeaderItem.ViewHolder> implements ISwipeable<ProjectHeaderItem, ProjectHeaderItem> {
 

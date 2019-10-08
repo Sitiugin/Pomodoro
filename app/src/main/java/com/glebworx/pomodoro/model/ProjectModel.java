@@ -6,18 +6,11 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.glebworx.pomodoro.item.TaskItem;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Exclude;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 import java.util.stream.IntStream;
 
 import static com.glebworx.pomodoro.util.manager.DateTimeManager.POMODORO_LENGTH;

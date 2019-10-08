@@ -5,10 +5,12 @@ import android.os.Bundle;
 import java.util.Date;
 
 public interface IAddProjectFragmentPresenter {
+
     void init(Bundle arguments);
-    void updateProjectName(String name);
-    void updateColorTag(int checkedId);
-    void updateDueDate();
-    void changeDueDate(int year, int monthOfYear, int dayOfMonth);
+    void editProjectName(String name);
+    void selectColorTag(int checkedId);
+    void editDueDate();
+    void selectDueDate(int year, int monthOfYear, int dayOfMonth);
     void saveProject();
+
 }

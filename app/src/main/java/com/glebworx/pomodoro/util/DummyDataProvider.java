@@ -1,15 +1,13 @@
 package com.glebworx.pomodoro.util;
 
-import com.glebworx.pomodoro.item.ProjectItem;
-import com.glebworx.pomodoro.item.TaskItem;
+import com.glebworx.pomodoro.ui.main.fragment.projects.ProjectItem;
+import com.glebworx.pomodoro.ui.main.fragment.view_project.TaskItem;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_RED_HEX;
 

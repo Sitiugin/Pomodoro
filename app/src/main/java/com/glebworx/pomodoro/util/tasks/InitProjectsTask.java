@@ -1,29 +1,21 @@
 package com.glebworx.pomodoro.util.tasks;
 
 import android.os.AsyncTask;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import com.glebworx.pomodoro.item.ProjectItem;
+import com.glebworx.pomodoro.ui.main.fragment.projects.ProjectItem;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.model.Document;
 import com.mikepenz.fastadapter.FastAdapter;
-import com.mikepenz.fastadapter.IAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.adapters.ItemFilter;
 import com.mikepenz.fastadapter.items.AbstractItem;
-import com.mikepenz.fastadapter.listeners.OnClickListener;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
-import java.util.OptionalInt;
 import java.util.stream.IntStream;
-
-import javax.annotation.Nullable;
 
 
 public class InitProjectsTask extends AsyncTask<Void, DocumentChange, Void> {

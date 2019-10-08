@@ -1,43 +1,47 @@
-package com.glebworx.pomodoro.item;
+package com.glebworx.pomodoro.ui.main.fragment.projects;
+
 
 import android.content.Context;
-import android.text.format.DateUtils;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.glebworx.pomodoro.R;
-import com.glebworx.pomodoro.model.TaskModel;
-import com.glebworx.pomodoro.util.constants.Constants;
+import com.glebworx.pomodoro.model.ProjectModel;
+import com.glebworx.pomodoro.util.manager.ColorManager;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.fastadapter_extensions.swipe.ISwipeable;
+import com.triggertrap.seekarc.SeekArc;
 
-import java.text.SimpleDateFormat;
+import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> implements ISwipeable<TaskItem, TaskItem> {
+
+public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolder> implements ISwipeable<ProjectItem, ProjectItem> {
 
 
     //                                                                                    ATTRIBUTES
 
+    private static NumberFormat numberFormat = NumberFormat.getPercentInstance(Locale.getDefault());
     private static Date currentDate = new Date();
 
-    private TaskModel model;
+    private ProjectModel model;
 
 
     //                                                                                  CONSTRUCTORS
 
-    public TaskItem(@NonNull TaskModel model) {
+    public ProjectItem(@NonNull ProjectModel model) {
         this.model = model;
     }
 
@@ -52,12 +56,12 @@ public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> implem
 
     @Override
     public int getType() {
-        return R.id.item_task;
+        return R.id.item_project;
     }
 
     @Override
     public int getLayoutRes() {
-        return R.layout.item_task;
+        return R.layout.item_project;
     }
 
     @Override
@@ -66,19 +70,36 @@ public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> implem
     }
 
     @Override
-    public TaskItem withIsSwipeable(boolean swipeable) {
+    public ProjectItem withIsSwipeable(boolean swipeable) {
         return this;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ProjectItem)) return false;
+        if (!super.equals(o)) return false;
+        ProjectItem that = (ProjectItem) o;
+        return model.equals(that.model);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), model);
+    }
 
     //                                                                                       HELPERS
 
-    public @Nonnull TaskModel getModel() {
+    public @Nonnull ProjectModel getModel() {
         return this.model;
     }
 
-    public @Nonnull String getTaskName() {
-        return this.model.getName();
+    public @NonNull String getProjectName() {
+        return model.getName();
+    }
+
+    public @Nullable String getColorTag() {
+        return model.getColorTag();
     }
 
     public @Nullable String getDueDateString(Context context) {
@@ -88,11 +109,12 @@ public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> implem
         return DateTimeManager.getDueDateString(context, model.getDueDate(), currentDate);
     }
 
-    public @NonNull String getPomodoroRatio(Context context) {
-        return context.getString(
-                R.string.core_ratio,
-                String.valueOf(model.getPomodorosCompleted()),
-                String.valueOf(model.getPomodorosAllocated()));
+    public double getProgressRatio() {
+        return model.getProgressRatio();
+    }
+
+    public @NonNull String getProgressString(double progress) {
+        return numberFormat.format(progress);
     }
 
     public boolean isOverdue() {
@@ -102,39 +124,49 @@ public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> implem
 
     //                                                                                   VIEW HOLDER
 
-    protected static class ViewHolder extends FastAdapter.ViewHolder<TaskItem> {
+    protected static class ViewHolder extends FastAdapter.ViewHolder<ProjectItem> {
 
         private Context context;
+        private Drawable colorTagDrawable;
         private AppCompatTextView titleTextView;
         private AppCompatTextView dueDateTextView;
-        private AppCompatTextView pomodoroTextView;
+        private SeekArc progressSeekArc;
+        private AppCompatTextView progressTextView;
 
         ViewHolder(View view) {
             super(view);
             this.context = view.getContext();
+            colorTagDrawable = ((LayerDrawable) view.findViewById(R.id.view_color_tag).getBackground())
+                    .findDrawableByLayerId(R.id.shape_color_tag);
             titleTextView = view.findViewById(R.id.text_view_title);
             dueDateTextView = view.findViewById(R.id.text_view_due_date);
-            pomodoroTextView = view.findViewById(R.id.text_view_pomodoros);
+            progressSeekArc = view.findViewById(R.id.seek_arc_progress);
+            progressTextView = view.findViewById(R.id.text_view_progress);
         }
 
         @Override
-        public void bindView(@NonNull TaskItem item, @NonNull List<Object> payloads) {
-            titleTextView.setText(item.getTaskName());
+        public void bindView(@NonNull ProjectItem item, @NonNull List<Object> payloads) {
+            colorTagDrawable.setTint(ColorManager.getColor(context, item.getColorTag()));
+            titleTextView.setText(item.getProjectName());
             dueDateTextView.setText(item.getDueDateString(context));
             if (item.isOverdue()) {
                 dueDateTextView.setTextColor(context.getColor(R.color.colorError));
             } else {
                 dueDateTextView.setTextColor(context.getColor(android.R.color.darker_gray));
             }
-            pomodoroTextView.setText(item.getPomodoroRatio(context));
+            double progressRatio = item.getProgressRatio();
+            progressSeekArc.setProgress((int) Math.round(progressRatio * 100));
+            progressTextView.setText(item.getProgressString(progressRatio));
         }
 
         @Override
-        public void unbindView(@NonNull TaskItem item) {
+        public void unbindView(@NonNull ProjectItem item) {
+            colorTagDrawable.setTint(ColorManager.getColor(context, null));
             titleTextView.setText(null);
             dueDateTextView.setText(null);
             dueDateTextView.setTextColor(context.getColor(android.R.color.darker_gray));
-            pomodoroTextView.setText(null);
+            progressSeekArc.setProgress(0);
+            progressTextView.setText(null);
         }
 
     }

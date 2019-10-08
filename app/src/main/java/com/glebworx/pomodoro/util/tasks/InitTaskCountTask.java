@@ -2,13 +2,9 @@ package com.glebworx.pomodoro.util.tasks;
 
 import android.os.AsyncTask;
 
-import androidx.annotation.NonNull;
-
-import com.glebworx.pomodoro.item.ProjectHeaderItem;
-import com.glebworx.pomodoro.item.TaskItem;
+import com.glebworx.pomodoro.ui.main.fragment.projects.ProjectHeaderItem;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mikepenz.fastadapter.FastAdapter;
@@ -19,7 +15,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.IntStream;
 
 
 public class InitTaskCountTask extends AsyncTask<Void, Void, int[]> {

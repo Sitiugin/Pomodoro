@@ -23,9 +23,7 @@ import android.widget.Toast;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.api.TaskApi;
-import com.glebworx.pomodoro.item.AddItem;
-import com.glebworx.pomodoro.item.TaskItem;
-import com.glebworx.pomodoro.item.ViewProjectHeaderItem;
+import com.glebworx.pomodoro.ui.main.fragment.AddItem;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
@@ -61,8 +59,6 @@ public class ViewProjectFragment extends Fragment {
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
     private static final String ARG_PROJECT_MODEL = "project_model";
-
-    //private static NumberFormat numberFormat = NumberFormat.getPercentInstance(Locale.getDefault());
 
     private ProjectModel projectModel;
     private FastAdapter<AbstractItem> fastAdapter;

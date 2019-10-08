@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
 
-import com.glebworx.pomodoro.item.TaskItem;
+import com.glebworx.pomodoro.ui.main.fragment.view_project.TaskItem;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.QuerySnapshot;

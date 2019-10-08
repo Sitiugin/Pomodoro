@@ -90,29 +90,29 @@ class AddProjectFragmentPresenter implements IAddProjectFragmentPresenter {
     }
 
     @Override
-    public void updateProjectName(String name) {
+    public void editProjectName(String name) {
         if (!isEditing) {
             projectModel.setName(name);
-            presenterListener.onProjectNameUpdated();
+            presenterListener.onProjectNameChanged();
         }
     }
 
     @Override
-    public void updateColorTag(int checkedId) {
+    public void selectColorTag(int checkedId) {
         projectModel.setColorTag(colorTagMap.get(checkedId));
     }
 
     @Override
-    public void updateDueDate() {
-        presenterListener.onUpdateDueDate(projectModel.getDueDate());
+    public void editDueDate() {
+        presenterListener.onEditDueDate(projectModel.getDueDate());
     }
 
     @Override
-    public void changeDueDate(int year, int monthOfYear, int dayOfMonth) {
+    public void selectDueDate(int year, int monthOfYear, int dayOfMonth) {
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.set(year, monthOfYear, dayOfMonth, 0, 0, 0);
         projectModel.setDueDate(calendar.getTime());
-        presenterListener.onChangeDueDate(DateTimeManager.getDateString(projectModel.getDueDate(), new Date()));
+        presenterListener.onSelectDueDate(DateTimeManager.getDateString(projectModel.getDueDate(), new Date()));
     }
 
     @Override
@@ -138,9 +138,9 @@ class AddProjectFragmentPresenter implements IAddProjectFragmentPresenter {
                         String name,
                         String colorTag,
                         String dueDate);
-        void onProjectNameUpdated();
-        void onUpdateDueDate(Date dueDate);
-        void onChangeDueDate(String dateString);
+        void onProjectNameChanged();
+        void onEditDueDate(Date dueDate);
+        void onSelectDueDate(String dateString);
         void onSaveProjectStart();
         void onSaveProjectSuccess(boolean isEditing);
         void onSaveProjectFailure(boolean isEditing);

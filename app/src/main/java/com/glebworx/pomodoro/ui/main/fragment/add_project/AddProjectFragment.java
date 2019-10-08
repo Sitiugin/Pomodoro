@@ -170,19 +170,19 @@ public class AddProjectFragment
     }
 
     @Override
-    public void onProjectNameUpdated() {
+    public void onProjectNameChanged() {
         KeyboardManager.hideKeyboard(activity);
         projectNameEditText.clearFocus();
     }
 
     @Override
-    public void onUpdateDueDate(Date dueDate) {
+    public void onEditDueDate(Date dueDate) {
         updateName();
         showDatePickerDialog(dueDate);
     }
 
     @Override
-    public void onChangeDueDate(String dateString) {
+    public void onSelectDueDate(String dateString) {
         dueDateButton.setText(dateString);
     }
 
@@ -231,7 +231,7 @@ public class AddProjectFragment
     private void initColorChips() {
         colorTagChipGroup.setOnCheckedChangeListener((group, checkedId) -> {
             updateName();
-            presenter.updateColorTag(group.getCheckedChipId());
+            presenter.selectColorTag(group.getCheckedChipId());
         });
     }
 
@@ -295,7 +295,7 @@ public class AddProjectFragment
         View.OnClickListener onClickListener = view -> {
             switch (view.getId()) {
                 case R.id.button_due_date:
-                    presenter.updateDueDate();
+                    presenter.editDueDate();
                     break;
                 case R.id.button_save:
                     updateName();
@@ -329,7 +329,7 @@ public class AddProjectFragment
 
     private DatePicker.OnDateChangedListener getDateChangeListener(AlertDialog alertDialog) {
         return (view, year, monthOfYear, dayOfMonth) -> {
-            presenter.changeDueDate(year, monthOfYear, dayOfMonth);
+            presenter.selectDueDate(year, monthOfYear, dayOfMonth);
             alertDialog.dismiss();
         };
     }
@@ -353,7 +353,7 @@ public class AddProjectFragment
     }
 
     private void updateName() {
-        presenter.updateProjectName(Objects.requireNonNull(projectNameEditText.getText()).toString().trim());
+        presenter.editProjectName(Objects.requireNonNull(projectNameEditText.getText()).toString().trim());
     }
 
     public interface OnAddProjectFragmentInteractionListener {
