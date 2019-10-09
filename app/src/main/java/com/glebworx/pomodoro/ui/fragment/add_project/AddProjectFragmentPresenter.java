@@ -38,10 +38,16 @@ import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_YELLOW_H
 
 class AddProjectFragmentPresenter implements IAddProjectFragmentPresenter {
 
+
+    //                                                                                    ATTRIBUTES
+
+    private IAddProjectFragment presenterListener;
     private ProjectModel projectModel;
     private boolean isEditing;
-    private IAddProjectFragment presenterListener;
     private static SparseArray<String> colorTagMap;
+
+
+    //                                                                                  CONSTRUCTORS
 
     AddProjectFragmentPresenter(@NonNull IAddProjectFragment presenterListener,
                                 @Nullable Bundle arguments) {
@@ -51,32 +57,16 @@ class AddProjectFragmentPresenter implements IAddProjectFragmentPresenter {
         init(arguments);
     }
 
-    private void initColorTagMap() {
-        colorTagMap = new SparseArray<>();
-        colorTagMap.put(View.NO_ID, null);
-        colorTagMap.put(R.id.chip_red, COLOR_RED_HEX);
-        colorTagMap.put(R.id.chip_pink, COLOR_PINK_HEX);
-        colorTagMap.put(R.id.chip_purple, COLOR_PURPLE_HEX);
-        colorTagMap.put(R.id.chip_deep_purple, COLOR_DEEP_PURPLE_HEX);
-        colorTagMap.put(R.id.chip_indigo, COLOR_INDIGO_HEX);
-        colorTagMap.put(R.id.chip_blue, COLOR_BLUE_HEX);
-        colorTagMap.put(R.id.chip_light_blue, COLOR_LIGHT_BLUE_HEX);
-        colorTagMap.put(R.id.chip_cyan, COLOR_CYAN_HEX);
-        colorTagMap.put(R.id.chip_teal, COLOR_TEAL_HEX);
-        colorTagMap.put(R.id.chip_green, COLOR_GREEN_HEX);
-        colorTagMap.put(R.id.chip_light_green, COLOR_LIGHT_GREEN_HEX);
-        colorTagMap.put(R.id.chip_lime, COLOR_LIME_HEX);
-        colorTagMap.put(R.id.chip_yellow, COLOR_YELLOW_HEX);
-        colorTagMap.put(R.id.chip_amber, COLOR_AMBER_HEX);
-        colorTagMap.put(R.id.chip_orange, COLOR_ORANGE_HEX);
-        colorTagMap.put(R.id.chip_deep_orange, COLOR_DEEP_ORANGE_HEX);
-    }
+
+    //                                                                                IMPLEMENTATION
 
     @Override
     public void init(Bundle arguments) {
+
         if (arguments != null) {
             projectModel = arguments.getParcelable(ARG_PROJECT_MODEL);
         }
+
         if (projectModel == null) {
             isEditing = false;
             projectModel = new ProjectModel();
@@ -84,11 +74,13 @@ class AddProjectFragmentPresenter implements IAddProjectFragmentPresenter {
         } else {
             isEditing = true;
         }
+
         presenterListener.onInitView(
                 isEditing,
                 projectModel.getName(),
                 projectModel.getColorTag(),
                 DateTimeManager.getDateString(projectModel.getDueDate(), new Date()));
+
     }
 
     @Override
@@ -133,6 +125,30 @@ class AddProjectFragmentPresenter implements IAddProjectFragmentPresenter {
                     projectModel.getName() == null
                             || projectModel.getName().isEmpty());
         }
+    }
+
+
+    //                                                                                       HELPERS
+
+    private void initColorTagMap() {
+        colorTagMap = new SparseArray<>();
+        colorTagMap.put(View.NO_ID, null);
+        colorTagMap.put(R.id.chip_red, COLOR_RED_HEX);
+        colorTagMap.put(R.id.chip_pink, COLOR_PINK_HEX);
+        colorTagMap.put(R.id.chip_purple, COLOR_PURPLE_HEX);
+        colorTagMap.put(R.id.chip_deep_purple, COLOR_DEEP_PURPLE_HEX);
+        colorTagMap.put(R.id.chip_indigo, COLOR_INDIGO_HEX);
+        colorTagMap.put(R.id.chip_blue, COLOR_BLUE_HEX);
+        colorTagMap.put(R.id.chip_light_blue, COLOR_LIGHT_BLUE_HEX);
+        colorTagMap.put(R.id.chip_cyan, COLOR_CYAN_HEX);
+        colorTagMap.put(R.id.chip_teal, COLOR_TEAL_HEX);
+        colorTagMap.put(R.id.chip_green, COLOR_GREEN_HEX);
+        colorTagMap.put(R.id.chip_light_green, COLOR_LIGHT_GREEN_HEX);
+        colorTagMap.put(R.id.chip_lime, COLOR_LIME_HEX);
+        colorTagMap.put(R.id.chip_yellow, COLOR_YELLOW_HEX);
+        colorTagMap.put(R.id.chip_amber, COLOR_AMBER_HEX);
+        colorTagMap.put(R.id.chip_orange, COLOR_ORANGE_HEX);
+        colorTagMap.put(R.id.chip_deep_orange, COLOR_DEEP_ORANGE_HEX);
     }
 
 }

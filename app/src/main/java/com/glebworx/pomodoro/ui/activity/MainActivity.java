@@ -151,9 +151,9 @@ public class MainActivity
 
     private void initBottomSheet() {
 
-        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+        bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
-            public void onStateChanged(@NonNull View view, int newState) {
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_EXPANDED) {
                     bottomSheetView.expandBottomSheetViews();
                 } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
@@ -162,7 +162,9 @@ public class MainActivity
             }
 
             @Override
-            public void onSlide(@NonNull View view, float v) { }
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
         });
 
         bottomSheetView.setOnClickListener(view -> {

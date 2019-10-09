@@ -24,6 +24,7 @@ import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
+import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragment;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.projects.item.AddProjectItem;
 import com.glebworx.pomodoro.ui.fragment.projects.item.ProjectHeaderItem;
@@ -54,9 +55,8 @@ import butterknife.Unbinder;
 import static android.widget.Toast.LENGTH_LONG;
 import static com.glebworx.pomodoro.util.constants.Constants.LENGTH_SNACK_BAR;
 
-// TODO add project when filter is on is wrong
-// TODO overdue projects and tasks must be red
-public class ProjectsFragment extends Fragment {
+
+public class ProjectsFragment extends Fragment implements IProjectsFragment {
 
 
     //                                                                                       BINDING

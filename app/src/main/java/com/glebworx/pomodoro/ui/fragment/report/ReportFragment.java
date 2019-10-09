@@ -11,12 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.glebworx.pomodoro.R;
+import com.glebworx.pomodoro.ui.fragment.report.interfaces.IReportFragment;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
-public class ReportFragment extends Fragment {
+public class ReportFragment extends Fragment implements IReportFragment {
 
     private Unbinder unbinder;
 

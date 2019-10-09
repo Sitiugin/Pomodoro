@@ -31,6 +31,7 @@ import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
+import com.glebworx.pomodoro.ui.fragment.add_task.interfaces.IAddTaskFragment;
 import com.glebworx.pomodoro.ui.fragment.add_task.interfaces.IAddTaskFragmentInteractionListener;
 import com.glebworx.pomodoro.util.constants.Constants;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
@@ -60,7 +61,7 @@ import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_WEEKDAY;
 import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_WEEKEND;
 
 
-public class AddTaskFragment extends Fragment {
+public class AddTaskFragment extends Fragment implements IAddTaskFragment {
 
 
     //                                                                                       BINDING
@@ -79,8 +80,8 @@ public class AddTaskFragment extends Fragment {
 
     //                                                                                     CONSTANTS
 
-    private static final String ARG_PROJECT_MODEL = "project_model";
-    private static final String ARG_TASK_MODEL = "task_model";
+    public static final String ARG_PROJECT_MODEL = "project_model";
+    public static final String ARG_TASK_MODEL = "task_model";
 
     //                                                                                    ATTRIBUTES
 
@@ -202,6 +203,11 @@ public class AddTaskFragment extends Fragment {
     public void onDetach() {
         fragmentListener = null;
         super.onDetach();
+    }
+
+    @Override
+    public void onInitView(boolean isEditing, String taskName, String dueDate, int pomodorosAllocated, String recurrence) {
+        // TODO
     }
 
     private void initEditText(Activity activity) {

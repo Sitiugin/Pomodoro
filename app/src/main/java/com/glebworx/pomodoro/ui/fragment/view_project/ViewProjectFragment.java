@@ -25,6 +25,7 @@ import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
+import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragment;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.AddTaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.TaskItem;
@@ -54,7 +55,7 @@ import static com.glebworx.pomodoro.util.constants.Constants.LENGTH_SNACK_BAR;
 
 
 // TODO add board and calendar view
-public class ViewProjectFragment extends Fragment {
+public class ViewProjectFragment extends Fragment implements IViewProjectFragment {
 
     @BindView(R.id.text_view_title) AppCompatTextView titleTextView;
     @BindView(R.id.text_view_subtitle) AppCompatTextView subtitleTextView;

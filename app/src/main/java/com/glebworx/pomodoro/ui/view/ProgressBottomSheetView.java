@@ -13,6 +13,7 @@ import androidx.transition.TransitionManager;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.ui.view.interfaces.IBottomSheetViewInteractionListener;
+import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetView;
 import com.glebworx.pomodoro.util.PomodoroTimer;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -27,7 +28,9 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import static com.glebworx.pomodoro.util.manager.DateTimeManager.POMODORO_LENGTH;
 
 
-public class ProgressBottomSheetView extends ConstraintLayout implements View.OnClickListener {
+public class ProgressBottomSheetView
+        extends ConstraintLayout
+        implements IProgressBottomSheetView, View.OnClickListener {
 
     @BindView(R.id.progress_bar) MaterialProgressBar progressBar;
     @BindView(R.id.text_view_task) AppCompatTextView taskTextView;
