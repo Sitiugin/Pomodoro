@@ -14,7 +14,7 @@
         tools:replace="android:icon">
 
         <activity
-            android:name=".ui.splash.SplashActivity"
+            android:name=".ui.activity.SplashActivity"
             android:theme="@style/SplashTheme"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
@@ -36,7 +36,7 @@
         </activity>
 
         <activity
-            android:name=".ui.main.activity.MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden"/>
 

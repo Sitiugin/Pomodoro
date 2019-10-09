@@ -9,7 +9,7 @@
     android:padding="@dimen/margin_content"
     android:clipChildren="false"
     android:clipToPadding="false"
-    tools:context=".ui.main.fragment.add_task.AddTaskFragment">
+    tools:context=".ui.fragment.add_task.AddTaskFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/TextStyle.AppBar"

@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    tools:context=".ui.splash.SplashActivity">
+    tools:context=".ui.activity.SplashActivity">
 
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/TextStyle.AppBar"

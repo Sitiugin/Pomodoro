@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    tools:context=".ui.main.activity.MainActivity">
+    tools:context=".ui.activity.MainActivity">
 
     <FrameLayout
         android:id="@+id/container_main"
@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:paddingBottom="@dimen/height_app_bar" />
 
-    <com.glebworx.pomodoro.ui.main.view.ProgressBottomSheetView
+    <com.glebworx.pomodoro.ui.view.ProgressBottomSheetView
         style="@style/ViewStyle.Clickable"
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"

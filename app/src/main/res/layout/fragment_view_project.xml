@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:clipChildren="false"
     android:clipToPadding="false"
-    tools:context=".ui.main.fragment.view_project.ViewProjectFragment">
+    tools:context=".ui.fragment.view_project.ViewProjectFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         style="@style/TransparentAppBarStyle"
