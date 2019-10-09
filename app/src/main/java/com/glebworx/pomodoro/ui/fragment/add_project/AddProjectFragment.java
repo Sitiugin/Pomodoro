@@ -96,7 +96,7 @@ public class AddProjectFragment extends Fragment implements IAddProjectFragment 
     public AddProjectFragment() { }
 
 
-    //                                                                                     LIFECYCLE
+    //                                                                                       FACTORY
 
     public static AddProjectFragment newInstance() {
         return new AddProjectFragment();
@@ -111,11 +111,15 @@ public class AddProjectFragment extends Fragment implements IAddProjectFragment 
     }
 
 
+    //                                                                                     LIFECYCLE
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_add_project, container, false);
+        activity = getActivity();
+        context = getContext();
         constraintSet = new ConstraintSet();
         unbinder = ButterKnife.bind(this, rootView);
         presenter = new AddProjectFragmentPresenter(this, getArguments());
@@ -146,8 +150,6 @@ public class AddProjectFragment extends Fragment implements IAddProjectFragment 
                            String colorTag,
                            String dueDate) {
 
-        activity = getActivity();
-        context = getContext();
         if (activity == null || context == null) {
             fragmentListener.onCloseFragment();
         }

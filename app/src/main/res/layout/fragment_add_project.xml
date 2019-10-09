@@ -193,7 +193,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_content"
-        android:layout_marginEnd="@dimen/margin_content"
         android:gravity="start"
         app:layout_constraintTop_toBottomOf="@+id/text_view_section_due_date" />
 

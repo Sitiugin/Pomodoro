@@ -83,19 +83,15 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
     public static final String ARG_PROJECT_MODEL = "project_model";
     public static final String ARG_TASK_MODEL = "task_model";
 
+
     //                                                                                    ATTRIBUTES
 
-    private static SimpleDateFormat dateFormat =
-            new SimpleDateFormat(Constants.PATTERN_DATE, Locale.getDefault());
     private IAddTaskFragmentInteractionListener fragmentListener;
+    private Activity activity;
+    private Context context;
     private ConstraintSet constraintSet;
-    private ProjectModel projectModel;
-    private TaskModel oldTaskModel;
-    private TaskModel taskModel;
-    private boolean isEditing;
-    private int pomodorosAllocated;
-    private int pomodorosCompleted;
     private Unbinder unbinder;
+    private AddTaskFragmentPresenter presenter;
 
 
     //                                                                                  CONSTRUCTORS
@@ -103,7 +99,7 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
     public AddTaskFragment() { }
 
 
-    //                                                                                     LIFECYCLE
+    //                                                                                       FACTORY
 
     public static AddTaskFragment newInstance(ProjectModel projectModel) {
         AddTaskFragment fragment = new AddTaskFragment();
@@ -123,74 +119,26 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
     }
 
 
+    //                                                                                     LIFECYCLE
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.fragment_add_task, container, false);
-        unbinder = ButterKnife.bind(this, rootView);
-
+        activity = getActivity();
+        context = getContext();
         constraintSet = new ConstraintSet();
-
-        Activity activity = getActivity();
-        Context context = getContext();
-        if (activity == null || context == null) {
-            return rootView;
-        }
-
-        Bundle arguments = getArguments();
-        if (arguments == null) {
-            return rootView;
-        }
-        projectModel = arguments.getParcelable(ARG_PROJECT_MODEL);
-        if (projectModel == null) {
-            projectModel = new ProjectModel();
-            return rootView;
-        }
-        taskModel = arguments.getParcelable(ARG_TASK_MODEL);
-        if (taskModel == null) {
-            taskModel = new TaskModel();
-            isEditing = false;
-        } else {
-            isEditing = true;
-            oldTaskModel = new TaskModel(taskModel);
-        }
-
-        if (isEditing) {
-            taskNameEditText.setVisibility(View.GONE);
-            taskNameSectionTextView.setVisibility(View.GONE);
-            titleTextView.setText(context.getString(R.string.core_edit_something, taskModel.getName()));
-            dueDateButton.setText(DateTimeManager.getDateString(taskModel.getDueDate(), new Date()));
-            allocatedTimeSpinner.setSelection(taskModel.getPomodorosAllocated() - 1, true);
-            selectRecurrence(taskModel.getRecurrence());
-            saveButton.setText(R.string.add_task_title_update_task);
-            pomodorosAllocated = taskModel.getPomodorosAllocated();
-            pomodorosCompleted = taskModel.getPomodorosCompleted();
-        } else {
-            taskModel.setDueDate(new Date());
-            dueDateButton.setText(DateTimeManager.getDateString(taskModel.getDueDate(), new Date()));
-            taskModel.setPomodorosAllocated(1);
-            initEditText(activity);
-        }
-
-        initSpinners(activity);
-        initClickEvents(activity);
+        unbinder = ButterKnife.bind(this, rootView);
+        presenter = new AddTaskFragmentPresenter(this, getArguments());
 
         return rootView;
-
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        dueDateButton.setText(DateTimeManager.getDateString(taskModel.getDueDate(), new Date()));
     }
 
     @Override
@@ -205,15 +153,89 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
         super.onDetach();
     }
 
+
+    //                                                                                IMPLEMENTATION
+
     @Override
-    public void onInitView(boolean isEditing, String taskName, String dueDate, int pomodorosAllocated, String recurrence) {
-        // TODO
+    public void onInitView(boolean isEditing,
+                           String taskName,
+                           String dueDate,
+                           int pomodorosAllocated,
+                           String recurrence) {
+
+        if (isEditing) {
+            taskNameEditText.setVisibility(View.GONE);
+            taskNameSectionTextView.setVisibility(View.GONE);
+            titleTextView.setText(context.getString(R.string.core_edit_something, taskName));
+            dueDateButton.setText(dueDate);
+            allocatedTimeSpinner.setSelection(pomodorosAllocated - 1, true);
+            selectRecurrence(recurrence);
+            saveButton.setText(R.string.add_task_title_update_task);
+        } else {
+            dueDateButton.setText(dueDate);
+            initEditText();
+        }
+
+        initSpinners();
+        initClickEvents();
+
     }
 
-    private void initEditText(Activity activity) {
+    @Override
+    public void onTaskNameChanged() {
+        KeyboardManager.hideKeyboard(activity);
+        taskNameEditText.clearFocus();
+    }
+
+    @Override
+    public void onEditDueDate(Date dueDate) {
+        updateName();
+        showDatePickerDialog(dueDate);
+    }
+
+    @Override
+    public void onSelectDueDate(String dateString) {
+        dueDateButton.setText(dateString);
+    }
+
+    @Override
+    public void onAddTaskStart() {
+        startSaveStartedAnimation();
+    }
+
+    @Override
+    public void onAddTaskSuccess(boolean isEditing) {
+        Toast.makeText(
+                context,
+                isEditing ? R.string.add_task_toast_update_success : R.string.add_task_toast_add_success,
+                Toast.LENGTH_SHORT).show();
+        fragmentListener.onCloseFragment();
+    }
+
+    @Override
+    public void onAddTaskFailure(boolean isEditing) {
+        Toast.makeText(
+                context,
+                isEditing ? R.string.add_task_toast_update_failed : R.string.add_task_toast_add_failed,
+                Toast.LENGTH_LONG).show();
+        startSaveCanceledAnimation();
+    }
+
+    @Override
+    public void onTaskValidationFailed(boolean isEmpty) {
+        Toast.makeText(
+                context,
+                isEmpty ? R.string.add_task_err_name_empty : R.string.add_task_err_name_invalid,
+                Toast.LENGTH_LONG).show();
+    }
+
+
+    //                                                                                       HELPERS
+
+    private void initEditText() {
         taskNameEditText.setOnEditorActionListener((textView, actionId, keyEvent) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                clearEditTextFocus(activity);
+                updateName();
             }
             return false;
         });
@@ -221,11 +243,11 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
         KeyboardManager.showKeyboard(activity, taskNameEditText);
     }
 
-    private void initSpinners(Activity activity) {
+    private void initSpinners() {
         allocatedTimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                taskModel.setPomodorosAllocated(position + 1);
+                presenter.selectPomodorosAllocated(position);
             }
 
             @Override
@@ -233,7 +255,7 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
         });
         allocatedTimeSpinner.setOnTouchListener((view, motionEvent) -> {
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                clearEditTextFocus(activity);
+                updateName();
                 return true;
             } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                 view.performClick();
@@ -244,41 +266,7 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
         recurrenceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        taskModel.setRecurrence(null);
-                        break;
-                    case 1:
-                        taskModel.setRecurrence(RECURRENCE_EVERY_DAY);
-                        break;
-                    case 2:
-                        taskModel.setRecurrence(RECURRENCE_EVERY_TWO_DAYS);
-                        break;
-                    case 3:
-                        taskModel.setRecurrence(RECURRENCE_EVERY_THREE_DAYS);
-                        break;
-                    case 4:
-                        taskModel.setRecurrence(RECURRENCE_EVERY_FOUR_DAYS);
-                        break;
-                    case 5:
-                        taskModel.setRecurrence(RECURRENCE_EVERY_FIVE_DAYS);
-                        break;
-                    case 6:
-                        taskModel.setRecurrence(RECURRENCE_EVERY_SIX_DAYS);
-                        break;
-                    case 7:
-                        taskModel.setRecurrence(RECURRENCE_EVERY_WEEKLY);
-                        break;
-                    case 8:
-                        taskModel.setRecurrence(RECURRENCE_WEEKDAY);
-                        break;
-                    case 9:
-                        taskModel.setRecurrence(RECURRENCE_WEEKEND);
-                        break;
-                    case 10:
-                        taskModel.setRecurrence(RECURRENCE_MONTHLY);
-                        break;
-                }
+                presenter.selectRecurrence(position);
             }
 
             @Override
@@ -287,7 +275,7 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
         });
         recurrenceSpinner.setOnTouchListener((view, motionEvent) -> {
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                clearEditTextFocus(activity);
+                updateName();
                 return true;
             } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                 view.performClick();
@@ -335,30 +323,18 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
         }
     }
 
-    private void initClickEvents(Activity activity) {
+    private void initClickEvents() {
         View.OnClickListener onClickListener = view -> {
             switch (view.getId()) {
                 case R.id.button_due_date:
-                    clearEditTextFocus(activity);
-                    showDatePickerDialog(activity);
+                    presenter.editDueDate();
                     break;
                 case R.id.button_save:
-                    clearEditTextFocus(activity);
-                    Context context = getContext();
-                    if (!validateInput(context)) {
-                        break;
-                    }
-                    if (taskModel.isValid()) {
-                        saveTask(context);
-                    } else if (context != null) {
-                        Toast.makeText(
-                                context,
-                                R.string.add_task_err_name_invalid,
-                                Toast.LENGTH_LONG).show();
-                    }
+                    updateName();
+                    presenter.addTask();
                     break;
                 case R.id.button_close:
-                    clearEditTextFocus(activity);
+                    KeyboardManager.hideKeyboard(activity);
                     fragmentListener.onCloseFragment();
                     break;
             }
@@ -368,22 +344,11 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
         closeButton.setOnClickListener(onClickListener);
     }
 
-    private boolean validateInput(Context context) {
-        if (isEditing) {
-            return true;
-        }
-        if (Objects.requireNonNull(taskNameEditText.getText()).toString().trim().isEmpty()) {
-            Toast.makeText(context, R.string.add_task_err_name_empty, Toast.LENGTH_LONG).show();
-            return false;
-        }
-        return true;
-    }
-
-    private void showDatePickerDialog(Activity activity) {
+    private void showDatePickerDialog(Date dueDate) {
         AlertDialog alertDialog = DialogManager.showDialog(activity, R.id.container_main, R.layout.dialog_date_picker);
         DatePicker datePicker = alertDialog.findViewById(R.id.date_picker);
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        calendar.setTime(taskModel.getDueDate());
+        calendar.setTime(dueDate);
         if (datePicker != null) {
             datePicker.setMinDate(System.currentTimeMillis() - 1000);
             datePicker.init(
@@ -396,40 +361,9 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
 
     private DatePicker.OnDateChangedListener getDateChangeListener(AlertDialog alertDialog) {
         return (view, year, monthOfYear, dayOfMonth) -> {
-            Calendar calendar = Calendar.getInstance(Locale.getDefault());
-            calendar.set(year, monthOfYear, dayOfMonth, 0, 0, 0);
-            taskModel.setDueDate(calendar.getTime());
-            dueDateButton.setText(DateTimeManager.getDateString(taskModel.getDueDate(), new Date()));
+            presenter.selectDueDate(year, monthOfYear, dayOfMonth);
             alertDialog.dismiss();
         };
-    }
-
-    private void saveTask(Context context) {
-        startSaveStartedAnimation();
-        if (isEditing) {
-            projectModel.setTask(oldTaskModel, taskModel);
-        } else {
-            projectModel.addTask(taskModel);
-        }
-        TaskApi.addTask(projectModel, taskModel, task -> {
-            if (context == null) {
-                startSaveCanceledAnimation();
-                return;
-            }
-            if (task.isSuccessful()) {
-                Toast.makeText(
-                        context,
-                        isEditing ? R.string.add_task_toast_update_success : R.string.add_task_toast_add_success,
-                        Toast.LENGTH_SHORT).show();
-                fragmentListener.onCloseFragment();
-            } else {
-                Toast.makeText(
-                        context,
-                        isEditing ? R.string.add_task_toast_update_failed : R.string.add_task_toast_add_failed,
-                        Toast.LENGTH_LONG).show();
-                startSaveCanceledAnimation();
-            }
-        });
     }
 
     private void startSaveStartedAnimation() {
@@ -450,12 +384,8 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
         constraintSet.applyTo(addTaskLayout);
     }
 
-    private void clearEditTextFocus(Activity activity) {
-        if (!isEditing) {
-            taskModel.setName(Objects.requireNonNull(taskNameEditText.getText()).toString().trim());
-            KeyboardManager.hideKeyboard(activity);
-            taskNameEditText.clearFocus();
-        }
+    private void updateName() {
+        presenter.editTaskName(Objects.requireNonNull(taskNameEditText.getText()).toString().trim());
     }
 
 }

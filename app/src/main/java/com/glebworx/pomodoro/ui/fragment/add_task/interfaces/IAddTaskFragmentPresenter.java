@@ -8,8 +8,8 @@ public interface IAddTaskFragmentPresenter {
     void editTaskName(String name);
     void editDueDate();
     void selectDueDate(int year, int monthOfYear, int dayOfMonth);
-    void selectPomodorosAllocated();
-    void selectRecurrence();
+    void selectPomodorosAllocated(int position);
+    void selectRecurrence(int position);
     void addTask();
 
 }
