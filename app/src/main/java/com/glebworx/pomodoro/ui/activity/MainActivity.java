@@ -10,11 +10,18 @@ import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.ui.fragment.add_project.AddProjectFragment;
+import com.glebworx.pomodoro.ui.fragment.add_project.interfaces.IAddProjectFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.add_task.AddTaskFragment;
+import com.glebworx.pomodoro.ui.fragment.add_task.interfaces.IAddTaskFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.projects.ProjectsFragment;
+import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.report.ReportFragment;
+import com.glebworx.pomodoro.ui.fragment.report.interfaces.IReportFragmentInteractionListener;
+import com.glebworx.pomodoro.ui.fragment.settings.interfaces.ISettingsFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.view_project.ViewProjectFragment;
+import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.view.ProgressBottomSheetView;
+import com.glebworx.pomodoro.ui.view.interfaces.IBottomSheetViewInteractionListener;
 import com.glebworx.pomodoro.util.manager.TransitionFragmentManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
@@ -23,14 +30,16 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
-// TODO don't forget to unbind
 public class MainActivity
         extends AppCompatActivity
-        implements ProjectsFragment.OnProjectFragmentInteractionListener,
-                    AddProjectFragment.OnAddProjectFragmentInteractionListener,
-                    ViewProjectFragment.OnViewProjectFragmentInteractionListener,
-                    AddTaskFragment.OnAddTaskFragmentInteractionListener,
-                    ProgressBottomSheetView.OnBottomSheetInteractionListener {
+        implements
+            IProjectsFragmentInteractionListener,
+            IAddProjectFragmentInteractionListener,
+            IViewProjectFragmentInteractionListener,
+            IAddTaskFragmentInteractionListener,
+            IReportFragmentInteractionListener,
+            ISettingsFragmentInteractionListener,
+            IBottomSheetViewInteractionListener {
 
 
     //                                                                                       BINDING

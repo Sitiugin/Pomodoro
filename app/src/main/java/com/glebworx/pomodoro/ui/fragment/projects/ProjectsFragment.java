@@ -24,6 +24,10 @@ import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
+import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragmentInteractionListener;
+import com.glebworx.pomodoro.ui.fragment.projects.item.AddProjectItem;
+import com.glebworx.pomodoro.ui.fragment.projects.item.ProjectHeaderItem;
+import com.glebworx.pomodoro.ui.fragment.projects.item.ProjectItem;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
 import com.glebworx.pomodoro.util.tasks.InitProjectsTask;
@@ -71,7 +75,7 @@ public class ProjectsFragment extends Fragment {
     private UndoHelper<AbstractItem> undoHelper;
     private EventListener<QuerySnapshot> taskCountEventListener;
     private EventListener<QuerySnapshot> projectsEventListener;
-    private OnProjectFragmentInteractionListener fragmentListener;
+    private IProjectsFragmentInteractionListener fragmentListener;
     private InitTaskCountTask initTaskCountTask;
     private InitProjectsTask initProjectsTask;
     private Unbinder unbinder;
@@ -160,7 +164,7 @@ public class ProjectsFragment extends Fragment {
             initProjectsTask.execute();
         };
 
-        fragmentListener = (OnProjectFragmentInteractionListener) context;
+        fragmentListener = (IProjectsFragmentInteractionListener) context;
 
     }
 
@@ -341,13 +345,6 @@ public class ProjectsFragment extends Fragment {
                     break;
             }
         });*/
-    }
-
-    public interface OnProjectFragmentInteractionListener {
-        void onAddProject();
-        void onViewProject(ProjectModel projectModel);
-        void onViewReport();
-        void onEditProject(ProjectModel projectModel);
     }
 
 }

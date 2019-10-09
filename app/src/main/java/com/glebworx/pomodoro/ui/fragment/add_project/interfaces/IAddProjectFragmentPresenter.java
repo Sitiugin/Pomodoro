@@ -1,4 +1,4 @@
-package com.glebworx.pomodoro.ui.fragment.add_project;
+package com.glebworx.pomodoro.ui.fragment.add_project.interfaces;
 
 import android.os.Bundle;
 

@@ -10,6 +10,8 @@ import androidx.annotation.Nullable;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.model.ProjectModel;
+import com.glebworx.pomodoro.ui.fragment.add_project.interfaces.IAddProjectFragment;
+import com.glebworx.pomodoro.ui.fragment.add_project.interfaces.IAddProjectFragmentPresenter;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 
 import java.util.Calendar;
@@ -38,10 +40,10 @@ class AddProjectFragmentPresenter implements IAddProjectFragmentPresenter {
 
     private ProjectModel projectModel;
     private boolean isEditing;
-    private PresenterListener presenterListener;
+    private IAddProjectFragment presenterListener;
     private static SparseArray<String> colorTagMap;
 
-    AddProjectFragmentPresenter(@NonNull PresenterListener presenterListener,
+    AddProjectFragmentPresenter(@NonNull IAddProjectFragment presenterListener,
                                 @Nullable Bundle arguments) {
 
         this.presenterListener = presenterListener;
@@ -131,20 +133,6 @@ class AddProjectFragmentPresenter implements IAddProjectFragmentPresenter {
                     projectModel.getName() == null
                             || projectModel.getName().isEmpty());
         }
-    }
-
-    public interface PresenterListener {
-        void onInitView(boolean isEditing,
-                        String name,
-                        String colorTag,
-                        String dueDate);
-        void onProjectNameChanged();
-        void onEditDueDate(Date dueDate);
-        void onSelectDueDate(String dateString);
-        void onSaveProjectStart();
-        void onSaveProjectSuccess(boolean isEditing);
-        void onSaveProjectFailure(boolean isEditing);
-        void onProjectValidationFailed(boolean isEmpty);
     }
 
 }

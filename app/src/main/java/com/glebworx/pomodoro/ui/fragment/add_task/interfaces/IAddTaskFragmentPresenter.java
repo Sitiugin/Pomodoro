@@ -1,4 +1,4 @@
-package com.glebworx.pomodoro.ui.fragment.add_task;
+package com.glebworx.pomodoro.ui.fragment.add_task.interfaces;
 
 import android.os.Bundle;
 

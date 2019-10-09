@@ -31,6 +31,7 @@ import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
+import com.glebworx.pomodoro.ui.fragment.add_task.interfaces.IAddTaskFragmentInteractionListener;
 import com.glebworx.pomodoro.util.constants.Constants;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.DialogManager;
@@ -85,7 +86,7 @@ public class AddTaskFragment extends Fragment {
 
     private static SimpleDateFormat dateFormat =
             new SimpleDateFormat(Constants.PATTERN_DATE, Locale.getDefault());
-    private OnAddTaskFragmentInteractionListener fragmentListener;
+    private IAddTaskFragmentInteractionListener fragmentListener;
     private ConstraintSet constraintSet;
     private ProjectModel projectModel;
     private TaskModel oldTaskModel;
@@ -194,7 +195,7 @@ public class AddTaskFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        fragmentListener = (OnAddTaskFragmentInteractionListener) context;
+        fragmentListener = (IAddTaskFragmentInteractionListener) context;
     }
 
     @Override
@@ -449,10 +450,6 @@ public class AddTaskFragment extends Fragment {
             KeyboardManager.hideKeyboard(activity);
             taskNameEditText.clearFocus();
         }
-    }
-
-    public interface OnAddTaskFragmentInteractionListener {
-        void onCloseFragment();
     }
 
 }

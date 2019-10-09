@@ -26,6 +26,8 @@ import android.widget.Toast;
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.ProjectModel;
+import com.glebworx.pomodoro.ui.fragment.add_project.interfaces.IAddProjectFragment;
+import com.glebworx.pomodoro.ui.fragment.add_project.interfaces.IAddProjectFragmentInteractionListener;
 import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.KeyboardManager;
 import com.google.android.material.chip.ChipGroup;
@@ -58,9 +60,7 @@ import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_TEAL_HEX
 import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_YELLOW_HEX;
 
 
-public class AddProjectFragment
-        extends Fragment
-        implements AddProjectFragmentPresenter.PresenterListener {
+public class AddProjectFragment extends Fragment implements IAddProjectFragment {
 
 
     //                                                                                       BINDING
@@ -83,7 +83,7 @@ public class AddProjectFragment
 
     //                                                                                    ATTRIBUTES
 
-    private OnAddProjectFragmentInteractionListener fragmentListener;
+    private IAddProjectFragmentInteractionListener fragmentListener;
     private Activity activity;
     private Context context;
     private ConstraintSet constraintSet;
@@ -131,7 +131,7 @@ public class AddProjectFragment
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        fragmentListener = (OnAddProjectFragmentInteractionListener) context;
+        fragmentListener = (IAddProjectFragmentInteractionListener) context;
     }
 
     @Override
@@ -354,10 +354,6 @@ public class AddProjectFragment
 
     private void updateName() {
         presenter.editProjectName(Objects.requireNonNull(projectNameEditText.getText()).toString().trim());
-    }
-
-    public interface OnAddProjectFragmentInteractionListener {
-        void onCloseFragment();
     }
 
 }

@@ -12,6 +12,7 @@ import androidx.transition.TransitionManager;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.TaskModel;
+import com.glebworx.pomodoro.ui.view.interfaces.IBottomSheetViewInteractionListener;
 import com.glebworx.pomodoro.util.PomodoroTimer;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -47,7 +48,7 @@ public class ProgressBottomSheetView extends ConstraintLayout implements View.On
     public static final int PROGRESS_STATUS_ACTIVE = 2;
 
     private ConstraintSet constraintSet;
-    private OnBottomSheetInteractionListener bottomSheetListener;
+    private IBottomSheetViewInteractionListener bottomSheetListener;
     private PomodoroTimer timer;
     private Unbinder unbinder;
     private int bottomSheetState;
@@ -86,7 +87,7 @@ public class ProgressBottomSheetView extends ConstraintLayout implements View.On
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        bottomSheetListener = (OnBottomSheetInteractionListener) getContext();
+        bottomSheetListener = (IBottomSheetViewInteractionListener) getContext();
         startStopButton.setOnClickListener(this);
         startStopFab.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
@@ -352,11 +353,6 @@ public class ProgressBottomSheetView extends ConstraintLayout implements View.On
         timeRemainingTextView.setText(null);
         seekArc.setProgress(0);
         progressBar.setProgress(0);
-    }
-
-    public interface OnBottomSheetInteractionListener {
-        void onCancelTask(TaskModel taskModel);
-        void onCompleteTask(TaskModel taskModel);
     }
 
 }

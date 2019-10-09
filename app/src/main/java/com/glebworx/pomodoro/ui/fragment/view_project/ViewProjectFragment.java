@@ -25,6 +25,10 @@ import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
+import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentInteractionListener;
+import com.glebworx.pomodoro.ui.fragment.view_project.item.AddTaskItem;
+import com.glebworx.pomodoro.ui.fragment.view_project.item.TaskItem;
+import com.glebworx.pomodoro.ui.fragment.view_project.item.ViewProjectHeaderItem;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
@@ -65,7 +69,7 @@ public class ViewProjectFragment extends Fragment {
     private ItemAdapter<TaskItem> taskAdapter;
     private UndoHelper<AbstractItem> undoHelper;
     private EventListener<QuerySnapshot> eventListener;
-    private OnViewProjectFragmentInteractionListener fragmentListener;
+    private IViewProjectFragmentInteractionListener fragmentListener;
     private InitTasksTask initTasksTask;
     private Unbinder unbinder;
 
@@ -156,7 +160,7 @@ public class ViewProjectFragment extends Fragment {
             initTasksTask = new InitTasksTask(snapshots, taskAdapter);
             initTasksTask.execute();
         };
-        fragmentListener = (OnViewProjectFragmentInteractionListener) context;
+        fragmentListener = (IViewProjectFragmentInteractionListener) context;
     }
 
     @Override
@@ -324,14 +328,6 @@ public class ViewProjectFragment extends Fragment {
         } else {
             subtitleTextView.setTextColor(context.getColor(android.R.color.darker_gray));
         }
-    }
-
-    public interface OnViewProjectFragmentInteractionListener {
-        void onEditProject(ProjectModel projectModel);
-        void onAddTask(ProjectModel projectModel);
-        void onSelectTask(TaskModel taskModel);
-        void onEditTask(ProjectModel projectModel, TaskModel taskModel);
-        void onCloseFragment();
     }
 
 }

@@ -1,7 +1,7 @@
 package com.glebworx.pomodoro.util;
 
-import com.glebworx.pomodoro.ui.fragment.projects.ProjectItem;
-import com.glebworx.pomodoro.ui.fragment.view_project.TaskItem;
+import com.glebworx.pomodoro.ui.fragment.projects.item.ProjectItem;
+import com.glebworx.pomodoro.ui.fragment.view_project.item.TaskItem;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
 

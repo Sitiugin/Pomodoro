@@ -1,4 +1,4 @@
-package com.glebworx.pomodoro.ui.fragment.projects;
+package com.glebworx.pomodoro.ui.fragment.projects.item;
 
 import android.view.View;
 

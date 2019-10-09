@@ -2,7 +2,7 @@ package com.glebworx.pomodoro.util.tasks;
 
 import android.os.AsyncTask;
 
-import com.glebworx.pomodoro.ui.fragment.projects.ProjectHeaderItem;
+import com.glebworx.pomodoro.ui.fragment.projects.item.ProjectHeaderItem;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.google.firebase.firestore.DocumentSnapshot;
