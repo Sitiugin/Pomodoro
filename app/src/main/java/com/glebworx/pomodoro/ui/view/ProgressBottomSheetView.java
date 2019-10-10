@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -12,7 +11,6 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.transition.TransitionManager;
 
 import com.glebworx.pomodoro.R;
-import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.ui.view.interfaces.IBottomSheetViewInteractionListener;
 import com.glebworx.pomodoro.ui.view.interfaces.IBottomSheetViewPresenter;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetView;
@@ -197,7 +195,7 @@ public class ProgressBottomSheetView
             timer.cancel();
             clearViews();
         }
-        bottomSheetListener.onTaskCanceled();
+        bottomSheetListener.onHideBottomSheet();
     }
 
     @Override
@@ -206,7 +204,7 @@ public class ProgressBottomSheetView
             timer.cancel();
             clearViews();
         }
-        bottomSheetListener.onTaskCompleted();
+        bottomSheetListener.onHideBottomSheet();
     }
 
     @Override
