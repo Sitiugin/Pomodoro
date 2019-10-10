@@ -21,6 +21,7 @@ import com.glebworx.pomodoro.ui.fragment.settings.interfaces.ISettingsFragmentIn
 import com.glebworx.pomodoro.ui.fragment.view_project.ViewProjectFragment;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.view.ProgressBottomSheetView;
+import com.glebworx.pomodoro.ui.view.ProgressBottomSheetViewPresenter;
 import com.glebworx.pomodoro.ui.view.interfaces.IBottomSheetViewInteractionListener;
 import com.glebworx.pomodoro.util.manager.TransitionFragmentManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -120,18 +121,18 @@ public class MainActivity
     @Override
     public void onSelectTask(TaskModel taskModel) {
         bottomSheetView.setVisibility(View.VISIBLE);
-        bottomSheetView.setTask(taskModel);
+        bottomSheetView.getPresenter().setTask(taskModel);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
     @Override
-    public void onCancelTask(TaskModel taskModel) {
+    public void onTaskCanceled() {
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         bottomSheetView.setVisibility(View.INVISIBLE);
     }
 
     @Override
-    public void onCompleteTask(TaskModel taskModel) {
+    public void onTaskCompleted() {
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         bottomSheetView.setVisibility(View.INVISIBLE);
     }

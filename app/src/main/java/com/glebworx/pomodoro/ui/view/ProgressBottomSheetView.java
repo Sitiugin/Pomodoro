@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -13,6 +14,7 @@ import androidx.transition.TransitionManager;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.ui.view.interfaces.IBottomSheetViewInteractionListener;
+import com.glebworx.pomodoro.ui.view.interfaces.IBottomSheetViewPresenter;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetView;
 import com.glebworx.pomodoro.util.PomodoroTimer;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
@@ -32,6 +34,9 @@ public class ProgressBottomSheetView
         extends ConstraintLayout
         implements IProgressBottomSheetView, View.OnClickListener {
 
+
+    //                                                                                       BINDING
+
     @BindView(R.id.progress_bar) MaterialProgressBar progressBar;
     @BindView(R.id.text_view_task) AppCompatTextView taskTextView;
     @BindView(R.id.text_view_pomodoro_number) AppCompatTextView pomodoroNumberTextView;
@@ -46,18 +51,19 @@ public class ProgressBottomSheetView
     @BindView(R.id.button_cancel) AppCompatImageButton cancelButton;
     @BindView(R.id.button_complete) AppCompatImageButton completeButton;
 
-    public static final int PROGRESS_STATUS_IDLE = 0;
-    public static final int PROGRESS_STATUS_PAUSED = 1;
-    public static final int PROGRESS_STATUS_ACTIVE = 2;
+
+    //                                                                                    ATTRIBUTES
 
     private ConstraintSet constraintSet;
     private IBottomSheetViewInteractionListener bottomSheetListener;
     private PomodoroTimer timer;
-    private Unbinder unbinder;
     private int bottomSheetState;
-    private int progressStatus;
-    private TaskModel taskModel;
+    private Unbinder unbinder;
+    private ProgressBottomSheetViewPresenter presenter;
     private final Object object = new Object();
+
+
+    //                                                                                  CONSTRUCTORS
 
     public ProgressBottomSheetView(Context context) {
         super(context);
@@ -74,18 +80,19 @@ public class ProgressBottomSheetView
         init(context, attrs, defStyle);
     }
 
-    private void init(Context context, AttributeSet attrs, int defStyle) {
-        inflate(context, R.layout.view_progress_bottom_sheet, this);
-        bottomSheetState = BottomSheetBehavior.STATE_COLLAPSED;
-        constraintSet = new ConstraintSet();
-        initTimer();
-    }
+
+    //                                                                                     LIFECYCLE
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
         unbinder = ButterKnife.bind(this);
     }
+
+    /*@Override
+    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
+        super.onVisibilityChanged(changedView, visibility);
+    }*/
 
     @Override
     protected void onAttachedToWindow() {
@@ -108,45 +115,68 @@ public class ProgressBottomSheetView
         unbinder.unbind();
     }
 
+
+    //                                                                                IMPLEMENTATION
+
+
+    @Override
+    public void onInitView() {
+
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_start_stop:
             case R.id.fab_start_stop_large:
-                if (progressStatus == PROGRESS_STATUS_ACTIVE) {
-                    pauseTask();
-                } else {
-                    startTask();
-                }
+                presenter.handleStartStopClick();
                 break;
             case R.id.button_cancel:
-                cancelTask();
+                presenter.cancelTask();
                 break;
             case R.id.button_complete:
+                presenter.completeTask();
                 break;
         }
     }
 
-    private void startTask() {
+    @Override
+    public void onTaskSet(String name) {
         synchronized (object) {
-            if (progressStatus == PROGRESS_STATUS_IDLE) {
-                timer.cancel();
-                initTimer();
-                timer.start();
-            } else {
-                timer.resume();
-            }
-            progressStatus = PROGRESS_STATUS_ACTIVE;
+            taskTextView.setText(name);
+            statusTextView.setText(R.string.main_text_status_idle);
+            String timeRemainingString = DateTimeManager.formatMMSSString(getContext(), POMODORO_LENGTH * 60);
+            timeRemainingLargeTextView.setText(timeRemainingString);
+            timeRemainingTextView.setText(timeRemainingString);
+        }
+    }
+
+    @Override
+    public void onStartTask() {
+        synchronized (object) {
+            timer.cancel();
+            initTimer();
+            timer.start();
             startStopButton.setImageResource(R.drawable.ic_pause_highlight);
             startStopFab.setImageResource(R.drawable.ic_pause_black);
             statusTextView.setText(R.string.main_text_status_active);
         }
     }
 
-    private void pauseTask() {
+    @Override
+    public void onResumeTask() {
+        synchronized (object) {
+            timer.resume();
+            startStopButton.setImageResource(R.drawable.ic_pause_highlight);
+            startStopFab.setImageResource(R.drawable.ic_pause_black);
+            statusTextView.setText(R.string.main_text_status_active);
+        }
+    }
+
+    @Override
+    public void onPauseTask() {
         synchronized (object) {
             timer.pause();
-            progressStatus = PROGRESS_STATUS_PAUSED;
             startStopButton.setImageResource(R.drawable.ic_play_highlight);
             startStopFab.setImageResource(R.drawable.ic_play_black);
             statusTextView.setText(R.string.main_text_status_paused);
@@ -160,26 +190,26 @@ public class ProgressBottomSheetView
         }
     }
 
-    private void cancelTask() {
+    @Override
+    public void onTaskCanceled() {
         //DialogManager.showDialog(getContext())
         synchronized (object) {
             timer.cancel();
             clearViews();
         }
-        bottomSheetListener.onCancelTask(taskModel);
+        bottomSheetListener.onTaskCanceled();
     }
 
-    public void setTask(TaskModel taskModel) {
+    @Override
+    public void onTaskCompleted() {
         synchronized (object) {
-            this.taskModel = taskModel;
-            taskTextView.setText(taskModel.getName());
-            statusTextView.setText(R.string.main_text_status_idle);
-            String timeRemainingString = DateTimeManager.formatMMSSString(getContext(), POMODORO_LENGTH * 60);
-            timeRemainingLargeTextView.setText(timeRemainingString);
-            timeRemainingTextView.setText(timeRemainingString);
+            timer.cancel();
+            clearViews();
         }
+        bottomSheetListener.onTaskCompleted();
     }
 
+    @Override
     public void expandBottomSheetViews() {
 
         this.bottomSheetState = BottomSheetBehavior.STATE_EXPANDED;
@@ -247,6 +277,7 @@ public class ProgressBottomSheetView
 
     }
 
+    @Override
     public void collapseBottomSheetViews() {
 
         this.bottomSheetState = BottomSheetBehavior.STATE_COLLAPSED;
@@ -303,8 +334,15 @@ public class ProgressBottomSheetView
 
     }
 
-    public int getProgressStatus() {
-        return progressStatus;
+
+    //                                                                                       HELPERS
+
+    private void init(Context context, AttributeSet attrs, int defStyle) {
+        inflate(context, R.layout.view_progress_bottom_sheet, this);
+        bottomSheetState = BottomSheetBehavior.STATE_COLLAPSED;
+        presenter = new ProgressBottomSheetViewPresenter(this);
+        constraintSet = new ConstraintSet();
+        initTimer();
     }
 
     private void initTimer() {
@@ -348,7 +386,6 @@ public class ProgressBottomSheetView
     }
 
     private void clearViews() {
-        progressStatus = PROGRESS_STATUS_IDLE;
         startStopButton.setImageResource(R.drawable.ic_play_highlight);
         startStopFab.setImageResource(R.drawable.ic_play_black);
         statusTextView.setText(R.string.main_text_status_idle);
@@ -356,6 +393,10 @@ public class ProgressBottomSheetView
         timeRemainingTextView.setText(null);
         seekArc.setProgress(0);
         progressBar.setProgress(0);
+    }
+
+    public IBottomSheetViewPresenter getPresenter() {
+        return presenter;
     }
 
 }
