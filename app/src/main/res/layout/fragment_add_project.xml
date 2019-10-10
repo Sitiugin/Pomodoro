@@ -213,7 +213,7 @@
         android:id="@+id/button_save"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_app_bar"
-        android:layout_marginTop="@dimen/margin_content_double"
+        android:layout_marginBottom="@dimen/height_app_bar"
         android:text="@string/add_project_title_add_project"
         android:outlineAmbientShadowColor="@color/colorHighlight"
         android:outlineSpotShadowColor="@color/colorHighlight"

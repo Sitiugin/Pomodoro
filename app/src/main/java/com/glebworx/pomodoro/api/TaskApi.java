@@ -10,6 +10,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
@@ -81,7 +82,7 @@ public class TaskApi extends BaseApi {
     public static void addAllTasksEventListener(@NonNull EventListener<QuerySnapshot> eventListener) {
         getCollectionGroup(COLLECTION_TASKS)
                 .orderBy(FIELD_DUE_DATE, Query.Direction.DESCENDING)
-                .addSnapshotListener(eventListener);
+                .addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
     }
 
     public static void addTaskEventListener(@NonNull String projectName,
@@ -90,7 +91,7 @@ public class TaskApi extends BaseApi {
                 .document(projectName)
                 .collection(COLLECTION_TASKS)
                 .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
-                .addSnapshotListener(eventListener);
+                .addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
     }
 
 }

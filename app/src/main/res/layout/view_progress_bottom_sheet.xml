@@ -131,7 +131,7 @@
         android:id="@+id/fab_start_stop_large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_content_double"
+        android:layout_marginBottom="72dp"
         android:visibility="invisible"
         android:src="@drawable/ic_play_black"
         android:outlineAmbientShadowColor="@color/colorHighlight"

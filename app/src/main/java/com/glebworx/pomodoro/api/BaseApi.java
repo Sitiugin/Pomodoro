@@ -12,8 +12,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
 
 public abstract class BaseApi {
@@ -66,13 +68,13 @@ public abstract class BaseApi {
 
     protected static void addModelEventListener(@NonNull EventListener<QuerySnapshot> eventListener,
                                                 @NonNull CollectionReference collectionReference) {
-        collectionReference.orderBy("timestamp", Query.Direction.DESCENDING).addSnapshotListener(eventListener);
+        collectionReference.orderBy("timestamp", Query.Direction.DESCENDING).addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
     }
 
     protected static void addDocumentModelEventListener(@NonNull EventListener<DocumentSnapshot> eventListener,
                                                         @NonNull CollectionReference collectionReference,
                                                         @NonNull String documentName) {
-        collectionReference.document(documentName).addSnapshotListener(eventListener);
+        collectionReference.document(documentName).addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
     }
 
 
