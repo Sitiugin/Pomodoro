@@ -1,6 +1,6 @@
 package com.glebworx.pomodoro.ui.view.interfaces;
 
-public interface IBottomSheetViewInteractionListener {
+public interface IProgressBottomSheetViewInteractionListener {
 
     void onHideBottomSheet();
 

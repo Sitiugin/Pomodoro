@@ -1,7 +1,5 @@
 package com.glebworx.pomodoro.ui.view.interfaces;
 
-import com.glebworx.pomodoro.model.TaskModel;
-
 public interface IProgressBottomSheetView {
 
     void onInitView();
@@ -9,8 +7,12 @@ public interface IProgressBottomSheetView {
     void onStartTask();
     void onResumeTask();
     void onPauseTask();
-    void onTaskCanceled();
-    void onTaskCompleted();
+
+    void onTick(long millisUntilFinished);
+
+    void onClearViews();
+
+    void onHideBottomSheet();
     void expandBottomSheetViews();
     void collapseBottomSheetViews();
 

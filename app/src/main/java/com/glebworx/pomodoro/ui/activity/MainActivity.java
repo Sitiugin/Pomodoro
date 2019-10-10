@@ -21,7 +21,7 @@ import com.glebworx.pomodoro.ui.fragment.settings.interfaces.ISettingsFragmentIn
 import com.glebworx.pomodoro.ui.fragment.view_project.ViewProjectFragment;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.view.ProgressBottomSheetView;
-import com.glebworx.pomodoro.ui.view.interfaces.IBottomSheetViewInteractionListener;
+import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewInteractionListener;
 import com.glebworx.pomodoro.util.manager.TransitionFragmentManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
@@ -39,7 +39,7 @@ public class MainActivity
             IAddTaskFragmentInteractionListener,
             IReportFragmentInteractionListener,
             ISettingsFragmentInteractionListener,
-            IBottomSheetViewInteractionListener {
+        IProgressBottomSheetViewInteractionListener {
 
 
     //                                                                                       BINDING
