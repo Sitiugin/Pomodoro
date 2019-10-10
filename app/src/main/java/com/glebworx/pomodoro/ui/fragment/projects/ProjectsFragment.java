@@ -69,6 +69,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
 
     //                                                                                    ATTRIBUTES
 
+    private Context context;
     private ItemAdapter<ProjectHeaderItem> headerAdapter;
     private ItemAdapter<ProjectItem> projectAdapter;
     private FastAdapter<AbstractItem> fastAdapter;
@@ -79,9 +80,10 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
     private InitTaskCountTask initTaskCountTask;
     private InitProjectsTask initProjectsTask;
     private Unbinder unbinder;
+    private ProjectsFragmentPresenter presenter;
 
 
-    //                                                                                     LIFECYCLE
+    //                                                                                  CONSTRUCTORS
 
     public ProjectsFragment() { }
 
@@ -90,31 +92,17 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
     }
 
 
+    //                                                                                     LIFECYCLE
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.fragment_projects, container, false);
+        context = getContext();
         unbinder = ButterKnife.bind(this, rootView);
-
-        Context context = getContext();
-        if (context == null) {
-            return rootView;
-        }
-
-        //projectAdapter.add(DummyDataProvider.getProjects());
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-
-        initRecyclerView(context, layoutManager, fastAdapter);
-        initSearchView();
-        initClickEvents(context, fastAdapter);
-
-        TaskApi.addAllTasksEventListener(taskCountEventListener);
-        ProjectApi.addModelEventListener(projectsEventListener);
-
+        presenter = new ProjectsFragmentPresenter(this);
         return rootView;
-
     }
 
     @Override
@@ -130,15 +118,8 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
         fastAdapter = new FastAdapter<>();
         undoHelper = new UndoHelper<>(fastAdapter, (positions, removed) -> {
             for (FastAdapter.RelativeInfo<AbstractItem> relativeInfo: removed) {
-                deleteProject(context, ((ProjectItem) relativeInfo.item).getModel(), relativeInfo.position);
+                deleteProject(((ProjectItem) relativeInfo.item).getModel(), relativeInfo.position);
             }
-            //searchView.setEnabled(false);
-            /*ProjectItem item;
-            for (int position: positions) {
-                item = projectAdapter.getAdapterItem(position - 1);
-                deleteProject(context, item.getModel(), position);
-            }*/
-
         });
 
         super.onAttach(context);
@@ -176,9 +157,27 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
         super.onDetach();
     }
 
-    private void initRecyclerView(Context context, LinearLayoutManager layoutManager, FastAdapter fastAdapter) {
 
-        recyclerView.setLayoutManager(layoutManager);
+    //                                                                                     INTERFACE
+
+    @Override
+    public void onInitView() {
+
+        initRecyclerView(fastAdapter);
+        initSearchView();
+        initClickEvents(fastAdapter);
+
+        TaskApi.addAllTasksEventListener(taskCountEventListener);
+        ProjectApi.addModelEventListener(projectsEventListener);
+
+    }
+
+
+    //                                                                                       HELPERS
+
+    private void initRecyclerView(FastAdapter fastAdapter) {
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty));
         recyclerView.setItemAnimator(new AlphaCrossFadeAnimator());
         //OverScrollDecoratorHelper.setUpOverScroll(recyclerView, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
@@ -205,13 +204,12 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
         fastAdapter.addAdapter(2, addAdapter);
 
         fastAdapter.setHasStableIds(true);
-        attachSwipeHelper(context, recyclerView);
+        attachSwipeHelper(recyclerView);
         recyclerView.setAdapter(fastAdapter);
 
     }
 
-    private void attachSwipeHelper(Context context,
-                                   RecyclerView recyclerView) {
+    private void attachSwipeHelper(RecyclerView recyclerView) {
         SimpleSwipeCallback swipeCallback = new SimpleSwipeCallback(
                 (position, direction) -> {
 
@@ -223,13 +221,6 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
                         fragmentListener.onEditProject(item.getModel());
                         fastAdapter.notifyAdapterItemChanged(position);
                     } else if (direction == ItemTouchHelper.LEFT) {
-                        //searchView.setEnabled(false);
-                        /*searchView.setQuery(null, false); // TODO what to do about it?
-                        projectAdapter.getItemFilter().filter(null);
-                        fastAdapter.notifyDataSetChanged();
-                        int index = getProjectItemIndex(item.getProjectName());
-                        Set<Integer> positionSet = new HashSet<>();
-                        positionSet.add(index + 1);*/
                         Set<Integer> positionSet = new HashSet<>();
                         positionSet.add(position);
                         searchView.setEnabled(false);
@@ -256,7 +247,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
                 .findFirst().orElse(-1);
     }
 
-    private void deleteProject(Context context, ProjectModel projectModel, int position) {
+    private void deleteProject(ProjectModel projectModel, int position) {
         ProjectApi.deleteProject(projectModel, task -> {
             if (!task.isSuccessful()) {
                 fastAdapter.notifyAdapterItemChanged(position);
@@ -297,14 +288,14 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
 
     }
 
-    private void initClickEvents(Context context, FastAdapter<AbstractItem> fastAdapter) {
+    private void initClickEvents(FastAdapter<AbstractItem> fastAdapter) {
         View.OnClickListener onClickListener = view -> {
             switch (view.getId()) {
                 case R.id.button_report:
                     fragmentListener.onViewReport();
                     break;
                 case R.id.button_options:
-                    showOptionsPopup(context);
+                    showOptionsPopup();
                     break;
             }
         };
@@ -332,19 +323,12 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
         fastAdapter.notifyAdapterItemChanged(0);
     }
 
-    private void showOptionsPopup(Context context) {
+    private void showOptionsPopup() {
         PopupWindowManager popupWindowManager = new PopupWindowManager(context);
         PopupWindow popupWindow = popupWindowManager.showPopup(
                 R.layout.popup_options_projects,
                 optionsButton,
                 Gravity.BOTTOM | Gravity.END);
-        /*popupWindow.getContentView().setOnClickListener(view -> {
-            switch (view.getId()) {
-                case R.id.button_settings:
-                    popupWindow.dismiss();
-                    break;
-            }
-        });*/
     }
 
 }

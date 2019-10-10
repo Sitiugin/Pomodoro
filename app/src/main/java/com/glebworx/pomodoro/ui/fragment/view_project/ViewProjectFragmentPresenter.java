@@ -1,4 +1,6 @@
 package com.glebworx.pomodoro.ui.fragment.view_project;
 
-public class ViewProjectFragmentPresenter {
+import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentPresenter;
+
+public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresenter {
 }

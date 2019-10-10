@@ -163,6 +163,10 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
                            int pomodorosAllocated,
                            String recurrence) {
 
+        if (activity == null || context == null) {
+            fragmentListener.onCloseFragment();
+        }
+
         if (isEditing) {
             taskNameEditText.setVisibility(View.GONE);
             taskNameSectionTextView.setVisibility(View.GONE);

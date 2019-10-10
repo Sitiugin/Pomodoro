@@ -1,4 +1,6 @@
 package com.glebworx.pomodoro.ui.fragment.report;
 
-public class ReportFragmentPresenter {
+import com.glebworx.pomodoro.ui.fragment.report.interfaces.IReportFragmentPresenter;
+
+public class ReportFragmentPresenter implements IReportFragmentPresenter {
 }

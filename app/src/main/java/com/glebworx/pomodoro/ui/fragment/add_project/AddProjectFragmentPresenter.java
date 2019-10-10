@@ -51,7 +51,6 @@ class AddProjectFragmentPresenter implements IAddProjectFragmentPresenter {
 
     AddProjectFragmentPresenter(@NonNull IAddProjectFragment presenterListener,
                                 @Nullable Bundle arguments) {
-
         this.presenterListener = presenterListener;
         initColorTagMap();
         init(arguments);

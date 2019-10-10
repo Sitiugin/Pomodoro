@@ -64,6 +64,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
 
     private static final String ARG_PROJECT_MODEL = "project_model";
 
+    private Context context;
     private ProjectModel projectModel;
     private FastAdapter<AbstractItem> fastAdapter;
     private ItemAdapter<ViewProjectHeaderItem> headerAdapter;
@@ -94,8 +95,11 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         unbinder = ButterKnife.bind(this, rootView);
 
         Bundle arguments = getArguments();
-        Context context = getContext();
-        if (arguments == null || context == null) {
+        context = getContext();
+        if (context == null) {
+            fragmentListener.onCloseFragment();
+        }
+        if (arguments == null) {
             return rootView;
         }
         projectModel = arguments.getParcelable(ARG_PROJECT_MODEL);
@@ -106,9 +110,9 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
 
         initTitle();
-        initRecyclerView(context, layoutManager, fastAdapter);
+        initRecyclerView(layoutManager, fastAdapter);
         notifyHeaderItemChanged();
-        initClickEvents(context, fastAdapter);
+        initClickEvents(fastAdapter);
 
         TaskApi.addTaskEventListener(projectModel.getName(), eventListener);
 
@@ -140,7 +144,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         fastAdapter = new FastAdapter<>();
         undoHelper = new UndoHelper<>(fastAdapter, (positions, removed) -> {
             for (FastAdapter.RelativeInfo<AbstractItem> relativeInfo: removed) {
-                deleteTask(context, ((TaskItem) relativeInfo.item).getModel(), fastAdapter, relativeInfo.position);
+                deleteTask(((TaskItem) relativeInfo.item).getModel(), fastAdapter, relativeInfo.position);
             }
             /*ProjectItem item;
             for (int position: positions) {
@@ -192,7 +196,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         fastAdapter.notifyAdapterItemChanged(0);
     }
 
-    private void initRecyclerView(Context context, LinearLayoutManager layoutManager, FastAdapter fastAdapter) {
+    private void initRecyclerView(LinearLayoutManager layoutManager, FastAdapter fastAdapter) {
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty));
@@ -201,7 +205,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         headerAdapter.add(new ViewProjectHeaderItem(projectModel, view -> {
             switch (view.getId()) {
                 case R.id.button_options:
-                    showOptionsPopup(context);
+                    showOptionsPopup();
                     break;
             }
         }));
@@ -216,15 +220,14 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
 
         fastAdapter.setHasStableIds(true);
         fastAdapter.withSelectable(true);
-        attachSwipeHelper(context, recyclerView);
+        attachSwipeHelper(recyclerView);
         recyclerView.setAdapter(fastAdapter);
 
     }
 
-    private void attachSwipeHelper(Context context,
-                                   RecyclerView recyclerView) {
+    private void attachSwipeHelper(RecyclerView recyclerView) {
         SimpleSwipeCallback swipeCallback = new SimpleSwipeCallback(
-                (position, direction) -> executeSwipeAction(context, position, direction),
+                (position, direction) -> executeSwipeAction(position, direction),
                 context.getDrawable(R.drawable.ic_delete_red),
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT,
                 context.getColor(android.R.color.transparent))
@@ -233,7 +236,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         touchHelper.attachToRecyclerView(recyclerView);
     }
 
-    private void executeSwipeAction(Context context, int position, int direction) {
+    private void executeSwipeAction(int position, int direction) {
         TaskModel taskModel = taskAdapter.getAdapterItem(position - 1).getModel();
         if (direction == ItemTouchHelper.RIGHT) {
             fragmentListener.onEditTask(projectModel, taskModel);
@@ -250,7 +253,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         fastAdapter.notifyAdapterItemChanged(position);
     }
 
-    private void deleteTask(Context context, TaskModel taskModel, FastAdapter fastAdapter, int position) {
+    private void deleteTask(TaskModel taskModel, FastAdapter fastAdapter, int position) {
         TaskApi.deleteTask(projectModel, taskModel, task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(context, R.string.view_project_toast_task_delete_success, Toast.LENGTH_SHORT).show();
@@ -261,7 +264,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         });
     }
 
-    private void initClickEvents(Context context, FastAdapter<AbstractItem> fastAdapter) {
+    private void initClickEvents(FastAdapter<AbstractItem> fastAdapter) {
         View.OnClickListener onClickListener = view -> {
             if (view.getId() == R.id.button_close) {
                 fragmentListener.onCloseFragment();
@@ -285,7 +288,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         });
     }
 
-    private void showOptionsPopup(Context context) {
+    private void showOptionsPopup() {
 
         PopupWindowManager popupWindowManager = new PopupWindowManager(context);
         PopupWindow popupWindow = popupWindowManager.showPopup(
