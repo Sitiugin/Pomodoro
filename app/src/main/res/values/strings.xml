@@ -117,7 +117,7 @@
     <string name="splash_err_email_invalid">Enter a valid email!</string>
 
 
-    <!--                                                                                    MAIN -->
+    <!--                                                                            BOTTOM SHEET -->
 
     <string name="main_title_cancel_task">Cancel Task</string>
     <string name="main_title_complete_task">Complete Task</string>
@@ -126,6 +126,8 @@
     <string name="main_text_status_idle">Ready</string>
     <string name="main_text_status_paused">Paused</string>
     <string name="main_text_status_active">Working</string>
+    <string name="main_toast_pomodoro_completed_success">Pomodoro completed</string>
+    <string name="main_toast_pomodoro_completed_failed">Could not save progress. Check your connection and try again</string>
 
 
     <!--                                                                                PROJECTS -->

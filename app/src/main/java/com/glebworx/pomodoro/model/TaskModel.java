@@ -9,9 +9,6 @@ import androidx.annotation.Nullable;
 import com.google.firebase.firestore.Exclude;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 
 public class TaskModel extends AbstractModel {
@@ -149,6 +146,16 @@ public class TaskModel extends AbstractModel {
 
     public void setPomodorosCompleted(int pomodorosCompleted) {
         this.pomodorosCompleted = pomodorosCompleted;
+    }
+
+    @Exclude
+    public void addPomodoro() {
+        pomodorosCompleted++;
+    }
+
+    @Exclude
+    public boolean isOverLimit() {
+        return pomodorosCompleted >= pomodorosAllocated && !isCompleted;
     }
 
     public Date getDueDate() {

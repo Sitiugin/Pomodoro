@@ -118,9 +118,9 @@ public class MainActivity
     }
 
     @Override
-    public void onSelectTask(TaskModel taskModel) {
+    public void onSelectTask(ProjectModel projectModel, TaskModel taskModel) {
         bottomSheetView.setVisibility(View.VISIBLE);
-        bottomSheetView.getPresenter().setTask(taskModel);
+        bottomSheetView.getPresenter().setTask(projectModel, taskModel);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 

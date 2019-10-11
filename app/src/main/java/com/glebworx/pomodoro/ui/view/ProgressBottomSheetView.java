@@ -3,6 +3,7 @@ package com.glebworx.pomodoro.ui.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -56,6 +57,7 @@ public class ProgressBottomSheetView
 
     //                                                                                    ATTRIBUTES
 
+    private Context context;
     private ConstraintSet constraintSet;
     private IProgressBottomSheetViewInteractionListener bottomSheetListener;
     private int bottomSheetState;
@@ -94,7 +96,7 @@ public class ProgressBottomSheetView
     protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
         super.onVisibilityChanged(changedView, visibility);
         if (visibility == VISIBLE) {
-            bottomSheetListener = (IProgressBottomSheetViewInteractionListener) getContext();
+            bottomSheetListener = (IProgressBottomSheetViewInteractionListener) context;
             startStopButton.setOnClickListener(this);
             startStopFab.setOnClickListener(this);
             cancelButton.setOnClickListener(this);
@@ -118,11 +120,6 @@ public class ProgressBottomSheetView
     //                                                                                IMPLEMENTATION
 
     @Override
-    public void onInitView() {
-
-    }
-
-    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_start_stop:
@@ -143,14 +140,14 @@ public class ProgressBottomSheetView
         synchronized (object) {
             taskTextView.setText(name);
             statusTextView.setText(R.string.main_text_status_idle);
-            String timeRemainingString = DateTimeManager.formatMMSSString(getContext(), POMODORO_LENGTH * 60);
+            String timeRemainingString = DateTimeManager.formatMMSSString(context, POMODORO_LENGTH * 60);
             timeRemainingLargeTextView.setText(timeRemainingString);
             timeRemainingTextView.setText(timeRemainingString);
         }
     }
 
     @Override
-    public void onStartTask() {
+    public void onTaskStarted() {
         synchronized (object) {
             startStopButton.setImageResource(R.drawable.ic_pause_highlight);
             startStopFab.setImageResource(R.drawable.ic_pause_black);
@@ -159,7 +156,7 @@ public class ProgressBottomSheetView
     }
 
     @Override
-    public void onResumeTask() {
+    public void onTaskResumed() {
         synchronized (object) {
             startStopButton.setImageResource(R.drawable.ic_pause_highlight);
             startStopFab.setImageResource(R.drawable.ic_pause_black);
@@ -168,7 +165,7 @@ public class ProgressBottomSheetView
     }
 
     @Override
-    public void onPauseTask() {
+    public void onTaskPaused() {
         synchronized (object) {
             startStopButton.setImageResource(R.drawable.ic_play_highlight);
             startStopFab.setImageResource(R.drawable.ic_play_black);
@@ -184,8 +181,19 @@ public class ProgressBottomSheetView
     }
 
     @Override
+    public void onPomodoroCompleted(boolean isSuccessful) {
+        Toast.makeText(
+                context,
+                isSuccessful
+                        ? R.string.main_toast_pomodoro_completed_success
+                        : R.string.main_toast_pomodoro_completed_failed,
+                Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     public void onTick(long millisUntilFinished) {
-        String minutesUntilFinished = DateTimeManager.formatMMSSString(getContext(), (int) (millisUntilFinished / 1000));
+
+        String minutesUntilFinished = DateTimeManager.formatMMSSString(context, (int) (millisUntilFinished / 1000));
         int progress = 100 - (int) (millisUntilFinished / DURATION_PERCENT);
 
         if (bottomSheetState == BottomSheetBehavior.STATE_EXPANDED) {
@@ -203,6 +211,7 @@ public class ProgressBottomSheetView
                 }
             }
         }
+
     }
 
     @Override
@@ -228,6 +237,7 @@ public class ProgressBottomSheetView
 
         this.bottomSheetState = BottomSheetBehavior.STATE_EXPANDED;
 
+        TransitionManager.endTransitions(this);
         TransitionManager.beginDelayedTransition(this);
         constraintSet.clone(this);
 
@@ -296,6 +306,7 @@ public class ProgressBottomSheetView
 
         this.bottomSheetState = BottomSheetBehavior.STATE_COLLAPSED;
 
+        TransitionManager.endTransitions(this);
         TransitionManager.beginDelayedTransition(this);
         constraintSet.clone(this);
 
@@ -353,9 +364,10 @@ public class ProgressBottomSheetView
 
     private void init(Context context, AttributeSet attrs, int defStyle) {
         inflate(context, R.layout.view_progress_bottom_sheet, this);
-        bottomSheetState = BottomSheetBehavior.STATE_COLLAPSED;
-        presenter = new ProgressProgressBottomSheetViewPresenter(this);
-        constraintSet = new ConstraintSet();
+        this.context = context;
+        this.bottomSheetState = BottomSheetBehavior.STATE_COLLAPSED;
+        this.presenter = new ProgressProgressBottomSheetViewPresenter(this);
+        this.constraintSet = new ConstraintSet();
     }
 
     public IProgressBottomSheetViewPresenter getPresenter() {

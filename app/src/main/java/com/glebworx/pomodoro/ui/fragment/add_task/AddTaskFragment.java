@@ -4,6 +4,14 @@ package com.glebworx.pomodoro.ui.fragment.add_task;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.DatePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -17,29 +25,16 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.transition.TransitionManager;
 
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
-import android.widget.DatePicker;
-import android.widget.Toast;
-
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.glebworx.pomodoro.R;
-import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.ui.fragment.add_task.interfaces.IAddTaskFragment;
 import com.glebworx.pomodoro.ui.fragment.add_task.interfaces.IAddTaskFragmentInteractionListener;
-import com.glebworx.pomodoro.util.constants.Constants;
-import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.KeyboardManager;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -372,6 +367,7 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
 
     private void startSaveStartedAnimation() {
         saveButton.setEnabled(false);
+        TransitionManager.endTransitions(addTaskLayout);
         TransitionManager.beginDelayedTransition(addTaskLayout);
         constraintSet.clone(addTaskLayout);
         constraintSet.setVisibility(R.id.spin_kit_view, ConstraintSet.VISIBLE);
@@ -381,6 +377,7 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
 
     private void startSaveCanceledAnimation() {
         saveButton.setEnabled(true);
+        TransitionManager.endTransitions(addTaskLayout);
         TransitionManager.beginDelayedTransition(addTaskLayout);
         constraintSet.clone(addTaskLayout);
         constraintSet.setVisibility(R.id.spin_kit_view, ConstraintSet.INVISIBLE);

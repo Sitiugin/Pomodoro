@@ -4,6 +4,12 @@ package com.glebworx.pomodoro.ui.fragment.view_project;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -12,13 +18,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.PopupWindow;
-import android.widget.Toast;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.ProjectApi;
@@ -276,7 +275,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
                 return false;
             }
             if (view.getId() == R.id.item_task && item instanceof TaskItem) {
-                fragmentListener.onSelectTask(((TaskItem) item).getModel());
+                fragmentListener.onSelectTask(projectModel, ((TaskItem) item).getModel());
                 return true;
             }
             if (view.getId() == R.id.item_add) {

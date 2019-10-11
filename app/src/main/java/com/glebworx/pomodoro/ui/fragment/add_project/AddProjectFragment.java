@@ -4,6 +4,12 @@ package com.glebworx.pomodoro.ui.fragment.add_project;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.DatePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -15,13 +21,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.transition.TransitionManager;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.DatePicker;
-import android.widget.Toast;
 
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.glebworx.pomodoro.R;
@@ -338,6 +337,7 @@ public class AddProjectFragment extends Fragment implements IAddProjectFragment 
 
     private void startSaveStartedAnimation() {
         saveButton.setEnabled(false);
+        TransitionManager.endTransitions(addProjectLayout);
         TransitionManager.beginDelayedTransition(addProjectLayout);
         constraintSet.clone(addProjectLayout);
         constraintSet.setVisibility(R.id.spin_kit_view, ConstraintSet.VISIBLE);
@@ -347,6 +347,7 @@ public class AddProjectFragment extends Fragment implements IAddProjectFragment 
 
     private void startSaveCanceledAnimation() {
         saveButton.setEnabled(true);
+        TransitionManager.endTransitions(addProjectLayout);
         TransitionManager.beginDelayedTransition(addProjectLayout);
         constraintSet.clone(addProjectLayout);
         constraintSet.setVisibility(R.id.spin_kit_view, ConstraintSet.INVISIBLE);

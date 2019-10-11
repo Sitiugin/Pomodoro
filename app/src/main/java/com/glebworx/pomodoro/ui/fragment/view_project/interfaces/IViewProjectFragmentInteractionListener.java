@@ -7,7 +7,8 @@ public interface IViewProjectFragmentInteractionListener {
 
     void onEditProject(ProjectModel projectModel);
     void onAddTask(ProjectModel projectModel);
-    void onSelectTask(TaskModel taskModel);
+
+    void onSelectTask(ProjectModel projectModel, TaskModel taskModel);
     void onEditTask(ProjectModel projectModel, TaskModel taskModel);
     void onCloseFragment();
 

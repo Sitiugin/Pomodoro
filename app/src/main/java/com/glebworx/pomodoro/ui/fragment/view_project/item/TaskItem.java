@@ -1,6 +1,9 @@
 package com.glebworx.pomodoro.ui.fragment.view_project.item;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -93,6 +96,14 @@ public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> implem
         return model.getDueDate().compareTo(new Date()) < 0;
     }
 
+    public boolean isCompleted() {
+        return model.isCompleted();
+    }
+
+    public boolean isOverLimit() {
+        return model.isOverLimit();
+    }
+
 
     //                                                                                   VIEW HOLDER
 
@@ -121,6 +132,16 @@ public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> implem
                 dueDateTextView.setTextColor(context.getColor(android.R.color.darker_gray));
             }
             pomodoroTextView.setText(item.getPomodoroRatio(context));
+            if (item.isCompleted()) {
+                pomodoroTextView.setTextColor(context.getColor(R.color.colorHighlight));
+                setDrawableColorFilters(R.color.colorHighlight);
+            } else if (item.isOverLimit()) {
+                pomodoroTextView.setTextColor(context.getColor(R.color.colorError));
+                setDrawableColorFilters(R.color.colorError);
+            } else {
+                pomodoroTextView.setTextColor(context.getColor(android.R.color.darker_gray));
+                setDrawableColorFilters(android.R.color.darker_gray);
+            }
         }
 
         @Override
@@ -129,6 +150,16 @@ public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> implem
             dueDateTextView.setText(null);
             dueDateTextView.setTextColor(context.getColor(android.R.color.darker_gray));
             pomodoroTextView.setText(null);
+            pomodoroTextView.setTextColor(context.getColor(android.R.color.darker_gray));
+            setDrawableColorFilters(android.R.color.darker_gray);
+        }
+
+        private void setDrawableColorFilters(int color) {
+            for (Drawable drawable : pomodoroTextView.getCompoundDrawables()) {
+                if (drawable != null) {
+                    drawable.setColorFilter(new PorterDuffColorFilter(context.getColor(color), PorterDuff.Mode.SRC_IN));
+                }
+            }
         }
 
     }

@@ -1,5 +1,9 @@
 package com.glebworx.pomodoro.ui.view;
 
+import androidx.annotation.NonNull;
+
+import com.glebworx.pomodoro.api.TaskApi;
+import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetView;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewPresenter;
@@ -17,11 +21,12 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     private static final int PROGRESS_STATUS_ACTIVE = 2;
 
     private IProgressBottomSheetView presenterListener;
+    private ProjectModel projectModel;
     private TaskModel taskModel;
     private PomodoroTimer timer;
     private int progressStatus;
 
-    ProgressProgressBottomSheetViewPresenter(IProgressBottomSheetView presenterListener) {
+    ProgressProgressBottomSheetViewPresenter(@NonNull IProgressBottomSheetView presenterListener) {
         this.presenterListener = presenterListener;
         init();
         initTimer();
@@ -31,12 +36,12 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     @Override
     public void init() {
         progressStatus = PROGRESS_STATUS_IDLE;
-        presenterListener.onInitView();
     }
 
     @Override
-    public void setTask(TaskModel taskModel) {
+    public void setTask(ProjectModel projectModel, TaskModel taskModel) {
         progressStatus = PROGRESS_STATUS_IDLE;
+        this.projectModel = projectModel;
         this.taskModel = taskModel;
         presenterListener.onTaskSet(taskModel.getName());
     }
@@ -46,17 +51,17 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         if (progressStatus == PROGRESS_STATUS_ACTIVE) {
             progressStatus = PROGRESS_STATUS_PAUSED;
             timer.pause();
-            presenterListener.onPauseTask();
+            presenterListener.onTaskPaused();
         } else if (progressStatus == PROGRESS_STATUS_IDLE){
             progressStatus = PROGRESS_STATUS_ACTIVE;
             timer.cancel();
             initTimer();
             timer.start();
-            presenterListener.onStartTask();
+            presenterListener.onTaskStarted();
         } else {
             progressStatus = PROGRESS_STATUS_ACTIVE;
             timer.resume();
-            presenterListener.onResumeTask();
+            presenterListener.onTaskResumed();
         }
     }
 
@@ -69,9 +74,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
     @Override
     public void completeTask() {
-        progressStatus = PROGRESS_STATUS_IDLE;
-        presenterListener.onClearViews();
-        presenterListener.onHideBottomSheet();
+        completePomodoro();
     }
 
     private void initTimer() {
@@ -83,9 +86,21 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
             @Override
             public void onFinish() {
-                presenterListener.onClearViews();
+                completePomodoro();
             }
         };
+    }
+
+    private void completePomodoro() {
+        progressStatus = PROGRESS_STATUS_IDLE;
+        presenterListener.onClearViews();
+        if (taskModel == null) {
+            return;
+        }
+        taskModel.addPomodoro();
+        TaskApi.addTask(projectModel, taskModel, task -> {
+            presenterListener.onPomodoroCompleted(task.isSuccessful());
+        });
     }
 
 }
