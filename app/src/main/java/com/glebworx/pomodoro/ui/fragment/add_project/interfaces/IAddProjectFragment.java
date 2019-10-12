@@ -8,12 +8,19 @@ public interface IAddProjectFragment {
                     String name,
                     String colorTag,
                     String dueDate);
+
     void onProjectNameChanged();
+
     void onEditDueDate(Date dueDate);
+
     void onSelectDueDate(String dateString);
+
     void onSaveProjectStart();
+
     void onSaveProjectSuccess(boolean isEditing);
+
     void onSaveProjectFailure(boolean isEditing);
+
     void onProjectValidationFailed(boolean isEmpty);
 
 }

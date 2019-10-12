@@ -6,10 +6,13 @@ import com.glebworx.pomodoro.model.TaskModel;
 public interface IViewProjectFragmentInteractionListener {
 
     void onEditProject(ProjectModel projectModel);
+
     void onAddTask(ProjectModel projectModel);
 
     void onSelectTask(ProjectModel projectModel, TaskModel taskModel);
+
     void onEditTask(ProjectModel projectModel, TaskModel taskModel);
+
     void onCloseFragment();
 
 }

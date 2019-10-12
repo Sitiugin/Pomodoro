@@ -99,7 +99,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
         View rootView = inflater.inflate(R.layout.fragment_projects, container, false);
         context = getContext();
         unbinder = ButterKnife.bind(this, rootView);
-        presenter = new ProjectsFragmentPresenter(this);
+        presenter = new ProjectsFragmentPresenter(this, fragmentListener);
         return rootView;
     }
 
@@ -221,7 +221,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
                     ProjectItem item = projectAdapter.getAdapterItem(position - 1);
 
                     if (direction == ItemTouchHelper.RIGHT) {
-                        fragmentListener.onEditProject(item.getModel());
+                        presenter.editProject(item);
                         fastAdapter.notifyAdapterItemChanged(position);
                     } else if (direction == ItemTouchHelper.LEFT) {
                         Set<Integer> positionSet = new HashSet<>();
@@ -292,7 +292,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
                 return false;
             }
             if (view.getId() == R.id.item_project && item instanceof ProjectItem) {
-                fragmentListener.onViewProject(((ProjectItem) item).getModel());
+                presenter.viewProject((ProjectItem) item);
                 return true;
             }
             if (view.getId() == R.id.item_add) {

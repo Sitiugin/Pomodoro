@@ -9,12 +9,19 @@ public interface IAddTaskFragment {
                     String dueDate,
                     int pomodorosAllocated,
                     String recurrence);
+
     void onTaskNameChanged();
+
     void onEditDueDate(Date dueDate);
+
     void onSelectDueDate(String dateString);
+
     void onAddTaskStart();
+
     void onAddTaskSuccess(boolean isEditing);
+
     void onAddTaskFailure(boolean isEditing);
+
     void onTaskValidationFailed(boolean isEmpty);
 
 }

@@ -24,4 +24,5 @@ public interface IViewProjectFragmentPresenter {
     void updateHeaderItem();
 
     void updateSubtitle();
+
 }

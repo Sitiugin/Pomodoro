@@ -15,4 +15,5 @@ public interface IViewProjectFragment {
     void onHeaderItemChanged(int estimatedTime, int elapsedTime, double progressRatio);
 
     void onSubtitleChanged(Date dueDate, Date today);
+
 }

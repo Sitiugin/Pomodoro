@@ -11,10 +11,15 @@ public interface IProgressBottomSheetView {
     void onTaskPaused();
 
     void onPomodoroCompleted(boolean isSuccessful);
+
     void onTick(long millisUntilFinished);
+
     void onClearViews();
+
     void onHideBottomSheet();
+
     void expandBottomSheetViews();
+
     void collapseBottomSheetViews();
 
 }

@@ -8,8 +8,11 @@ public interface IProgressBottomSheetViewPresenter {
     void init();
 
     void setTask(ProjectModel projectModel, TaskModel taskModel);
+
     void handleStartStopClick();
+
     void cancelTask();
+
     void completeTask();
 
 }

@@ -21,9 +21,12 @@ import static com.glebworx.pomodoro.ui.fragment.view_project.ViewProjectFragment
 
 public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresenter {
 
-    private IViewProjectFragment presenterListener;
-    private IViewProjectFragmentInteractionListener interactionListener;
-    private ProjectModel projectModel;
+    private @NonNull
+    IViewProjectFragment presenterListener;
+    private @Nullable
+    IViewProjectFragmentInteractionListener interactionListener;
+    private @NonNull
+    ProjectModel projectModel;
 
     public ViewProjectFragmentPresenter(@NonNull IViewProjectFragment presenterListener,
                                         @Nullable IViewProjectFragmentInteractionListener interactionListener,
