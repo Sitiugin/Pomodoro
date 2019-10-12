@@ -1,11 +1,10 @@
 package com.glebworx.pomodoro.ui.fragment.projects.interfaces;
 
+import com.glebworx.pomodoro.ui.fragment.projects.item.ProjectItem;
+
 public interface IProjectsFragmentPresenter {
 
     void init();
-    //void onQueryChanged();
-    void onProjectClicked();
-    void onProjectEditSwiped();
-    void onProjectDeleteSwiped();
-    void onAddProjectClicked();
+
+    void deleteProject(ProjectItem projectItem, int position);
 }

@@ -4,6 +4,12 @@ package com.glebworx.pomodoro.ui.fragment.projects;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -13,17 +19,9 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.PopupWindow;
-import android.widget.Toast;
-
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.api.TaskApi;
-import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragment;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.projects.item.AddProjectItem;
@@ -118,7 +116,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
         fastAdapter = new FastAdapter<>();
         undoHelper = new UndoHelper<>(fastAdapter, (positions, removed) -> {
             for (FastAdapter.RelativeInfo<AbstractItem> relativeInfo: removed) {
-                deleteProject(((ProjectItem) relativeInfo.item).getModel(), relativeInfo.position);
+                presenter.deleteProject((ProjectItem) relativeInfo.item, relativeInfo.position);
             }
         });
 
@@ -161,10 +159,10 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
     //                                                                                     INTERFACE
 
     @Override
-    public void onInitView() {
+    public void onInitView(IItemAdapter.Predicate<ProjectItem> predicate) {
 
         initRecyclerView(fastAdapter);
-        initSearchView();
+        initSearchView(predicate);
         initClickEvents(fastAdapter);
 
         TaskApi.addAllTasksEventListener(taskCountEventListener);
@@ -172,6 +170,11 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
 
     }
 
+    @Override
+    public void onDeleteProjectFailed(int position) {
+        fastAdapter.notifyAdapterItemChanged(position);
+        Toast.makeText(context, R.string.view_project_toast_project_delete_failed, LENGTH_LONG).show();
+    }
 
     //                                                                                       HELPERS
 
@@ -247,24 +250,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
                 .findFirst().orElse(-1);
     }
 
-    private void deleteProject(ProjectModel projectModel, int position) {
-        ProjectApi.deleteProject(projectModel, task -> {
-            if (!task.isSuccessful()) {
-                fastAdapter.notifyAdapterItemChanged(position);
-                Toast.makeText(context, R.string.view_project_toast_project_delete_failed, LENGTH_LONG).show();
-            }
-        });
-    }
-
-    private void initSearchView() {
-
-        IItemAdapter.Predicate<ProjectItem> predicate = (item, constraint) -> {
-            if (constraint == null) {
-                return true;
-            }
-            String title = item.getModel().getName();
-            return title != null && title.toLowerCase().contains(constraint);
-        };
+    private void initSearchView(IItemAdapter.Predicate<ProjectItem> predicate) {
 
         ItemFilter<ProjectItem, ProjectItem> itemFilter =
                 new ItemFilter<ProjectItem, ProjectItem>(projectAdapter).withFilterPredicate(predicate);

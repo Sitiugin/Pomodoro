@@ -2,16 +2,15 @@ package com.glebworx.pomodoro.ui.fragment.projects;
 
 import androidx.annotation.NonNull;
 
+import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragment;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragmentPresenter;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.glebworx.pomodoro.ui.fragment.projects.item.ProjectItem;
+import com.mikepenz.fastadapter.IItemAdapter;
 
 public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
 
     private @NonNull IProjectsFragment presenterListener;
-    private EventListener<QuerySnapshot> taskCountEventListener;
-    private EventListener<QuerySnapshot> projectsEventListener;
 
     public ProjectsFragmentPresenter(@NonNull IProjectsFragment presenterListener) {
         this.presenterListener = presenterListener;
@@ -20,27 +19,27 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
 
     @Override
     public void init() {
-        presenterListener.onInitView();
+        IItemAdapter.Predicate<ProjectItem> predicate = getFilterPredicate();
+        presenterListener.onInitView(predicate);
     }
 
     @Override
-    public void onProjectClicked() {
-
+    public void deleteProject(ProjectItem projectItem, int position) {
+        ProjectApi.deleteProject(projectItem.getModel(), task -> {
+            if (!task.isSuccessful()) {
+                presenterListener.onDeleteProjectFailed(position);
+            }
+        });
     }
 
-    @Override
-    public void onProjectEditSwiped() {
-
-    }
-
-    @Override
-    public void onProjectDeleteSwiped() {
-
-    }
-
-    @Override
-    public void onAddProjectClicked() {
-
+    private IItemAdapter.Predicate<ProjectItem> getFilterPredicate() {
+        return (item, constraint) -> {
+            if (constraint == null) {
+                return true;
+            }
+            String title = item.getModel().getName();
+            return title != null && title.toLowerCase().contains(constraint);
+        };
     }
 
 }
