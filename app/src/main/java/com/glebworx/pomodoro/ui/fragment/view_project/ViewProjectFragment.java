@@ -20,10 +20,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.glebworx.pomodoro.R;
-import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
-import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragment;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.AddTaskItem;
@@ -56,15 +54,23 @@ import static com.glebworx.pomodoro.util.constants.Constants.LENGTH_SNACK_BAR;
 // TODO add board and calendar view
 public class ViewProjectFragment extends Fragment implements IViewProjectFragment {
 
+
+    //                                                                                       BINDING
+
     @BindView(R.id.text_view_title) AppCompatTextView titleTextView;
     @BindView(R.id.text_view_subtitle) AppCompatTextView subtitleTextView;
     @BindView(R.id.button_close) AppCompatImageButton closeButton;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
-    private static final String ARG_PROJECT_MODEL = "project_model";
+
+    //                                                                                     CONSTANTS
+
+    static final String ARG_PROJECT_MODEL = "project_model";
+
+
+    //                                                                                    ATTRIBUTES
 
     private Context context;
-    private ProjectModel projectModel;
     private FastAdapter<AbstractItem> fastAdapter;
     private ItemAdapter<ViewProjectHeaderItem> headerAdapter;
     private ItemAdapter<TaskItem> taskAdapter;
@@ -73,8 +79,15 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     private IViewProjectFragmentInteractionListener fragmentListener;
     private InitTasksTask initTasksTask;
     private Unbinder unbinder;
+    private ViewProjectFragmentPresenter presenter;
+
+
+    //                                                                                  CONSTRUCTORS
 
     public ViewProjectFragment() { }
+
+
+    //                                                                                       FACTORY
 
     public static ViewProjectFragment newInstance(ProjectModel projectModel) {
         ViewProjectFragment fragment = new ViewProjectFragment();
@@ -85,38 +98,25 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     }
 
 
+    //                                                                                     LIFECYCLE
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.fragment_view_project, container, false);
-        unbinder = ButterKnife.bind(this, rootView);
-
-        Bundle arguments = getArguments();
         context = getContext();
         if (context == null) {
             fragmentListener.onCloseFragment();
         }
-        if (arguments == null) {
-            return rootView;
-        }
-        projectModel = arguments.getParcelable(ARG_PROJECT_MODEL);
-        if (projectModel == null) {
-            return rootView;
-        }
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-
-        initTitle();
-        initRecyclerView(layoutManager, fastAdapter);
-        notifyHeaderItemChanged();
-        initClickEvents(fastAdapter);
-
-        TaskApi.addTaskEventListener(projectModel.getName(), eventListener);
-
+        unbinder = ButterKnife.bind(this, rootView);
+        presenter = new ViewProjectFragmentPresenter(
+                this,
+                fragmentListener,
+                getArguments(),
+                getHeaderClickListener());
+        presenter.updateHeaderItem();
         return rootView;
-
     }
 
     @Override
@@ -128,11 +128,9 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        Context context = getContext();
-        if (context != null && !hidden) {
-            initTitle();
-            notifyHeaderItemChanged();
-            updateToday(context);
+        if (!hidden) {
+            presenter.updateHeaderItem();
+            presenter.updateSubtitle();
         }
     }
 
@@ -143,14 +141,8 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         fastAdapter = new FastAdapter<>();
         undoHelper = new UndoHelper<>(fastAdapter, (positions, removed) -> {
             for (FastAdapter.RelativeInfo<AbstractItem> relativeInfo: removed) {
-                deleteTask(((TaskItem) relativeInfo.item).getModel(), fastAdapter, relativeInfo.position);
+                presenter.deleteTask(((TaskItem) relativeInfo.item), relativeInfo.position);
             }
-            /*ProjectItem item;
-            for (int position: positions) {
-                item = projectAdapter.getAdapterItem(position - 1);
-                deleteProject(context, item.getModel(), position);
-            }*/
-
         });
 
         super.onAttach(context);
@@ -174,40 +166,63 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         super.onDetach();
     }
 
+
+    //                                                                                IMPLEMENTATION
+
     @Override
-    public void onResume() {
-        super.onResume();
-        Context context = getContext();
-        if (context != null) {
-            updateToday(context);
+    public void onInitView(String projectName, ViewProjectHeaderItem headerItem) {
+        titleTextView.setText(projectName);
+        initRecyclerView(fastAdapter, headerItem);
+        initClickEvents(fastAdapter);
+        TaskApi.addTaskEventListener(projectName, eventListener);
+    }
+
+    @Override
+    public void onProjectDeleted(boolean isSuccessful) {
+        Toast.makeText(
+                context,
+                isSuccessful
+                        ? R.string.view_project_toast_project_delete_success
+                        : R.string.view_project_toast_project_delete_failed,
+                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onTaskDeleted(boolean isSuccessful, int position) {
+        if (isSuccessful) {
+            Toast.makeText(context, R.string.view_project_toast_task_delete_success, Toast.LENGTH_SHORT).show();
+        } else {
+            fastAdapter.notifyAdapterItemChanged(position);
+            Toast.makeText(context, R.string.view_project_toast_task_delete_failed, Toast.LENGTH_LONG).show();
         }
     }
 
-    private void initTitle() {
-        titleTextView.setText(projectModel.getName());
-    }
-
-    private void notifyHeaderItemChanged() {
+    @Override
+    public void onHeaderItemChanged(int estimatedTime, int elapsedTime, double progressRatio) {
         ViewProjectHeaderItem item = headerAdapter.getAdapterItem(0);
-        item.setEstimatedTime(projectModel.getEstimatedTime());
-        item.setElapsedTime(projectModel.getElapsedTime());
-        item.setProgress(projectModel.getProgressRatio());
+        item.setEstimatedTime(estimatedTime);
+        item.setElapsedTime(elapsedTime);
+        item.setProgress(progressRatio);
         fastAdapter.notifyAdapterItemChanged(0);
     }
 
-    private void initRecyclerView(LinearLayoutManager layoutManager, FastAdapter fastAdapter) {
+    @Override
+    public void onSubtitleChanged(Date dueDate, Date today) {
+        subtitleTextView.setText(DateTimeManager.getDueDateString(context, dueDate, today));
+        subtitleTextView.setTextColor(context.getColor(dueDate.compareTo(today) < 0
+                ? R.color.colorError
+                : android.R.color.darker_gray));
+    }
 
-        recyclerView.setLayoutManager(layoutManager);
+
+    //                                                                                       HELPERS
+
+    private void initRecyclerView(FastAdapter fastAdapter, ViewProjectHeaderItem headerItem) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty));
         recyclerView.setItemAnimator(new AlphaCrossFadeAnimator());
 
-        headerAdapter.add(new ViewProjectHeaderItem(projectModel, view -> {
-            switch (view.getId()) {
-                case R.id.button_options:
-                    showOptionsPopup();
-                    break;
-            }
-        }));
+        headerAdapter.add(headerItem);
 
         ItemAdapter<AddTaskItem> addAdapter = new ItemAdapter<>();
         addAdapter.add(new AddTaskItem(getString(R.string.view_project_title_add_task), true));
@@ -224,9 +239,19 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
 
     }
 
+    private View.OnClickListener getHeaderClickListener() {
+        return view -> {
+            switch (view.getId()) {
+                case R.id.button_options:
+                    showOptionsPopup();
+                    break;
+            }
+        };
+    }
+
     private void attachSwipeHelper(RecyclerView recyclerView) {
         SimpleSwipeCallback swipeCallback = new SimpleSwipeCallback(
-                (position, direction) -> executeSwipeAction(position, direction),
+                this::executeSwipeAction,
                 context.getDrawable(R.drawable.ic_delete_red),
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT,
                 context.getColor(android.R.color.transparent))
@@ -236,9 +261,8 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     }
 
     private void executeSwipeAction(int position, int direction) {
-        TaskModel taskModel = taskAdapter.getAdapterItem(position - 1).getModel();
         if (direction == ItemTouchHelper.RIGHT) {
-            fragmentListener.onEditTask(projectModel, taskModel);
+            presenter.editTask(taskAdapter.getAdapterItem(position - 1));
         } else if (direction == ItemTouchHelper.LEFT) {
             Set<Integer> positionSet = new HashSet<>();
             positionSet.add(position);
@@ -250,17 +274,6 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
                     positionSet);
         }
         fastAdapter.notifyAdapterItemChanged(position);
-    }
-
-    private void deleteTask(TaskModel taskModel, FastAdapter fastAdapter, int position) {
-        TaskApi.deleteTask(projectModel, taskModel, task -> {
-            if (task.isSuccessful()) {
-                Toast.makeText(context, R.string.view_project_toast_task_delete_success, Toast.LENGTH_SHORT).show();
-            } else {
-                fastAdapter.notifyAdapterItemChanged(position);
-                Toast.makeText(context, R.string.view_project_toast_task_delete_failed, Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     private void initClickEvents(FastAdapter<AbstractItem> fastAdapter) {
@@ -275,11 +288,11 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
                 return false;
             }
             if (view.getId() == R.id.item_task && item instanceof TaskItem) {
-                fragmentListener.onSelectTask(projectModel, ((TaskItem) item).getModel());
+                presenter.selectTask(((TaskItem) item));
                 return true;
             }
             if (view.getId() == R.id.item_add) {
-                fragmentListener.onAddTask(projectModel);
+                presenter.addTask();
                 return true;
             }
 
@@ -300,37 +313,16 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         View.OnClickListener onClickListener = view -> {
             if (view.getId() == R.id.button_edit) {
                 popupWindow.dismiss();
-                fragmentListener.onEditProject(projectModel);
+                presenter.editProject();
             } else if (view.getId() == R.id.button_delete) {
                 popupWindow.dismiss();
-                deleteProject(context);
+                fragmentListener.onCloseFragment();
+                presenter.deleteProject();
             }
         };
         contentView.findViewById(R.id.button_edit).setOnClickListener(onClickListener);
         contentView.findViewById(R.id.button_delete).setOnClickListener(onClickListener);
 
-    }
-
-    private void deleteProject(Context context) {
-        fragmentListener.onCloseFragment();
-        ProjectApi.deleteProject(projectModel, task -> {
-            if (task.isSuccessful()) {
-                Toast.makeText(context, R.string.view_project_toast_project_delete_success, Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(context, R.string.view_project_toast_project_delete_failed, Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    private void updateToday(Context context) {
-        //dateTimeManager.setCurrentCalendar();
-        Date newDate = new Date();
-        subtitleTextView.setText(DateTimeManager.getDueDateString(context, projectModel.getDueDate(), newDate));
-        if (projectModel.getDueDate().compareTo(newDate) < 0) {
-            subtitleTextView.setTextColor(context.getColor(R.color.colorError));
-        } else {
-            subtitleTextView.setTextColor(context.getColor(android.R.color.darker_gray));
-        }
     }
 
 }

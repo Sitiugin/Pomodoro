@@ -119,6 +119,9 @@ public class AddProjectFragment extends Fragment implements IAddProjectFragment 
         View rootView = inflater.inflate(R.layout.fragment_add_project, container, false);
         activity = getActivity();
         context = getContext();
+        if (activity == null || context == null) {
+            fragmentListener.onCloseFragment();
+        }
         constraintSet = new ConstraintSet();
         unbinder = ButterKnife.bind(this, rootView);
         presenter = new AddProjectFragmentPresenter(this, getArguments());

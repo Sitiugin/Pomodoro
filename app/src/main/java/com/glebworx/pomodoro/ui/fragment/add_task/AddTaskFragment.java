@@ -123,6 +123,9 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
         View rootView = inflater.inflate(R.layout.fragment_add_task, container, false);
         activity = getActivity();
         context = getContext();
+        if (activity == null || context == null) {
+            fragmentListener.onCloseFragment();
+        }
         constraintSet = new ConstraintSet();
         unbinder = ButterKnife.bind(this, rootView);
         presenter = new AddTaskFragmentPresenter(this, getArguments());
