@@ -64,14 +64,15 @@
                     android:background="@android:color/transparent"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_title"
                     app:tabBackground="@android:color/transparent"
+                    app:tabGravity="fill"
                     app:tabIndicator="@drawable/drawable_color_tag"
                     app:tabIndicatorColor="@color/colorHighlight"
                     app:tabIndicatorFullWidth="false"
                     app:tabIndicatorHeight="@dimen/size_divider_thick"
-                    app:tabMode="fixed"
+                    app:tabMode="scrollable"
                     app:tabSelectedTextColor="@color/colorHighlight"
                     app:tabTextAppearance="@style/TextStyle.Title"
-                    app:tabTextColor="@android:color/darker_gray"></com.google.android.material.tabs.TabLayout>
+                    app:tabTextColor="@android:color/darker_gray" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -83,30 +84,20 @@
         android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.glebworx.pomodoro.ui.fragment.report.view.ReportHistoryView
             android:id="@+id/view_history"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="aaaaa" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.glebworx.pomodoro.ui.fragment.report.view.ReportPomodorosView
             android:id="@+id/view_pomodoros"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.glebworx.pomodoro.ui.fragment.report.view.ReportTasksView
             android:id="@+id/view_tasks"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="match_parent" />
 
     </androidx.viewpager.widget.ViewPager>
 
