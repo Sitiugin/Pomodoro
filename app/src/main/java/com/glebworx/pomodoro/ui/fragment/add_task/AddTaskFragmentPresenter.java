@@ -136,6 +136,7 @@ public class AddTaskFragmentPresenter implements IAddTaskFragmentPresenter {
         }
     }
 
+
     //                                                                                       HELPERS
 
     private void initRecurrenceMap() {

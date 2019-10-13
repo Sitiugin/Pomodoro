@@ -116,6 +116,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
                 getArguments(),
                 getHeaderClickListener());
         presenter.updateHeaderItem();
+        presenter.updateSubtitle();
         return rootView;
     }
 
