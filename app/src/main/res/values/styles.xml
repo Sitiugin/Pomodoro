@@ -295,6 +295,7 @@
 
 
     <!--                                                                           SPINNER STYLE -->
+
     <style name="SpinnerStyle">
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
@@ -317,6 +318,22 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/colorDark</item>
         <item name="android:textSize">@dimen/text_size_body</item>
+    </style>
+
+    <!--                                                                        TAB LAYOUT STYLE -->
+
+    <style name="TabLayoutStyle">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="tabBackground">@android:color/transparent</item>
+        <item name="tabGravity">fill</item>
+        <item name="tabMode">scrollable</item>
+        <item name="tabIndicator">@drawable/drawable_color_tag</item>
+        <item name="tabIndicatorColor">@color/colorHighlight</item>
+        <item name="tabIndicatorFullWidth">false</item>
+        <item name="tabIndicatorHeight">@dimen/size_divider_thick</item>
+        <item name="tabSelectedTextColor">@color/colorHighlight</item>
+        <item name="tabTextAppearance">@style/TextStyle.Title</item>
+        <item name="tabTextColor">@android:color/darker_gray</item>
     </style>
 
 </resources>
