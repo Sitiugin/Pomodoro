@@ -77,17 +77,20 @@
         <com.glebworx.pomodoro.ui.fragment.report.view.ReportHistoryView
             android:id="@+id/view_history"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:padding="@dimen/margin_content" />
 
         <com.glebworx.pomodoro.ui.fragment.report.view.ReportPomodorosView
             android:id="@+id/view_pomodoros"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:padding="@dimen/margin_content" />
 
         <com.glebworx.pomodoro.ui.fragment.report.view.ReportTasksView
             android:id="@+id/view_tasks"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:padding="@dimen/margin_content" />
 
     </androidx.viewpager.widget.ViewPager>
 

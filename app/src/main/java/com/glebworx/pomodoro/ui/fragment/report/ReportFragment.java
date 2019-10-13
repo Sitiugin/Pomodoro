@@ -1,6 +1,7 @@
 package com.glebworx.pomodoro.ui.fragment.report;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,8 @@ public class ReportFragment extends Fragment implements IReportFragment {
     TabLayout tabLayout;
     @BindView(R.id.view_pager)
     ViewPager viewPager;
+
+    private Context context;
     private Unbinder unbinder;
 
     public ReportFragment() { }
@@ -42,6 +45,10 @@ public class ReportFragment extends Fragment implements IReportFragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_report, container, false);
+        context = getContext();
+        if (context == null) {
+            // TODO close fragment
+        }
         unbinder = ButterKnife.bind(this, rootView);
         initTabs();
         return rootView;
@@ -54,7 +61,7 @@ public class ReportFragment extends Fragment implements IReportFragment {
     }
 
     private void initTabs() {
-        ReportPagerAdapter adapter = new ReportPagerAdapter();
+        ReportPagerAdapter adapter = new ReportPagerAdapter(context);
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
     }

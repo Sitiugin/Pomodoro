@@ -1,5 +1,6 @@
 package com.glebworx.pomodoro.ui.fragment.report.adapter;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -11,8 +12,11 @@ import com.glebworx.pomodoro.R;
 
 public class ReportPagerAdapter extends PagerAdapter {
 
-    public ReportPagerAdapter() {
+    private Context context;
+
+    public ReportPagerAdapter(Context context) {
         super();
+        this.context = context;
     }
 
     @NonNull
@@ -31,13 +35,13 @@ public class ReportPagerAdapter extends PagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "History";
+                return context.getString(R.string.report_title_history);
             case 1:
-                return "Pomodoros";
+                return context.getString(R.string.report_title_pomodoros);
             case 2:
-                return "Tasks";
+                return context.getString(R.string.report_title_tasks);
             default:
-                return "History";
+                return context.getString(R.string.report_title_history);
         }
     }
 

@@ -327,7 +327,7 @@
         <item name="tabBackground">@android:color/transparent</item>
         <item name="tabGravity">fill</item>
         <item name="tabMode">scrollable</item>
-        <item name="tabIndicator">@drawable/drawable_color_tag</item>
+        <item name="tabIndicator">@drawable/drawable_tab_indicator</item>
         <item name="tabIndicatorColor">@color/colorHighlight</item>
         <item name="tabIndicatorFullWidth">false</item>
         <item name="tabIndicatorHeight">@dimen/size_divider_thick</item>

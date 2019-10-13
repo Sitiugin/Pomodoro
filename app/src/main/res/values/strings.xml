@@ -205,6 +205,13 @@
     <string name="main_tasks_text_working_on">Working on</string>
     <string name="main_tasks_text_paused">Paused</string>
 
+
+    <!--                                                                                  REPORT -->
+
+    <string name="report_title_history">History</string>
+    <string name="report_title_pomodoros">Pomodoros</string>
+    <string name="report_title_tasks">Tasks</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
