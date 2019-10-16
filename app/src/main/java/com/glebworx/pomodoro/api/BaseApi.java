@@ -15,7 +15,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
 
 public abstract class BaseApi {
@@ -26,6 +25,7 @@ public abstract class BaseApi {
     private static final String COLLECTION_USERS = "users";
     static final String COLLECTION_PROJECTS = "projects";
     static final String COLLECTION_TASKS = "tasks";
+    static final String COLLECTION_HISTORY = "history";
 
     static final String FIELD_NAME = "name";
     static final String FIELD_TIMESTAMP = "timestamp";

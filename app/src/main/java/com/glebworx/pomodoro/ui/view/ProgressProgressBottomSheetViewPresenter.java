@@ -98,9 +98,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
             return;
         }
         taskModel.addPomodoro();
-        TaskApi.addTask(projectModel, taskModel, task -> {
-            presenterListener.onPomodoroCompleted(task.isSuccessful());
-        });
+        TaskApi.completePomodoro(projectModel, taskModel, task -> presenterListener.onPomodoroCompleted(task.isSuccessful()));
     }
 
 }

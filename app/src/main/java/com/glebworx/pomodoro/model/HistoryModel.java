@@ -24,6 +24,7 @@ public class HistoryModel extends AbstractModel {
     };
 
     public static final String EVENT_TASK_CREATED = "task_created";
+    public static final String EVENT_TASK_DELETED = "task_deleted";
     public static final String EVENT_POMODORO_COMPLETED = "pomodoro_completed";
     public static final String EVENT_TASK_COMPLETED = "task_completed";
 
@@ -36,7 +37,7 @@ public class HistoryModel extends AbstractModel {
 
     //                                                                                  CONSTRUCTORS
 
-    public HistoryModel() {
+    public HistoryModel(@NonNull TaskModel taskModel, @NonNull String eventType) {
         super();
     }
 
