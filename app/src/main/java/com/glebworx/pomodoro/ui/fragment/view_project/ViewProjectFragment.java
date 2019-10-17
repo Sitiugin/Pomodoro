@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.glebworx.pomodoro.R;
-import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragment;
@@ -47,9 +46,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 import static com.glebworx.pomodoro.util.constants.Constants.LENGTH_SNACK_BAR;
 
@@ -151,14 +148,16 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
 
     @Override
     public void onDestroy() {
-        observable.unsubscribeOn(Schedulers.io());
         super.onDestroy();
+        presenter.destroy();
     }
 
     //                                                                                IMPLEMENTATION
 
     @Override
-    public void onInitView(String projectName, ViewProjectHeaderItem headerItem) {
+    public void onInitView(String projectName,
+                           ViewProjectHeaderItem headerItem,
+                           Observable<DocumentChange> observable) {
         headerAdapter = new ItemAdapter<>();
         taskAdapter = new ItemAdapter<>();
         fastAdapter = new FastAdapter<>();
@@ -170,11 +169,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         titleTextView.setText(projectName);
         initRecyclerView(fastAdapter, headerItem);
         initClickEvents(fastAdapter);
-        observable = TaskApi.getTaskEventObservable(projectName);
-        observable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(getObserver());
+        observable.subscribe(getObserver());
     }
 
     @Override

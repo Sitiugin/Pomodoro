@@ -7,7 +7,6 @@ import com.glebworx.pomodoro.model.HistoryModel;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -15,10 +14,6 @@ import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
-
-import java.util.List;
-
-import io.reactivex.Observable;
 
 public class TaskApi extends BaseApi {
 
@@ -76,25 +71,6 @@ public class TaskApi extends BaseApi {
         getCollectionGroup(COLLECTION_TASKS)
                 .orderBy(FIELD_DUE_DATE, Query.Direction.DESCENDING)
                 .addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
-    }
-
-    public static Observable<DocumentChange> getTaskEventObservable(@NonNull String projectName) {
-        return Observable.create(emitter -> {
-            ListenerRegistration listenerRegistration = TaskApi.addTaskEventListener(projectName, (querySnapshot, e) -> {
-                if (e != null) {
-                    emitter.onError(e);
-                    return;
-                }
-                if (querySnapshot == null || querySnapshot.isEmpty()) {
-                    return;
-                }
-                List<DocumentChange> documentChanges = querySnapshot.getDocumentChanges();
-                for (DocumentChange change : documentChanges) {
-                    emitter.onNext(change);
-                }
-            });
-            emitter.setCancellable(listenerRegistration::remove);
-        });
     }
 
     public static ListenerRegistration addTaskEventListener(@NonNull String projectName,

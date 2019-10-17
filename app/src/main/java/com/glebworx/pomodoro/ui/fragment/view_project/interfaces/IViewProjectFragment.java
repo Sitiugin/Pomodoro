@@ -1,12 +1,17 @@
 package com.glebworx.pomodoro.ui.fragment.view_project.interfaces;
 
 import com.glebworx.pomodoro.ui.fragment.view_project.item.ViewProjectHeaderItem;
+import com.google.firebase.firestore.DocumentChange;
 
 import java.util.Date;
 
+import io.reactivex.Observable;
+
 public interface IViewProjectFragment {
 
-    void onInitView(String projectName, ViewProjectHeaderItem headerItem);
+    void onInitView(String projectName,
+                    ViewProjectHeaderItem headerItem,
+                    Observable<DocumentChange> observable);
 
     void onProjectDeleted(boolean isSuccessful);
 

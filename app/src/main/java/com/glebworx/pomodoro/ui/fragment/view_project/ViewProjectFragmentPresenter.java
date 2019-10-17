@@ -14,8 +14,15 @@ import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFra
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentPresenter;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.TaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.ViewProjectHeaderItem;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.Date;
+import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.glebworx.pomodoro.ui.fragment.view_project.ViewProjectFragment.ARG_PROJECT_MODEL;
 
@@ -27,6 +34,8 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
     IViewProjectFragmentInteractionListener interactionListener;
     private @NonNull
     ProjectModel projectModel;
+    private @NonNull
+    Observable<DocumentChange> observable;
 
     public ViewProjectFragmentPresenter(@NonNull IViewProjectFragment presenterListener,
                                         @Nullable IViewProjectFragmentInteractionListener interactionListener,
@@ -43,7 +52,17 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
         if (projectModel == null) {
             projectModel = new ProjectModel();
         }
-        presenterListener.onInitView(projectModel.getName(), new ViewProjectHeaderItem(projectModel, onClickListener));
+        observable = getTaskEventObservable(projectModel.getName());
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+        presenterListener.onInitView(
+                projectModel.getName(),
+                new ViewProjectHeaderItem(projectModel, onClickListener),
+                observable);
+    }
+
+    @Override
+    public void destroy() {
+        observable.unsubscribeOn(Schedulers.io());
     }
 
     @Override
@@ -100,6 +119,25 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
     @Override
     public void updateSubtitle() {
         presenterListener.onSubtitleChanged(projectModel.getDueDate(), new Date());
+    }
+
+    private Observable<DocumentChange> getTaskEventObservable(@NonNull String projectName) {
+        return Observable.create(emitter -> {
+            ListenerRegistration listenerRegistration = TaskApi.addTaskEventListener(projectName, (querySnapshot, e) -> {
+                if (e != null) {
+                    emitter.onError(e);
+                    return;
+                }
+                if (querySnapshot == null || querySnapshot.isEmpty()) {
+                    return;
+                }
+                List<DocumentChange> documentChanges = querySnapshot.getDocumentChanges();
+                for (DocumentChange change : documentChanges) {
+                    emitter.onNext(change);
+                }
+            });
+            emitter.setCancellable(listenerRegistration::remove);
+        });
     }
 
 }
