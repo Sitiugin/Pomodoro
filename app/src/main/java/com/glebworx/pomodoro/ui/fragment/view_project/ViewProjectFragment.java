@@ -75,7 +75,6 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     private ItemAdapter<ViewProjectHeaderItem> headerAdapter;
     private ItemAdapter<TaskItem> taskAdapter;
     private UndoHelper<AbstractItem> undoHelper;
-    private Observable<DocumentChange> observable;
     private IViewProjectFragmentInteractionListener fragmentListener;
     private Unbinder unbinder;
     private ViewProjectFragmentPresenter presenter;
@@ -122,6 +121,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        presenter.destroy();
         unbinder.unbind();
     }
 
@@ -146,11 +146,6 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         super.onDetach();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        presenter.destroy();
-    }
 
     //                                                                                IMPLEMENTATION
 

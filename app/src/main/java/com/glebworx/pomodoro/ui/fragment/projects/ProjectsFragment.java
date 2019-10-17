@@ -20,8 +20,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.glebworx.pomodoro.R;
-import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.api.TaskApi;
+import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragment;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.projects.item.AddProjectItem;
@@ -31,6 +31,7 @@ import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
 import com.glebworx.pomodoro.util.tasks.InitProjectsTask;
 import com.glebworx.pomodoro.util.tasks.InitTaskCountTask;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mikepenz.fastadapter.FastAdapter;
@@ -49,6 +50,8 @@ import java.util.stream.IntStream;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static com.glebworx.pomodoro.util.constants.Constants.LENGTH_SNACK_BAR;
@@ -73,7 +76,6 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
     private FastAdapter<AbstractItem> fastAdapter;
     private UndoHelper<AbstractItem> undoHelper;
     private EventListener<QuerySnapshot> taskCountEventListener;
-    private EventListener<QuerySnapshot> projectsEventListener;
     private IProjectsFragmentInteractionListener fragmentListener;
     private InitTaskCountTask initTaskCountTask;
     private InitProjectsTask initProjectsTask;
@@ -106,6 +108,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        presenter.destroy();
         unbinder.unbind();
     }
 
@@ -132,16 +135,6 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
             initTaskCountTask = new InitTaskCountTask(snapshots, headerAdapter, fastAdapter);
             initTaskCountTask.execute();
         };
-        projectsEventListener = (snapshots, e) -> {
-            if (initProjectsTask != null && initProjectsTask.getStatus() != AsyncTask.Status.FINISHED) {
-                initProjectsTask.cancel(true);
-            }
-            if (snapshots == null) {
-                return;
-            }
-            initProjectsTask = new InitProjectsTask(snapshots, projectAdapter, fastAdapter);
-            initProjectsTask.execute();
-        };
 
         fragmentListener = (IProjectsFragmentInteractionListener) context;
 
@@ -150,7 +143,6 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
     @Override
     public void onDetach() {
         taskCountEventListener = null;
-        projectsEventListener = null;
         fragmentListener = null;
         super.onDetach();
     }
@@ -159,14 +151,15 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
     //                                                                                     INTERFACE
 
     @Override
-    public void onInitView(IItemAdapter.Predicate<ProjectItem> predicate) {
+    public void onInitView(IItemAdapter.Predicate<ProjectItem> predicate,
+                           Observable<DocumentChange> observable) {
 
         initRecyclerView(fastAdapter);
         initSearchView(predicate);
         initClickEvents(fastAdapter);
 
         TaskApi.addAllTasksEventListener(taskCountEventListener);
-        ProjectApi.addModelEventListener(projectsEventListener);
+        observable.subscribe(getObserver());
 
     }
 
@@ -315,6 +308,48 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
                 R.layout.popup_options_projects,
                 optionsButton,
                 Gravity.BOTTOM | Gravity.END);
+    }
+
+    private io.reactivex.Observer<DocumentChange> getObserver() {
+        return new io.reactivex.Observer<DocumentChange>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(DocumentChange documentChange) {
+                ProjectItem item = new ProjectItem(documentChange.getDocument().toObject(ProjectModel.class));
+                int index;
+                switch (documentChange.getType()) {
+                    case ADDED:
+                        projectAdapter.add(item);
+                        break;
+                    case MODIFIED:
+                        index = getProjectItemIndex(item.getProjectName());
+                        if (index != -1) {
+                            projectAdapter.set(index + 1, item); // add 1 because of header
+                        }
+                        break;
+                    case REMOVED:
+                        index = getProjectItemIndex(item.getProjectName());
+                        if (index != -1) {
+                            projectAdapter.remove(index + 1); // add 1 because of header
+                        }
+                        break;
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
     }
 
 }

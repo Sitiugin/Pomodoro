@@ -1,25 +1,19 @@
 package com.glebworx.pomodoro.api;
 
-import android.content.Context;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.ProjectModel;
-import com.glebworx.pomodoro.model.TaskModel;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.List;
-import java.util.Map;
 
 public class ProjectApi extends BaseApi {
 
@@ -80,8 +74,8 @@ public class ProjectApi extends BaseApi {
 
     }
 
-    public static void addModelEventListener(@NonNull EventListener<QuerySnapshot> eventListener) {
-        addModelEventListener(eventListener, getCollection(COLLECTION_PROJECTS));
+    public static ListenerRegistration addModelEventListener(@NonNull EventListener<QuerySnapshot> eventListener) {
+        return addModelEventListener(eventListener, getCollection(COLLECTION_PROJECTS));
     }
 
     public static void addDocumentModelEventListener(@NonNull EventListener<DocumentSnapshot> eventListener, @NonNull String documentName) {
