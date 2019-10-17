@@ -37,6 +37,10 @@ public class HistoryModel extends AbstractModel {
 
     //                                                                                  CONSTRUCTORS
 
+    public HistoryModel() {
+        super();
+    }
+
     public HistoryModel(@NonNull TaskModel taskModel, @NonNull String eventType) {
         super();
     }

@@ -2,7 +2,7 @@ package com.glebworx.pomodoro.ui.fragment.report.view;
 
 import androidx.annotation.NonNull;
 
-import com.glebworx.pomodoro.api.ProjectApi;
+import com.glebworx.pomodoro.api.HistoryApi;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportHistoryView;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportHistoryViewPresenter;
 import com.google.firebase.firestore.DocumentChange;
@@ -19,17 +19,35 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
     private @NonNull
     IReportHistoryView presenterListener;
     private @NonNull
-    Observable<DocumentChange> projectsObservable;
+    Observable<DocumentChange> observable;
 
     public ReportHistoryViewPresenter(@NonNull IReportHistoryView presenterListener) {
         this.presenterListener = presenterListener;
         init();
     }
 
+    @Override
+    public void init() {
+        observable = getObservable();
+        presenterListener.onInitView();
+    }
 
-    private Observable<DocumentChange> getProjectEventObservable() {
+    @Override
+    public void subscribe() {
+        Observable<DocumentChange> observable = this.observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        presenterListener.onSubscribed(observable);
+    }
+
+    @Override
+    public void unsubscribe() {
+        observable.unsubscribeOn(Schedulers.io());
+    }
+
+    private Observable<DocumentChange> getObservable() {
         return Observable.create(emitter -> {
-            ListenerRegistration listenerRegistration = ProjectApi.addModelEventListener((querySnapshot, e) -> {
+            ListenerRegistration listenerRegistration = HistoryApi.addAllHistoryEventListener((querySnapshot, e) -> {
                 if (e != null) {
                     emitter.onError(e);
                     return;
@@ -44,23 +62,6 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
             });
             emitter.setCancellable(listenerRegistration::remove);
         });
-    }
-
-    @Override
-    public void init() {
-        projectsObservable = getProjectEventObservable();
-        presenterListener.onInitView();
-    }
-
-    @Override
-    public void subscribe() {
-        Observable<DocumentChange> observable = projectsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
-        presenterListener.onSubscribed(observable);
-    }
-
-    @Override
-    public void unsubscribe() {
-        projectsObservable.unsubscribeOn(Schedulers.io());
     }
 
 }
