@@ -129,7 +129,6 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
         constraintSet = new ConstraintSet();
         unbinder = ButterKnife.bind(this, rootView);
         presenter = new AddTaskFragmentPresenter(this, getArguments());
-
         return rootView;
     }
 
@@ -160,10 +159,6 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
                            String dueDate,
                            int pomodorosAllocated,
                            String recurrence) {
-
-        if (activity == null || context == null) {
-            fragmentListener.onCloseFragment();
-        }
 
         if (isEditing) {
             taskNameEditText.setVisibility(View.GONE);

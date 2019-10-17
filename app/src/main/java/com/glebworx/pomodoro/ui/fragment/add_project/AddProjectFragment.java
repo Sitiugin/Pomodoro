@@ -152,10 +152,6 @@ public class AddProjectFragment extends Fragment implements IAddProjectFragment 
                            String colorTag,
                            String dueDate) {
 
-        if (activity == null || context == null) {
-            fragmentListener.onCloseFragment();
-        }
-
         if (isEditing) {
             projectNameEditText.setVisibility(View.GONE);
             projectNameSectionTextView.setVisibility(View.GONE);

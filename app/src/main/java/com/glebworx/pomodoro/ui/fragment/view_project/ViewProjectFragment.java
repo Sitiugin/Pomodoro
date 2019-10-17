@@ -148,6 +148,34 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
 
         super.onAttach(context);
         eventListener = (snapshots, e) -> {
+            if (snapshots == null) {
+                return;
+            }
+            /*Observable
+                    .fromIterable(snapshots.getDocumentChanges())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new Observer() {
+                @Override
+                public void onSubscribe(Disposable d) {
+
+                }
+
+                @Override
+                public void onNext(Object o) {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onComplete() {
+
+                }
+            });*/
             if (initTasksTask != null && initTasksTask.getStatus() != AsyncTask.Status.FINISHED) {
                 initTasksTask.cancel(true);
             }
