@@ -24,7 +24,7 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
     private @Nullable
     IProjectsFragmentInteractionListener interactionListener;
     private @NonNull
-    Observable<DocumentChange> observable;
+    Observable<DocumentChange> projectsObservable;
 
     public ProjectsFragmentPresenter(@NonNull IProjectsFragment presenterListener,
                                      @Nullable IProjectsFragmentInteractionListener interactionListener) {
@@ -36,14 +36,14 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
     @Override
     public void init() {
         IItemAdapter.Predicate<ProjectItem> predicate = getFilterPredicate();
-        observable = getProjectkEventObservable();
-        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
-        presenterListener.onInitView(predicate, observable);
+        projectsObservable = getProjectEventObservable();
+        projectsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+        presenterListener.onInitView(predicate, projectsObservable);
     }
 
     @Override
     public void destroy() {
-        observable.unsubscribeOn(Schedulers.io());
+        projectsObservable.unsubscribeOn(Schedulers.io());
     }
 
     @Override
@@ -79,7 +79,7 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
         };
     }
 
-    private Observable<DocumentChange> getProjectkEventObservable() {
+    private Observable<DocumentChange> getProjectEventObservable() {
         return Observable.create(emitter -> {
             ListenerRegistration listenerRegistration = ProjectApi.addModelEventListener((querySnapshot, e) -> {
                 if (e != null) {

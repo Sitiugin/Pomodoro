@@ -2,7 +2,6 @@ package com.glebworx.pomodoro.ui.fragment.projects;
 
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,7 +19,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.glebworx.pomodoro.R;
-import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragment;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragmentInteractionListener;
@@ -29,11 +27,7 @@ import com.glebworx.pomodoro.ui.fragment.projects.item.ProjectHeaderItem;
 import com.glebworx.pomodoro.ui.fragment.projects.item.ProjectItem;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
-import com.glebworx.pomodoro.util.tasks.InitProjectsTask;
-import com.glebworx.pomodoro.util.tasks.InitTaskCountTask;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IItemAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
@@ -75,10 +69,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
     private ItemAdapter<ProjectItem> projectAdapter;
     private FastAdapter<AbstractItem> fastAdapter;
     private UndoHelper<AbstractItem> undoHelper;
-    private EventListener<QuerySnapshot> taskCountEventListener;
     private IProjectsFragmentInteractionListener fragmentListener;
-    private InitTaskCountTask initTaskCountTask;
-    private InitProjectsTask initProjectsTask;
     private Unbinder unbinder;
     private ProjectsFragmentPresenter presenter;
 
@@ -114,35 +105,12 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
 
     @Override
     public void onAttach(@NonNull Context context) {
-
-        projectAdapter = new ItemAdapter<>();
-        fastAdapter = new FastAdapter<>();
-        undoHelper = new UndoHelper<>(fastAdapter, (positions, removed) -> {
-            for (FastAdapter.RelativeInfo<AbstractItem> relativeInfo: removed) {
-                presenter.deleteProject((ProjectItem) relativeInfo.item, relativeInfo.position);
-            }
-        });
-
         super.onAttach(context);
-
-        taskCountEventListener = (snapshots, e) -> { // TODO not triggered when editing a project task
-            if (initTaskCountTask != null && initTaskCountTask.getStatus() != AsyncTask.Status.FINISHED) {
-                initTaskCountTask.cancel(true);
-            }
-            if (snapshots == null) {
-                return;
-            }
-            initTaskCountTask = new InitTaskCountTask(snapshots, headerAdapter, fastAdapter);
-            initTaskCountTask.execute();
-        };
-
         fragmentListener = (IProjectsFragmentInteractionListener) context;
-
     }
 
     @Override
     public void onDetach() {
-        taskCountEventListener = null;
         fragmentListener = null;
         super.onDetach();
     }
@@ -152,14 +120,21 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
 
     @Override
     public void onInitView(IItemAdapter.Predicate<ProjectItem> predicate,
-                           Observable<DocumentChange> observable) {
+                           Observable<DocumentChange> projectsObservable) {
+
+        projectAdapter = new ItemAdapter<>();
+        fastAdapter = new FastAdapter<>();
+        undoHelper = new UndoHelper<>(fastAdapter, (positions, removed) -> {
+            for (FastAdapter.RelativeInfo<AbstractItem> relativeInfo : removed) {
+                presenter.deleteProject((ProjectItem) relativeInfo.item, relativeInfo.position);
+            }
+        });
 
         initRecyclerView(fastAdapter);
         initSearchView(predicate);
         initClickEvents(fastAdapter);
 
-        TaskApi.addAllTasksEventListener(taskCountEventListener);
-        observable.subscribe(getObserver());
+        projectsObservable.subscribe(getObserver());
 
     }
 
