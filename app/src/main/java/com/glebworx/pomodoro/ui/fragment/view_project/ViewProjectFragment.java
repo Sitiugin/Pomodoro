@@ -2,7 +2,6 @@ package com.glebworx.pomodoro.ui.fragment.view_project;
 
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
+import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragment;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.AddTaskItem;
@@ -30,9 +30,7 @@ import com.glebworx.pomodoro.ui.fragment.view_project.item.ViewProjectHeaderItem
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
-import com.glebworx.pomodoro.util.tasks.InitTasksTask;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.DocumentChange;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
@@ -43,10 +41,15 @@ import com.mikepenz.itemanimators.AlphaCrossFadeAnimator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.glebworx.pomodoro.util.constants.Constants.LENGTH_SNACK_BAR;
 
@@ -75,9 +78,8 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     private ItemAdapter<ViewProjectHeaderItem> headerAdapter;
     private ItemAdapter<TaskItem> taskAdapter;
     private UndoHelper<AbstractItem> undoHelper;
-    private EventListener<QuerySnapshot> eventListener;
+    private Observable<DocumentChange> observable;
     private IViewProjectFragmentInteractionListener fragmentListener;
-    private InitTasksTask initTasksTask;
     private Unbinder unbinder;
     private ViewProjectFragmentPresenter presenter;
 
@@ -137,73 +139,42 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
 
     @Override
     public void onAttach(@NonNull Context context) {
-        headerAdapter = new ItemAdapter<>();
-        taskAdapter = new ItemAdapter<>();
-        fastAdapter = new FastAdapter<>();
-        undoHelper = new UndoHelper<>(fastAdapter, (positions, removed) -> {
-            for (FastAdapter.RelativeInfo<AbstractItem> relativeInfo: removed) {
-                presenter.deleteTask(((TaskItem) relativeInfo.item), relativeInfo.position);
-            }
-        });
-
         super.onAttach(context);
-        eventListener = (snapshots, e) -> {
-            if (snapshots == null) {
-                return;
-            }
-            /*Observable
-                    .fromIterable(snapshots.getDocumentChanges())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(new Observer() {
-                @Override
-                public void onSubscribe(Disposable d) {
-
-                }
-
-                @Override
-                public void onNext(Object o) {
-
-                }
-
-                @Override
-                public void onError(Throwable e) {
-
-                }
-
-                @Override
-                public void onComplete() {
-
-                }
-            });*/
-            if (initTasksTask != null && initTasksTask.getStatus() != AsyncTask.Status.FINISHED) {
-                initTasksTask.cancel(true);
-            }
-            if (snapshots == null) {
-                return;
-            }
-            initTasksTask = new InitTasksTask(snapshots, taskAdapter);
-            initTasksTask.execute();
-        };
         fragmentListener = (IViewProjectFragmentInteractionListener) context;
     }
 
     @Override
     public void onDetach() {
-        eventListener = null;
         fragmentListener = null;
         super.onDetach();
     }
 
+    @Override
+    public void onDestroy() {
+        observable.unsubscribeOn(Schedulers.io());
+        super.onDestroy();
+    }
 
     //                                                                                IMPLEMENTATION
 
     @Override
     public void onInitView(String projectName, ViewProjectHeaderItem headerItem) {
+        headerAdapter = new ItemAdapter<>();
+        taskAdapter = new ItemAdapter<>();
+        fastAdapter = new FastAdapter<>();
+        undoHelper = new UndoHelper<>(fastAdapter, (positions, removed) -> {
+            for (FastAdapter.RelativeInfo<AbstractItem> relativeInfo : removed) {
+                presenter.deleteTask(((TaskItem) relativeInfo.item), relativeInfo.position);
+            }
+        });
         titleTextView.setText(projectName);
         initRecyclerView(fastAdapter, headerItem);
         initClickEvents(fastAdapter);
-        TaskApi.addTaskEventListener(projectName, eventListener);
+        observable = TaskApi.getTaskEventObservable(projectName);
+        observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(getObserver());
     }
 
     @Override
@@ -352,6 +323,55 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         contentView.findViewById(R.id.button_edit).setOnClickListener(onClickListener);
         contentView.findViewById(R.id.button_delete).setOnClickListener(onClickListener);
 
+    }
+
+    private io.reactivex.Observer<DocumentChange> getObserver() {
+        return new io.reactivex.Observer<DocumentChange>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(DocumentChange documentChange) {
+                TaskItem item = new TaskItem(documentChange.getDocument().toObject(TaskModel.class));
+                int index;
+                switch (documentChange.getType()) {
+                    case ADDED:
+                        taskAdapter.add(item);
+                        break;
+                    case MODIFIED:
+                        index = getTaskItemIndex(item.getTaskName());
+                        if (index != -1) {
+                            taskAdapter.set(index + 1, item);
+                            //itemAdapter.set(getTaskItemIndex(item.getTaskName()), item);
+                        }
+                        break;
+                    case REMOVED:
+                        index = getTaskItemIndex(item.getTaskName());
+                        if (index != -1) {
+                            taskAdapter.remove(index + 1);
+                        }
+                        break;
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+    }
+
+    private int getTaskItemIndex(@NonNull String name) {
+        return IntStream.range(0, taskAdapter.getAdapterItems().size())
+                .filter(i -> name.equals(taskAdapter.getAdapterItems().get(i).getTaskName()))
+                .findFirst().orElse(-1);
     }
 
 }
