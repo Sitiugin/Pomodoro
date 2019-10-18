@@ -16,6 +16,6 @@ public interface IAddTaskFragmentPresenter {
 
     void selectRecurrence(int position);
 
-    void addTask();
+    void saveTask();
 
 }

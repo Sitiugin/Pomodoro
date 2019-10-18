@@ -34,6 +34,12 @@ public class TaskApi extends BaseApi {
         modifyTask(projectModel, taskModel, HistoryModel.EVENT_TASK_CREATED, onCompleteListener);
     }
 
+    public static void updateTask(@NonNull ProjectModel projectModel,
+                                  @NonNull TaskModel taskModel,
+                                  @Nullable OnCompleteListener<Void> onCompleteListener) {
+        modifyTask(projectModel, taskModel, HistoryModel.EVENT_TASK_UPDATED, onCompleteListener);
+    }
+
     public static void completePomodoro(@NonNull ProjectModel projectModel,
                                         @NonNull TaskModel taskModel,
                                         @Nullable OnCompleteListener<Void> onCompleteListener) {

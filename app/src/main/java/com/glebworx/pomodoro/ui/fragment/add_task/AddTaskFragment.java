@@ -328,7 +328,7 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
                     break;
                 case R.id.button_save:
                     updateName();
-                    presenter.addTask();
+                    presenter.saveTask();
                     break;
                 case R.id.button_close:
                     KeyboardManager.hideKeyboard(activity);

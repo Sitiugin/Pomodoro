@@ -114,30 +114,51 @@ public class AddTaskFragmentPresenter implements IAddTaskFragmentPresenter {
     }
 
     @Override
-    public void addTask() {
+    public void saveTask() {
+
         if (taskModel.isValid()) {
+
             presenterListener.onAddTaskStart();
             if (isEditing) {
                 projectModel.setTask(oldTaskModel, taskModel);
+                updateTask();
             } else {
                 projectModel.addTask(taskModel);
+                addTask();
             }
-            TaskApi.addTask(projectModel, taskModel, task -> {
-                if (task.isSuccessful()) {
-                    presenterListener.onAddTaskSuccess(isEditing);
-                } else {
-                    presenterListener.onAddTaskFailure(isEditing);
-                }
-            });
+
         } else {
+
             presenterListener.onTaskValidationFailed(
                     taskModel.getName() == null
                             || taskModel.getName().isEmpty());
+
         }
+
     }
 
 
     //                                                                                       HELPERS
+
+    private void addTask() {
+        TaskApi.addTask(projectModel, taskModel, task -> {
+            if (task.isSuccessful()) {
+                presenterListener.onAddTaskSuccess(isEditing);
+            } else {
+                presenterListener.onAddTaskFailure(isEditing);
+            }
+        });
+    }
+
+    private void updateTask() {
+        TaskApi.updateTask(projectModel, taskModel, task -> {
+            if (task.isSuccessful()) {
+                presenterListener.onAddTaskSuccess(isEditing);
+            } else {
+                presenterListener.onAddTaskFailure(isEditing);
+            }
+        });
+    }
 
     private void initRecurrenceMap() {
         recurrenceMap = new SparseArray<>();

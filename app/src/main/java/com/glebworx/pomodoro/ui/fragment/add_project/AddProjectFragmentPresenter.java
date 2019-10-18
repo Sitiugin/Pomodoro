@@ -110,24 +110,48 @@ class AddProjectFragmentPresenter implements IAddProjectFragmentPresenter {
 
     @Override
     public void saveProject() {
+
         if (projectModel.isValid()) {
+
             presenterListener.onSaveProjectStart();
-            ProjectApi.saveProject(projectModel, task -> {
-                if (task.isSuccessful()) {
-                    presenterListener.onSaveProjectSuccess(isEditing);
-                } else {
-                    presenterListener.onSaveProjectFailure(isEditing);
-                }
-            });
+            if (isEditing) {
+                addProject();
+            } else {
+                updateProject();
+            }
+
         } else {
+
             presenterListener.onProjectValidationFailed(
                     projectModel.getName() == null
                             || projectModel.getName().isEmpty());
+
         }
+
     }
 
 
     //                                                                                       HELPERS
+
+    private void addProject() {
+        ProjectApi.addProject(projectModel, task -> {
+            if (task.isSuccessful()) {
+                presenterListener.onSaveProjectSuccess(isEditing);
+            } else {
+                presenterListener.onSaveProjectFailure(isEditing);
+            }
+        });
+    }
+
+    private void updateProject() {
+        ProjectApi.updateProject(projectModel, task -> {
+            if (task.isSuccessful()) {
+                presenterListener.onSaveProjectSuccess(isEditing);
+            } else {
+                presenterListener.onSaveProjectFailure(isEditing);
+            }
+        });
+    }
 
     private void initColorTagMap() {
         colorTagMap = new SparseArray<>();

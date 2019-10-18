@@ -3,6 +3,7 @@ package com.glebworx.pomodoro.api;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.glebworx.pomodoro.model.HistoryModel;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.firestore.CollectionReference;
@@ -11,9 +12,17 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.glebworx.pomodoro.api.DataApi.DOCUMENT_PROJECT_COLORS;
+import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_CREATED;
+import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_DELETED;
+import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_UPDATED;
 
 public class ProjectApi extends BaseApi {
 
@@ -27,9 +36,14 @@ public class ProjectApi extends BaseApi {
 
     //                                                                                    PUBLIC API
 
-    public static void saveProject(@NonNull ProjectModel model,
-                                   @Nullable OnCompleteListener<Void> onCompleteListener) {
-        saveModel(model, getCollection(COLLECTION_PROJECTS), onCompleteListener);
+    public static void addProject(@NonNull ProjectModel model,
+                                  @Nullable OnCompleteListener<Void> onCompleteListener) {
+        modifyProject(model, EVENT_PROJECT_CREATED, onCompleteListener);
+    }
+
+    public static void updateProject(@NonNull ProjectModel model,
+                                     @Nullable OnCompleteListener<Void> onCompleteListener) {
+        modifyProject(model, EVENT_PROJECT_UPDATED, onCompleteListener);
     }
 
     /*public static void updateTasks(@NonNull ProjectModel projectModel,
@@ -66,6 +80,49 @@ public class ProjectApi extends BaseApi {
         }
         batch.delete(projectDocument);
 
+        batch.set(
+                projectDocument.collection(COLLECTION_HISTORY).document(),
+                new HistoryModel(projectModel.getName(), null, EVENT_PROJECT_DELETED)
+        );
+
+        Map<String, String> map = new HashMap<>();
+        map.put(projectModel.getName(), null);
+        batch.set(
+                getCollection(COLLECTION_DATA).document(DOCUMENT_PROJECT_COLORS),
+                map,
+                SetOptions.merge());
+
+
+        if (onCompleteListener == null) {
+            batch.commit();
+        } else {
+            batch.commit().addOnCompleteListener(onCompleteListener);
+        }
+
+    }
+
+    private static void modifyProject(@NonNull ProjectModel projectModel,
+                                      @NonNull String eventType,
+                                      @Nullable OnCompleteListener<Void> onCompleteListener) {
+
+        WriteBatch batch = getWriteBatch();
+
+        DocumentReference projectDocument = getCollection(COLLECTION_PROJECTS).document(projectModel.getName());
+
+        batch.set(projectDocument, projectModel);
+
+        batch.set(
+                projectDocument.collection(COLLECTION_HISTORY).document(),
+                new HistoryModel(projectModel.getName(), null, eventType)
+        );
+
+        Map<String, String> map = new HashMap<>();
+        map.put(projectModel.getName(), projectModel.getColorTag());
+        batch.set(
+                getCollection(COLLECTION_DATA).document(DOCUMENT_PROJECT_COLORS),
+                map,
+                SetOptions.merge());
+
         if (onCompleteListener == null) {
             batch.commit();
         } else {
@@ -80,11 +137,6 @@ public class ProjectApi extends BaseApi {
 
     public static void addDocumentModelEventListener(@NonNull EventListener<DocumentSnapshot> eventListener, @NonNull String documentName) {
         addDocumentModelEventListener(eventListener,  getCollection(COLLECTION_PROJECTS), documentName);
-    }
-
-    public interface OnValidationCompleteListener {
-        void onConnectionFailed();
-        void onDuplicateFound();
     }
 
 }
