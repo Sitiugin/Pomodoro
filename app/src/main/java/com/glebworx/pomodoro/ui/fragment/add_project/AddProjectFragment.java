@@ -320,14 +320,12 @@ public class AddProjectFragment extends Fragment implements IAddProjectFragment 
         DatePicker datePicker = alertDialog.findViewById(R.id.date_picker);
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.setTime(dueDate);
-        if (datePicker != null) {
-            datePicker.setMinDate(System.currentTimeMillis() - 1000);
-            datePicker.init(
-                    calendar.get(Calendar.YEAR),
-                    calendar.get(Calendar.MONTH),
-                    calendar.get(Calendar.DAY_OF_MONTH),
-                    getDateChangeListener(alertDialog));
-        }
+        Objects.requireNonNull(datePicker).setMinDate(System.currentTimeMillis() - 1000);
+        datePicker.init(
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH),
+                getDateChangeListener(alertDialog));
     }
 
     private DatePicker.OnDateChangedListener getDateChangeListener(AlertDialog alertDialog) {

@@ -23,6 +23,7 @@ import com.google.firebase.firestore.DocumentChange;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -76,9 +77,11 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
     }
 
     @Override
-    public void onDateChanged(Date newDate) {
+    public void onDateChanged(Date newDate, boolean updateCalendar) {
         dateButton.setText(DateTimeManager.getMMYYString(newDate));
-        calendarView.setCurrentDate(newDate);
+        if (updateCalendar) {
+            calendarView.setCurrentDate(newDate);
+        }
     }
 
     @Override
@@ -90,14 +93,11 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
         DatePicker datePicker = alertDialog.findViewById(R.id.date_picker);
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.setTime(defaultDate);
-        if (datePicker != null) {
-            datePicker.setMinDate(System.currentTimeMillis() - 1000);
-            datePicker.init(
-                    calendar.get(Calendar.YEAR),
-                    calendar.get(Calendar.MONTH),
-                    calendar.get(Calendar.DAY_OF_MONTH),
-                    getDateChangeListener(alertDialog));
-        }
+        Objects.requireNonNull(datePicker).init(
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH),
+                getDateChangeListener(alertDialog));
     }
 
     private void init(Context context, AttributeSet attrs, int defStyle) {

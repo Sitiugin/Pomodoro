@@ -12,7 +12,7 @@ public interface IReportHistoryView {
 
     void onSubscribed(Observable<DocumentChange> observable);
 
-    void onDateChanged(Date newDate);
+    void onDateChanged(Date newDate, boolean updateCalendar);
 
     void onShowDatePicker(Date defaultDate);
 

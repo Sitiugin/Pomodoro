@@ -51,9 +51,7 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
     @Override
     public void setCalendarDate(Date newDate, boolean updateCalendar) {
         calendarDate = newDate;
-        if (updateCalendar) {
-            presenterListener.onDateChanged(calendarDate);
-        }
+        presenterListener.onDateChanged(calendarDate, updateCalendar);
     }
 
     @Override
