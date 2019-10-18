@@ -8,6 +8,7 @@ import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportHistoryVi
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.ListenerRegistration;
 
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -20,6 +21,7 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
     IReportHistoryView presenterListener;
     private @NonNull
     Observable<DocumentChange> observable;
+    private Date calendarDate;
 
     public ReportHistoryViewPresenter(@NonNull IReportHistoryView presenterListener) {
         this.presenterListener = presenterListener;
@@ -29,6 +31,7 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
     @Override
     public void init() {
         observable = getObservable();
+        calendarDate = new Date();
         presenterListener.onInitView();
     }
 
@@ -43,6 +46,19 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
     @Override
     public void unsubscribe() {
         observable.unsubscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public void setCalendarDate(Date newDate, boolean updateCalendar) {
+        calendarDate = newDate;
+        if (updateCalendar) {
+            presenterListener.onDateChanged(calendarDate);
+        }
+    }
+
+    @Override
+    public void showDatePicker() {
+        presenterListener.onShowDatePicker(calendarDate);
     }
 
     private Observable<DocumentChange> getObservable() {

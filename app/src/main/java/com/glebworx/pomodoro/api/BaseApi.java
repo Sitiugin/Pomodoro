@@ -52,10 +52,10 @@ public abstract class BaseApi {
         }
     }
 
-    protected static void getModel(@NonNull AbstractModel model,
+    protected static void getModel(@NonNull String name,
                                    @NonNull CollectionReference collectionReference,
                                    @NonNull OnCompleteListener<DocumentSnapshot> onCompleteListener) {
-        collectionReference.document(model.getName()).get().addOnCompleteListener(onCompleteListener);
+        collectionReference.document(name).get().addOnCompleteListener(onCompleteListener);
     }
 
     protected static void deleteModel(@NonNull AbstractModel model,

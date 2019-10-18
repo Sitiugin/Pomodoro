@@ -42,9 +42,9 @@ public class ProjectApi extends BaseApi {
         }
     }*/
 
-    public static void getModel(@NonNull ProjectModel model,
+    public static void getModel(@NonNull String projectName,
                                 @NonNull OnCompleteListener<DocumentSnapshot> onCompleteListener) {
-        getModel(model, getCollection(COLLECTION_PROJECTS), onCompleteListener);
+        getModel(projectName, getCollection(COLLECTION_PROJECTS), onCompleteListener);
     }
 
     public static void getModelByName(@NonNull String name,

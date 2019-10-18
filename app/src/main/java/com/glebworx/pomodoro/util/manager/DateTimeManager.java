@@ -7,7 +7,6 @@ import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.util.constants.Constants;
 
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -20,6 +19,8 @@ public class DateTimeManager {
 
     private static SimpleDateFormat dateFormat =
             new SimpleDateFormat(Constants.PATTERN_DATE, Locale.getDefault());
+    private static SimpleDateFormat calendarFormat =
+            new SimpleDateFormat(Constants.PATTERN_CALENDAR, Locale.getDefault());
 
     private Context context;
     private Calendar currentCalendar;
@@ -88,6 +89,10 @@ public class DateTimeManager {
                 currentDate.getTime(),
                 DateUtils.DAY_IN_MILLIS,
                 DateUtils.FORMAT_ABBREV_ALL));
+    }
+
+    public static String getMMYYString(Date date) {
+        return calendarFormat.format(date);
     }
 
     public static String formatHHMMString(Context context, int minutes) {

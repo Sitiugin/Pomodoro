@@ -1,8 +1,12 @@
 package com.glebworx.pomodoro.ui.fragment.report.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
+import android.widget.DatePicker;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,26 +16,26 @@ import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.HistoryModel;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportHistoryView;
+import com.glebworx.pomodoro.util.manager.DateTimeManager;
+import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.google.firebase.firestore.DocumentChange;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
 public class ReportHistoryView extends ConstraintLayout implements IReportHistoryView {
 
-    @BindView(R.id.button_date)
-    AppCompatButton dateButton;
-    @BindView(R.id.calendar_view)
-    CompactCalendarView calendarView;
-    @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
+    private AppCompatButton dateButton;
+    private CompactCalendarView calendarView;
+    private RecyclerView recyclerView;
 
     private Context context;
+    private Activity activity;
     private ReportHistoryViewPresenter presenter;
-    private Unbinder unbinder;
 
     public ReportHistoryView(Context context) {
         super(context);
@@ -49,12 +53,6 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
     }
 
     @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        unbinder = ButterKnife.bind(this);
-    }
-
-    @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         presenter.subscribe();
@@ -64,12 +62,12 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
     protected void onDetachedFromWindow() {
         presenter.unsubscribe();
         super.onDetachedFromWindow();
-        unbinder.unbind();
     }
 
     @Override
     public void onInitView() {
-
+        initDateButton();
+        initCalendarView();
     }
 
     @Override
@@ -77,10 +75,74 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
         observable.subscribe(getObserver());
     }
 
+    @Override
+    public void onDateChanged(Date newDate) {
+        dateButton.setText(DateTimeManager.getMMYYString(newDate));
+        calendarView.setCurrentDate(newDate);
+    }
+
+    @Override
+    public void onShowDatePicker(Date defaultDate) {
+        if (activity == null) {
+            return;
+        }
+        AlertDialog alertDialog = DialogManager.showDialog(activity, R.id.container_main, R.layout.dialog_date_picker);
+        DatePicker datePicker = alertDialog.findViewById(R.id.date_picker);
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        calendar.setTime(defaultDate);
+        if (datePicker != null) {
+            datePicker.setMinDate(System.currentTimeMillis() - 1000);
+            datePicker.init(
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH),
+                    getDateChangeListener(alertDialog));
+        }
+    }
+
     private void init(Context context, AttributeSet attrs, int defStyle) {
-        inflate(context, R.layout.view_report_history, this);
+        View rootView = inflate(context, R.layout.view_report_history, this);
+        dateButton = rootView.findViewById(R.id.button_date);
+        calendarView = rootView.findViewById(R.id.calendar_view);
+        recyclerView = rootView.findViewById(R.id.recycler_view);
         this.context = context;
+        if (context instanceof Activity) {
+            this.activity = (Activity) context;
+        }
         this.presenter = new ReportHistoryViewPresenter(this);
+    }
+
+    private void initDateButton() {
+        dateButton.setText(DateTimeManager.getMMYYString(new Date()));
+        dateButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.showDatePicker();
+            }
+        });
+    }
+
+    private DatePicker.OnDateChangedListener getDateChangeListener(AlertDialog alertDialog) {
+        return (view, year, monthOfYear, dayOfMonth) -> {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(year, monthOfYear, dayOfMonth, 0, 0, 0);
+            presenter.setCalendarDate(calendar.getTime(), true);
+            alertDialog.dismiss();
+        };
+    }
+
+    private void initCalendarView() {
+        calendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
+            @Override
+            public void onDayClick(Date dateClicked) {
+
+            }
+
+            @Override
+            public void onMonthScroll(Date firstDayOfNewMonth) {
+                presenter.setCalendarDate(firstDayOfNewMonth, false);
+            }
+        });
     }
 
     private io.reactivex.Observer<DocumentChange> getObserver() {

@@ -313,7 +313,10 @@ public class AddProjectFragment extends Fragment implements IAddProjectFragment 
     }
 
     private void showDatePickerDialog(Date dueDate) {
-        AlertDialog alertDialog = DialogManager.showDialog(activity, R.id.container_main, R.layout.dialog_date_picker);
+        AlertDialog alertDialog = DialogManager.showDialog(
+                activity,
+                R.id.container_main,
+                R.layout.dialog_date_picker);
         DatePicker datePicker = alertDialog.findViewById(R.id.date_picker);
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.setTime(dueDate);
