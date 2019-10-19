@@ -41,16 +41,20 @@ public class HistoryApi extends BaseApi {
                 .addOnCompleteListener(onCompleteListener);
     }
 
-    public static Query getHistoryAfter(@Nullable Query query, @NonNull DocumentSnapshot startAfterSnapshot, @NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
+    public static Query getHistoryAfter(@Nullable Query query, @NonNull DocumentSnapshot startAfterSnapshot, @Nullable OnCompleteListener<QuerySnapshot> onCompleteListener) {
         if (query == null) {
             Query newQuery = getCollection(COLLECTION_HISTORY)
                     .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
                     .startAfter(startAfterSnapshot)
                     .limit(PAGE_SIZE);
-            newQuery.get().addOnCompleteListener(onCompleteListener);
+            if (onCompleteListener == null) {
+                newQuery.get();
+            } else {
+                newQuery.get().addOnCompleteListener(onCompleteListener);
+            }
             return newQuery;
         } else {
-            query.get().addOnCompleteListener(onCompleteListener);
+            query.get();
             return query;
         }
     }
