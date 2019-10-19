@@ -16,4 +16,6 @@ public interface IReportHistoryViewPresenter {
 
     void showDatePicker();
 
+    void getHistoryItems();
+
 }

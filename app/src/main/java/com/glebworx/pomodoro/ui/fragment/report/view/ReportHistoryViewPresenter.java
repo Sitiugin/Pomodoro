@@ -23,6 +23,8 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
     private @NonNull
     Date calendarDate;
 
+    private DocumentSnapshot startAfterSnapshot;
+
     public ReportHistoryViewPresenter(@NonNull IReportHistoryView presenterListener) {
         this.presenterListener = presenterListener;
         init();
@@ -32,16 +34,8 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
     public void init() {
         calendarDate = new Date();
         presenterListener.onInitView();
-        HistoryApi.getHistory(task -> {
-            if (task.isSuccessful() && task.getResult() != null) {
-                Observable<DocumentSnapshot> observable = getObservable(task.getResult())
-                        .observeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread());
-                presenterListener.onHistoryReceived(observable);
-            } else {
-                presenterListener.onHistoryRequestFailed();
-            }
-        });
+        startAfterSnapshot = null;
+        getHistoryItems();
     }
 
     @Override
@@ -66,7 +60,22 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
         presenterListener.onShowDatePicker(calendarDate);
     }
 
+    @Override
+    public void getHistoryItems() {
+        HistoryApi.getHistory(startAfterSnapshot, task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                Observable<DocumentSnapshot> observable = getObservable(task.getResult())
+                        .observeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread());
+                presenterListener.onHistoryReceived(observable);
+            } else {
+                presenterListener.onHistoryRequestFailed();
+            }
+        });
+    }
+
     private Observable<DocumentSnapshot> getObservable(QuerySnapshot snapshot) {
+        startAfterSnapshot = snapshot.getDocuments().get(snapshot.getDocuments().size() - 1);
         return Observable.fromIterable(snapshot.getDocuments());
     }
 

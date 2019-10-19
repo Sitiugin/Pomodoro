@@ -26,6 +26,7 @@ import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
+import com.mikepenz.fastadapter_extensions.scroll.EndlessRecyclerOnScrollListener;
 import com.mikepenz.itemanimators.AlphaCrossFadeAnimator;
 
 import java.util.Calendar;
@@ -165,6 +166,7 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
         fastAdapter.setHasStableIds(true);
         recyclerView.setAdapter(fastAdapter);
         attachScrollListener();
+        attachEndlessScrollListener();
     }
 
     private void attachScrollListener() {
@@ -205,6 +207,14 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
 
     }
 
+    private void attachEndlessScrollListener() {
+        recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
+            @Override
+            public void onLoadMore(int currentPage) {
+                presenter.getHistoryItems();
+            }
+        });
+    }
 
     private io.reactivex.Observer<DocumentSnapshot> getObserver() {
         return new io.reactivex.Observer<DocumentSnapshot>() {
