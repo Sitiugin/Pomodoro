@@ -1,6 +1,6 @@
 package com.glebworx.pomodoro.ui.fragment.report.view.interfaces;
 
-import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.Date;
 
@@ -10,7 +10,9 @@ public interface IReportHistoryView {
 
     void onInitView();
 
-    void onSubscribed(Observable<DocumentChange> observable);
+    void onHistoryReceived(Observable<DocumentSnapshot> observable);
+
+    void onHistoryRequestFailed();
 
     void onDateChanged(Date newDate, boolean updateCalendar);
 

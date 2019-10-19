@@ -5,11 +5,10 @@ import androidx.annotation.NonNull;
 import com.glebworx.pomodoro.api.HistoryApi;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportHistoryView;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportHistoryViewPresenter;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Date;
-import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -20,8 +19,7 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
     private @NonNull
     IReportHistoryView presenterListener;
     private @NonNull
-    Observable<DocumentChange> observable;
-    private Date calendarDate;
+    Date calendarDate;
 
     public ReportHistoryViewPresenter(@NonNull IReportHistoryView presenterListener) {
         this.presenterListener = presenterListener;
@@ -30,22 +28,18 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
 
     @Override
     public void init() {
-        observable = getObservable();
         calendarDate = new Date();
         presenterListener.onInitView();
-    }
-
-    @Override
-    public void subscribe() {
-        Observable<DocumentChange> observable = this.observable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-        presenterListener.onSubscribed(observable);
-    }
-
-    @Override
-    public void unsubscribe() {
-        observable.unsubscribeOn(Schedulers.io());
+        HistoryApi.getHistory(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                Observable<DocumentSnapshot> observable = getObservable(task.getResult())
+                        .observeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread());
+                presenterListener.onHistoryReceived(observable);
+            } else {
+                presenterListener.onHistoryRequestFailed();
+            }
+        });
     }
 
     @Override
@@ -59,23 +53,8 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
         presenterListener.onShowDatePicker(calendarDate);
     }
 
-    private Observable<DocumentChange> getObservable() {
-        return Observable.create(emitter -> {
-            ListenerRegistration listenerRegistration = HistoryApi.addAllHistoryEventListener((querySnapshot, e) -> {
-                if (e != null) {
-                    emitter.onError(e);
-                    return;
-                }
-                if (querySnapshot == null || querySnapshot.isEmpty()) {
-                    return;
-                }
-                List<DocumentChange> documentChanges = querySnapshot.getDocumentChanges();
-                for (DocumentChange change : documentChanges) {
-                    emitter.onNext(change);
-                }
-            });
-            emitter.setCancellable(listenerRegistration::remove);
-        });
+    private Observable<DocumentSnapshot> getObservable(QuerySnapshot snapshot) {
+        return Observable.fromIterable(snapshot.getDocuments());
     }
 
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -23,7 +24,7 @@ import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.manager.ColorManager;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.DialogManager;
-import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.itemanimators.AlphaCrossFadeAnimator;
@@ -36,8 +37,6 @@ import java.util.stream.IntStream;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
-
-import static com.google.firebase.firestore.DocumentChange.Type.ADDED;
 
 public class ReportHistoryView extends ConstraintLayout implements IReportHistoryView {
 
@@ -67,18 +66,6 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
     }
 
     @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        presenter.subscribe();
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        presenter.unsubscribe();
-        super.onDetachedFromWindow();
-    }
-
-    @Override
     public void onInitView() {
         historyAdapter = new ItemAdapter<>();
         fastAdapter = new FastAdapter<>();
@@ -88,8 +75,13 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
     }
 
     @Override
-    public void onSubscribed(Observable<DocumentChange> observable) {
+    public void onHistoryReceived(Observable<DocumentSnapshot> observable) {
         observable.subscribe(getObserver());
+    }
+
+    @Override
+    public void onHistoryRequestFailed() {
+        Toast.makeText(context, R.string.report_history_toast_connection_failed, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -165,21 +157,24 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
         recyclerView.setAdapter(fastAdapter);
     }
 
-    private io.reactivex.Observer<DocumentChange> getObserver() {
-        return new io.reactivex.Observer<DocumentChange>() {
+    private io.reactivex.Observer<DocumentSnapshot> getObserver() {
+        return new io.reactivex.Observer<DocumentSnapshot>() {
             @Override
             public void onSubscribe(Disposable d) {
 
             }
 
             @Override
-            public void onNext(DocumentChange documentChange) {
-                HistoryModel model = documentChange.getDocument().toObject(HistoryModel.class);
-                ReportHistoryItem item = new ReportHistoryItem(model);
-                if (documentChange.getType() == ADDED) {
-                    historyAdapter.add(item);
-                    calendarView.addEvent(new Event(ColorManager.getColor(context, model.getColorTag()), model.getTimestamp().getTime()));
+            public void onNext(DocumentSnapshot documentSnapshot) {
+                HistoryModel model = documentSnapshot.toObject(HistoryModel.class);
+                if (model == null) {
+                    return;
                 }
+                ReportHistoryItem item = new ReportHistoryItem(model);
+                historyAdapter.add(item);
+                calendarView.addEvent(new Event(
+                        ColorManager.getColor(context, model.getColorTag()),
+                        model.getTimestamp().getTime()));
             }
 
             @Override
@@ -189,7 +184,7 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
 
             @Override
             public void onComplete() {
-
+                int x = 0;
             }
         };
     }

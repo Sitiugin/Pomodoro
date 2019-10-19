@@ -6,10 +6,6 @@ public interface IReportHistoryViewPresenter {
 
     void init();
 
-    void subscribe();
-
-    void unsubscribe();
-
     void setCalendarDate(Date newDate, boolean updateCalendar);
 
     void showDatePicker();

@@ -9,12 +9,12 @@
     android:padding="@dimen/margin_content">
 
     <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle.Title"
         android:id="@+id/text_view_date"
-        style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_title" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_view_event_type"
@@ -22,6 +22,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/text_view_date" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

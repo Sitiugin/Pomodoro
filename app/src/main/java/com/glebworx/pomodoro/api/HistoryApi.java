@@ -2,6 +2,7 @@ package com.glebworx.pomodoro.api;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.MetadataChanges;
@@ -23,6 +24,12 @@ public class HistoryApi extends BaseApi {
         return getCollection(COLLECTION_HISTORY)
                 .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
                 .addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
+    }
+
+    public static void getHistory(@NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
+        getCollection(COLLECTION_HISTORY)
+                .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
+                .get().addOnCompleteListener(onCompleteListener);
     }
 
 
