@@ -10,6 +10,7 @@ import com.google.firebase.firestore.Exclude;
 
 public class HistoryModel extends AbstractModel {
 
+
     //                                                                                     CONSTANTS
 
     public static final Parcelable.Creator<HistoryModel> CREATOR = new Parcelable.Creator<HistoryModel>() {
@@ -38,6 +39,7 @@ public class HistoryModel extends AbstractModel {
 
     //                                                                                    ATTRIBUTES
 
+    private String colorTag;
     private String taskName;
     private String eventType;
 
@@ -52,14 +54,19 @@ public class HistoryModel extends AbstractModel {
         super();
     }
 
-    public HistoryModel(@NonNull String projectName, @Nullable String taskName, @NonNull String eventType) {
+    public HistoryModel(@NonNull String projectName,
+                        @Nullable String colorTag,
+                        @Nullable String taskName,
+                        @NonNull String eventType) {
         super(projectName);
+        this.colorTag = colorTag;
         this.taskName = taskName;
         this.eventType = eventType;
     }
 
     public HistoryModel(Parcel in) {
         super(in);
+        this.colorTag = in.readString();
         this.taskName = in.readString();
         this.eventType = in.readString();
     }
@@ -72,6 +79,7 @@ public class HistoryModel extends AbstractModel {
         super.writeToParcel(parcel, flags);
         parcel.writeString(getTaskName());
         parcel.writeString(eventType);
+        parcel.writeString(colorTag);
     }
 
     @Exclude
@@ -83,6 +91,14 @@ public class HistoryModel extends AbstractModel {
 
     //                                                                           GETTERS AND SETTERS
 
+
+    public String getColorTag() {
+        return colorTag;
+    }
+
+    public void setColorTag(String colorTag) {
+        this.colorTag = colorTag;
+    }
 
     public String getTaskName() {
         return taskName;

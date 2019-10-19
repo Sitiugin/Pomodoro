@@ -63,7 +63,7 @@ public class TaskApi extends BaseApi {
 
         batch.set(
                 projectDocument.collection(COLLECTION_HISTORY).document(),
-                new HistoryModel(projectModel.getName(), taskModel.getName(), HistoryModel.EVENT_TASK_DELETED));
+                new HistoryModel(projectModel.getName(), projectModel.getColorTag(), taskModel.getName(), HistoryModel.EVENT_TASK_DELETED));
 
         if (onCompleteListener == null) {
             batch.commit();
@@ -108,7 +108,7 @@ public class TaskApi extends BaseApi {
 
         batch.set(
                 projectDocument.collection(COLLECTION_HISTORY).document(),
-                new HistoryModel(projectModel.getName(), taskModel.getName(), eventType));
+                new HistoryModel(projectModel.getName(), projectModel.getColorTag(), taskModel.getName(), eventType));
 
         if (onCompleteListener == null) {
             batch.commit();

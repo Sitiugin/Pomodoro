@@ -82,7 +82,7 @@ public class ProjectApi extends BaseApi {
 
         batch.set(
                 projectDocument.collection(COLLECTION_HISTORY).document(),
-                new HistoryModel(projectModel.getName(), null, EVENT_PROJECT_DELETED)
+                new HistoryModel(projectModel.getName(), projectModel.getColorTag(), null, EVENT_PROJECT_DELETED)
         );
 
         Map<String, String> map = new HashMap<>();
@@ -113,7 +113,7 @@ public class ProjectApi extends BaseApi {
 
         batch.set(
                 projectDocument.collection(COLLECTION_HISTORY).document(),
-                new HistoryModel(projectModel.getName(), null, eventType)
+                new HistoryModel(projectModel.getName(), projectModel.getColorTag(), null, eventType)
         );
 
         Map<String, String> map = new HashMap<>();

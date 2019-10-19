@@ -16,5 +16,4 @@ public class DataApi extends BaseApi {
 
     //                                                                                    PUBLIC API
 
-
 }
