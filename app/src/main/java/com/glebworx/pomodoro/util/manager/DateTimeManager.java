@@ -83,6 +83,14 @@ public class DateTimeManager {
                 DateUtils.FORMAT_ABBREV_ALL));
     }
 
+    public static String getHistoryDateString(Date date, Date currentDate) {
+        return String.valueOf(DateUtils.getRelativeTimeSpanString(
+                date.getTime(),
+                currentDate.getTime(),
+                DateUtils.MINUTE_IN_MILLIS,
+                DateUtils.FORMAT_ABBREV_ALL));
+    }
+
     public static String getDateString(Date date, Date currentDate) {
         return String.valueOf(DateUtils.getRelativeTimeSpanString(
                 date.getTime(),

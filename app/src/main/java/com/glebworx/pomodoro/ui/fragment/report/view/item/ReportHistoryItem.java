@@ -1,6 +1,8 @@
 package com.glebworx.pomodoro.ui.fragment.report.view.item;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.text.Html;
 import android.view.View;
 
@@ -9,11 +11,15 @@ import androidx.appcompat.widget.AppCompatTextView;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.HistoryModel;
+import com.glebworx.pomodoro.util.manager.ColorManager;
+import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
 
+import java.util.Date;
 import java.util.List;
 
+import static com.glebworx.pomodoro.model.HistoryModel.EVENT_POMODORO_COMPLETED;
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_CREATED;
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_DELETED;
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_UPDATED;
@@ -62,6 +68,14 @@ public class ReportHistoryItem extends AbstractItem<ReportHistoryItem, ReportHis
         return model.getId();
     }
 
+    private String getColorTag() {
+        return model.getColorTag();
+    }
+
+    private String getDateString() {
+        return DateTimeManager.getHistoryDateString(model.getTimestamp(), new Date());
+    }
+
     private String getEventTypeString(Context context) {
         switch (model.getEventType()) {
             case EVENT_PROJECT_CREATED:
@@ -91,6 +105,11 @@ public class ReportHistoryItem extends AbstractItem<ReportHistoryItem, ReportHis
                         R.string.report_history_title_task_deleted,
                         model.getTaskName(),
                         model.getName());
+            case EVENT_POMODORO_COMPLETED:
+                return context.getString(
+                        R.string.report_history_title_pomodoro_completed,
+                        model.getTaskName(),
+                        model.getName());
             default:
                 return null;
         }
@@ -102,24 +121,29 @@ public class ReportHistoryItem extends AbstractItem<ReportHistoryItem, ReportHis
     protected static class ViewHolder extends FastAdapter.ViewHolder<ReportHistoryItem> {
 
         private Context context;
+        private Drawable colorTagDrawable;
         private AppCompatTextView dateTextView;
         private AppCompatTextView eventTypeTextView;
 
         ViewHolder(View view) {
             super(view);
             this.context = view.getContext();
+            colorTagDrawable = ((LayerDrawable) view.findViewById(R.id.view_color_tag).getBackground())
+                    .findDrawableByLayerId(R.id.shape_color_tag);
             this.dateTextView = view.findViewById(R.id.text_view_date);
             this.eventTypeTextView = view.findViewById(R.id.text_view_event_type);
         }
 
         @Override
         public void bindView(@NonNull ReportHistoryItem item, @NonNull List<Object> payloads) {
-            dateTextView.setText(item.getModel().getTimestamp().toString());
+            colorTagDrawable.setTint(ColorManager.getColor(context, item.getColorTag()));
+            dateTextView.setText(item.getDateString());
             eventTypeTextView.setText(Html.fromHtml(item.getEventTypeString(context), 0));
         }
 
         @Override
         public void unbindView(@NonNull ReportHistoryItem item) {
+            colorTagDrawable.setTint(ColorManager.getColor(context, null));
             dateTextView.setText(null);
             eventTypeTextView.setText(null);
         }

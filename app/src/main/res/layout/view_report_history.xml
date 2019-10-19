@@ -4,22 +4,6 @@
     android:layout_height="match_parent"
     android:clipToPadding="false">
 
-    <!--<androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/text_view_date"
-        style="@style/TextStyle.Title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/margin_content"
-        android:layout_marginTop="@dimen/margin_content"
-        android:layout_marginHorizontal="@dimen/margin_content"
-        android:background="@drawable/drawable_foreground_rounded_small_top"
-        android:elevation="@dimen/elevation_view"
-        android:foreground="@drawable/ripple_rounded_small"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="March 2019"
-        app:layout_constraintTop_toTopOf="parent" />-->
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_date"
         style="@style/ButtonStyle"
@@ -61,6 +45,10 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingTop="@dimen/margin_content_half"
+        android:paddingBottom="64dp"
         app:layout_constraintVertical_weight="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendar_view" />
