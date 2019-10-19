@@ -12,14 +12,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import static com.glebworx.pomodoro.api.DataApi.DOCUMENT_PROJECT_COLORS;
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_CREATED;
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_DELETED;
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_UPDATED;
@@ -85,14 +81,6 @@ public class ProjectApi extends BaseApi {
                 new HistoryModel(projectModel.getName(), projectModel.getColorTag(), null, EVENT_PROJECT_DELETED)
         );
 
-        Map<String, String> map = new HashMap<>();
-        map.put(projectModel.getName(), null);
-        batch.set(
-                getCollection(COLLECTION_DATA).document(DOCUMENT_PROJECT_COLORS),
-                map,
-                SetOptions.merge());
-
-
         if (onCompleteListener == null) {
             batch.commit();
         } else {
@@ -115,13 +103,6 @@ public class ProjectApi extends BaseApi {
                 projectDocument.collection(COLLECTION_HISTORY).document(),
                 new HistoryModel(projectModel.getName(), projectModel.getColorTag(), null, eventType)
         );
-
-        Map<String, String> map = new HashMap<>();
-        map.put(projectModel.getName(), projectModel.getColorTag());
-        batch.set(
-                getCollection(COLLECTION_DATA).document(DOCUMENT_PROJECT_COLORS),
-                map,
-                SetOptions.merge());
 
         if (onCompleteListener == null) {
             batch.commit();

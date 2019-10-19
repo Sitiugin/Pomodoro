@@ -16,6 +16,7 @@ import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.HistoryModel;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportHistoryView;
+import com.glebworx.pomodoro.util.manager.ColorManager;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.google.firebase.firestore.DocumentChange;
@@ -114,12 +115,7 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
 
     private void initDateButton() {
         dateButton.setText(DateTimeManager.getMMYYString(new Date()));
-        dateButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                presenter.showDatePicker();
-            }
-        });
+        dateButton.setOnClickListener(view -> presenter.showDatePicker());
     }
 
     private DatePicker.OnDateChangedListener getDateChangeListener(AlertDialog alertDialog) {
@@ -157,7 +153,7 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
                 switch (documentChange.getType()) {
                     case ADDED:
                         HistoryModel model = documentChange.getDocument().toObject(HistoryModel.class);
-                        calendarView.addEvent(new Event(context.getColor(R.color.colorHighlight), model.getTimestamp().getTime()));
+                        calendarView.addEvent(new Event(ColorManager.getColor(context, model.getColorTag()), model.getTimestamp().getTime()));
                         break;
                     case MODIFIED:
                         break;
