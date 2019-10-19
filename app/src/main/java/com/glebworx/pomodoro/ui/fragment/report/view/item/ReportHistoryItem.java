@@ -68,6 +68,10 @@ public class ReportHistoryItem extends AbstractItem<ReportHistoryItem, ReportHis
         return model.getId();
     }
 
+    public Date getTimestamp() {
+        return model.getTimestamp();
+    }
+
     private String getColorTag() {
         return model.getColorTag();
     }

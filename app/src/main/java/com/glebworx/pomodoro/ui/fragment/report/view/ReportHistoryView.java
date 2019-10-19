@@ -20,7 +20,6 @@ import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.HistoryModel;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportHistoryView;
 import com.glebworx.pomodoro.ui.fragment.report.view.item.ReportHistoryItem;
-import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.manager.ColorManager;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.DialogManager;
@@ -46,6 +45,7 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
 
     private Context context;
     private Activity activity;
+    private LinearLayoutManager layoutManager;
     private ItemAdapter<ReportHistoryItem> historyAdapter;
     private FastAdapter<ReportHistoryItem> fastAdapter;
     private ReportHistoryViewPresenter presenter;
@@ -69,6 +69,7 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
     public void onInitView() {
         historyAdapter = new ItemAdapter<>();
         fastAdapter = new FastAdapter<>();
+        layoutManager = new LinearLayoutManager(context);
         initDateButton();
         initCalendarView();
         initRecyclerView();
@@ -138,7 +139,13 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
         calendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
             public void onDayClick(Date dateClicked) {
-
+                presenter.setCalendarDate(dateClicked, false);
+                int index = getIndexByDate(fastAdapter, dateClicked);
+                if (index > -1) {
+                    layoutManager.scrollToPositionWithOffset(index, 0);
+                } else {
+                    Toast.makeText(context, R.string.report_history_toast_no_entries_to_scroll_to, Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -149,8 +156,7 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
     }
 
     private void initRecyclerView() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty));
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new AlphaCrossFadeAnimator());
         fastAdapter.addAdapter(0, historyAdapter);
         fastAdapter.setHasStableIds(true);
@@ -187,6 +193,21 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
 
             }
         };
+    }
+
+    private int getIndexByDate(FastAdapter<ReportHistoryItem> adapter, Date date) {
+        int count = adapter.getItemCount();
+        long minDiff = -1;
+        int index = -1;
+        long currentTime = date.getTime();
+        for (int i = 0; i < count; i++) {
+            long diff = Math.abs(currentTime - adapter.getItem(i).getTimestamp().getTime());
+            if ((minDiff == -1) || (diff < minDiff)) {
+                minDiff = diff;
+                index = i;
+            }
+        }
+        return index;
     }
 
     private int getHistoryItemIndex(@NonNull String id) {

@@ -223,6 +223,7 @@
     <string name="report_history_title_task_deleted" formatted="true"><![CDATA[Task <b>%1$s</b> deleted in project <b>%2$s</b>]]></string>
     <string name="report_history_title_pomodoro_completed" formatted="true"><![CDATA[Pomodoro completed for task <b>%1$s</b> in project <b>%2$s</b>]]></string>
     <string name="report_history_toast_connection_failed">Connection failed. Please try again later</string>
+    <string name="report_history_toast_no_entries_to_scroll_to">No entries to scroll to</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
