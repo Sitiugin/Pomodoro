@@ -1,7 +1,6 @@
 package com.glebworx.pomodoro.api;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -16,7 +15,7 @@ public class HistoryApi extends BaseApi {
 
     //                                                                                     CONSTANTS
 
-    private static final int PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 25;
 
 
     //                                                                       CONSTRUCTOR SUPPRESSION
@@ -41,22 +40,12 @@ public class HistoryApi extends BaseApi {
                 .addOnCompleteListener(onCompleteListener);
     }
 
-    public static Query getHistoryAfter(@Nullable Query query, @NonNull DocumentSnapshot startAfterSnapshot, @Nullable OnCompleteListener<QuerySnapshot> onCompleteListener) {
-        if (query == null) {
-            Query newQuery = getCollection(COLLECTION_HISTORY)
-                    .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
-                    .startAfter(startAfterSnapshot)
-                    .limit(PAGE_SIZE);
-            if (onCompleteListener == null) {
-                newQuery.get();
-            } else {
-                newQuery.get().addOnCompleteListener(onCompleteListener);
-            }
-            return newQuery;
-        } else {
-            query.get();
-            return query;
-        }
+    public static void getHistoryAfter(@NonNull DocumentSnapshot startAfterSnapshot,
+                                       @NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
+        getCollection(COLLECTION_HISTORY)
+                .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
+                .startAfter(startAfterSnapshot)
+                .limit(PAGE_SIZE).get().addOnCompleteListener(onCompleteListener);
     }
 
 

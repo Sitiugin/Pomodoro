@@ -8,7 +8,6 @@ import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportHistoryVi
 import com.glebworx.pomodoro.ui.fragment.report.view.item.ReportHistoryItem;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mikepenz.fastadapter.FastAdapter;
 
@@ -25,7 +24,6 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
     private @NonNull
     Date calendarDate;
 
-    private Query query;
     private DocumentSnapshot startAfterSnapshot;
 
     public ReportHistoryViewPresenter(@NonNull IReportHistoryView presenterListener) {
@@ -66,7 +64,7 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
     @Override
     public void getHistoryItems() {
         if (startAfterSnapshot != null) {
-            query = HistoryApi.getHistoryAfter(query, startAfterSnapshot, this::handleHistory);
+            HistoryApi.getHistoryAfter(startAfterSnapshot, this::handleHistory);
         }
     }
 
