@@ -62,7 +62,7 @@ public class TaskApi extends BaseApi {
                 FIELD_POMODOROS_COMPLETED, projectModel.getPomodorosCompleted());
 
         batch.set(
-                projectDocument.collection(COLLECTION_HISTORY).document(),
+                getCollection(COLLECTION_HISTORY).document(),
                 new HistoryModel(projectModel.getName(), projectModel.getColorTag(), taskModel.getName(), HistoryModel.EVENT_TASK_DELETED));
 
         if (onCompleteListener == null) {
@@ -107,7 +107,7 @@ public class TaskApi extends BaseApi {
                 FIELD_POMODOROS_COMPLETED, projectModel.getPomodorosCompleted());
 
         batch.set(
-                projectDocument.collection(COLLECTION_HISTORY).document(),
+                getCollection(COLLECTION_HISTORY).document(),
                 new HistoryModel(projectModel.getName(), projectModel.getColorTag(), taskModel.getName(), eventType));
 
         if (onCompleteListener == null) {

@@ -8,6 +8,8 @@ import androidx.annotation.Nullable;
 
 import com.google.firebase.firestore.Exclude;
 
+import java.util.UUID;
+
 public class HistoryModel extends AbstractModel {
 
 
@@ -39,6 +41,7 @@ public class HistoryModel extends AbstractModel {
 
     //                                                                                    ATTRIBUTES
 
+    private final String id;
     private String colorTag;
     private String taskName;
     private String eventType;
@@ -48,10 +51,12 @@ public class HistoryModel extends AbstractModel {
 
     public HistoryModel() {
         super();
+        this.id = generateStringId();
     }
 
     public HistoryModel(@NonNull TaskModel taskModel, @NonNull String eventType) {
         super();
+        this.id = generateStringId();
     }
 
     public HistoryModel(@NonNull String projectName,
@@ -59,6 +64,7 @@ public class HistoryModel extends AbstractModel {
                         @Nullable String taskName,
                         @NonNull String eventType) {
         super(projectName);
+        this.id = generateStringId();
         this.colorTag = colorTag;
         this.taskName = taskName;
         this.eventType = eventType;
@@ -66,6 +72,7 @@ public class HistoryModel extends AbstractModel {
 
     public HistoryModel(Parcel in) {
         super(in);
+        this.id = in.readString();
         this.colorTag = in.readString();
         this.taskName = in.readString();
         this.eventType = in.readString();
@@ -77,7 +84,8 @@ public class HistoryModel extends AbstractModel {
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
         super.writeToParcel(parcel, flags);
-        parcel.writeString(getTaskName());
+        parcel.writeString(id);
+        parcel.writeString(taskName);
         parcel.writeString(eventType);
         parcel.writeString(colorTag);
     }
@@ -91,6 +99,9 @@ public class HistoryModel extends AbstractModel {
 
     //                                                                           GETTERS AND SETTERS
 
+    public String getId() {
+        return id;
+    }
 
     public String getColorTag() {
         return colorTag;
@@ -114,6 +125,13 @@ public class HistoryModel extends AbstractModel {
 
     public void setEventType(String eventType) {
         this.eventType = eventType;
+    }
+
+
+    //                                                                                       HELPERS
+
+    private String generateStringId() {
+        return UUID.randomUUID().toString();
     }
 
 }

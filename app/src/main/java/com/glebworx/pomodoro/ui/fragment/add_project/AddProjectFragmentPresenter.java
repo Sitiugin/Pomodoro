@@ -115,9 +115,9 @@ class AddProjectFragmentPresenter implements IAddProjectFragmentPresenter {
 
             presenterListener.onSaveProjectStart();
             if (isEditing) {
-                addProject();
-            } else {
                 updateProject();
+            } else {
+                addProject();
             }
 
         } else {

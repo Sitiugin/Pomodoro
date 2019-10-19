@@ -45,6 +45,14 @@ public class ReportHistoryItem extends AbstractItem<ReportHistoryItem, ReportHis
         return R.layout.item_history;
     }
 
+    public HistoryModel getModel() {
+        return model;
+    }
+
+    public String getId() {
+        return model.getId();
+    }
+
 
     //                                                                                   VIEW HOLDER
 
@@ -63,8 +71,8 @@ public class ReportHistoryItem extends AbstractItem<ReportHistoryItem, ReportHis
 
         @Override
         public void bindView(@NonNull ReportHistoryItem item, @NonNull List<Object> payloads) {
-            dateTextView.setText(null);
-            eventTypeTextView.setText(null);
+            dateTextView.setText(item.getModel().getTimestamp().toString());
+            eventTypeTextView.setText(item.getModel().getEventType());
         }
 
         @Override

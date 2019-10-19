@@ -8,11 +8,7 @@ import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import static com.glebworx.pomodoro.api.BaseApi.COLLECTION_HISTORY;
-import static com.glebworx.pomodoro.api.BaseApi.FIELD_TIMESTAMP;
-import static com.glebworx.pomodoro.api.BaseApi.getCollectionGroup;
-
-public class HistoryApi {
+public class HistoryApi extends BaseApi {
 
 
     //                                                                       CONSTRUCTOR SUPPRESSION
@@ -24,7 +20,7 @@ public class HistoryApi {
     //                                                                                    PUBLIC API
 
     public static ListenerRegistration addAllHistoryEventListener(@NonNull EventListener<QuerySnapshot> eventListener) {
-        return getCollectionGroup(COLLECTION_HISTORY)
+        return getCollection(COLLECTION_HISTORY)
                 .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
                 .addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
     }

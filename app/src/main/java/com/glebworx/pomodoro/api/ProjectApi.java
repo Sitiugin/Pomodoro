@@ -77,7 +77,7 @@ public class ProjectApi extends BaseApi {
         batch.delete(projectDocument);
 
         batch.set(
-                projectDocument.collection(COLLECTION_HISTORY).document(),
+                getCollection(COLLECTION_HISTORY).document(),
                 new HistoryModel(projectModel.getName(), projectModel.getColorTag(), null, EVENT_PROJECT_DELETED)
         );
 
@@ -100,7 +100,7 @@ public class ProjectApi extends BaseApi {
         batch.set(projectDocument, projectModel);
 
         batch.set(
-                projectDocument.collection(COLLECTION_HISTORY).document(),
+                getCollection(COLLECTION_HISTORY).document(),
                 new HistoryModel(projectModel.getName(), projectModel.getColorTag(), null, eventType)
         );
 

@@ -6,9 +6,11 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.DatePicker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
@@ -16,18 +18,26 @@ import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.HistoryModel;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportHistoryView;
+import com.glebworx.pomodoro.ui.fragment.report.view.item.ReportHistoryItem;
+import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.manager.ColorManager;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.google.firebase.firestore.DocumentChange;
+import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.adapters.ItemAdapter;
+import com.mikepenz.itemanimators.AlphaCrossFadeAnimator;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.stream.IntStream;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
+
+import static com.google.firebase.firestore.DocumentChange.Type.ADDED;
 
 public class ReportHistoryView extends ConstraintLayout implements IReportHistoryView {
 
@@ -37,6 +47,8 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
 
     private Context context;
     private Activity activity;
+    private ItemAdapter<ReportHistoryItem> historyAdapter;
+    private FastAdapter<ReportHistoryItem> fastAdapter;
     private ReportHistoryViewPresenter presenter;
 
     public ReportHistoryView(Context context) {
@@ -68,8 +80,11 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
 
     @Override
     public void onInitView() {
+        historyAdapter = new ItemAdapter<>();
+        fastAdapter = new FastAdapter<>();
         initDateButton();
         initCalendarView();
+        initRecyclerView();
     }
 
     @Override
@@ -141,6 +156,15 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
         });
     }
 
+    private void initRecyclerView() {
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty));
+        recyclerView.setItemAnimator(new AlphaCrossFadeAnimator());
+        fastAdapter.addAdapter(0, historyAdapter);
+        fastAdapter.setHasStableIds(true);
+        recyclerView.setAdapter(fastAdapter);
+    }
+
     private io.reactivex.Observer<DocumentChange> getObserver() {
         return new io.reactivex.Observer<DocumentChange>() {
             @Override
@@ -150,15 +174,11 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
 
             @Override
             public void onNext(DocumentChange documentChange) {
-                switch (documentChange.getType()) {
-                    case ADDED:
-                        HistoryModel model = documentChange.getDocument().toObject(HistoryModel.class);
-                        calendarView.addEvent(new Event(ColorManager.getColor(context, model.getColorTag()), model.getTimestamp().getTime()));
-                        break;
-                    case MODIFIED:
-                        break;
-                    case REMOVED:
-                        break;
+                HistoryModel model = documentChange.getDocument().toObject(HistoryModel.class);
+                ReportHistoryItem item = new ReportHistoryItem(model);
+                if (documentChange.getType() == ADDED) {
+                    historyAdapter.add(item);
+                    calendarView.addEvent(new Event(ColorManager.getColor(context, model.getColorTag()), model.getTimestamp().getTime()));
                 }
             }
 
@@ -173,4 +193,11 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
             }
         };
     }
+
+    private int getHistoryItemIndex(@NonNull String id) {
+        return IntStream.range(0, historyAdapter.getAdapterItems().size())
+                .filter(i -> id.equals(historyAdapter.getAdapterItems().get(i).getId()))
+                .findFirst().orElse(-1);
+    }
+
 }
