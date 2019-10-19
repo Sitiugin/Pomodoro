@@ -184,7 +184,7 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
 
             @Override
             public void onComplete() {
-                int x = 0;
+
             }
         };
     }
