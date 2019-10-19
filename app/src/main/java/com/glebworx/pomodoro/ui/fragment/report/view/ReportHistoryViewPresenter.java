@@ -5,8 +5,10 @@ import androidx.annotation.NonNull;
 import com.glebworx.pomodoro.api.HistoryApi;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportHistoryView;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportHistoryViewPresenter;
+import com.glebworx.pomodoro.ui.fragment.report.view.item.ReportHistoryItem;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.mikepenz.fastadapter.FastAdapter;
 
 import java.util.Date;
 
@@ -43,9 +45,20 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
     }
 
     @Override
-    public void setCalendarDate(Date newDate, boolean updateCalendar) {
+    public void setCalendarDate(Date newDate,
+                                FastAdapter<ReportHistoryItem> fastAdapter,
+                                boolean updateCalendar,
+                                boolean scrollToDate) {
         calendarDate = newDate;
         presenterListener.onDateChanged(calendarDate, updateCalendar);
+        if (scrollToDate) {
+            int index = getIndexByDate(fastAdapter, newDate);
+            if (index > -1) {
+                presenterListener.onScrollToPosition(index);
+            } else {
+                presenterListener.onNoEntryToScrollTo();
+            }
+        }
     }
 
     @Override
@@ -55,6 +68,21 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
 
     private Observable<DocumentSnapshot> getObservable(QuerySnapshot snapshot) {
         return Observable.fromIterable(snapshot.getDocuments());
+    }
+
+    private int getIndexByDate(FastAdapter<ReportHistoryItem> adapter, Date date) {
+        int count = adapter.getItemCount();
+        long minDiff = -1;
+        int index = -1;
+        long currentTime = date.getTime();
+        for (int i = 0; i < count; i++) {
+            long diff = Math.abs(currentTime - adapter.getItem(i).getTimestamp().getTime());
+            if ((minDiff == -1) || (diff < minDiff)) {
+                minDiff = diff;
+                index = i;
+            }
+        }
+        return index;
     }
 
 }

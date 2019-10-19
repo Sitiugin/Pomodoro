@@ -18,4 +18,8 @@ public interface IReportHistoryView {
 
     void onShowDatePicker(Date defaultDate);
 
+    void onScrollToPosition(int index);
+
+    void onNoEntryToScrollTo();
+
 }

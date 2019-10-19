@@ -32,7 +32,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.stream.IntStream;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -109,6 +108,16 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
                 getDateChangeListener(alertDialog));
     }
 
+    @Override
+    public void onScrollToPosition(int index) {
+        layoutManager.scrollToPositionWithOffset(index, 0);
+    }
+
+    @Override
+    public void onNoEntryToScrollTo() {
+        Toast.makeText(context, R.string.report_history_toast_no_entries_to_scroll_to, Toast.LENGTH_LONG).show();
+    }
+
     private void init(Context context, AttributeSet attrs, int defStyle) {
         View rootView = inflate(context, R.layout.view_report_history, this);
         dateButton = rootView.findViewById(R.id.button_date);
@@ -130,7 +139,7 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
         return (view, year, monthOfYear, dayOfMonth) -> {
             Calendar calendar = Calendar.getInstance();
             calendar.set(year, monthOfYear, dayOfMonth, 0, 0, 0);
-            presenter.setCalendarDate(calendar.getTime(), true);
+            presenter.setCalendarDate(calendar.getTime(), fastAdapter, true, true);
             alertDialog.dismiss();
         };
     }
@@ -139,18 +148,12 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
         calendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
             public void onDayClick(Date dateClicked) {
-                presenter.setCalendarDate(dateClicked, false);
-                int index = getIndexByDate(fastAdapter, dateClicked);
-                if (index > -1) {
-                    layoutManager.scrollToPositionWithOffset(index, 0);
-                } else {
-                    Toast.makeText(context, R.string.report_history_toast_no_entries_to_scroll_to, Toast.LENGTH_LONG).show();
-                }
+                presenter.setCalendarDate(dateClicked, fastAdapter, false, true);
             }
 
             @Override
             public void onMonthScroll(Date firstDayOfNewMonth) {
-                presenter.setCalendarDate(firstDayOfNewMonth, false);
+                presenter.setCalendarDate(firstDayOfNewMonth, fastAdapter, false, false);
             }
         });
     }
@@ -161,7 +164,47 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
         fastAdapter.addAdapter(0, historyAdapter);
         fastAdapter.setHasStableIds(true);
         recyclerView.setAdapter(fastAdapter);
+        attachScrollListener();
     }
+
+    private void attachScrollListener() {
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (fastAdapter.getItemCount() == 0) {
+                    return;
+                }
+
+                int firstVisiblePosition = layoutManager.findFirstCompletelyVisibleItemPosition();
+                if (firstVisiblePosition < 0) {
+                    return;
+                }
+
+                ReportHistoryItem historyItem = fastAdapter.getItem(firstVisiblePosition);
+                if (historyItem == null) {
+                    return;
+                }
+
+                Date date = historyItem.getTimestamp();
+                calendarView.setCurrentDate(date);
+                dateButton.setText(DateTimeManager.getMMYYString(date));
+
+            }
+
+        });
+
+    }
+
 
     private io.reactivex.Observer<DocumentSnapshot> getObserver() {
         return new io.reactivex.Observer<DocumentSnapshot>() {
@@ -193,27 +236,6 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
 
             }
         };
-    }
-
-    private int getIndexByDate(FastAdapter<ReportHistoryItem> adapter, Date date) {
-        int count = adapter.getItemCount();
-        long minDiff = -1;
-        int index = -1;
-        long currentTime = date.getTime();
-        for (int i = 0; i < count; i++) {
-            long diff = Math.abs(currentTime - adapter.getItem(i).getTimestamp().getTime());
-            if ((minDiff == -1) || (diff < minDiff)) {
-                minDiff = diff;
-                index = i;
-            }
-        }
-        return index;
-    }
-
-    private int getHistoryItemIndex(@NonNull String id) {
-        return IntStream.range(0, historyAdapter.getAdapterItems().size())
-                .filter(i -> id.equals(historyAdapter.getAdapterItems().get(i).getId()))
-                .findFirst().orElse(-1);
     }
 
 }
