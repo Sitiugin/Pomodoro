@@ -37,13 +37,13 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
     public void init() {
         IItemAdapter.Predicate<ProjectItem> predicate = getFilterPredicate();
         projectsObservable = getProjectEventObservable();
-        projectsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+        projectsObservable = projectsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
         presenterListener.onInitView(predicate, projectsObservable);
     }
 
     @Override
     public void destroy() {
-        projectsObservable.unsubscribeOn(Schedulers.io());
+        projectsObservable = projectsObservable.unsubscribeOn(Schedulers.io());
     }
 
     @Override

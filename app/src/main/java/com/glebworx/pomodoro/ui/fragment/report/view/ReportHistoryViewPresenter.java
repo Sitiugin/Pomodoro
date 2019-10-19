@@ -6,7 +6,9 @@ import com.glebworx.pomodoro.api.HistoryApi;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportHistoryView;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportHistoryViewPresenter;
 import com.glebworx.pomodoro.ui.fragment.report.view.item.ReportHistoryItem;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mikepenz.fastadapter.FastAdapter;
 
@@ -23,6 +25,7 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
     private @NonNull
     Date calendarDate;
 
+    private Query query;
     private DocumentSnapshot startAfterSnapshot;
 
     public ReportHistoryViewPresenter(@NonNull IReportHistoryView presenterListener) {
@@ -35,7 +38,7 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
         calendarDate = new Date();
         presenterListener.onInitView();
         startAfterSnapshot = null;
-        getHistoryItems();
+        HistoryApi.getHistory(this::handleHistory);
     }
 
     @Override
@@ -62,20 +65,30 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
 
     @Override
     public void getHistoryItems() {
-        HistoryApi.getHistory(startAfterSnapshot, task -> {
-            if (task.isSuccessful() && task.getResult() != null) {
-                Observable<DocumentSnapshot> observable = getObservable(task.getResult())
-                        .observeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread());
+        if (startAfterSnapshot != null) {
+            query = HistoryApi.getHistoryAfter(query, startAfterSnapshot, this::handleHistory);
+        }
+    }
+
+    private void handleHistory(Task<QuerySnapshot> task) {
+        if (task.isSuccessful() && task.getResult() != null) {
+            Observable<DocumentSnapshot> observable = getObservable(task.getResult());
+            if (observable != null) {
+                observable = observable.observeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
                 presenterListener.onHistoryReceived(observable);
-            } else {
-                presenterListener.onHistoryRequestFailed();
             }
-        });
+        } else {
+            presenterListener.onHistoryRequestFailed();
+        }
     }
 
     private Observable<DocumentSnapshot> getObservable(QuerySnapshot snapshot) {
-        startAfterSnapshot = snapshot.getDocuments().get(snapshot.getDocuments().size() - 1);
+        int snapshotSize = snapshot.getDocuments().size();
+        if (snapshotSize == 0) {
+            startAfterSnapshot = null;
+            return null;
+        }
+        startAfterSnapshot = snapshot.getDocuments().get(snapshotSize - 1);
         return Observable.fromIterable(snapshot.getDocuments());
     }
 

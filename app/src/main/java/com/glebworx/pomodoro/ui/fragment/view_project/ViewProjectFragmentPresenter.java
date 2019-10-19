@@ -19,6 +19,7 @@ import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -48,12 +49,9 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
 
     @Override
     public void init(Bundle arguments, View.OnClickListener onClickListener) {
-        projectModel = arguments.getParcelable(ARG_PROJECT_MODEL);
-        if (projectModel == null) {
-            projectModel = new ProjectModel();
-        }
+        projectModel = Objects.requireNonNull(arguments.getParcelable(ARG_PROJECT_MODEL));
         observable = getTaskEventObservable(projectModel.getName());
-        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+        observable = observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
         presenterListener.onInitView(
                 projectModel.getName(),
                 new ViewProjectHeaderItem(projectModel, onClickListener),
@@ -62,7 +60,7 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
 
     @Override
     public void destroy() {
-        observable.unsubscribeOn(Schedulers.io());
+        observable = observable.unsubscribeOn(Schedulers.io());
     }
 
     @Override
