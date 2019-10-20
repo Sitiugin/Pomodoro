@@ -74,11 +74,6 @@
         android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <com.glebworx.pomodoro.ui.fragment.report.view.ReportHistoryView
-            android:id="@+id/view_history"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
         <com.glebworx.pomodoro.ui.fragment.report.view.ReportPomodorosView
             android:id="@+id/view_pomodoros"
             android:layout_width="match_parent"
@@ -86,6 +81,11 @@
 
         <com.glebworx.pomodoro.ui.fragment.report.view.ReportTasksView
             android:id="@+id/view_tasks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.glebworx.pomodoro.ui.fragment.report.view.ReportHistoryView
+            android:id="@+id/view_history"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

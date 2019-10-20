@@ -10,12 +10,16 @@ import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import static com.glebworx.pomodoro.model.HistoryModel.EVENT_POMODORO_COMPLETED;
+
 public class HistoryApi extends BaseApi {
 
 
     //                                                                                     CONSTANTS
 
     private static final int PAGE_SIZE = 25;
+
+    static final String FIELD_EVENT_TYPE = "eventType";
 
 
     //                                                                       CONSTRUCTOR SUPPRESSION
@@ -46,6 +50,14 @@ public class HistoryApi extends BaseApi {
                 .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
                 .startAfter(startAfterSnapshot)
                 .limit(PAGE_SIZE).get().addOnCompleteListener(onCompleteListener);
+    }
+
+    public static void getPomodoroCompletionHistory(@NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
+        getCollection(COLLECTION_HISTORY)
+                .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
+                .whereEqualTo(FIELD_EVENT_TYPE, EVENT_POMODORO_COMPLETED)
+                .get()
+                .addOnCompleteListener(onCompleteListener);
     }
 
 

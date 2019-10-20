@@ -4,12 +4,12 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.widget.NestedScrollView;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportPomodorosView;
 
-public class ReportPomodorosView extends ConstraintLayout implements IReportPomodorosView {
+public class ReportPomodorosView extends NestedScrollView implements IReportPomodorosView {
 
     private Context context;
     private ReportPomodorosViewPresenter presenter;
@@ -30,7 +30,7 @@ public class ReportPomodorosView extends ConstraintLayout implements IReportPomo
     }
 
     @Override
-    protected void onAttachedToWindow() {
+    public void onAttachedToWindow() {
         super.onAttachedToWindow();
         presenter.subscribe();
     }

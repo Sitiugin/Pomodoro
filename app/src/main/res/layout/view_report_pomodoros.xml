@@ -1,95 +1,146 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/text_view_overview_title"
-        style="@style/TextStyle.Title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_content"
-        android:layout_marginTop="@dimen/margin_content"
-        android:text="Overview"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_overview"
-        style="@style/ViewStyle.Rounded"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_content"
-        android:padding="@dimen/margin_content"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_overview_title">
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:padding="@dimen/margin_content">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/text_view_estimated_time"
-            style="@style/TextStyle.Count.Small"
+            android:id="@+id/text_view_overview_title"
+            style="@style/TextStyle.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_content_double"
-            android:text="30"
-            app:layout_constraintEnd_toStartOf="@+id/text_view_elapsed_time"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintHorizontal_weight="1"
+            android:text="Overview"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_overview"
+            style="@style/ViewStyle.Rounded"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_content"
+            android:padding="@dimen/margin_content"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_overview_title">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_view_pomodoros_completed"
+                style="@style/TextStyle.Count.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_content_double"
+                app:layout_constraintEnd_toStartOf="@+id/text_view_average_per_day"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_view_pomodoros_completed_description"
+                style="@style/TextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Completed"
+                app:layout_constraintEnd_toEndOf="@+id/text_view_pomodoros_completed"
+                app:layout_constraintStart_toStartOf="@+id/text_view_pomodoros_completed"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_pomodoros_completed" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_view_average_per_day"
+                style="@style/TextStyle.Count.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@+id/text_view_average_per_week"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/text_view_pomodoros_completed"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_view_average_per_day_description"
+                style="@style/TextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Daily avg"
+                app:layout_constraintEnd_toEndOf="@+id/text_view_average_per_day"
+                app:layout_constraintStart_toStartOf="@+id/text_view_average_per_day"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_average_per_day" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_view_average_per_week"
+                style="@style/TextStyle.Count.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_content_double"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/text_view_average_per_day"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_view_average_per_week_description"
+                style="@style/TextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Weekly avg"
+                app:layout_constraintEnd_toEndOf="@+id/text_view_average_per_week"
+                app:layout_constraintStart_toStartOf="@+id/text_view_average_per_week"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_average_per_week" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/text_view_estimated_time_description"
+            android:id="@+id/text_view_distribution_title"
+            style="@style/TextStyle.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_content"
+            android:text="Distribution"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_overview" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/line_chart_distribution"
+            style="@style/ViewStyle.Rounded"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_chart"
+            android:layout_marginTop="@dimen/margin_content"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_distribution_title" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_view_trends_title"
+            style="@style/TextStyle.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_content"
+            android:text="Weekly Trends"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line_chart_distribution" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_view_trends_subtitle"
             style="@style/TextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/view_project_title_estimated"
-            app:layout_constraintEnd_toEndOf="@+id/text_view_estimated_time"
-            app:layout_constraintStart_toStartOf="@+id/text_view_estimated_time"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_estimated_time" />
+            android:text="Top: 13.2 pomodoros, Avg: 2.4 pomodoros"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_trends_title" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/text_view_elapsed_time"
-            style="@style/TextStyle.Count.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="30"
-            app:layout_constraintEnd_toStartOf="@+id/text_view_progress"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@+id/text_view_estimated_time"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/text_view_elapsed_time_description"
-            style="@style/TextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/view_project_title_elapsed"
-            app:layout_constraintEnd_toEndOf="@+id/text_view_elapsed_time"
-            app:layout_constraintStart_toStartOf="@+id/text_view_elapsed_time"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_elapsed_time" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/text_view_progress"
-            style="@style/TextStyle.Count.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_content_double"
-            android:text="30"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@+id/text_view_elapsed_time"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/text_view_progress_description"
-            style="@style/TextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/view_project_title_progress"
-            app:layout_constraintEnd_toEndOf="@+id/text_view_progress"
-            app:layout_constraintStart_toStartOf="@+id/text_view_progress"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_progress" />
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/bar_chart_trends"
+            style="@style/ViewStyle.Rounded"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_chart"
+            android:layout_marginTop="@dimen/margin_content"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_trends_subtitle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

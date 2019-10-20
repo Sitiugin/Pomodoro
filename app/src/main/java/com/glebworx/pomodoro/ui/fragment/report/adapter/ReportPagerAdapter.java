@@ -35,11 +35,10 @@ public class ReportPagerAdapter extends PagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return context.getString(R.string.report_title_history);
-            case 1:
                 return context.getString(R.string.report_title_pomodoros);
-            case 2:
+            case 1:
                 return context.getString(R.string.report_title_tasks);
+            case 2:
             default:
                 return context.getString(R.string.report_title_history);
         }
@@ -57,11 +56,10 @@ public class ReportPagerAdapter extends PagerAdapter {
     private int getViewId(int position) {
         switch (position) {
             case 0:
-                return R.id.view_history;
-            case 1:
                 return R.id.view_pomodoros;
-            case 2:
+            case 1:
                 return R.id.view_tasks;
+            case 2:
             default:
                 return R.id.view_history;
         }

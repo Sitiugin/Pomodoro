@@ -307,6 +307,14 @@
         <item name="android:stateListAnimator">@animator/lift_on_touch</item>
     </style>
 
+    <style name="BorderlessSpinnerStyle">
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:color">@color/colorDark</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:padding">@dimen/margin_content</item>
+    </style>
+
     <style name="SpinnerItemStyle">
         <item name="android:textAllCaps">false</item>
         <item name="android:fontFamily">@string/font_sans_serif_normal</item>
