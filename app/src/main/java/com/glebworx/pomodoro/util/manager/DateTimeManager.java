@@ -99,6 +99,14 @@ public class DateTimeManager {
                 DateUtils.FORMAT_ABBREV_ALL));
     }
 
+    public static String getAxisDateString(long date, long currentDate) {
+        return String.valueOf(DateUtils.getRelativeTimeSpanString(
+                date,
+                currentDate,
+                DateUtils.DAY_IN_MILLIS,
+                DateUtils.FORMAT_ABBREV_ALL));
+    }
+
     public static String getMMYYString(Date date) {
         return calendarFormat.format(date);
     }

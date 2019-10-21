@@ -6,6 +6,8 @@ import io.reactivex.Observable;
 
 public interface IReportPomodorosView {
 
+    void onInitView();
+
     void onPomodorosCompletedReceived(Observable<ReportPomodoroModel> observable);
 
 }

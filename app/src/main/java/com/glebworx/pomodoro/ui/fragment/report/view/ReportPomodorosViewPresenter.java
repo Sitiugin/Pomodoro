@@ -25,6 +25,7 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
 
     @Override
     public void init() {
+        presenterListener.onInitView();
         HistoryApi.getPomodoroCompletionHistory(this::handleHistory);
     }
 
