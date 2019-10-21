@@ -43,7 +43,7 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
 
     @Override
     public void onInitView() {
-        IChart.initChart(distributionLineChart, false);
+        IChart.initChart(distributionLineChart, false, null);
     }
 
     @Override
@@ -70,6 +70,8 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
             @Override
             public void onNext(ReportPomodoroModel model) {
                 pomodorosCompletedTextView.setText(String.valueOf(model.getPomodorosCompleted()));
+                distributionLineChart.setData(model.getDistributionData());
+                distributionLineChart.invalidate();
             }
 
             @Override

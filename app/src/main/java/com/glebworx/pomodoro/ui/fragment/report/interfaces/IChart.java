@@ -67,7 +67,7 @@ public interface IChart {
     }
 
 
-    static void initChart(LineChart chart, boolean isExpanded) {
+    static void initChart(LineChart chart, boolean isExpanded, String descriptionText) {
 
         Context context = chart.getContext();
 
@@ -85,12 +85,12 @@ public interface IChart {
         chart.setAutoScaleMinMaxEnabled(true);
 
         Description description = new Description();
-        /*if (isExpanded) {
+        if (isExpanded) {
             description.setTypeface(TYPEFACE);
-            description.setText(context.getString(R.string.main_weight_title_chart)); // TODO
+            description.setText(descriptionText);
         } else {
             description.setText("");
-        }*/
+        }
         chart.setDescription(description);
 
         Legend legend = chart.getLegend();

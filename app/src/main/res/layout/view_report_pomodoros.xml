@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_content"
             android:padding="@dimen/margin_content"
+            android:animateLayoutChanges="true"
             app:layout_constraintTop_toBottomOf="@+id/text_view_overview_title">
 
             <androidx.appcompat.widget.AppCompatTextView
