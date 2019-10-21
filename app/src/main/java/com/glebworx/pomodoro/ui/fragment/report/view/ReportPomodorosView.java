@@ -4,12 +4,19 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.widget.NestedScrollView;
 
 import com.glebworx.pomodoro.R;
+import com.glebworx.pomodoro.model.ReportPomodoroModel;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportPomodorosView;
 
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
+
 public class ReportPomodorosView extends NestedScrollView implements IReportPomodorosView {
+
+    private AppCompatTextView pomodorosCompletedTextView;
 
     private Context context;
     private ReportPomodorosViewPresenter presenter;
@@ -30,21 +37,39 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
     }
 
     @Override
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        presenter.subscribe();
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        presenter.unsubscribe();
-        super.onDetachedFromWindow();
+    public void onPomodorosCompletedReceived(Observable<ReportPomodoroModel> observable) {
+        observable.subscribe(getObserver());
     }
 
     private void init(Context context, AttributeSet attrs, int defStyle) {
         View rootView = inflate(context, R.layout.view_report_pomodoros, this);
+        pomodorosCompletedTextView = rootView.findViewById(R.id.text_view_pomodoros_completed);
         this.context = context;
-        this.presenter = new ReportPomodorosViewPresenter();
+        this.presenter = new ReportPomodorosViewPresenter(this);
+    }
+
+    private io.reactivex.Observer<ReportPomodoroModel> getObserver() {
+        return new io.reactivex.Observer<ReportPomodoroModel>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(ReportPomodoroModel model) {
+                pomodorosCompletedTextView.setText(String.valueOf(model.getPomodorosCompleted()));
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
     }
 
 }

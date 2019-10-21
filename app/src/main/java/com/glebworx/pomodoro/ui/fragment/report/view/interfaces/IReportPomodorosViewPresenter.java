@@ -4,8 +4,5 @@ public interface IReportPomodorosViewPresenter {
 
     void init();
 
-    void subscribe();
-
-    void unsubscribe();
 
 }

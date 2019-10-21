@@ -9,6 +9,7 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Source;
 
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_POMODORO_COMPLETED;
 
@@ -40,7 +41,7 @@ public class HistoryApi extends BaseApi {
         getCollection(COLLECTION_HISTORY)
                 .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
                 .limit(PAGE_SIZE)
-                .get()
+                .get(Source.CACHE)
                 .addOnCompleteListener(onCompleteListener);
     }
 
@@ -49,14 +50,14 @@ public class HistoryApi extends BaseApi {
         getCollection(COLLECTION_HISTORY)
                 .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
                 .startAfter(startAfterSnapshot)
-                .limit(PAGE_SIZE).get().addOnCompleteListener(onCompleteListener);
+                .limit(PAGE_SIZE).get(Source.CACHE).addOnCompleteListener(onCompleteListener);
     }
 
     public static void getPomodoroCompletionHistory(@NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
         getCollection(COLLECTION_HISTORY)
                 .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
                 .whereEqualTo(FIELD_EVENT_TYPE, EVENT_POMODORO_COMPLETED)
-                .get()
+                .get(Source.CACHE)
                 .addOnCompleteListener(onCompleteListener);
     }
 
