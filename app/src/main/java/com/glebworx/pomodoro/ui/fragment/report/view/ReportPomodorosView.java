@@ -17,6 +17,8 @@ import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportPomodoros
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
+import static com.glebworx.pomodoro.util.constants.Constants.ANIM_DURATION;
+
 public class ReportPomodorosView extends NestedScrollView implements IReportPomodorosView {
 
     private AppCompatTextView pomodorosCompletedTextView;
@@ -71,7 +73,7 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
             public void onNext(ReportPomodoroModel model) {
                 pomodorosCompletedTextView.setText(String.valueOf(model.getPomodorosCompleted()));
                 distributionLineChart.setData(model.getDistributionData());
-                distributionLineChart.invalidate();
+                distributionLineChart.animateY(ANIM_DURATION);
             }
 
             @Override

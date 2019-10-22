@@ -19,8 +19,6 @@ import static com.glebworx.pomodoro.util.constants.Constants.TYPEFACE;
 
 public interface IChart {
 
-    int ANIM_DURATION = 400;
-
     static void initDataSet(LineDataSet dataSet, int color) {
 
         dataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
@@ -29,7 +27,7 @@ public interface IChart {
         dataSet.setFillColor(color);
         dataSet.setColor(color);
         dataSet.setCircleColors(color);
-        dataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+        //dataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
 
     }
 
@@ -94,15 +92,13 @@ public interface IChart {
         chart.setDescription(description);
 
         Legend legend = chart.getLegend();
-        if (isExpanded) {
-            legend.setDrawInside(true);
-            legend.setForm(Legend.LegendForm.CIRCLE);
-            legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-            legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-            legend.setWordWrapEnabled(true);
-            legend.setTextColor(colorGray);
-        }
-        legend.setEnabled(isExpanded);
+        legend.setDrawInside(isExpanded);
+        legend.setForm(Legend.LegendForm.CIRCLE);
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        legend.setWordWrapEnabled(true);
+        legend.setTextColor(colorGray);
+        legend.setEnabled(true);
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setLabelCount(4, true);

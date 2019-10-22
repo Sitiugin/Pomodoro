@@ -61,11 +61,8 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
         return Observable.create(emitter -> {
 
             List<DocumentSnapshot> documentSnapshots = snapshot.getDocuments();
-
-            ReportPomodoroModel model = new ReportPomodoroModel(
-                    documentSnapshots.size(),
-                    getDistributionData(documentSnapshots),
-                    getTrendsData(documentSnapshots));
+            ReportPomodoroModel model = new ReportPomodoroModel();
+            initData(model, documentSnapshots);
 
             emitter.onNext(model);
             emitter.onComplete();
@@ -73,7 +70,9 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
         });
     }
 
-    private LineData getDistributionData(List<DocumentSnapshot> documentSnapshots) {
+    private void initData(ReportPomodoroModel reportPomodoroModel, List<DocumentSnapshot> documentSnapshots) {
+
+        reportPomodoroModel.setPomodorosCompleted(documentSnapshots.size());
 
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         LocalDate localDate;
@@ -86,6 +85,8 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
         LineDataSet dataSet;
         HistoryModel model;
         String projectName;
+
+        int maxPerDay = 0;
 
         for (DocumentSnapshot snapshot : documentSnapshots) {
 
@@ -113,6 +114,7 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
             //time = localDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
             time = calendar.getTimeInMillis();
 
+            //entries.add(new Entry(time, 1));
             optionalEntry = getEntry(time, entries);
             if (optionalEntry.isPresent()) {
                 entry = optionalEntry.get();
@@ -132,7 +134,7 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
             lineData.addDataSet(dataSetMap.get(key));
         }
 
-        return lineData;
+        reportPomodoroModel.setDistributionData(lineData);
 
     }
 
@@ -182,6 +184,7 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
             if (model == null) {
                 continue;
             }
+            // TODO implement
         }
         return new BarData();
     }
