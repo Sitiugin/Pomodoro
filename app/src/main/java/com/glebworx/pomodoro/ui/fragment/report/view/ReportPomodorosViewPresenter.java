@@ -6,6 +6,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.utils.EntryXComparator;
 import com.glebworx.pomodoro.api.HistoryApi;
 import com.glebworx.pomodoro.model.HistoryModel;
 import com.glebworx.pomodoro.model.ReportPomodoroModel;
@@ -22,6 +23,7 @@ import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -118,6 +120,7 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
             optionalEntry = getEntry(time, entries);
             if (optionalEntry.isPresent()) {
                 entry = optionalEntry.get();
+                //entry = new Entry(time, entry.getY() + 1);
                 entry.setY(entry.getY() + 1);
             } else {
                 entry = new Entry(time, 1);
@@ -131,7 +134,17 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
         // put all generated data sets into the object to return
         Set<String> keySet = dataSetMap.keySet();
         for (String key : keySet) {
-            lineData.addDataSet(dataSetMap.get(key));
+            dataSet = dataSetMap.get(key);
+            if (dataSet == null) {
+                continue;
+            }
+            entries = dataSet.getValues();
+            if (entries == null || entries.isEmpty()) {
+                continue;
+            }
+            Collections.sort(entries, new EntryXComparator());
+            dataSet.setValues(entries);
+            lineData.addDataSet(dataSet);
         }
 
         reportPomodoroModel.setDistributionData(lineData);
