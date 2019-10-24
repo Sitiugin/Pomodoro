@@ -10,8 +10,8 @@ import androidx.core.widget.NestedScrollView;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.LineData;
 import com.glebworx.pomodoro.R;
-import com.glebworx.pomodoro.model.ReportPomodoroModel;
 import com.glebworx.pomodoro.model.ReportPomodoroOverviewModel;
 import com.glebworx.pomodoro.ui.fragment.report.interfaces.IChart;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportPomodorosView;
@@ -67,9 +67,9 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
 
     @Override
     public void onObservablesReady(Observable<ReportPomodoroOverviewModel> overviewObservable,
-                                   Observable<ReportPomodoroModel> observable) {
+                                   Observable<LineData> pomodorosCompletedObservable) {
         overviewObservable.subscribe(getOverviewObserver());
-        observable.subscribe(getPomodorosCompletedObserver());
+        pomodorosCompletedObservable.subscribe(getPomodorosCompletedObserver());
     }
 
     private void init(Context context, AttributeSet attrs, int defStyle) {
@@ -113,16 +113,16 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
         };
     }
 
-    private io.reactivex.Observer<ReportPomodoroModel> getPomodorosCompletedObserver() {
-        return new io.reactivex.Observer<ReportPomodoroModel>() {
+    private io.reactivex.Observer<LineData> getPomodorosCompletedObserver() {
+        return new io.reactivex.Observer<LineData>() {
             @Override
             public void onSubscribe(Disposable d) {
 
             }
 
             @Override
-            public void onNext(ReportPomodoroModel model) {
-                distributionLineChart.setData(model.getDistributionData());
+            public void onNext(LineData lineData) {
+                distributionLineChart.setData(lineData);
                 distributionLineChart.animateY(ANIM_DURATION);
             }
 

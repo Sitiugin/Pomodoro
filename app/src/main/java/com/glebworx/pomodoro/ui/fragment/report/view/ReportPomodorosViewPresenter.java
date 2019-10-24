@@ -3,14 +3,12 @@ package com.glebworx.pomodoro.ui.fragment.report.view;
 import androidx.annotation.NonNull;
 
 import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.EntryXComparator;
 import com.glebworx.pomodoro.api.HistoryApi;
 import com.glebworx.pomodoro.model.HistoryModel;
-import com.glebworx.pomodoro.model.ReportPomodoroModel;
 import com.glebworx.pomodoro.model.ReportPomodoroOverviewModel;
 import com.glebworx.pomodoro.ui.fragment.report.interfaces.IChart;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportPomodorosView;
@@ -54,12 +52,22 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
     }
 
     private void handleHistory(Task<QuerySnapshot> task) {
+
         if (task.isSuccessful() && task.getResult() != null) {
+
             Observable<ReportPomodoroOverviewModel> overviewObservable = getOverviewObservable(task.getResult());
-            Observable<ReportPomodoroModel> observable = getObservable(task.getResult());
-            observable = observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
-            presenterListener.onObservablesReady(overviewObservable, observable);
+            overviewObservable = overviewObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread());
+
+            Observable<LineData> pomodorosCompletedObservable = getPomodorosCompletedObservable(task.getResult());
+            pomodorosCompletedObservable = pomodorosCompletedObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread());
+
+            presenterListener.onObservablesReady(overviewObservable, pomodorosCompletedObservable);
         }
+
     }
 
     private Observable<ReportPomodoroOverviewModel> getOverviewObservable(QuerySnapshot snapshot) {
@@ -72,11 +80,9 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
         });
     }
 
-    private Observable<ReportPomodoroModel> getObservable(QuerySnapshot snapshot) {
+    private Observable<LineData> getPomodorosCompletedObservable(QuerySnapshot snapshot) {
         return Observable.create(emitter -> {
-            ReportPomodoroModel model = new ReportPomodoroModel();
-            initPomodorosCompletedData(model, snapshot.getDocuments());
-            emitter.onNext(model);
+            emitter.onNext(getPomodorosCompletedData(snapshot.getDocuments()));
             emitter.onComplete();
 
         });
@@ -87,15 +93,11 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
         model.setPomodorosCompleted(documentSnapshots.size());
     }
 
-    private void initPomodorosCompletedData(ReportPomodoroModel reportPomodoroModel,
-                                            List<DocumentSnapshot> documentSnapshots) {
-
-        reportPomodoroModel.setPomodorosCompleted(documentSnapshots.size());
+    private LineData getPomodorosCompletedData(List<DocumentSnapshot> documentSnapshots) {
 
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
 
-        Map<String, LineDataSet> lineDataSetMap = new HashMap<>();
-        Map<String, BarDataSet> barDataSetMap = new HashMap<>();
+        Map<String, LineDataSet> dataSetMap = new HashMap<>();
 
         List<Entry> entries;
         Optional<Entry> optionalEntry;
@@ -115,12 +117,12 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
 
             // add data set object to the map if not already present
             projectName = model.getName();
-            dataSet = lineDataSetMap.get(projectName);
+            dataSet = dataSetMap.get(projectName);
             if (dataSet == null) {
                 entries = new ArrayList<>();
                 dataSet = new LineDataSet(entries, projectName);
                 IChart.initDataSet(dataSet, ColorConstants.rgb(model.getColorTag()));
-                lineDataSetMap.put(projectName, dataSet);
+                dataSetMap.put(projectName, dataSet);
             } else {
                 entries = dataSet.getValues();
             }
@@ -145,9 +147,9 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
         LineData lineData = new LineData();
 
         // put all generated data sets into the object to return
-        Set<String> keySet = lineDataSetMap.keySet();
+        Set<String> keySet = dataSetMap.keySet();
         for (String key : keySet) {
-            dataSet = lineDataSetMap.get(key);
+            dataSet = dataSetMap.get(key);
             if (dataSet == null) {
                 continue;
             }
@@ -161,7 +163,7 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
             lineData.addDataSet(dataSet);
         }
 
-        reportPomodoroModel.setDistributionData(lineData);
+        return lineData;
 
     }
 
