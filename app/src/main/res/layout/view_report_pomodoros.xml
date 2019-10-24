@@ -21,6 +21,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_view_overview_subtitle"
+            style="@style/TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Daily target: 10 pomodoros"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_overview_title" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_overview"
             style="@style/ViewStyle.Rounded"
@@ -29,7 +38,7 @@
             android:layout_marginTop="@dimen/margin_content"
             android:padding="@dimen/margin_content"
             android:animateLayoutChanges="true"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_overview_title">
+            app:layout_constraintTop_toBottomOf="@+id/text_view_overview_subtitle">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/text_view_pomodoros_completed"
@@ -58,7 +67,7 @@
                 style="@style/TextStyle.Count.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toStartOf="@+id/text_view_average_per_week"
+                app:layout_constraintEnd_toStartOf="@+id/text_view_streak"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toEndOf="@+id/text_view_pomodoros_completed"
@@ -69,13 +78,13 @@
                 style="@style/TextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Daily avg"
+                android:text="Average per day"
                 app:layout_constraintEnd_toEndOf="@+id/text_view_average_per_day"
                 app:layout_constraintStart_toStartOf="@+id/text_view_average_per_day"
                 app:layout_constraintTop_toBottomOf="@+id/text_view_average_per_day" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/text_view_average_per_week"
+                android:id="@+id/text_view_streak"
                 style="@style/TextStyle.Count.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -91,10 +100,10 @@
                 style="@style/TextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Weekly avg"
-                app:layout_constraintEnd_toEndOf="@+id/text_view_average_per_week"
-                app:layout_constraintStart_toStartOf="@+id/text_view_average_per_week"
-                app:layout_constraintTop_toBottomOf="@+id/text_view_average_per_week" />
+                android:text="Days streak"
+                app:layout_constraintEnd_toEndOf="@+id/text_view_streak"
+                app:layout_constraintStart_toStartOf="@+id/text_view_streak"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_streak" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -110,10 +119,13 @@
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/line_chart_distribution"
-            style="@style/ViewStyle.Rounded"
+            style="@style/ViewStyle.Rounded.Clickable"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_chart"
             android:layout_marginTop="@dimen/margin_content"
+            android:animateLayoutChanges="true"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintTop_toBottomOf="@+id/text_view_distribution_title" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -137,10 +149,13 @@
 
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/bar_chart_trends"
-            style="@style/ViewStyle.Rounded"
+            style="@style/ViewStyle.Rounded.Clickable"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_chart"
             android:layout_marginTop="@dimen/margin_content"
+            android:animateLayoutChanges="true"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintTop_toBottomOf="@+id/text_view_trends_subtitle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

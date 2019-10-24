@@ -112,8 +112,6 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
 
             calendar.setTime(model.getTimestamp());
             DateTimeManager.clearTime(calendar);
-            //localDate = LocalDate.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-            //time = localDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
             time = calendar.getTimeInMillis();
 
             //entries.add(new Entry(time, 1));
@@ -143,6 +141,7 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
                 continue;
             }
             Collections.sort(entries, new EntryXComparator());
+
             dataSet.setValues(entries);
             lineData.addDataSet(dataSet);
         }

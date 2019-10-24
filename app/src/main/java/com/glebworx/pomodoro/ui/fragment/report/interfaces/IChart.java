@@ -2,7 +2,7 @@ package com.glebworx.pomodoro.ui.fragment.report.interfaces;
 
 import android.content.Context;
 
-import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -65,7 +65,7 @@ public interface IChart {
     }
 
 
-    static void initChart(LineChart chart, boolean isExpanded, String descriptionText) {
+    static void initChart(BarLineChartBase chart, boolean isExpanded, String descriptionText) {
 
         Context context = chart.getContext();
 
@@ -75,12 +75,13 @@ public interface IChart {
 
         int colorGray = context.getColor(android.R.color.darker_gray);
         chart.setNoDataTextColor(colorGray);
-        chart.setNoDataText(context.getString(R.string.core_text_no_data));
+        chart.setNoDataText("");
         chart.setNoDataTextTypeface(TYPEFACE);
         chart.setBorderColor(colorGray);
         chart.setBorderWidth(1);
         chart.setDrawBorders(true);
         chart.setAutoScaleMinMaxEnabled(true);
+        chart.setTouchEnabled(isExpanded);
 
         Description description = new Description();
         if (isExpanded) {
@@ -122,6 +123,7 @@ public interface IChart {
         yAxisRight.setDrawGridLines(isExpanded);
         yAxisRight.setDrawLimitLinesBehindData(false);
         yAxisRight.setDrawLabels(false);
+
     }
 
     class AxisEntryXFormatter extends ValueFormatter {
