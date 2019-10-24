@@ -21,8 +21,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -113,17 +111,15 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
 
     private LineData getPomodorosCompletedData(List<DocumentSnapshot> documentSnapshots) {
 
+        HistoryModel model;
+        String projectName;
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
-
+        long time;
         Map<String, LineDataSet> dataSetMap = new HashMap<>();
-
         List<Entry> entries;
         Optional<Entry> optionalEntry;
         Entry entry;
-        long time;
         LineDataSet dataSet;
-        HistoryModel model;
-        String projectName;
 
         for (DocumentSnapshot snapshot : documentSnapshots) {
 
@@ -149,11 +145,9 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
             DateTimeManager.clearTime(calendar);
             time = calendar.getTimeInMillis();
 
-            //entries.add(new Entry(time, 1));
             optionalEntry = getEntry(time, entries);
             if (optionalEntry.isPresent()) {
                 entry = optionalEntry.get();
-                //entry = new Entry(time, entry.getY() + 1);
                 entry.setY(entry.getY() + 1);
             } else {
                 entry = new Entry(time, 1);
@@ -187,17 +181,12 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
 
     private BarData getWeeklyTrendsData(List<DocumentSnapshot> documentSnapshots) {
 
+        HistoryModel model;
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
-
-        Map<String, BarDataSet> dataSetMap = new HashMap<>();
-
-        List<BarEntry> entries;
+        long time;
+        List<BarEntry> entries = new ArrayList<>();
         Optional<BarEntry> optionalEntry;
         BarEntry entry;
-        long time;
-        BarDataSet dataSet;
-        HistoryModel model;
-        String projectName;
 
         for (DocumentSnapshot snapshot : documentSnapshots) {
 
@@ -207,55 +196,27 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
                 continue;
             }
 
-            // add data set object to the map if not already present
-            /*projectName = model.getName();
-            dataSet = dataSetMap.get(projectName);
-            if (dataSet == null) {
-                entries = new ArrayList<>();
-                dataSet = new BarDataSet(entries, projectName);
-                IChart.initDataSet(dataSet, ColorConstants.rgb(model.getColorTag()));
-                dataSetMap.put(projectName, dataSet);
-            } else {
-                entries = dataSet.getValues();
-            }
-
             calendar.setTime(model.getTimestamp());
             DateTimeManager.clearTime(calendar);
+            //calendar.set(Calendar.DAY_OF_WEEK, 0);
             time = calendar.getTimeInMillis();
 
-            //entries.add(new Entry(time, 1));
-            optionalEntry = getEntry(time, entries);
+            optionalEntry = getBarEntry(time, entries);
             if (optionalEntry.isPresent()) {
                 entry = optionalEntry.get();
-                //entry = new Entry(time, entry.getY() + 1);
                 entry.setY(entry.getY() + 1);
             } else {
                 entry = new BarEntry(time, 1);
                 entries.add(entry);
-            }*/
+            }
+
 
         }
 
-        BarData barData = new BarData();
+        BarDataSet dataSet = new BarDataSet(entries, null);
+        IChart.initDataSet(dataSet, ColorConstants.rgb(ColorConstants.COLOR_RED_HEX));
 
-        // put all generated data sets into the object to return
-        Set<String> keySet = dataSetMap.keySet();
-        for (String key : keySet) {
-            dataSet = dataSetMap.get(key);
-            if (dataSet == null) {
-                continue;
-            }
-            entries = dataSet.getValues();
-            if (entries == null || entries.isEmpty()) {
-                continue;
-            }
-            Collections.sort(entries, new EntryXComparator());
-
-            dataSet.setValues(entries);
-            barData.addDataSet(dataSet);
-        }
-
-        return barData;
+        return new BarData(dataSet);
 
     }
 
@@ -265,49 +226,10 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
                 .findAny();
     }
 
-    private Map<LocalDate, Entry> getDayEntryMap(List<DocumentSnapshot> documentSnapshots) {
-
-        Map<LocalDate, Entry> intermediateEntryMap = new HashMap<>();
-        //Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        LocalDate localDate;
-        HistoryModel model;
-        String projectName;
-
-        for (DocumentSnapshot snapshot : documentSnapshots) {
-
-            model = snapshot.toObject(HistoryModel.class);
-
-            if (model == null) {
-                continue;
-            }
-
-            projectName = model.getName();
-            localDate = LocalDate.ofEpochDay(model.getTimestamp().getTime());
-
-            Entry entry = intermediateEntryMap.get(localDate);
-            if (entry == null) {
-                entry = new Entry(localDate.atStartOfDay().toEpochSecond(ZoneOffset.UTC), 1);
-                intermediateEntryMap.put(localDate, entry);
-            } else {
-                entry.setY(entry.getY() + 1);
-            }
-
-        }
-
-        return intermediateEntryMap;
-
-    }
-
-    private BarData getTrendsData(List<DocumentSnapshot> documentSnapshots) {
-        HistoryModel model;
-        for (DocumentSnapshot snapshot : documentSnapshots) {
-            model = snapshot.toObject(HistoryModel.class);
-            if (model == null) {
-                continue;
-            }
-            // TODO implement
-        }
-        return new BarData();
+    private Optional<BarEntry> getBarEntry(long time, List<BarEntry> entries) {
+        return entries.stream()
+                .filter(entry -> time == entry.getX())
+                .findAny();
     }
 
 }

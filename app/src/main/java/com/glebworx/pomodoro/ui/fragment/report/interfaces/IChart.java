@@ -2,7 +2,9 @@ package com.glebworx.pomodoro.ui.fragment.report.interfaces;
 
 import android.content.Context;
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.BarLineChartBase;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -67,8 +69,16 @@ public interface IChart {
         chart.setUsePercentValues(false);
     }
 
+    static void initChart(LineChart chart, boolean isExpanded, boolean showLegend, String descriptionText) {
+        initBaseChart(chart, isExpanded, showLegend, descriptionText);
+    }
 
-    static void initChart(BarLineChartBase chart, boolean isExpanded, String descriptionText) {
+    static void initChart(BarChart chart, boolean isExpanded, boolean showLegend, String descriptionText) {
+        initBaseChart(chart, isExpanded, showLegend, descriptionText);
+        chart.setFitBars(true);
+    }
+
+    static void initBaseChart(BarLineChartBase chart, boolean isExpanded, boolean showLegend, String descriptionText) {
 
         Context context = chart.getContext();
 
@@ -96,13 +106,15 @@ public interface IChart {
         chart.setDescription(description);
 
         Legend legend = chart.getLegend();
-        legend.setDrawInside(isExpanded);
-        legend.setForm(Legend.LegendForm.CIRCLE);
-        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        legend.setWordWrapEnabled(true);
-        legend.setTextColor(colorGray);
-        legend.setEnabled(true);
+        if (showLegend) {
+            legend.setDrawInside(isExpanded);
+            legend.setForm(Legend.LegendForm.CIRCLE);
+            legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+            legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+            legend.setWordWrapEnabled(true);
+            legend.setTextColor(colorGray);
+        }
+        legend.setEnabled(showLegend);
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setLabelCount(4, true);

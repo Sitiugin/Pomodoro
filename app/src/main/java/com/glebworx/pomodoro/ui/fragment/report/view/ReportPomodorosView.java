@@ -50,8 +50,8 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
 
     @Override
     public void onInitView() {
-        IChart.initChart(pomodorosCompletedLineChart, false, null);
-        IChart.initChart(weeklyTrendsBarChart, false, null);
+        IChart.initChart(pomodorosCompletedLineChart, false, true, null);
+        IChart.initChart(weeklyTrendsBarChart, false, false, null);
         OnClickListener onClickListener = view -> {
             switch (view.getId()) {
                 case R.id.line_chart_pomodoros_completed:
