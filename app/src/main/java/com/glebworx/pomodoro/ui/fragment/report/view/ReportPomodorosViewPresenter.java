@@ -3,6 +3,8 @@ package com.glebworx.pomodoro.ui.fragment.report.view;
 import androidx.annotation.NonNull;
 
 import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -53,19 +55,27 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
 
     private void handleHistory(Task<QuerySnapshot> task) {
 
-        if (task.isSuccessful() && task.getResult() != null) {
+        QuerySnapshot result = task.getResult();
 
-            Observable<ReportPomodoroOverviewModel> overviewObservable = getOverviewObservable(task.getResult());
+        if (task.isSuccessful() && result != null) {
+
+            Observable<ReportPomodoroOverviewModel> overviewObservable = getOverviewObservable(result);
             overviewObservable = overviewObservable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
 
-            Observable<LineData> pomodorosCompletedObservable = getPomodorosCompletedObservable(task.getResult());
+            Observable<LineData> pomodorosCompletedObservable = getPomodorosCompletedObservable(result);
             pomodorosCompletedObservable = pomodorosCompletedObservable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
 
-            presenterListener.onObservablesReady(overviewObservable, pomodorosCompletedObservable);
+            Observable<BarData> weeklyTrendsObservable = getWeeklyTrendsObservable(result);
+            weeklyTrendsObservable = weeklyTrendsObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread());
+
+            presenterListener.onObservablesReady(overviewObservable, pomodorosCompletedObservable, weeklyTrendsObservable);
+
         }
 
     }
@@ -83,6 +93,14 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
     private Observable<LineData> getPomodorosCompletedObservable(QuerySnapshot snapshot) {
         return Observable.create(emitter -> {
             emitter.onNext(getPomodorosCompletedData(snapshot.getDocuments()));
+            emitter.onComplete();
+
+        });
+    }
+
+    private Observable<BarData> getWeeklyTrendsObservable(QuerySnapshot snapshot) {
+        return Observable.create(emitter -> {
+            emitter.onNext(getWeeklyTrendsData(snapshot.getDocuments()));
             emitter.onComplete();
 
         });
@@ -164,6 +182,80 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
         }
 
         return lineData;
+
+    }
+
+    private BarData getWeeklyTrendsData(List<DocumentSnapshot> documentSnapshots) {
+
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+
+        Map<String, BarDataSet> dataSetMap = new HashMap<>();
+
+        List<BarEntry> entries;
+        Optional<BarEntry> optionalEntry;
+        BarEntry entry;
+        long time;
+        BarDataSet dataSet;
+        HistoryModel model;
+        String projectName;
+
+        for (DocumentSnapshot snapshot : documentSnapshots) {
+
+            // get model
+            model = snapshot.toObject(HistoryModel.class);
+            if (model == null) {
+                continue;
+            }
+
+            // add data set object to the map if not already present
+            /*projectName = model.getName();
+            dataSet = dataSetMap.get(projectName);
+            if (dataSet == null) {
+                entries = new ArrayList<>();
+                dataSet = new BarDataSet(entries, projectName);
+                IChart.initDataSet(dataSet, ColorConstants.rgb(model.getColorTag()));
+                dataSetMap.put(projectName, dataSet);
+            } else {
+                entries = dataSet.getValues();
+            }
+
+            calendar.setTime(model.getTimestamp());
+            DateTimeManager.clearTime(calendar);
+            time = calendar.getTimeInMillis();
+
+            //entries.add(new Entry(time, 1));
+            optionalEntry = getEntry(time, entries);
+            if (optionalEntry.isPresent()) {
+                entry = optionalEntry.get();
+                //entry = new Entry(time, entry.getY() + 1);
+                entry.setY(entry.getY() + 1);
+            } else {
+                entry = new BarEntry(time, 1);
+                entries.add(entry);
+            }*/
+
+        }
+
+        BarData barData = new BarData();
+
+        // put all generated data sets into the object to return
+        Set<String> keySet = dataSetMap.keySet();
+        for (String key : keySet) {
+            dataSet = dataSetMap.get(key);
+            if (dataSet == null) {
+                continue;
+            }
+            entries = dataSet.getValues();
+            if (entries == null || entries.isEmpty()) {
+                continue;
+            }
+            Collections.sort(entries, new EntryXComparator());
+
+            dataSet.setValues(entries);
+            barData.addDataSet(dataSet);
+        }
+
+        return barData;
 
     }
 

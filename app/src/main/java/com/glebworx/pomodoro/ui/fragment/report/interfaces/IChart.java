@@ -8,6 +8,7 @@ import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.glebworx.pomodoro.R;
@@ -20,7 +21,6 @@ import static com.glebworx.pomodoro.util.constants.Constants.TYPEFACE;
 public interface IChart {
 
     static void initDataSet(LineDataSet dataSet, int color) {
-
         dataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
         dataSet.setDrawFilled(true);
         dataSet.setDrawCircleHole(false);
@@ -28,7 +28,10 @@ public interface IChart {
         dataSet.setColor(color);
         dataSet.setCircleColors(color);
         //dataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+    }
 
+    static void initDataSet(BarDataSet dataSet, int color) {
+        dataSet.setColor(color);
     }
 
     static void initChart(PieChart chart) {
