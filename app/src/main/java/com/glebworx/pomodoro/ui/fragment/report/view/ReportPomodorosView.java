@@ -65,7 +65,7 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
                     expandChart(pomodorosCompletedLineChart);
                     break;
                 case R.id.layout_trends:
-                    //expandChart(weeklyTrendsBarChart);
+                    expandChart(weeklyTrendsBarChart);
                     break;
             }
         };
@@ -106,23 +106,33 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
                     @Override
                     public void onGlobalLayout() {
                         expandedChart.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        initChart(expandedChart, chart.getData());
+                        IChart.rotateChart(expandedChart);
+                        IChart.initChart(expandedChart, true, true, "");
+                        expandedChart.setData(chart.getData());
+                        expandedChart.animateY(ANIM_DURATION);
                     }
                 });
         popupWindow.showAsDropDown(rootView, 0, 0, Gravity.CENTER);
     }
 
-    private void initChart(LineChart expandedChart, LineData lineData) {
-        int offset = (expandedChart.getHeight() - expandedChart.getWidth()) / 2;
-        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) expandedChart.getLayoutParams();
-        layoutParams.width = expandedChart.getHeight();
-        layoutParams.height = expandedChart.getWidth();
-        expandedChart.setLayoutParams(layoutParams);
-        expandedChart.setTranslationX(-offset);
-        expandedChart.setTranslationY(offset);
-        IChart.initChart(expandedChart, true, true, "");
-        expandedChart.setData(lineData);
-        expandedChart.animateY(ANIM_DURATION);
+    private void expandChart(BarChart chart) {
+        PopupWindowManager popupWindowManager = new PopupWindowManager(context);
+        PopupWindow popupWindow = popupWindowManager.getPopupWindow(R.layout.popup_bar_chart_expanded, true);
+        View contentView = popupWindow.getContentView();
+        contentView.findViewById(R.id.button_collapse).setOnClickListener(v -> popupWindow.dismiss());
+        BarChart expandedChart = contentView.findViewById(R.id.chart_expanded);
+        expandedChart.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        expandedChart.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        IChart.rotateChart(expandedChart);
+                        IChart.initChart(expandedChart, true, true, "");
+                        expandedChart.setData(chart.getData());
+                        expandedChart.animateY(ANIM_DURATION);
+                    }
+                });
+        popupWindow.showAsDropDown(rootView, 0, 0, Gravity.CENTER);
     }
 
     private io.reactivex.Observer<ReportPomodoroOverviewModel> getOverviewObserver() {

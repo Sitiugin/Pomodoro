@@ -1,6 +1,7 @@
 package com.glebworx.pomodoro.ui.fragment.report.interfaces;
 
 import android.content.Context;
+import android.widget.FrameLayout;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.BarLineChartBase;
@@ -141,6 +142,16 @@ public interface IChart {
         yAxisRight.setDrawLimitLinesBehindData(false);
         yAxisRight.setDrawLabels(false);
 
+    }
+
+    static void rotateChart(BarLineChartBase expandedChart) {
+        int offset = (expandedChart.getHeight() - expandedChart.getWidth()) / 2;
+        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) expandedChart.getLayoutParams();
+        layoutParams.width = expandedChart.getHeight();
+        layoutParams.height = expandedChart.getWidth();
+        expandedChart.setLayoutParams(layoutParams);
+        expandedChart.setTranslationX(-offset);
+        expandedChart.setTranslationY(offset);
     }
 
     class AxisEntryXFormatter extends ValueFormatter {
