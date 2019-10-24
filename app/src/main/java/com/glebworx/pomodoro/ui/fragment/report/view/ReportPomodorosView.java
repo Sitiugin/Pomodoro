@@ -8,6 +8,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.widget.NestedScrollView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.charts.LineChart;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.ReportPomodoroModel;
@@ -50,8 +51,10 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
         OnClickListener onClickListener = view -> {
             switch (view.getId()) {
                 case R.id.line_chart_distribution:
+                    expandChart(distributionLineChart);
                     break;
                 case R.id.bar_chart_trends:
+                    expandChart(trendsBarChart);
                     break;
             }
         };
@@ -71,6 +74,10 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
         trendsBarChart = rootView.findViewById(R.id.bar_chart_trends);
         this.context = context;
         this.presenter = new ReportPomodorosViewPresenter(this);
+    }
+
+    private void expandChart(BarLineChartBase chart) {
+        // TODO implement
     }
 
     private io.reactivex.Observer<ReportPomodoroModel> getObserver() {

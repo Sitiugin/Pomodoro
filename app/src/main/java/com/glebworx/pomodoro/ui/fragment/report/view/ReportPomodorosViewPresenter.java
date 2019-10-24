@@ -3,6 +3,7 @@ package com.glebworx.pomodoro.ui.fragment.report.view;
 import androidx.annotation.NonNull;
 
 import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -77,8 +78,9 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
         reportPomodoroModel.setPomodorosCompleted(documentSnapshots.size());
 
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        LocalDate localDate;
-        Map<String, LineDataSet> dataSetMap = new HashMap<>();
+
+        Map<String, LineDataSet> lineDataSetMap = new HashMap<>();
+        Map<String, BarDataSet> barDataSetMap = new HashMap<>();
 
         List<Entry> entries;
         Optional<Entry> optionalEntry;
@@ -87,8 +89,6 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
         LineDataSet dataSet;
         HistoryModel model;
         String projectName;
-
-        int maxPerDay = 0;
 
         for (DocumentSnapshot snapshot : documentSnapshots) {
 
@@ -100,12 +100,12 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
 
             // add data set object to the map if not already present
             projectName = model.getName();
-            dataSet = dataSetMap.get(projectName);
+            dataSet = lineDataSetMap.get(projectName);
             if (dataSet == null) {
                 entries = new ArrayList<>();
                 dataSet = new LineDataSet(entries, projectName);
                 IChart.initDataSet(dataSet, ColorConstants.rgb(model.getColorTag()));
-                dataSetMap.put(projectName, dataSet);
+                lineDataSetMap.put(projectName, dataSet);
             } else {
                 entries = dataSet.getValues();
             }
@@ -130,9 +130,9 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
         LineData lineData = new LineData();
 
         // put all generated data sets into the object to return
-        Set<String> keySet = dataSetMap.keySet();
+        Set<String> keySet = lineDataSetMap.keySet();
         for (String key : keySet) {
-            dataSet = dataSetMap.get(key);
+            dataSet = lineDataSetMap.get(key);
             if (dataSet == null) {
                 continue;
             }
