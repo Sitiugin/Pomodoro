@@ -1,0 +1,26 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_training_entry"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorForeground"
+    android:clickable="false"
+    android:clipChildren="true"
+    android:clipToPadding="true"
+    android:focusable="false">
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/chart_expanded"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:rotation="90" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/button_collapse"
+        style="@style/ImageButtonStyle.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_margin="@dimen/margin_content"
+        android:rotation="90"
+        android:src="@drawable/ic_cross_black" />
+</FrameLayout>

@@ -2,13 +2,16 @@ package com.glebworx.pomodoro.ui.fragment.report.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
+import android.widget.PopupWindow;
 
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.widget.NestedScrollView;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.LineData;
@@ -16,6 +19,7 @@ import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.ReportPomodoroOverviewModel;
 import com.glebworx.pomodoro.ui.fragment.report.interfaces.IChart;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportPomodorosView;
+import com.glebworx.pomodoro.util.manager.PopupWindowManager;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -24,10 +28,13 @@ import static com.glebworx.pomodoro.util.constants.Constants.ANIM_DURATION;
 
 public class ReportPomodorosView extends NestedScrollView implements IReportPomodorosView {
 
+    private View rootView;
     private AppCompatTextView pomodorosCompletedTextView;
     private AppCompatTextView averagePerDayTextView;
     private AppCompatTextView streakTextView;
+    private FrameLayout pomodorosCompletedLayout;
     private LineChart pomodorosCompletedLineChart;
+    private FrameLayout weeklyTrendsLayout;
     private BarChart weeklyTrendsBarChart;
 
     private Context context;
@@ -54,16 +61,16 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
         IChart.initChart(weeklyTrendsBarChart, false, false, null);
         OnClickListener onClickListener = view -> {
             switch (view.getId()) {
-                case R.id.line_chart_pomodoros_completed:
+                case R.id.layout_pomodoros_completed:
                     expandChart(pomodorosCompletedLineChart);
                     break;
-                case R.id.bar_chart_trends:
-                    expandChart(weeklyTrendsBarChart);
+                case R.id.layout_trends:
+                    //expandChart(weeklyTrendsBarChart);
                     break;
             }
         };
-        pomodorosCompletedLineChart.setOnClickListener(onClickListener);
-        weeklyTrendsBarChart.setOnClickListener(onClickListener);
+        pomodorosCompletedLayout.setOnClickListener(onClickListener);
+        weeklyTrendsLayout.setOnClickListener(onClickListener);
     }
 
     @Override
@@ -76,18 +83,46 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
     }
 
     private void init(Context context, AttributeSet attrs, int defStyle) {
-        View rootView = inflate(context, R.layout.view_report_pomodoros, this);
+        rootView = inflate(context, R.layout.view_report_pomodoros, this);
         pomodorosCompletedTextView = rootView.findViewById(R.id.text_view_pomodoros_completed);
         averagePerDayTextView = rootView.findViewById(R.id.text_view_average_per_day);
         streakTextView = rootView.findViewById(R.id.text_view_streak);
+        pomodorosCompletedLayout = rootView.findViewById(R.id.layout_pomodoros_completed);
         pomodorosCompletedLineChart = rootView.findViewById(R.id.line_chart_pomodoros_completed);
+        weeklyTrendsLayout = rootView.findViewById(R.id.layout_trends);
         weeklyTrendsBarChart = rootView.findViewById(R.id.bar_chart_trends);
         this.context = context;
         this.presenter = new ReportPomodorosViewPresenter(this);
     }
 
-    private void expandChart(BarLineChartBase chart) {
-        // TODO implement
+    private void expandChart(LineChart chart) {
+        PopupWindowManager popupWindowManager = new PopupWindowManager(context);
+        PopupWindow popupWindow = popupWindowManager.getPopupWindow(R.layout.popup_line_chart_expanded, true);
+        View contentView = popupWindow.getContentView();
+        contentView.findViewById(R.id.button_collapse).setOnClickListener(v -> popupWindow.dismiss());
+        LineChart expandedChart = contentView.findViewById(R.id.chart_expanded);
+        expandedChart.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        expandedChart.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        initChart(expandedChart, chart.getData());
+                    }
+                });
+        popupWindow.showAsDropDown(rootView, 0, 0, Gravity.CENTER);
+    }
+
+    private void initChart(LineChart expandedChart, LineData lineData) {
+        int offset = (expandedChart.getHeight() - expandedChart.getWidth()) / 2;
+        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) expandedChart.getLayoutParams();
+        layoutParams.width = expandedChart.getHeight();
+        layoutParams.height = expandedChart.getWidth();
+        expandedChart.setLayoutParams(layoutParams);
+        expandedChart.setTranslationX(-offset);
+        expandedChart.setTranslationY(offset);
+        IChart.initChart(expandedChart, true, true, "");
+        expandedChart.setData(lineData);
+        expandedChart.animateY(ANIM_DURATION);
     }
 
     private io.reactivex.Observer<ReportPomodoroOverviewModel> getOverviewObserver() {
