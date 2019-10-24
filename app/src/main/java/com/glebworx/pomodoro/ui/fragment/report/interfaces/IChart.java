@@ -76,6 +76,8 @@ public interface IChart {
     static void initChart(BarChart chart, boolean isExpanded, boolean showLegend, String descriptionText) {
         initBaseChart(chart, isExpanded, showLegend, descriptionText);
         chart.setFitBars(true);
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setValueFormatter(new BarAxisEntryXFormatter());
     }
 
     static void initBaseChart(BarLineChartBase chart, boolean isExpanded, boolean showLegend, String descriptionText) {
@@ -91,7 +93,7 @@ public interface IChart {
         chart.setNoDataText("");
         chart.setNoDataTextTypeface(TYPEFACE);
         chart.setBorderColor(colorGray);
-        chart.setBorderWidth(1);
+        chart.setBorderWidth(0.5f);
         chart.setDrawBorders(true);
         chart.setAutoScaleMinMaxEnabled(true);
         chart.setTouchEnabled(isExpanded);
@@ -152,6 +154,20 @@ public interface IChart {
         @Override
         public String getFormattedValue(float value) {
             return DateTimeManager.getAxisDateString((long) value, currentDate);
+        }
+    }
+
+    class BarAxisEntryXFormatter extends ValueFormatter {
+
+        private long currentDate;
+
+        public BarAxisEntryXFormatter() {
+            this.currentDate = new Date().getTime();
+        }
+
+        @Override
+        public String getFormattedValue(float value) {
+            return DateTimeManager.getBarAxisDateString((long) value * 604800000, currentDate);
         }
     }
 

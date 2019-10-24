@@ -114,7 +114,7 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
         HistoryModel model;
         String projectName;
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        long time;
+        float time;
         Map<String, LineDataSet> dataSetMap = new HashMap<>();
         List<Entry> entries;
         Optional<Entry> optionalEntry;
@@ -183,7 +183,7 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
 
         HistoryModel model;
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        long time;
+        float time;
         List<BarEntry> entries = new ArrayList<>();
         Optional<BarEntry> optionalEntry;
         BarEntry entry;
@@ -198,8 +198,8 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
 
             calendar.setTime(model.getTimestamp());
             DateTimeManager.clearTime(calendar);
-            //calendar.set(Calendar.DAY_OF_WEEK, 0);
-            time = calendar.getTimeInMillis();
+            calendar.set(Calendar.DAY_OF_WEEK, 0);
+            time = (float) calendar.getTimeInMillis() / 604800000;
 
             optionalEntry = getBarEntry(time, entries);
             if (optionalEntry.isPresent()) {
@@ -214,19 +214,23 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
         }
 
         BarDataSet dataSet = new BarDataSet(entries, null);
-        IChart.initDataSet(dataSet, ColorConstants.rgb(ColorConstants.COLOR_RED_HEX));
+        IChart.initDataSet(dataSet, ColorConstants.rgb(ColorConstants.COLOR_HIGHLIGHT_HEX));
 
-        return new BarData(dataSet);
+        BarData barData = new BarData(dataSet);
+        barData.setBarWidth(80f);
+
+        return barData;
+        //return new BarData(dataSet);
 
     }
 
-    private Optional<Entry> getEntry(long time, List<Entry> entries) {
+    private Optional<Entry> getEntry(float time, List<Entry> entries) {
         return entries.stream()
                 .filter(entry -> time == entry.getX())
                 .findAny();
     }
 
-    private Optional<BarEntry> getBarEntry(long time, List<BarEntry> entries) {
+    private Optional<BarEntry> getBarEntry(float time, List<BarEntry> entries) {
         return entries.stream()
                 .filter(entry -> time == entry.getX())
                 .findAny();

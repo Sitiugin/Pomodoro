@@ -4,7 +4,7 @@ import android.graphics.Color;
 
 public class ColorConstants {
 
-    public static final String COLOR_HIGHLIGHT_HEX = "#84FFFF";
+    public static final String COLOR_HIGHLIGHT_HEX = "#448AFF";
 
     public static final String COLOR_RED_HEX = "#ff5252";
     public static final String COLOR_PINK_HEX = "#FF4081";
