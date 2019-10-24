@@ -108,17 +108,17 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/text_view_distribution_title"
+            android:id="@+id/text_view_pomodoros_completed_title"
             style="@style/TextStyle.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_content"
-            android:text="Distribution"
+            android:text="Pomodoros completed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_overview" />
 
         <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/line_chart_distribution"
+            android:id="@+id/line_chart_pomodoros_completed"
             style="@style/ViewStyle.Rounded.Clickable"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_chart"
@@ -126,7 +126,7 @@
             android:animateLayoutChanges="true"
             android:clickable="true"
             android:focusable="true"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_distribution_title" />
+            app:layout_constraintTop_toBottomOf="@+id/text_view_pomodoros_completed_title" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/text_view_trends_title"
@@ -136,7 +136,7 @@
             android:layout_marginTop="@dimen/margin_content"
             android:text="Weekly Trends"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/line_chart_distribution" />
+            app:layout_constraintTop_toBottomOf="@+id/line_chart_pomodoros_completed" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/text_view_trends_subtitle"

@@ -12,6 +12,7 @@ import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.charts.LineChart;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.ReportPomodoroModel;
+import com.glebworx.pomodoro.model.ReportPomodoroOverviewModel;
 import com.glebworx.pomodoro.ui.fragment.report.interfaces.IChart;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportPomodorosView;
 
@@ -23,6 +24,8 @@ import static com.glebworx.pomodoro.util.constants.Constants.ANIM_DURATION;
 public class ReportPomodorosView extends NestedScrollView implements IReportPomodorosView {
 
     private AppCompatTextView pomodorosCompletedTextView;
+    private AppCompatTextView averagePerDayTextView;
+    private AppCompatTextView streakTextView;
     private LineChart distributionLineChart;
     private BarChart trendsBarChart;
 
@@ -50,7 +53,7 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
         IChart.initChart(trendsBarChart, false, null);
         OnClickListener onClickListener = view -> {
             switch (view.getId()) {
-                case R.id.line_chart_distribution:
+                case R.id.line_chart_pomodoros_completed:
                     expandChart(distributionLineChart);
                     break;
                 case R.id.bar_chart_trends:
@@ -63,14 +66,18 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
     }
 
     @Override
-    public void onPomodorosCompletedReceived(Observable<ReportPomodoroModel> observable) {
-        observable.subscribe(getObserver());
+    public void onObservablesReady(Observable<ReportPomodoroOverviewModel> overviewObservable,
+                                   Observable<ReportPomodoroModel> observable) {
+        overviewObservable.subscribe(getOverviewObserver());
+        observable.subscribe(getPomodorosCompletedObserver());
     }
 
     private void init(Context context, AttributeSet attrs, int defStyle) {
         View rootView = inflate(context, R.layout.view_report_pomodoros, this);
         pomodorosCompletedTextView = rootView.findViewById(R.id.text_view_pomodoros_completed);
-        distributionLineChart = rootView.findViewById(R.id.line_chart_distribution);
+        averagePerDayTextView = rootView.findViewById(R.id.text_view_average_per_day);
+        streakTextView = rootView.findViewById(R.id.text_view_streak);
+        distributionLineChart = rootView.findViewById(R.id.line_chart_pomodoros_completed);
         trendsBarChart = rootView.findViewById(R.id.bar_chart_trends);
         this.context = context;
         this.presenter = new ReportPomodorosViewPresenter(this);
@@ -80,7 +87,33 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
         // TODO implement
     }
 
-    private io.reactivex.Observer<ReportPomodoroModel> getObserver() {
+    private io.reactivex.Observer<ReportPomodoroOverviewModel> getOverviewObserver() {
+        return new io.reactivex.Observer<ReportPomodoroOverviewModel>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(ReportPomodoroOverviewModel model) {
+                pomodorosCompletedTextView.setText(String.valueOf(model.getPomodorosCompleted()));
+                averagePerDayTextView.setText(String.valueOf(model.getAveragePerDay()));
+                streakTextView.setText(String.valueOf(model.getStreak()));
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+    }
+
+    private io.reactivex.Observer<ReportPomodoroModel> getPomodorosCompletedObserver() {
         return new io.reactivex.Observer<ReportPomodoroModel>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -89,7 +122,6 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
 
             @Override
             public void onNext(ReportPomodoroModel model) {
-                pomodorosCompletedTextView.setText(String.valueOf(model.getPomodorosCompleted()));
                 distributionLineChart.setData(model.getDistributionData());
                 distributionLineChart.animateY(ANIM_DURATION);
             }

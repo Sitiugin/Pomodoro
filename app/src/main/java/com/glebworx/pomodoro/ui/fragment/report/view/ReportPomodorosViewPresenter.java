@@ -11,6 +11,7 @@ import com.github.mikephil.charting.utils.EntryXComparator;
 import com.glebworx.pomodoro.api.HistoryApi;
 import com.glebworx.pomodoro.model.HistoryModel;
 import com.glebworx.pomodoro.model.ReportPomodoroModel;
+import com.glebworx.pomodoro.model.ReportPomodoroOverviewModel;
 import com.glebworx.pomodoro.ui.fragment.report.interfaces.IChart;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportPomodorosView;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportPomodorosViewPresenter;
@@ -54,26 +55,40 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
 
     private void handleHistory(Task<QuerySnapshot> task) {
         if (task.isSuccessful() && task.getResult() != null) {
+            Observable<ReportPomodoroOverviewModel> overviewObservable = getOverviewObservable(task.getResult());
             Observable<ReportPomodoroModel> observable = getObservable(task.getResult());
             observable = observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
-            presenterListener.onPomodorosCompletedReceived(observable);
+            presenterListener.onObservablesReady(overviewObservable, observable);
         }
     }
 
-    private Observable<ReportPomodoroModel> getObservable(QuerySnapshot snapshot) {
+    private Observable<ReportPomodoroOverviewModel> getOverviewObservable(QuerySnapshot snapshot) {
         return Observable.create(emitter -> {
-
-            List<DocumentSnapshot> documentSnapshots = snapshot.getDocuments();
-            ReportPomodoroModel model = new ReportPomodoroModel();
-            initData(model, documentSnapshots);
-
+            ReportPomodoroOverviewModel model = new ReportPomodoroOverviewModel();
+            initOverview(model, snapshot.getDocuments());
             emitter.onNext(model);
             emitter.onComplete();
 
         });
     }
 
-    private void initData(ReportPomodoroModel reportPomodoroModel, List<DocumentSnapshot> documentSnapshots) {
+    private Observable<ReportPomodoroModel> getObservable(QuerySnapshot snapshot) {
+        return Observable.create(emitter -> {
+            ReportPomodoroModel model = new ReportPomodoroModel();
+            initPomodorosCompletedData(model, snapshot.getDocuments());
+            emitter.onNext(model);
+            emitter.onComplete();
+
+        });
+    }
+
+    private void initOverview(ReportPomodoroOverviewModel model,
+                              List<DocumentSnapshot> documentSnapshots) {
+        model.setPomodorosCompleted(documentSnapshots.size());
+    }
+
+    private void initPomodorosCompletedData(ReportPomodoroModel reportPomodoroModel,
+                                            List<DocumentSnapshot> documentSnapshots) {
 
         reportPomodoroModel.setPomodorosCompleted(documentSnapshots.size());
 
