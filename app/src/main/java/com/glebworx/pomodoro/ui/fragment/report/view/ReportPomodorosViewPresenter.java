@@ -21,9 +21,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -104,9 +107,57 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
         });
     }
 
-    private void initOverview(ReportPomodoroOverviewModel model,
+    private void initOverview(ReportPomodoroOverviewModel overviewModel,
                               List<DocumentSnapshot> documentSnapshots) {
-        model.setPomodorosCompleted(documentSnapshots.size());
+
+        overviewModel.setPomodorosCompleted(documentSnapshots.size());
+
+        HistoryModel model;
+        List<Date> dates = new ArrayList<>();
+
+        for (DocumentSnapshot snapshot : documentSnapshots) {
+            // get model
+            model = snapshot.toObject(HistoryModel.class);
+            if (model == null) {
+                continue;
+            }
+            dates.add(model.getTimestamp());
+        }
+
+        Collections.sort(dates);
+
+        LocalDate current;
+        LocalDate previous = dates
+                .get(dates.size() - 1)
+                .toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+
+        if (!previous.equals(LocalDate.now()) && !previous.equals(LocalDate.now().minusDays(1))) {
+            overviewModel.setStreak(0);
+            return;
+        }
+
+        int streak = 1;
+        for (int i = dates.size() - 1; i > 0; i--) {
+            current = previous;
+            previous = dates.get(i - 1)
+                    .toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+            if (previous.equals(current)) {
+                continue;
+            }
+            if (previous.plusDays(1).equals(current)) {
+                streak++;
+            } else {
+                overviewModel.setStreak(streak);
+                return;
+            }
+        }
+
+        overviewModel.setStreak(streak);
+
     }
 
     private LineData getPomodorosCompletedData(List<DocumentSnapshot> documentSnapshots) {
