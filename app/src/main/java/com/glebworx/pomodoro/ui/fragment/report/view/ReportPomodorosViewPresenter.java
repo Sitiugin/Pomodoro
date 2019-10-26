@@ -23,6 +23,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -114,15 +115,25 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
 
         HistoryModel model;
         List<Date> dates = new ArrayList<>();
+        Date date;
+        Date minDate = new Date();
+        int totalPomodoros = 0;
 
         for (DocumentSnapshot snapshot : documentSnapshots) {
-            // get model
-            model = snapshot.toObject(HistoryModel.class);
-            if (model == null) {
-                continue;
+            model = snapshot.toObject(HistoryModel.class); // get model
+            if (model != null && model.getEventType().equals(HistoryModel.EVENT_POMODORO_COMPLETED)) {
+                date = model.getTimestamp();
+                dates.add(date);
+                if (date.compareTo(minDate) < 0) {
+                    minDate = date;
+                }
+                totalPomodoros++;
             }
-            dates.add(model.getTimestamp());
         }
+
+        long daysElapsed = ChronoUnit.DAYS.between(minDate.toInstant(), new Date().toInstant());
+
+        overviewModel.setAveragePerDay((float) totalPomodoros / daysElapsed);
 
         Collections.sort(dates);
 

@@ -21,6 +21,8 @@ import com.glebworx.pomodoro.ui.fragment.report.interfaces.IChart;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportPomodorosView;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
 
+import java.util.Locale;
+
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
@@ -145,7 +147,10 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
             @Override
             public void onNext(ReportPomodoroOverviewModel model) {
                 pomodorosCompletedTextView.setText(String.valueOf(model.getPomodorosCompleted()));
-                averagePerDayTextView.setText(String.valueOf(model.getAveragePerDay()));
+                averagePerDayTextView.setText(String.format(
+                        Locale.getDefault(),
+                        "%.2f",
+                        model.getAveragePerDay()));
                 streakTextView.setText(String.valueOf(model.getStreak()));
             }
 
