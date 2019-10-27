@@ -7,24 +7,24 @@ import android.view.View;
 import androidx.core.widget.NestedScrollView;
 
 import com.glebworx.pomodoro.R;
-import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportTasksView;
+import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportProjectsView;
 
-public class ReportTasksView extends NestedScrollView implements IReportTasksView {
+public class ReportProjectsView extends NestedScrollView implements IReportProjectsView {
 
     private Context context;
-    private ReportTasksViewPresenter presenter;
+    private ReportProjectsViewPresenter presenter;
 
-    public ReportTasksView(Context context) {
+    public ReportProjectsView(Context context) {
         super(context);
         init(context, null, 0);
     }
 
-    public ReportTasksView(Context context, AttributeSet attrs) {
+    public ReportProjectsView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs, 0);
     }
 
-    public ReportTasksView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ReportProjectsView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs, defStyleAttr);
     }
@@ -42,9 +42,9 @@ public class ReportTasksView extends NestedScrollView implements IReportTasksVie
     }
 
     private void init(Context context, AttributeSet attrs, int defStyle) {
-        View rootView = inflate(context, R.layout.view_report_tasks, this);
+        View rootView = inflate(context, R.layout.view_report_projects, this);
         this.context = context;
-        this.presenter = new ReportTasksViewPresenter();
+        this.presenter = new ReportProjectsViewPresenter();
     }
 
 }

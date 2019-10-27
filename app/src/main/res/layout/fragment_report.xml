@@ -79,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <com.glebworx.pomodoro.ui.fragment.report.view.ReportTasksView
+        <com.glebworx.pomodoro.ui.fragment.report.view.ReportProjectsView
             android:id="@+id/view_tasks"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

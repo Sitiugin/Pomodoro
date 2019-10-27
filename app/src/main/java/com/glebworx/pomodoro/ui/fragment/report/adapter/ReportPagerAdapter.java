@@ -37,7 +37,7 @@ public class ReportPagerAdapter extends PagerAdapter {
             case 0:
                 return context.getString(R.string.report_title_pomodoros);
             case 1:
-                return context.getString(R.string.report_title_tasks);
+                return context.getString(R.string.report_title_projects);
             case 2:
             default:
                 return context.getString(R.string.report_title_history);

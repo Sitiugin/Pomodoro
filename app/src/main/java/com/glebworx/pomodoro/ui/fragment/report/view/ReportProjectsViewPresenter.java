@@ -1,8 +1,8 @@
 package com.glebworx.pomodoro.ui.fragment.report.view;
 
-import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportTasksViewPresenter;
+import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportProjectsViewPresenter;
 
-public class ReportTasksViewPresenter implements IReportTasksViewPresenter {
+public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter {
 
     @Override
     public void init() {

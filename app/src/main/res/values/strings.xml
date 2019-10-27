@@ -210,7 +210,7 @@
 
     <string name="report_title_history">History</string>
     <string name="report_title_pomodoros">Pomodoros</string>
-    <string name="report_title_tasks">Tasks</string>
+    <string name="report_title_projects">Projects</string>
     <string-array name="report_frequency">
         <item>Daily</item>
         <item>Weekly</item>
