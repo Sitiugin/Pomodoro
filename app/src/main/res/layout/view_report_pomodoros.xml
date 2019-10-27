@@ -17,7 +17,7 @@
             style="@style/TextStyle.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Overview"
+            android:text="Pomodoro Overview"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -78,7 +78,7 @@
                 style="@style/TextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Average per day"
+                android:text="Avg per day"
                 app:layout_constraintEnd_toEndOf="@+id/text_view_average_per_day"
                 app:layout_constraintStart_toStartOf="@+id/text_view_average_per_day"
                 app:layout_constraintTop_toBottomOf="@+id/text_view_average_per_day" />

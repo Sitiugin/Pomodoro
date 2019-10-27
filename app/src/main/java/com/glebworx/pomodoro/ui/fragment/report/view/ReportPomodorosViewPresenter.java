@@ -278,11 +278,11 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
         BarDataSet dataSet = new BarDataSet(entries, null);
         IChart.initDataSet(dataSet, ColorConstants.rgb(ColorConstants.COLOR_HIGHLIGHT_HEX));
 
-        BarData barData = new BarData(dataSet);
-        barData.setBarWidth(80f);
+        //BarData barData = new BarData(dataSet);
+        //barData.setBarWidth(80f);
+        //return barData;
 
-        return barData;
-        //return new BarData(dataSet);
+        return new BarData(dataSet);
 
     }
 
