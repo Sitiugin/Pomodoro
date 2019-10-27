@@ -14,7 +14,6 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 
 import java.util.Date;
@@ -47,7 +46,7 @@ public interface IChart {
 
         int colorGray = context.getColor(android.R.color.darker_gray);
         chart.setNoDataTextColor(colorGray);
-        chart.setNoDataText(context.getString(R.string.core_text_no_data));
+        chart.setNoDataText("");
         chart.setNoDataTextTypeface(TYPEFACE);
 
         Description description = new Description();

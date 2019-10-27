@@ -29,6 +29,7 @@
             android:layout_marginTop="@dimen/margin_content"
             android:animateLayoutChanges="true"
             android:padding="@dimen/margin_content"
+            android:clipToPadding="false"
             app:layout_constraintTop_toBottomOf="@+id/text_view_overview_title">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -157,7 +158,7 @@
             app:layout_constraintTop_toBottomOf="@+id/layout_distribution" />
 
         <FrameLayout
-            android:id="@+id/layout_pomodoros_completed"
+            android:id="@+id/layout_elapsed_time"
             style="@style/ViewStyle.Rounded.Clickable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
