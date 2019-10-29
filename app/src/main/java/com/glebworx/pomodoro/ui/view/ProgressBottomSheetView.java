@@ -43,10 +43,10 @@ public class ProgressBottomSheetView
     @BindView(R.id.text_view_status) AppCompatTextView statusTextView;
     @BindView(R.id.text_view_time_remaining) AppCompatTextView timeRemainingTextView;
     @BindView(R.id.button_start_stop) AppCompatImageButton startStopButton;
-    @BindView(R.id.text_view_pomodoros_left_count)
-    AppCompatButton pomodorosLeftCountTextView;
-    @BindView(R.id.text_view_pomodoros_left)
-    AppCompatTextView pomodorosLeftTextView;
+    @BindView(R.id.button_daily_target)
+    AppCompatButton dailyTargetButton;
+    @BindView(R.id.text_view_daily_target)
+    AppCompatTextView dailyTargetTextView;
     @BindView(R.id.text_view_time_remaining_large) AppCompatTextView timeRemainingLargeTextView;
     @BindView(R.id.seek_arc) SeekArc seekArc;
     @BindView(R.id.fab_start_stop_large) FloatingActionButton startStopFab;
@@ -57,6 +57,7 @@ public class ProgressBottomSheetView
     //                                                                                     CONSTANTS
 
     private static final int DURATION_PERCENT = POMODORO_LENGTH * 600;
+
 
     //                                                                                    ATTRIBUTES
 
@@ -104,12 +105,14 @@ public class ProgressBottomSheetView
             startStopFab.setOnClickListener(this);
             cancelButton.setOnClickListener(this);
             completeButton.setOnClickListener(this);
+            dailyTargetButton.setOnClickListener(this);
         } else {
             bottomSheetListener = null;
             startStopButton.setOnClickListener(null);
             startStopFab.setOnClickListener(null);
             cancelButton.setOnClickListener(null);
             completeButton.setOnClickListener(null);
+            dailyTargetButton.setOnClickListener(null);
         }
     }
 
@@ -135,6 +138,8 @@ public class ProgressBottomSheetView
             case R.id.button_complete:
                 presenter.completeTask();
                 break;
+            case R.id.button_daily_target:
+                presenter.setDailyTarget(context);
         }
     }
 
@@ -291,8 +296,8 @@ public class ProgressBottomSheetView
                 ConstraintSet.END);
 
         // animate distractions
-        constraintSet.setVisibility(R.id.text_view_pomodoros_left, ConstraintSet.VISIBLE);
-        constraintSet.setVisibility(R.id.text_view_pomodoros_left_count, ConstraintSet.VISIBLE);
+        constraintSet.setVisibility(R.id.text_view_daily_target, ConstraintSet.VISIBLE);
+        constraintSet.setVisibility(R.id.button_daily_target, ConstraintSet.VISIBLE);
 
         // animate buttons
         constraintSet.setVisibility(R.id.button_start_stop, ConstraintSet.INVISIBLE);
@@ -349,8 +354,8 @@ public class ProgressBottomSheetView
         constraintSet.clear(R.id.text_view_task, ConstraintSet.END);
 
         // animate distractions
-        constraintSet.setVisibility(R.id.text_view_pomodoros_left, ConstraintSet.INVISIBLE);
-        constraintSet.setVisibility(R.id.text_view_pomodoros_left_count, ConstraintSet.INVISIBLE);
+        constraintSet.setVisibility(R.id.text_view_daily_target, ConstraintSet.INVISIBLE);
+        constraintSet.setVisibility(R.id.button_daily_target, ConstraintSet.INVISIBLE);
 
         // animate buttons
         constraintSet.setVisibility(R.id.button_start_stop, ConstraintSet.VISIBLE);

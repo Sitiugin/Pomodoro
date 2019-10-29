@@ -1,13 +1,19 @@
 package com.glebworx.pomodoro.ui.view;
 
-import androidx.annotation.NonNull;
+import android.app.Activity;
+import android.content.Context;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+
+import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetView;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewPresenter;
 import com.glebworx.pomodoro.util.PomodoroTimer;
+import com.glebworx.pomodoro.util.manager.DialogManager;
 
 import static com.glebworx.pomodoro.util.manager.DateTimeManager.POMODORO_LENGTH;
 
@@ -75,6 +81,18 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     @Override
     public void completeTask() {
         completePomodoro();
+    }
+
+    @Override
+    public void setDailyTarget(Context context) {
+        if (!(context instanceof Activity)) {
+            return;
+        }
+        AlertDialog alertDialog = DialogManager.showDialog(
+                (Activity) context,
+                R.id.container_main,
+                R.layout.dialog_daily_target);
+        alertDialog.show();
     }
 
     private void initTimer() {

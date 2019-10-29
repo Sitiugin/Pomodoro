@@ -65,7 +65,7 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/text_view_pomodoros_left_count"
+        android:id="@+id/button_daily_target"
         style="@style/ButtonStyle.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -73,14 +73,14 @@
         app:layout_constraintBottom_toTopOf="@+id/text_view_time_remaining_large"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="3/10" />
+        android:text="@string/core_empty" />
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/TextStyle"
-        android:id="@+id/text_view_pomodoros_left"
+        android:id="@+id/text_view_daily_target"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="invisible"
-        android:text="@string/bottom_sheet_text_daily_target"
+        android:text="@string/bottom_sheet_title_daily_target"
         app:layout_constraintBottom_toTopOf="@+id/text_view_time_remaining_large"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
