@@ -64,25 +64,23 @@
         app:layout_constraintBottom_toBottomOf="@+id/text_view_task"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        style="@style/TextStyle.Count"
-        android:id="@+id/text_view_distractions_count"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/text_view_pomodoros_left_count"
+        style="@style/ButtonStyle.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorError"
-        android:layout_marginBottom="@dimen/margin_content"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/text_view_time_remaining_large"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="3"/>
+        android:text="3/10" />
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/TextStyle"
-        android:id="@+id/text_view_distractions"
+        android:id="@+id/text_view_pomodoros_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="invisible"
-        android:text="Distractions"
+        android:text="@string/bottom_sheet_text_daily_target"
         app:layout_constraintBottom_toTopOf="@+id/text_view_time_remaining_large"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

@@ -10,7 +10,7 @@ public class SharedPrefsManager {
     private static final String PREFS_NAME = "shared_prefs";
 
     private static final String KEY_EMAIL = "prefs_email";
-    private static final String KEY_UNITS = "prefs_units";
+    private static final String KEY_POMODORO_TARGET = "prefs_pomodoro_target";
 
     private Context context;
 
@@ -29,15 +29,15 @@ public class SharedPrefsManager {
         return sharedPreferences.getString(KEY_EMAIL, null);
     }
 
-    public void setUnits(boolean isKg) {
-        SharedPreferences.Editor editor = getSharedPreferences().edit();
-        editor.putBoolean(KEY_UNITS, isKg);
-        editor.apply();
+    public int getPomodoroTarget() {
+        SharedPreferences sharedPreferences = getSharedPreferences();
+        return sharedPreferences.getInt(KEY_POMODORO_TARGET, 0);
     }
 
-    public boolean getUnits() {
-        SharedPreferences sharedPreferences = getSharedPreferences();
-        return sharedPreferences.getBoolean(KEY_UNITS, true);
+    public void setPomodoroTarget(int target) {
+        SharedPreferences.Editor editor = getSharedPreferences().edit();
+        editor.putInt(KEY_POMODORO_TARGET, target);
+        editor.apply();
     }
 
     private SharedPreferences getSharedPreferences() {

@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -42,8 +43,10 @@ public class ProgressBottomSheetView
     @BindView(R.id.text_view_status) AppCompatTextView statusTextView;
     @BindView(R.id.text_view_time_remaining) AppCompatTextView timeRemainingTextView;
     @BindView(R.id.button_start_stop) AppCompatImageButton startStopButton;
-    @BindView(R.id.text_view_distractions_count) AppCompatTextView distractionsCountTextView;
-    @BindView(R.id.text_view_distractions) AppCompatTextView distractionsTextView;
+    @BindView(R.id.text_view_pomodoros_left_count)
+    AppCompatButton pomodorosLeftCountTextView;
+    @BindView(R.id.text_view_pomodoros_left)
+    AppCompatTextView pomodorosLeftTextView;
     @BindView(R.id.text_view_time_remaining_large) AppCompatTextView timeRemainingLargeTextView;
     @BindView(R.id.seek_arc) SeekArc seekArc;
     @BindView(R.id.fab_start_stop_large) FloatingActionButton startStopFab;
@@ -139,7 +142,7 @@ public class ProgressBottomSheetView
     public void onTaskSet(String name) {
         synchronized (object) {
             taskTextView.setText(name);
-            statusTextView.setText(R.string.main_text_status_idle);
+            statusTextView.setText(R.string.bottom_sheet_text_status_idle);
             String timeRemainingString = DateTimeManager.formatMMSSString(context, POMODORO_LENGTH * 60);
             timeRemainingLargeTextView.setText(timeRemainingString);
             timeRemainingTextView.setText(timeRemainingString);
@@ -151,7 +154,7 @@ public class ProgressBottomSheetView
         synchronized (object) {
             startStopButton.setImageResource(R.drawable.ic_pause_highlight);
             startStopFab.setImageResource(R.drawable.ic_pause_black);
-            statusTextView.setText(R.string.main_text_status_active);
+            statusTextView.setText(R.string.bottom_sheet_text_status_active);
         }
     }
 
@@ -160,7 +163,7 @@ public class ProgressBottomSheetView
         synchronized (object) {
             startStopButton.setImageResource(R.drawable.ic_pause_highlight);
             startStopFab.setImageResource(R.drawable.ic_pause_black);
-            statusTextView.setText(R.string.main_text_status_active);
+            statusTextView.setText(R.string.bottom_sheet_text_status_active);
         }
     }
 
@@ -169,7 +172,7 @@ public class ProgressBottomSheetView
         synchronized (object) {
             startStopButton.setImageResource(R.drawable.ic_play_highlight);
             startStopFab.setImageResource(R.drawable.ic_play_black);
-            statusTextView.setText(R.string.main_text_status_paused);
+            statusTextView.setText(R.string.bottom_sheet_text_status_paused);
             if (bottomSheetState == BottomSheetBehavior.STATE_EXPANDED) {
                 timeRemainingTextView.setText(timeRemainingLargeTextView.getText());
                 progressBar.setProgress(seekArc.getProgress());
@@ -185,8 +188,8 @@ public class ProgressBottomSheetView
         Toast.makeText(
                 context,
                 isSuccessful
-                        ? R.string.main_toast_pomodoro_completed_success
-                        : R.string.main_toast_pomodoro_completed_failed,
+                        ? R.string.bottom_sheet_toast_pomodoro_completed_success
+                        : R.string.bottom_sheet_toast_pomodoro_completed_failed,
                 Toast.LENGTH_LONG).show();
     }
 
@@ -219,7 +222,7 @@ public class ProgressBottomSheetView
         synchronized (object) {
             startStopButton.setImageResource(R.drawable.ic_play_highlight);
             startStopFab.setImageResource(R.drawable.ic_play_black);
-            statusTextView.setText(R.string.main_text_status_idle);
+            statusTextView.setText(R.string.bottom_sheet_text_status_idle);
             timeRemainingLargeTextView.setText(null);
             timeRemainingTextView.setText(null);
             seekArc.setProgress(0);
@@ -288,8 +291,8 @@ public class ProgressBottomSheetView
                 ConstraintSet.END);
 
         // animate distractions
-        constraintSet.setVisibility(R.id.text_view_distractions, ConstraintSet.VISIBLE);
-        constraintSet.setVisibility(R.id.text_view_distractions_count, ConstraintSet.VISIBLE);
+        constraintSet.setVisibility(R.id.text_view_pomodoros_left, ConstraintSet.VISIBLE);
+        constraintSet.setVisibility(R.id.text_view_pomodoros_left_count, ConstraintSet.VISIBLE);
 
         // animate buttons
         constraintSet.setVisibility(R.id.button_start_stop, ConstraintSet.INVISIBLE);
@@ -346,8 +349,8 @@ public class ProgressBottomSheetView
         constraintSet.clear(R.id.text_view_task, ConstraintSet.END);
 
         // animate distractions
-        constraintSet.setVisibility(R.id.text_view_distractions, ConstraintSet.INVISIBLE);
-        constraintSet.setVisibility(R.id.text_view_distractions_count, ConstraintSet.INVISIBLE);
+        constraintSet.setVisibility(R.id.text_view_pomodoros_left, ConstraintSet.INVISIBLE);
+        constraintSet.setVisibility(R.id.text_view_pomodoros_left_count, ConstraintSet.INVISIBLE);
 
         // animate buttons
         constraintSet.setVisibility(R.id.button_start_stop, ConstraintSet.VISIBLE);

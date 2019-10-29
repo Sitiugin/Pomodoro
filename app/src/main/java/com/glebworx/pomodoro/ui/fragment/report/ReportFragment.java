@@ -78,6 +78,41 @@ public class ReportFragment extends Fragment implements IReportFragment {
         super.onDetach();
     }
 
+    /*@Nullable
+    @Override
+    public Animator onCreateAnimator(int transit, boolean enter, int nextAnim) {
+        Animator animator = super.onCreateAnimator(transit, enter, nextAnim);
+        if (animator != null) {
+            initAnimatorListener(animator);
+        }
+        return animator;
+    }
+
+    private void initAnimatorListener(Animator animator) {
+        animator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                initTabs();
+                animator.removeAllListeners();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+                animator.removeAllListeners();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
+    }*/
+
     private void initClickEvents() {
         View.OnClickListener onClickListener = view -> {
             if (view.getId() == R.id.button_close) {
@@ -93,22 +128,6 @@ public class ReportFragment extends Fragment implements IReportFragment {
         viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
-        /*viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });*/
     }
 
 }
