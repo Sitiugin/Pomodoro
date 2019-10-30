@@ -139,7 +139,7 @@ public class ProgressBottomSheetView
                 presenter.completeTask();
                 break;
             case R.id.button_daily_target:
-                presenter.setDailyTarget(context);
+                presenter.showDailyTargetDialog(context);
         }
     }
 

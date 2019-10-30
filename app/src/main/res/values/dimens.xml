@@ -6,6 +6,7 @@
     <dimen name="margin_content_quarter">4dp</dimen>
     <dimen name="margin_content_half">8dp</dimen>
     <dimen name="margin_content">16dp</dimen>
+    <dimen name="margin_content_one_and_half">24dp</dimen>
     <dimen name="margin_content_double">32dp</dimen>
     <dimen name="margin_content_triple">48dp</dimen>
     <dimen name="margin_content_quadruple">64dp</dimen>

@@ -2,9 +2,11 @@ package com.glebworx.pomodoro.ui.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatButton;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.TaskApi;
@@ -14,6 +16,10 @@ import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetView;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewPresenter;
 import com.glebworx.pomodoro.util.PomodoroTimer;
 import com.glebworx.pomodoro.util.manager.DialogManager;
+import com.glebworx.pomodoro.util.manager.SharedPrefsManager;
+import com.google.android.material.chip.ChipGroup;
+
+import java.util.Objects;
 
 import static com.glebworx.pomodoro.util.manager.DateTimeManager.POMODORO_LENGTH;
 
@@ -31,6 +37,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     private TaskModel taskModel;
     private PomodoroTimer timer;
     private int progressStatus;
+    private int pomodoroTarget;
 
     ProgressProgressBottomSheetViewPresenter(@NonNull IProgressBottomSheetView presenterListener) {
         this.presenterListener = presenterListener;
@@ -84,15 +91,86 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     }
 
     @Override
-    public void setDailyTarget(Context context) {
+    public void showDailyTargetDialog(Context context) {
+
         if (!(context instanceof Activity)) {
             return;
         }
+
         AlertDialog alertDialog = DialogManager.showDialog(
                 (Activity) context,
                 R.id.container_main,
                 R.layout.dialog_daily_target);
+
+        ChipGroup chipGroup = alertDialog.findViewById(R.id.chip_group_daily_target);
+        AppCompatButton cancelButton = alertDialog.findViewById(R.id.button_negative);
+        AppCompatButton setTargetButton = alertDialog.findViewById(R.id.button_positive);
+
+        SharedPrefsManager sharedPrefsManager = new SharedPrefsManager(context);
+        int pomodoroTarget = sharedPrefsManager.getPomodoroTarget();
+
+        Objects.requireNonNull(chipGroup).setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(ChipGroup group, int checkedId) {
+                //pomodoroTarget = getPomodoroTargetFromId(checkedId);
+            }
+        });
+
+        View.OnClickListener onClickListener = view -> {
+            if (view.getId() == R.id.button_negative) {
+                alertDialog.dismiss();
+            } else if (view.getId() == R.id.button_positive) {
+                sharedPrefsManager.setPomodoroTarget(pomodoroTarget);
+                alertDialog.dismiss();
+            }
+        };
+        Objects.requireNonNull(cancelButton).setOnClickListener(onClickListener);
+        Objects.requireNonNull(setTargetButton).setOnClickListener(onClickListener);
+
         alertDialog.show();
+
+    }
+
+    private int getPomodoroTargetFromId(int checkedId) {
+        switch (checkedId) {
+            case R.id.chip_four:
+                return 4;
+            case R.id.chip_five:
+                return 5;
+            case R.id.chip_six:
+                return 6;
+            case R.id.chip_seven:
+                return 7;
+            case R.id.chip_eight:
+                return 8;
+            case R.id.chip_nine:
+                return 9;
+            case R.id.chip_ten:
+                return 10;
+            case R.id.chip_eleven:
+                return 11;
+            case R.id.chip_twelve:
+                return 12;
+            case R.id.chip_thirteen:
+                return 13;
+            case R.id.chip_fourteen:
+                return 14;
+            case R.id.chip_fifteen:
+                return 15;
+            case R.id.chip_sixteen:
+                return 16;
+            case R.id.chip_seventeen:
+                return 17;
+            case R.id.chip_eighteen:
+                return 18;
+            case R.id.chip_nineteen:
+                return 19;
+            case R.id.chip_twenty:
+                return 20;
+            default:
+                return 0;
+
+        }
     }
 
     private void initTimer() {

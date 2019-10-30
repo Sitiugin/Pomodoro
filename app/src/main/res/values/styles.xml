@@ -280,14 +280,20 @@
     <!--                                                                              CHIP STYLE -->
 
     <style name="ChipStyle" parent="@style/Widget.MaterialComponents.Chip.Choice">
+        <item name="chipStartPadding">12dp</item>
+        <item name="chipEndPadding">2dp</item>
         <item name="android:textSize">@dimen/text_size_body</item>
         <item name="android:textColor">@drawable/selector_tint_text</item>
         <item name="android:fontFamily">@string/font_sans_serif_light</item>
         <item name="android:stateListAnimator">@animator/lift_on_touch_toggle</item>
-        <item name="chipBackgroundColor">@drawable/selector_bg_chip</item>
-        <item name="iconStartPadding">21dp</item>
-        <item name="iconEndPadding">5dp</item>
+        <item name="chipBackgroundColor">@color/colorForeground</item>
         <item name="rippleColor">@color/colorRipple</item>
+    </style>
+
+    <style name="ChipStyle.Icon" parent="@style/ChipStyle">
+        <item name="chipBackgroundColor">@drawable/selector_bg_chip</item>
+        <item name="chipStartPadding">@dimen/margin_content_one_and_half</item>
+        <item name="chipEndPadding">@dimen/margin_content_half</item>
         <item name="chipIconVisible">true</item>
         <item name="chipIconEnabled">true</item>
         <item name="chipIcon">@drawable/drawable_dot_large_black</item>

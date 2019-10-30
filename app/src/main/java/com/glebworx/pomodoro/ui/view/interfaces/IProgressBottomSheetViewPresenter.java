@@ -17,6 +17,6 @@ public interface IProgressBottomSheetViewPresenter {
 
     void completeTask();
 
-    void setDailyTarget(Context context);
+    void showDailyTargetDialog(Context context);
 
 }
