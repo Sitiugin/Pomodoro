@@ -3,6 +3,7 @@ package com.glebworx.pomodoro.ui.view;
 import android.app.Activity;
 import android.content.Context;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -107,23 +108,28 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         AppCompatButton setTargetButton = alertDialog.findViewById(R.id.button_positive);
 
         SharedPrefsManager sharedPrefsManager = new SharedPrefsManager(context);
-        int pomodoroTarget = sharedPrefsManager.getPomodoroTarget();
 
-        Objects.requireNonNull(chipGroup).setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(ChipGroup group, int checkedId) {
-                //pomodoroTarget = getPomodoroTargetFromId(checkedId);
-            }
-        });
+        int defaultCheckedId = getIdFromPomodoroTarget(sharedPrefsManager.getPomodoroTarget());
+        if (defaultCheckedId != View.NO_ID) {
+            Objects.requireNonNull(chipGroup).check(defaultCheckedId);
+        }
 
         View.OnClickListener onClickListener = view -> {
             if (view.getId() == R.id.button_negative) {
                 alertDialog.dismiss();
             } else if (view.getId() == R.id.button_positive) {
+                int pomodoroTarget = getPomodoroTargetFromId(Objects.requireNonNull(chipGroup).getCheckedChipId());
                 sharedPrefsManager.setPomodoroTarget(pomodoroTarget);
                 alertDialog.dismiss();
+                int messageId = pomodoroTarget == 0
+                        ? R.string.bottom_sheet_toast_pomodoro_target_removed
+                        : defaultCheckedId == View.NO_ID
+                        ? R.string.bottom_sheet_toast_pomodoro_target_set
+                        : R.string.bottom_sheet_toast_pomodoro_target_changed;
+                Toast.makeText(context, messageId, Toast.LENGTH_SHORT).show();
             }
         };
+
         Objects.requireNonNull(cancelButton).setOnClickListener(onClickListener);
         Objects.requireNonNull(setTargetButton).setOnClickListener(onClickListener);
 
@@ -169,6 +175,48 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
                 return 20;
             default:
                 return 0;
+
+        }
+    }
+
+    private int getIdFromPomodoroTarget(int target) {
+        switch (target) {
+            case 4:
+                return R.id.chip_four;
+            case 5:
+                return R.id.chip_five;
+            case 6:
+                return R.id.chip_six;
+            case 7:
+                return R.id.chip_seven;
+            case 8:
+                return R.id.chip_eight;
+            case 9:
+                return R.id.chip_nine;
+            case 10:
+                return R.id.chip_ten;
+            case 11:
+                return R.id.chip_eleven;
+            case 12:
+                return R.id.chip_twelve;
+            case 13:
+                return R.id.chip_thirteen;
+            case 14:
+                return R.id.chip_fourteen;
+            case 15:
+                return R.id.chip_fifteen;
+            case 16:
+                return R.id.chip_sixteen;
+            case 17:
+                return R.id.chip_seventeen;
+            case 18:
+                return R.id.chip_eighteen;
+            case 19:
+                return R.id.chip_nineteen;
+            case 20:
+                return R.id.chip_twenty;
+            default:
+                return View.NO_ID;
 
         }
     }
