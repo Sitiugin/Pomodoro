@@ -150,10 +150,14 @@ public class ProgressBottomSheetView
     }
 
     @Override
-    public void onTaskSet(String name) {
+    public void onTaskSet(String name, int pomodorosAllocated, int pomodorosCompleted) {
         synchronized (object) {
             taskTextView.setText(name);
             statusTextView.setText(R.string.bottom_sheet_text_status_idle);
+            pomodoroNumberTextView.setText(context.getString(
+                    R.string.bottom_sheet_text_pomodoro_number,
+                    String.valueOf(pomodorosCompleted),
+                    String.valueOf(pomodorosAllocated)));
             String timeRemainingString = DateTimeManager.formatMMSSString(context, POMODORO_LENGTH * 60);
             timeRemainingLargeTextView.setText(timeRemainingString);
             timeRemainingTextView.setText(timeRemainingString);
@@ -198,7 +202,11 @@ public class ProgressBottomSheetView
     }
 
     @Override
-    public void onPomodoroCompleted(boolean isSuccessful) {
+    public void onPomodoroCompleted(boolean isSuccessful, int pomodorosAllocated, int pomodorosCompleted) {
+        pomodoroNumberTextView.setText(context.getString( // TODO instead add a listener to a task model
+                R.string.bottom_sheet_text_pomodoro_number,
+                String.valueOf(pomodorosCompleted),
+                String.valueOf(pomodorosAllocated)));
         Toast.makeText(
                 context,
                 isSuccessful
@@ -213,11 +221,17 @@ public class ProgressBottomSheetView
         int target = sharedPrefsManager.getPomodoroTarget();
         if (target == 0) {
             dailyTargetButton.setText(R.string.core_empty);
+            dailyTargetButton.setTextColor(context.getColor(android.R.color.darker_gray));
         } else {
             dailyTargetButton.setText(context.getString(
                     R.string.core_ratio,
                     String.valueOf(newCount),
                     String.valueOf(target)));
+            if (newCount >= target) {
+                dailyTargetButton.setTextColor(context.getColor(R.color.colorHighlight));
+            } else {
+                dailyTargetButton.setTextColor(context.getColor(android.R.color.black));
+            }
         }
     }
 

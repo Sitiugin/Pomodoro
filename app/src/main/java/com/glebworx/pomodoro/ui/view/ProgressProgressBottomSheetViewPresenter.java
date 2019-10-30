@@ -78,7 +78,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         progressStatus = PROGRESS_STATUS_IDLE;
         this.projectModel = projectModel;
         this.taskModel = taskModel;
-        presenterListener.onTaskSet(taskModel.getName());
+        presenterListener.onTaskSet(taskModel.getName(), taskModel.getPomodorosAllocated(), taskModel.getPomodorosCompleted());
     }
 
     @Override
@@ -103,6 +103,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     @Override
     public void cancelTask() {
         progressStatus = PROGRESS_STATUS_IDLE;
+        timer.cancel();
         presenterListener.onClearViews();
         presenterListener.onHideBottomSheet();
     }
@@ -182,7 +183,13 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
             return;
         }
         taskModel.addPomodoro();
-        TaskApi.completePomodoro(projectModel, taskModel, task -> presenterListener.onPomodoroCompleted(task.isSuccessful()));
+        TaskApi.completePomodoro(
+                projectModel,
+                taskModel,
+                task -> presenterListener.onPomodoroCompleted(
+                        task.isSuccessful(),
+                        taskModel.getPomodorosAllocated(),
+                        taskModel.getPomodorosCompleted()));
     }
 
     private SparseIntArray getChipIdToTargetMap() {
