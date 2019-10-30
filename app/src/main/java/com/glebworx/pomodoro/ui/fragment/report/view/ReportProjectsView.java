@@ -12,7 +12,7 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.PieData;
 import com.glebworx.pomodoro.R;
-import com.glebworx.pomodoro.model.ReportProjectOverviewModel;
+import com.glebworx.pomodoro.model.report.ReportProjectOverviewModel;
 import com.glebworx.pomodoro.ui.fragment.report.interfaces.IChart;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportProjectsView;
 

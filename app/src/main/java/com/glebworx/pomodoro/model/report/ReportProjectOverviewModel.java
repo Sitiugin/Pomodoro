@@ -1,4 +1,4 @@
-package com.glebworx.pomodoro.model;
+package com.glebworx.pomodoro.model.report;
 
 public class ReportProjectOverviewModel {
 }

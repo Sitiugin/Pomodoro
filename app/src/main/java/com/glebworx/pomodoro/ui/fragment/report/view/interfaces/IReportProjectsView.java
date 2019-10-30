@@ -2,7 +2,7 @@ package com.glebworx.pomodoro.ui.fragment.report.view.interfaces;
 
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.PieData;
-import com.glebworx.pomodoro.model.ReportProjectOverviewModel;
+import com.glebworx.pomodoro.model.report.ReportProjectOverviewModel;
 
 import io.reactivex.Observable;
 

@@ -75,6 +75,7 @@ public class MainActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        bottomSheetView.onClearViews();
         unbinder.unbind();
     }
 

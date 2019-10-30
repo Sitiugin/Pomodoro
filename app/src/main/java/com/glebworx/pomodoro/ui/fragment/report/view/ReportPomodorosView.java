@@ -16,7 +16,7 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.LineData;
 import com.glebworx.pomodoro.R;
-import com.glebworx.pomodoro.model.ReportPomodoroOverviewModel;
+import com.glebworx.pomodoro.model.report.ReportPomodoroOverviewModel;
 import com.glebworx.pomodoro.ui.fragment.report.interfaces.IChart;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportPomodorosView;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;

@@ -1,4 +1,4 @@
-package com.glebworx.pomodoro.util.interfaces;
+package com.glebworx.pomodoro.ui.interfaces;
 
 import android.content.Context;
 

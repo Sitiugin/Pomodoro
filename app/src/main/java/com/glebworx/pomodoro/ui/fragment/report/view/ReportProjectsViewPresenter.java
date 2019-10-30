@@ -9,7 +9,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.utils.EntryXComparator;
 import com.glebworx.pomodoro.api.HistoryApi;
 import com.glebworx.pomodoro.model.HistoryModel;
-import com.glebworx.pomodoro.model.ReportPomodoroOverviewModel;
+import com.glebworx.pomodoro.model.report.ReportPomodoroOverviewModel;
 import com.glebworx.pomodoro.ui.fragment.report.interfaces.IChart;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportProjectsView;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportProjectsViewPresenter;
