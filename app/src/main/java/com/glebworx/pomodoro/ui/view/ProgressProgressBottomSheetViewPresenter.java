@@ -2,6 +2,7 @@ package com.glebworx.pomodoro.ui.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.Toast;
 
@@ -109,7 +110,10 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
         SharedPrefsManager sharedPrefsManager = new SharedPrefsManager(context);
 
-        int defaultCheckedId = getIdFromPomodoroTarget(sharedPrefsManager.getPomodoroTarget());
+        SparseIntArray chipIdToTargetMap = getChipIdToTargetMap();
+        SparseIntArray targetToChipIdMap = getTargetToChipIdMap();
+
+        int defaultCheckedId = targetToChipIdMap.get(sharedPrefsManager.getPomodoroTarget());
         if (defaultCheckedId != View.NO_ID) {
             Objects.requireNonNull(chipGroup).check(defaultCheckedId);
         }
@@ -118,7 +122,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
             if (view.getId() == R.id.button_negative) {
                 alertDialog.dismiss();
             } else if (view.getId() == R.id.button_positive) {
-                int pomodoroTarget = getPomodoroTargetFromId(Objects.requireNonNull(chipGroup).getCheckedChipId());
+                int pomodoroTarget = chipIdToTargetMap.get(Objects.requireNonNull(chipGroup).getCheckedChipId());
                 sharedPrefsManager.setPomodoroTarget(pomodoroTarget);
                 alertDialog.dismiss();
                 int messageId = pomodoroTarget == 0
@@ -135,90 +139,6 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
         alertDialog.show();
 
-    }
-
-    private int getPomodoroTargetFromId(int checkedId) {
-        switch (checkedId) {
-            case R.id.chip_four:
-                return 4;
-            case R.id.chip_five:
-                return 5;
-            case R.id.chip_six:
-                return 6;
-            case R.id.chip_seven:
-                return 7;
-            case R.id.chip_eight:
-                return 8;
-            case R.id.chip_nine:
-                return 9;
-            case R.id.chip_ten:
-                return 10;
-            case R.id.chip_eleven:
-                return 11;
-            case R.id.chip_twelve:
-                return 12;
-            case R.id.chip_thirteen:
-                return 13;
-            case R.id.chip_fourteen:
-                return 14;
-            case R.id.chip_fifteen:
-                return 15;
-            case R.id.chip_sixteen:
-                return 16;
-            case R.id.chip_seventeen:
-                return 17;
-            case R.id.chip_eighteen:
-                return 18;
-            case R.id.chip_nineteen:
-                return 19;
-            case R.id.chip_twenty:
-                return 20;
-            default:
-                return 0;
-
-        }
-    }
-
-    private int getIdFromPomodoroTarget(int target) {
-        switch (target) {
-            case 4:
-                return R.id.chip_four;
-            case 5:
-                return R.id.chip_five;
-            case 6:
-                return R.id.chip_six;
-            case 7:
-                return R.id.chip_seven;
-            case 8:
-                return R.id.chip_eight;
-            case 9:
-                return R.id.chip_nine;
-            case 10:
-                return R.id.chip_ten;
-            case 11:
-                return R.id.chip_eleven;
-            case 12:
-                return R.id.chip_twelve;
-            case 13:
-                return R.id.chip_thirteen;
-            case 14:
-                return R.id.chip_fourteen;
-            case 15:
-                return R.id.chip_fifteen;
-            case 16:
-                return R.id.chip_sixteen;
-            case 17:
-                return R.id.chip_seventeen;
-            case 18:
-                return R.id.chip_eighteen;
-            case 19:
-                return R.id.chip_nineteen;
-            case 20:
-                return R.id.chip_twenty;
-            default:
-                return View.NO_ID;
-
-        }
     }
 
     private void initTimer() {
@@ -243,6 +163,52 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         }
         taskModel.addPomodoro();
         TaskApi.completePomodoro(projectModel, taskModel, task -> presenterListener.onPomodoroCompleted(task.isSuccessful()));
+    }
+
+    private SparseIntArray getChipIdToTargetMap() {
+        SparseIntArray chipIdMap = new SparseIntArray();
+        chipIdMap.put(View.NO_ID, 0);
+        chipIdMap.put(R.id.chip_four, 4);
+        chipIdMap.put(R.id.chip_five, 5);
+        chipIdMap.put(R.id.chip_six, 6);
+        chipIdMap.put(R.id.chip_seven, 7);
+        chipIdMap.put(R.id.chip_eight, 8);
+        chipIdMap.put(R.id.chip_nine, 9);
+        chipIdMap.put(R.id.chip_ten, 10);
+        chipIdMap.put(R.id.chip_eleven, 11);
+        chipIdMap.put(R.id.chip_twelve, 12);
+        chipIdMap.put(R.id.chip_thirteen, 13);
+        chipIdMap.put(R.id.chip_fourteen, 14);
+        chipIdMap.put(R.id.chip_fifteen, 15);
+        chipIdMap.put(R.id.chip_sixteen, 16);
+        chipIdMap.put(R.id.chip_seventeen, 17);
+        chipIdMap.put(R.id.chip_eighteen, 18);
+        chipIdMap.put(R.id.chip_nineteen, 19);
+        chipIdMap.put(R.id.chip_twenty, 20);
+        return chipIdMap;
+    }
+
+    private SparseIntArray getTargetToChipIdMap() {
+        SparseIntArray chipIdMap = new SparseIntArray();
+        chipIdMap.put(0, View.NO_ID);
+        chipIdMap.put(4, R.id.chip_four);
+        chipIdMap.put(5, R.id.chip_five);
+        chipIdMap.put(6, R.id.chip_six);
+        chipIdMap.put(7, R.id.chip_seven);
+        chipIdMap.put(8, R.id.chip_eight);
+        chipIdMap.put(9, R.id.chip_nine);
+        chipIdMap.put(10, R.id.chip_ten);
+        chipIdMap.put(11, R.id.chip_eleven);
+        chipIdMap.put(12, R.id.chip_twelve);
+        chipIdMap.put(13, R.id.chip_thirteen);
+        chipIdMap.put(14, R.id.chip_fourteen);
+        chipIdMap.put(15, R.id.chip_fifteen);
+        chipIdMap.put(16, R.id.chip_sixteen);
+        chipIdMap.put(17, R.id.chip_seventeen);
+        chipIdMap.put(18, R.id.chip_eighteen);
+        chipIdMap.put(19, R.id.chip_nineteen);
+        chipIdMap.put(20, R.id.chip_twenty);
+        return chipIdMap;
     }
 
 }

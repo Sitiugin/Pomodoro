@@ -129,7 +129,7 @@
     <string name="bottom_sheet_text_status_idle">Ready</string>
     <string name="bottom_sheet_text_status_paused">Paused</string>
     <string name="bottom_sheet_text_status_active">Working</string>
-    <string name="bottom_sheet_text_daily_target">Specify number of pomodoros you aim to complete daily</string>
+    <string name="bottom_sheet_text_daily_target">Set number of pomodoros you aim to complete daily</string>
     <string name="bottom_sheet_toast_pomodoro_completed_success">Pomodoro completed</string>
     <string name="bottom_sheet_toast_pomodoro_completed_failed">Could not save progress. Check your connection and try again</string>
     <string name="bottom_sheet_toast_pomodoro_target_set">Daily pomodoro target set</string>

@@ -13,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.transition.TransitionManager;
 
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetView;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewInteractionListener;
@@ -52,6 +53,8 @@ public class ProgressBottomSheetView
     @BindView(R.id.fab_start_stop_large) FloatingActionButton startStopFab;
     @BindView(R.id.button_cancel) AppCompatImageButton cancelButton;
     @BindView(R.id.button_complete) AppCompatImageButton completeButton;
+    @BindView(R.id.spin_kit_view_large)
+    SpinKitView spinKitView;
 
 
     //                                                                                     CONSTANTS
@@ -160,6 +163,7 @@ public class ProgressBottomSheetView
             startStopButton.setImageResource(R.drawable.ic_pause_highlight);
             startStopFab.setImageResource(R.drawable.ic_pause_black);
             statusTextView.setText(R.string.bottom_sheet_text_status_active);
+            spinKitView.setVisibility(VISIBLE);
         }
     }
 
@@ -169,6 +173,7 @@ public class ProgressBottomSheetView
             startStopButton.setImageResource(R.drawable.ic_pause_highlight);
             startStopFab.setImageResource(R.drawable.ic_pause_black);
             statusTextView.setText(R.string.bottom_sheet_text_status_active);
+            spinKitView.setVisibility(VISIBLE);
         }
     }
 
@@ -185,6 +190,7 @@ public class ProgressBottomSheetView
                 timeRemainingLargeTextView.setText(timeRemainingTextView.getText());
                 seekArc.setProgress(progressBar.getProgress());
             }
+            spinKitView.setVisibility(INVISIBLE);
         }
     }
 
