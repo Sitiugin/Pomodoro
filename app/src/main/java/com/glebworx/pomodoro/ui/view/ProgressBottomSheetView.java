@@ -19,6 +19,7 @@ import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetView;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewInteractionListener;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewPresenter;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
+import com.glebworx.pomodoro.util.manager.SharedPrefsManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.triggertrap.seekarc.SeekArc;
@@ -109,6 +110,7 @@ public class ProgressBottomSheetView
             cancelButton.setOnClickListener(this);
             completeButton.setOnClickListener(this);
             dailyTargetButton.setOnClickListener(this);
+            presenter.subscribe();
         } else {
             bottomSheetListener = null;
             startStopButton.setOnClickListener(null);
@@ -116,6 +118,7 @@ public class ProgressBottomSheetView
             cancelButton.setOnClickListener(null);
             completeButton.setOnClickListener(null);
             dailyTargetButton.setOnClickListener(null);
+            presenter.unsubscribe();
         }
     }
 
@@ -202,6 +205,25 @@ public class ProgressBottomSheetView
                         ? R.string.bottom_sheet_toast_pomodoro_completed_success
                         : R.string.bottom_sheet_toast_pomodoro_completed_failed,
                 Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onTodayCountUpdated(int newCount) {
+        SharedPrefsManager sharedPrefsManager = new SharedPrefsManager(context);
+        int target = sharedPrefsManager.getPomodoroTarget();
+        if (target == 0) {
+            dailyTargetButton.setText(R.string.core_empty);
+        } else {
+            dailyTargetButton.setText(context.getString(
+                    R.string.core_ratio,
+                    String.valueOf(newCount),
+                    String.valueOf(target)));
+        }
+    }
+
+    @Override
+    public void onPomodoroTargetUpdated(int completedToday, int newTarget) {
+
     }
 
     @Override

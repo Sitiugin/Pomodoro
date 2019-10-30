@@ -11,6 +11,10 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Source;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_POMODORO_COMPLETED;
 
 public class HistoryApi extends BaseApi {
@@ -30,10 +34,13 @@ public class HistoryApi extends BaseApi {
 
 
     //                                                                                    PUBLIC API
-
-    public static ListenerRegistration addAllHistoryEventListener(@NonNull EventListener<QuerySnapshot> eventListener) {
+    public static ListenerRegistration addTodayEventListener(
+            @NonNull EventListener<QuerySnapshot> eventListener) {
+        Date today = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
         return getCollection(COLLECTION_HISTORY)
-                .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
+                //.orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
+                .whereEqualTo(FIELD_EVENT_TYPE, EVENT_POMODORO_COMPLETED)
+                .whereGreaterThanOrEqualTo(FIELD_TIMESTAMP, today)
                 .addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
     }
 

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.glebworx.pomodoro.R;
+import com.glebworx.pomodoro.api.HistoryApi;
 import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
@@ -20,8 +21,14 @@ import com.glebworx.pomodoro.util.PomodoroTimer;
 import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.SharedPrefsManager;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.Objects;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.glebworx.pomodoro.util.manager.DateTimeManager.POMODORO_LENGTH;
 
@@ -39,7 +46,8 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     private TaskModel taskModel;
     private PomodoroTimer timer;
     private int progressStatus;
-    private int pomodoroTarget;
+    private @NonNull
+    Observable<Integer> todayCountObservable;
 
     ProgressProgressBottomSheetViewPresenter(@NonNull IProgressBottomSheetView presenterListener) {
         this.presenterListener = presenterListener;
@@ -51,6 +59,18 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     @Override
     public void init() {
         progressStatus = PROGRESS_STATUS_IDLE;
+        todayCountObservable = getCompletedTodayObservable();
+        todayCountObservable = todayCountObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public void subscribe() {
+        todayCountObservable.subscribe(getTodayCountObserver());
+    }
+
+    @Override
+    public void unsubscribe() {
+        todayCountObservable = todayCountObservable.unsubscribeOn(Schedulers.io());
     }
 
     @Override
@@ -209,6 +229,46 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         chipIdMap.put(19, R.id.chip_nineteen);
         chipIdMap.put(20, R.id.chip_twenty);
         return chipIdMap;
+    }
+
+    private Observable<Integer> getCompletedTodayObservable() {
+        return Observable.create(emitter -> {
+            ListenerRegistration listenerRegistration = HistoryApi.addTodayEventListener((querySnapshot, e) -> {
+                if (e != null) {
+                    emitter.onError(e);
+                    return;
+                }
+                if (querySnapshot == null || querySnapshot.isEmpty()) {
+                    return;
+                }
+                emitter.onNext(querySnapshot.getDocuments().size());
+            });
+            emitter.setCancellable(listenerRegistration::remove);
+        });
+    }
+
+    private io.reactivex.Observer<Integer> getTodayCountObserver() {
+        return new io.reactivex.Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(Integer todayCount) {
+                presenterListener.onTodayCountUpdated(todayCount);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
     }
 
 }
