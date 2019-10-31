@@ -15,6 +15,7 @@ import com.glebworx.pomodoro.util.manager.DateTimeManager;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_DAY;
@@ -33,6 +34,41 @@ import static com.glebworx.pomodoro.ui.fragment.add_task.AddTaskFragment.ARG_TAS
 public class AddTaskFragmentPresenter implements IAddTaskFragmentPresenter {
 
 
+    //                                                                                     CONSTANTS
+
+    private static final SparseArray<String> RECURRENCE_TO_CODE_MAP;
+    private static final HashMap<String, Integer> CODE_TO_RECURRENCE_MAP;
+
+    static {
+        RECURRENCE_TO_CODE_MAP = new SparseArray<>();
+        RECURRENCE_TO_CODE_MAP.put(0, null);
+        RECURRENCE_TO_CODE_MAP.put(1, RECURRENCE_EVERY_DAY);
+        RECURRENCE_TO_CODE_MAP.put(2, RECURRENCE_EVERY_TWO_DAYS);
+        RECURRENCE_TO_CODE_MAP.put(3, RECURRENCE_EVERY_THREE_DAYS);
+        RECURRENCE_TO_CODE_MAP.put(4, RECURRENCE_EVERY_FOUR_DAYS);
+        RECURRENCE_TO_CODE_MAP.put(5, RECURRENCE_EVERY_FIVE_DAYS);
+        RECURRENCE_TO_CODE_MAP.put(6, RECURRENCE_EVERY_SIX_DAYS);
+        RECURRENCE_TO_CODE_MAP.put(7, RECURRENCE_EVERY_WEEKLY);
+        RECURRENCE_TO_CODE_MAP.put(8, RECURRENCE_WEEKDAY);
+        RECURRENCE_TO_CODE_MAP.put(9, RECURRENCE_WEEKEND);
+        RECURRENCE_TO_CODE_MAP.put(10, RECURRENCE_MONTHLY);
+    }
+
+    static {
+        CODE_TO_RECURRENCE_MAP = new HashMap<>();
+        CODE_TO_RECURRENCE_MAP.put(RECURRENCE_EVERY_DAY, 1);
+        CODE_TO_RECURRENCE_MAP.put(RECURRENCE_EVERY_TWO_DAYS, 2);
+        CODE_TO_RECURRENCE_MAP.put(RECURRENCE_EVERY_THREE_DAYS, 3);
+        CODE_TO_RECURRENCE_MAP.put(RECURRENCE_EVERY_FOUR_DAYS, 4);
+        CODE_TO_RECURRENCE_MAP.put(RECURRENCE_EVERY_FIVE_DAYS, 5);
+        CODE_TO_RECURRENCE_MAP.put(RECURRENCE_EVERY_SIX_DAYS, 6);
+        CODE_TO_RECURRENCE_MAP.put(RECURRENCE_EVERY_WEEKLY, 7);
+        CODE_TO_RECURRENCE_MAP.put(RECURRENCE_WEEKDAY, 8);
+        CODE_TO_RECURRENCE_MAP.put(RECURRENCE_WEEKEND, 9);
+        CODE_TO_RECURRENCE_MAP.put(RECURRENCE_MONTHLY, 10);
+    }
+
+
     //                                                                                    ATTRIBUTES
 
     private IAddTaskFragment presenterListener;
@@ -40,7 +76,6 @@ public class AddTaskFragmentPresenter implements IAddTaskFragmentPresenter {
     private TaskModel taskModel;
     private TaskModel oldTaskModel;
     private boolean isEditing;
-    private static SparseArray<String> recurrenceMap;
 
 
     //                                                                                  CONSTRUCTORS
@@ -48,7 +83,6 @@ public class AddTaskFragmentPresenter implements IAddTaskFragmentPresenter {
     AddTaskFragmentPresenter(@NonNull IAddTaskFragment presenterListener,
                              @Nullable Bundle arguments) {
         this.presenterListener = presenterListener;
-        initRecurrenceMap();
         init(arguments);
     }
 
@@ -73,12 +107,19 @@ public class AddTaskFragmentPresenter implements IAddTaskFragmentPresenter {
             oldTaskModel = new TaskModel(taskModel);
         }
 
+        int recurrenceCode;
+        if (taskModel.getRecurrence() == null) {
+            recurrenceCode = 0;
+        } else {
+            recurrenceCode = CODE_TO_RECURRENCE_MAP.get(taskModel.getRecurrence());
+        }
+
         presenterListener.onInitView(
                 isEditing,
                 taskModel.getName(),
                 DateTimeManager.getDateString(taskModel.getDueDate(), new Date()),
                 taskModel.getPomodorosAllocated(),
-                taskModel.getRecurrence());
+                recurrenceCode);
 
     }
 
@@ -110,7 +151,7 @@ public class AddTaskFragmentPresenter implements IAddTaskFragmentPresenter {
 
     @Override
     public void selectRecurrence(int position) {
-        taskModel.setRecurrence(recurrenceMap.get(position));
+        taskModel.setRecurrence(RECURRENCE_TO_CODE_MAP.get(position));
     }
 
     @Override
@@ -158,21 +199,6 @@ public class AddTaskFragmentPresenter implements IAddTaskFragmentPresenter {
                 presenterListener.onAddTaskFailure(isEditing);
             }
         });
-    }
-
-    private void initRecurrenceMap() {
-        recurrenceMap = new SparseArray<>();
-        recurrenceMap.put(0, null);
-        recurrenceMap.put(1, RECURRENCE_EVERY_DAY);
-        recurrenceMap.put(2, RECURRENCE_EVERY_TWO_DAYS);
-        recurrenceMap.put(3, RECURRENCE_EVERY_THREE_DAYS);
-        recurrenceMap.put(4, RECURRENCE_EVERY_FOUR_DAYS);
-        recurrenceMap.put(5, RECURRENCE_EVERY_FIVE_DAYS);
-        recurrenceMap.put(6, RECURRENCE_EVERY_SIX_DAYS);
-        recurrenceMap.put(7, RECURRENCE_EVERY_WEEKLY);
-        recurrenceMap.put(8, RECURRENCE_WEEKDAY);
-        recurrenceMap.put(9, RECURRENCE_WEEKEND);
-        recurrenceMap.put(10, RECURRENCE_MONTHLY);
     }
 
 }

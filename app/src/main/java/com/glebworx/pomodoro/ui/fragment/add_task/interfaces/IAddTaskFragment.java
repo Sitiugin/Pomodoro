@@ -8,7 +8,7 @@ public interface IAddTaskFragment {
                     String taskName,
                     String dueDate,
                     int pomodorosAllocated,
-                    String recurrence);
+                    int recurrenceCode);
 
     void onTaskNameChanged();
 

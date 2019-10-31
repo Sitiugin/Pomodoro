@@ -44,17 +44,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_DAY;
-import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_FIVE_DAYS;
-import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_FOUR_DAYS;
-import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_SIX_DAYS;
-import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_THREE_DAYS;
-import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_TWO_DAYS;
-import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_WEEKLY;
-import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_MONTHLY;
-import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_WEEKDAY;
-import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_WEEKEND;
-
 
 public class AddTaskFragment extends Fragment implements IAddTaskFragment {
 
@@ -158,7 +147,7 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
                            String taskName,
                            String dueDate,
                            int pomodorosAllocated,
-                           String recurrence) {
+                           int recurrenceCode) {
 
         if (isEditing) {
             taskNameEditText.setVisibility(View.GONE);
@@ -166,7 +155,7 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
             titleTextView.setText(context.getString(R.string.core_edit_something, taskName));
             dueDateButton.setText(dueDate);
             allocatedTimeSpinner.setSelection(pomodorosAllocated - 1, true);
-            selectRecurrence(recurrence);
+            recurrenceSpinner.setSelection(recurrenceCode);
             saveButton.setText(R.string.add_task_title_update_task);
         } else {
             dueDateButton.setText(dueDate);
@@ -280,44 +269,6 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
             }
             return false;
         });
-    }
-
-    private void selectRecurrence(String recurrenceString) {
-        if (recurrenceString == null) {
-            return;
-        }
-        switch (recurrenceString) {
-            case RECURRENCE_EVERY_DAY:
-                recurrenceSpinner.setSelection(1, true);
-                break;
-            case RECURRENCE_EVERY_TWO_DAYS:
-                recurrenceSpinner.setSelection(2, true);
-                break;
-            case RECURRENCE_EVERY_THREE_DAYS:
-                recurrenceSpinner.setSelection(3, true);
-                break;
-            case RECURRENCE_EVERY_FOUR_DAYS:
-                recurrenceSpinner.setSelection(4, true);
-                break;
-            case RECURRENCE_EVERY_FIVE_DAYS:
-                recurrenceSpinner.setSelection(5, true);
-                break;
-            case RECURRENCE_EVERY_SIX_DAYS:
-                recurrenceSpinner.setSelection(6, true);
-                break;
-            case RECURRENCE_EVERY_WEEKLY:
-                recurrenceSpinner.setSelection(7, true);
-                break;
-            case RECURRENCE_WEEKDAY:
-                recurrenceSpinner.setSelection(8, true);
-                break;
-            case RECURRENCE_WEEKEND:
-                recurrenceSpinner.setSelection(9, true);
-                break;
-            case RECURRENCE_MONTHLY:
-                recurrenceSpinner.setSelection(10, true);
-                break;
-        }
     }
 
     private void initClickEvents() {

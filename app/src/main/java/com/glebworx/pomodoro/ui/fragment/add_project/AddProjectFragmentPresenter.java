@@ -40,11 +40,8 @@ import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_YELLOW_H
 class AddProjectFragmentPresenter implements IAddProjectFragmentPresenter {
 
 
-    //                                                                                    ATTRIBUTES
+    //                                                                                     CONSTANTS
 
-    private IAddProjectFragment presenterListener;
-    private ProjectModel projectModel;
-    private boolean isEditing;
     private static final SparseArray<String> CHIP_TO_COLOR_TAG_MAP;
     private static final HashMap<String, Integer> COLOR_TAG_TO_CHIP_MAP;
 
@@ -88,6 +85,12 @@ class AddProjectFragmentPresenter implements IAddProjectFragmentPresenter {
         COLOR_TAG_TO_CHIP_MAP.put(COLOR_ORANGE_HEX, R.id.chip_orange);
         COLOR_TAG_TO_CHIP_MAP.put(COLOR_DEEP_ORANGE_HEX, R.id.chip_deep_orange);
     }
+
+    //                                                                                    ATTRIBUTES
+
+    private IAddProjectFragment presenterListener;
+    private ProjectModel projectModel;
+    private boolean isEditing;
 
 
     //                                                                                  CONSTRUCTORS
