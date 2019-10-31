@@ -41,23 +41,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_AMBER_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_BLUE_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_CYAN_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_DEEP_ORANGE_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_DEEP_PURPLE_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_GREEN_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_INDIGO_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_LIGHT_BLUE_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_LIGHT_GREEN_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_LIME_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_ORANGE_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_PINK_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_PURPLE_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_RED_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_TEAL_HEX;
-import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_YELLOW_HEX;
-
 
 public class AddProjectFragment extends Fragment implements IAddProjectFragment {
 
@@ -149,14 +132,16 @@ public class AddProjectFragment extends Fragment implements IAddProjectFragment 
     @Override
     public void onInitView(boolean isEditing,
                            String name,
-                           String colorTag,
+                           int checkedChipId,
                            String dueDate) {
 
         if (isEditing) {
             projectNameEditText.setVisibility(View.GONE);
             projectNameSectionTextView.setVisibility(View.GONE);
             titleTextView.setText(context.getString(R.string.core_edit_something, name));
-            checkColorTag(colorTag);
+            if (checkedChipId != 0) {
+                colorTagChipGroup.check(checkedChipId);
+            }
             dueDateButton.setText(dueDate);
             saveButton.setText(R.string.add_project_title_update_project);
         } else {
@@ -233,62 +218,6 @@ public class AddProjectFragment extends Fragment implements IAddProjectFragment 
             updateName();
             presenter.selectColorTag(group.getCheckedChipId());
         });
-    }
-
-    private void checkColorTag(String colorTagHex) {
-        if (colorTagHex == null) {
-            return;
-        }
-        switch (colorTagHex) {
-            case COLOR_RED_HEX:
-                colorTagChipGroup.check(R.id.chip_red);
-                break;
-            case COLOR_PINK_HEX:
-                colorTagChipGroup.check(R.id.chip_pink);
-                break;
-            case COLOR_PURPLE_HEX:
-                colorTagChipGroup.check(R.id.chip_purple);
-                break;
-            case COLOR_DEEP_PURPLE_HEX:
-                colorTagChipGroup.check(R.id.chip_deep_purple);
-                break;
-            case COLOR_INDIGO_HEX:
-                colorTagChipGroup.check(R.id.chip_indigo);
-                break;
-            case COLOR_BLUE_HEX:
-                colorTagChipGroup.check(R.id.chip_blue);
-                break;
-            case COLOR_LIGHT_BLUE_HEX:
-                colorTagChipGroup.check(R.id.chip_light_blue);
-                break;
-            case COLOR_CYAN_HEX:
-                colorTagChipGroup.check(R.id.chip_cyan);
-                break;
-            case COLOR_TEAL_HEX:
-                colorTagChipGroup.check(R.id.chip_teal);
-                break;
-            case COLOR_GREEN_HEX:
-                colorTagChipGroup.check(R.id.chip_green);
-                break;
-            case COLOR_LIGHT_GREEN_HEX:
-                colorTagChipGroup.check(R.id.chip_light_green);
-                break;
-            case COLOR_LIME_HEX:
-                colorTagChipGroup.check(R.id.chip_lime);
-                break;
-            case COLOR_YELLOW_HEX:
-                colorTagChipGroup.check(R.id.chip_yellow);
-                break;
-            case COLOR_AMBER_HEX:
-                colorTagChipGroup.check(R.id.chip_amber);
-                break;
-            case COLOR_ORANGE_HEX:
-                colorTagChipGroup.check(R.id.chip_orange);
-                break;
-            case COLOR_DEEP_ORANGE_HEX:
-                colorTagChipGroup.check(R.id.chip_deep_orange);
-                break;
-        }
     }
 
     private void initClickEvents(Activity activity) {

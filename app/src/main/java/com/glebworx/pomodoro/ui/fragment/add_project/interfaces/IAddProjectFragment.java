@@ -6,7 +6,7 @@ public interface IAddProjectFragment {
 
     void onInitView(boolean isEditing,
                     String name,
-                    String colorTag,
+                    int checkedChipId,
                     String dueDate);
 
     void onProjectNameChanged();
