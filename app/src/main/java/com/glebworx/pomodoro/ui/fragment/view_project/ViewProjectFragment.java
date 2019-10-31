@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.ProjectModel;
-import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragment;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.AddTaskItem;
@@ -29,7 +28,6 @@ import com.glebworx.pomodoro.ui.fragment.view_project.item.ViewProjectHeaderItem
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
-import com.google.firebase.firestore.DocumentChange;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
@@ -45,8 +43,6 @@ import java.util.stream.IntStream;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
 
 import static com.glebworx.pomodoro.util.constants.Constants.LENGTH_SNACK_BAR;
 
@@ -151,8 +147,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
 
     @Override
     public void onInitView(String projectName,
-                           ViewProjectHeaderItem headerItem,
-                           Observable<DocumentChange> observable) {
+                           ViewProjectHeaderItem headerItem) {
         headerAdapter = new ItemAdapter<>();
         taskAdapter = new ItemAdapter<>();
         fastAdapter = new FastAdapter<>();
@@ -164,7 +159,27 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         titleTextView.setText(projectName);
         initRecyclerView(fastAdapter, headerItem);
         initClickEvents(fastAdapter);
-        observable.subscribe(getObserver());
+    }
+
+    @Override
+    public void onTaskAdded(TaskItem item) {
+        taskAdapter.add(item);
+    }
+
+    @Override
+    public void onTaskModified(TaskItem item) {
+        int index = getTaskItemIndex(item.getTaskName());
+        if (index != -1) {
+            taskAdapter.set(index + 1, item);
+        }
+    }
+
+    @Override
+    public void onTaskDeleted(TaskItem item) {
+        int index = getTaskItemIndex(item.getTaskName());
+        if (index != -1) {
+            taskAdapter.remove(index + 1);
+        }
     }
 
     @Override
@@ -313,49 +328,6 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         contentView.findViewById(R.id.button_edit).setOnClickListener(onClickListener);
         contentView.findViewById(R.id.button_delete).setOnClickListener(onClickListener);
 
-    }
-
-    private io.reactivex.Observer<DocumentChange> getObserver() {
-        return new io.reactivex.Observer<DocumentChange>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(DocumentChange documentChange) {
-                TaskItem item = new TaskItem(documentChange.getDocument().toObject(TaskModel.class));
-                int index;
-                switch (documentChange.getType()) {
-                    case ADDED:
-                        taskAdapter.add(item);
-                        break;
-                    case MODIFIED:
-                        index = getTaskItemIndex(item.getTaskName());
-                        if (index != -1) {
-                            taskAdapter.set(index + 1, item);
-                            //itemAdapter.set(getTaskItemIndex(item.getTaskName()), item);
-                        }
-                        break;
-                    case REMOVED:
-                        index = getTaskItemIndex(item.getTaskName());
-                        if (index != -1) {
-                            taskAdapter.remove(index + 1);
-                        }
-                        break;
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
     }
 
     private int getTaskItemIndex(@NonNull String name) {

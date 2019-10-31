@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
+import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragment;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentPresenter;
@@ -23,6 +24,7 @@ import java.util.Objects;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.glebworx.pomodoro.ui.fragment.view_project.ViewProjectFragment.ARG_PROJECT_MODEL;
@@ -50,17 +52,20 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
     @Override
     public void init(Bundle arguments, View.OnClickListener onClickListener) {
         projectModel = Objects.requireNonNull(arguments.getParcelable(ARG_PROJECT_MODEL));
-        observable = getTaskEventObservable(projectModel.getName());
-        observable = observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+        observable = getObservable(projectModel.getName());
+        observable = observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io());
         presenterListener.onInitView(
                 projectModel.getName(),
-                new ViewProjectHeaderItem(projectModel, onClickListener),
-                observable);
+                new ViewProjectHeaderItem(projectModel, onClickListener));
+        observable.subscribe(getObserver());
     }
 
     @Override
     public void destroy() {
-        observable = observable.unsubscribeOn(Schedulers.io());
+        //observable = observable.unsubscribeOn(Schedulers.io());
     }
 
     @Override
@@ -119,7 +124,7 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
         presenterListener.onSubtitleChanged(projectModel.getDueDate(), new Date());
     }
 
-    private Observable<DocumentChange> getTaskEventObservable(@NonNull String projectName) {
+    private Observable<DocumentChange> getObservable(@NonNull String projectName) {
         return Observable.create(emitter -> {
             ListenerRegistration listenerRegistration = TaskApi.addTaskEventListener(projectName, (querySnapshot, e) -> {
                 if (e != null) {
@@ -136,6 +141,41 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
             });
             emitter.setCancellable(listenerRegistration::remove);
         });
+    }
+
+    private io.reactivex.Observer<DocumentChange> getObserver() {
+        return new io.reactivex.Observer<DocumentChange>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(DocumentChange documentChange) {
+                TaskItem item = new TaskItem(documentChange.getDocument().toObject(TaskModel.class));
+                switch (documentChange.getType()) {
+                    case ADDED:
+                        presenterListener.onTaskAdded(item);
+                        break;
+                    case MODIFIED:
+                        presenterListener.onTaskModified(item);
+                        break;
+                    case REMOVED:
+                        presenterListener.onTaskDeleted(item);
+                        break;
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
     }
 
 }
