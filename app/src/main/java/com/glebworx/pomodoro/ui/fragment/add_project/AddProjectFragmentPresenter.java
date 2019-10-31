@@ -1,7 +1,6 @@
 package com.glebworx.pomodoro.ui.fragment.add_project;
 
 import android.os.Bundle;
-import android.util.SparseArray;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -15,9 +14,11 @@ import com.glebworx.pomodoro.ui.fragment.add_project.interfaces.IAddProjectFragm
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import static com.glebworx.pomodoro.ui.fragment.add_project.AddProjectFragment.ARG_PROJECT_MODEL;
 import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_AMBER_HEX;
@@ -42,48 +43,50 @@ class AddProjectFragmentPresenter implements IAddProjectFragmentPresenter {
 
     //                                                                                     CONSTANTS
 
-    private static final SparseArray<String> CHIP_TO_COLOR_TAG_MAP;
-    private static final HashMap<String, Integer> COLOR_TAG_TO_CHIP_MAP;
+    private static final Map<Integer, String> CHIP_TO_COLOR_TAG_MAP;
+    private static final Map<String, Integer> COLOR_TAG_TO_CHIP_MAP;
 
     static {
-        CHIP_TO_COLOR_TAG_MAP = new SparseArray<>();
-        CHIP_TO_COLOR_TAG_MAP.put(View.NO_ID, null);
-        CHIP_TO_COLOR_TAG_MAP.put(R.id.chip_red, COLOR_RED_HEX);
-        CHIP_TO_COLOR_TAG_MAP.put(R.id.chip_pink, COLOR_PINK_HEX);
-        CHIP_TO_COLOR_TAG_MAP.put(R.id.chip_purple, COLOR_PURPLE_HEX);
-        CHIP_TO_COLOR_TAG_MAP.put(R.id.chip_deep_purple, COLOR_DEEP_PURPLE_HEX);
-        CHIP_TO_COLOR_TAG_MAP.put(R.id.chip_indigo, COLOR_INDIGO_HEX);
-        CHIP_TO_COLOR_TAG_MAP.put(R.id.chip_blue, COLOR_BLUE_HEX);
-        CHIP_TO_COLOR_TAG_MAP.put(R.id.chip_light_blue, COLOR_LIGHT_BLUE_HEX);
-        CHIP_TO_COLOR_TAG_MAP.put(R.id.chip_cyan, COLOR_CYAN_HEX);
-        CHIP_TO_COLOR_TAG_MAP.put(R.id.chip_teal, COLOR_TEAL_HEX);
-        CHIP_TO_COLOR_TAG_MAP.put(R.id.chip_green, COLOR_GREEN_HEX);
-        CHIP_TO_COLOR_TAG_MAP.put(R.id.chip_light_green, COLOR_LIGHT_GREEN_HEX);
-        CHIP_TO_COLOR_TAG_MAP.put(R.id.chip_lime, COLOR_LIME_HEX);
-        CHIP_TO_COLOR_TAG_MAP.put(R.id.chip_yellow, COLOR_YELLOW_HEX);
-        CHIP_TO_COLOR_TAG_MAP.put(R.id.chip_amber, COLOR_AMBER_HEX);
-        CHIP_TO_COLOR_TAG_MAP.put(R.id.chip_orange, COLOR_ORANGE_HEX);
-        CHIP_TO_COLOR_TAG_MAP.put(R.id.chip_deep_orange, COLOR_DEEP_ORANGE_HEX);
+        Map<Integer, String> map = new HashMap<>();
+        map.put(View.NO_ID, null);
+        map.put(R.id.chip_red, COLOR_RED_HEX);
+        map.put(R.id.chip_pink, COLOR_PINK_HEX);
+        map.put(R.id.chip_purple, COLOR_PURPLE_HEX);
+        map.put(R.id.chip_deep_purple, COLOR_DEEP_PURPLE_HEX);
+        map.put(R.id.chip_indigo, COLOR_INDIGO_HEX);
+        map.put(R.id.chip_blue, COLOR_BLUE_HEX);
+        map.put(R.id.chip_light_blue, COLOR_LIGHT_BLUE_HEX);
+        map.put(R.id.chip_cyan, COLOR_CYAN_HEX);
+        map.put(R.id.chip_teal, COLOR_TEAL_HEX);
+        map.put(R.id.chip_green, COLOR_GREEN_HEX);
+        map.put(R.id.chip_light_green, COLOR_LIGHT_GREEN_HEX);
+        map.put(R.id.chip_lime, COLOR_LIME_HEX);
+        map.put(R.id.chip_yellow, COLOR_YELLOW_HEX);
+        map.put(R.id.chip_amber, COLOR_AMBER_HEX);
+        map.put(R.id.chip_orange, COLOR_ORANGE_HEX);
+        map.put(R.id.chip_deep_orange, COLOR_DEEP_ORANGE_HEX);
+        CHIP_TO_COLOR_TAG_MAP = Collections.unmodifiableMap(map);
     }
 
     static {
-        COLOR_TAG_TO_CHIP_MAP = new HashMap<>();
-        COLOR_TAG_TO_CHIP_MAP.put(COLOR_RED_HEX, R.id.chip_red);
-        COLOR_TAG_TO_CHIP_MAP.put(COLOR_PINK_HEX, R.id.chip_pink);
-        COLOR_TAG_TO_CHIP_MAP.put(COLOR_PURPLE_HEX, R.id.chip_purple);
-        COLOR_TAG_TO_CHIP_MAP.put(COLOR_DEEP_PURPLE_HEX, R.id.chip_deep_purple);
-        COLOR_TAG_TO_CHIP_MAP.put(COLOR_INDIGO_HEX, R.id.chip_indigo);
-        COLOR_TAG_TO_CHIP_MAP.put(COLOR_BLUE_HEX, R.id.chip_blue);
-        COLOR_TAG_TO_CHIP_MAP.put(COLOR_LIGHT_BLUE_HEX, R.id.chip_light_blue);
-        COLOR_TAG_TO_CHIP_MAP.put(COLOR_CYAN_HEX, R.id.chip_cyan);
-        COLOR_TAG_TO_CHIP_MAP.put(COLOR_TEAL_HEX, R.id.chip_teal);
-        COLOR_TAG_TO_CHIP_MAP.put(COLOR_GREEN_HEX, R.id.chip_green);
-        COLOR_TAG_TO_CHIP_MAP.put(COLOR_LIGHT_GREEN_HEX, R.id.chip_light_green);
-        COLOR_TAG_TO_CHIP_MAP.put(COLOR_LIME_HEX, R.id.chip_lime);
-        COLOR_TAG_TO_CHIP_MAP.put(COLOR_YELLOW_HEX, R.id.chip_yellow);
-        COLOR_TAG_TO_CHIP_MAP.put(COLOR_AMBER_HEX, R.id.chip_amber);
-        COLOR_TAG_TO_CHIP_MAP.put(COLOR_ORANGE_HEX, R.id.chip_orange);
-        COLOR_TAG_TO_CHIP_MAP.put(COLOR_DEEP_ORANGE_HEX, R.id.chip_deep_orange);
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put(COLOR_RED_HEX, R.id.chip_red);
+        map.put(COLOR_PINK_HEX, R.id.chip_pink);
+        map.put(COLOR_PURPLE_HEX, R.id.chip_purple);
+        map.put(COLOR_DEEP_PURPLE_HEX, R.id.chip_deep_purple);
+        map.put(COLOR_INDIGO_HEX, R.id.chip_indigo);
+        map.put(COLOR_BLUE_HEX, R.id.chip_blue);
+        map.put(COLOR_LIGHT_BLUE_HEX, R.id.chip_light_blue);
+        map.put(COLOR_CYAN_HEX, R.id.chip_cyan);
+        map.put(COLOR_TEAL_HEX, R.id.chip_teal);
+        map.put(COLOR_GREEN_HEX, R.id.chip_green);
+        map.put(COLOR_LIGHT_GREEN_HEX, R.id.chip_light_green);
+        map.put(COLOR_LIME_HEX, R.id.chip_lime);
+        map.put(COLOR_YELLOW_HEX, R.id.chip_yellow);
+        map.put(COLOR_AMBER_HEX, R.id.chip_amber);
+        map.put(COLOR_ORANGE_HEX, R.id.chip_orange);
+        map.put(COLOR_DEEP_ORANGE_HEX, R.id.chip_deep_orange);
+        COLOR_TAG_TO_CHIP_MAP = Collections.unmodifiableMap(map);
     }
 
     //                                                                                    ATTRIBUTES

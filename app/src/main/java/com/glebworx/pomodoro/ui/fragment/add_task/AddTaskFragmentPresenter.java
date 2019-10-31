@@ -1,7 +1,6 @@
 package com.glebworx.pomodoro.ui.fragment.add_task;
 
 import android.os.Bundle;
-import android.util.SparseArray;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,9 +13,11 @@ import com.glebworx.pomodoro.ui.fragment.add_task.interfaces.IAddTaskFragmentPre
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_DAY;
 import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_FIVE_DAYS;
@@ -36,36 +37,38 @@ public class AddTaskFragmentPresenter implements IAddTaskFragmentPresenter {
 
     //                                                                                     CONSTANTS
 
-    private static final SparseArray<String> RECURRENCE_TO_CODE_MAP;
-    private static final HashMap<String, Integer> CODE_TO_RECURRENCE_MAP;
+    private static final Map<Integer, String> RECURRENCE_TO_CODE_MAP;
+    private static final Map<String, Integer> CODE_TO_RECURRENCE_MAP;
 
     static {
-        RECURRENCE_TO_CODE_MAP = new SparseArray<>();
-        RECURRENCE_TO_CODE_MAP.put(0, null);
-        RECURRENCE_TO_CODE_MAP.put(1, RECURRENCE_EVERY_DAY);
-        RECURRENCE_TO_CODE_MAP.put(2, RECURRENCE_EVERY_TWO_DAYS);
-        RECURRENCE_TO_CODE_MAP.put(3, RECURRENCE_EVERY_THREE_DAYS);
-        RECURRENCE_TO_CODE_MAP.put(4, RECURRENCE_EVERY_FOUR_DAYS);
-        RECURRENCE_TO_CODE_MAP.put(5, RECURRENCE_EVERY_FIVE_DAYS);
-        RECURRENCE_TO_CODE_MAP.put(6, RECURRENCE_EVERY_SIX_DAYS);
-        RECURRENCE_TO_CODE_MAP.put(7, RECURRENCE_EVERY_WEEKLY);
-        RECURRENCE_TO_CODE_MAP.put(8, RECURRENCE_WEEKDAY);
-        RECURRENCE_TO_CODE_MAP.put(9, RECURRENCE_WEEKEND);
-        RECURRENCE_TO_CODE_MAP.put(10, RECURRENCE_MONTHLY);
+        Map<Integer, String> map = new HashMap<>();
+        map.put(0, null);
+        map.put(1, RECURRENCE_EVERY_DAY);
+        map.put(2, RECURRENCE_EVERY_TWO_DAYS);
+        map.put(3, RECURRENCE_EVERY_THREE_DAYS);
+        map.put(4, RECURRENCE_EVERY_FOUR_DAYS);
+        map.put(5, RECURRENCE_EVERY_FIVE_DAYS);
+        map.put(6, RECURRENCE_EVERY_SIX_DAYS);
+        map.put(7, RECURRENCE_EVERY_WEEKLY);
+        map.put(8, RECURRENCE_WEEKDAY);
+        map.put(9, RECURRENCE_WEEKEND);
+        map.put(10, RECURRENCE_MONTHLY);
+        RECURRENCE_TO_CODE_MAP = Collections.unmodifiableMap(map);
     }
 
     static {
-        CODE_TO_RECURRENCE_MAP = new HashMap<>();
-        CODE_TO_RECURRENCE_MAP.put(RECURRENCE_EVERY_DAY, 1);
-        CODE_TO_RECURRENCE_MAP.put(RECURRENCE_EVERY_TWO_DAYS, 2);
-        CODE_TO_RECURRENCE_MAP.put(RECURRENCE_EVERY_THREE_DAYS, 3);
-        CODE_TO_RECURRENCE_MAP.put(RECURRENCE_EVERY_FOUR_DAYS, 4);
-        CODE_TO_RECURRENCE_MAP.put(RECURRENCE_EVERY_FIVE_DAYS, 5);
-        CODE_TO_RECURRENCE_MAP.put(RECURRENCE_EVERY_SIX_DAYS, 6);
-        CODE_TO_RECURRENCE_MAP.put(RECURRENCE_EVERY_WEEKLY, 7);
-        CODE_TO_RECURRENCE_MAP.put(RECURRENCE_WEEKDAY, 8);
-        CODE_TO_RECURRENCE_MAP.put(RECURRENCE_WEEKEND, 9);
-        CODE_TO_RECURRENCE_MAP.put(RECURRENCE_MONTHLY, 10);
+        Map<String, Integer> map = new HashMap<>();
+        map.put(RECURRENCE_EVERY_DAY, 1);
+        map.put(RECURRENCE_EVERY_TWO_DAYS, 2);
+        map.put(RECURRENCE_EVERY_THREE_DAYS, 3);
+        map.put(RECURRENCE_EVERY_FOUR_DAYS, 4);
+        map.put(RECURRENCE_EVERY_FIVE_DAYS, 5);
+        map.put(RECURRENCE_EVERY_SIX_DAYS, 6);
+        map.put(RECURRENCE_EVERY_WEEKLY, 7);
+        map.put(RECURRENCE_WEEKDAY, 8);
+        map.put(RECURRENCE_WEEKEND, 9);
+        map.put(RECURRENCE_MONTHLY, 10);
+        CODE_TO_RECURRENCE_MAP = Collections.unmodifiableMap(map);
     }
 
 
