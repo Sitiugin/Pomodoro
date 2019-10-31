@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.glebworx.pomodoro.R;
-import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragment;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.projects.item.AddProjectItem;
@@ -27,7 +26,6 @@ import com.glebworx.pomodoro.ui.fragment.projects.item.ProjectHeaderItem;
 import com.glebworx.pomodoro.ui.fragment.projects.item.ProjectItem;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
-import com.google.firebase.firestore.DocumentChange;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IItemAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
@@ -44,8 +42,6 @@ import java.util.stream.IntStream;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static com.glebworx.pomodoro.util.constants.Constants.LENGTH_SNACK_BAR;
@@ -119,8 +115,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
     //                                                                                     INTERFACE
 
     @Override
-    public void onInitView(IItemAdapter.Predicate<ProjectItem> predicate,
-                           Observable<DocumentChange> projectsObservable) {
+    public void onInitView(IItemAdapter.Predicate<ProjectItem> predicate) {
 
         projectAdapter = new ItemAdapter<>();
         fastAdapter = new FastAdapter<>();
@@ -134,8 +129,27 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
         initSearchView(predicate);
         initClickEvents(fastAdapter);
 
-        projectsObservable.subscribe(getObserver());
+    }
 
+    @Override
+    public void onItemAdded(ProjectItem item) {
+        projectAdapter.add(item);
+    }
+
+    @Override
+    public void onItemModified(ProjectItem item) {
+        int index = getProjectItemIndex(item.getProjectName());
+        if (index != -1) {
+            projectAdapter.set(index + 1, item); // add 1 because of header
+        }
+    }
+
+    @Override
+    public void onItemDeleted(ProjectItem item) {
+        int index = getProjectItemIndex(item.getProjectName());
+        if (index != -1) {
+            projectAdapter.remove(index + 1); // add 1 because of header
+        }
     }
 
     @Override
@@ -143,6 +157,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
         fastAdapter.notifyAdapterItemChanged(position);
         Toast.makeText(context, R.string.view_project_toast_project_delete_failed, LENGTH_LONG).show();
     }
+
 
     //                                                                                       HELPERS
 
@@ -283,48 +298,6 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
                 R.layout.popup_options_projects,
                 optionsButton,
                 Gravity.BOTTOM | Gravity.END);
-    }
-
-    private io.reactivex.Observer<DocumentChange> getObserver() {
-        return new io.reactivex.Observer<DocumentChange>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(DocumentChange documentChange) {
-                ProjectItem item = new ProjectItem(documentChange.getDocument().toObject(ProjectModel.class));
-                int index;
-                switch (documentChange.getType()) {
-                    case ADDED:
-                        projectAdapter.add(item);
-                        break;
-                    case MODIFIED:
-                        index = getProjectItemIndex(item.getProjectName());
-                        if (index != -1) {
-                            projectAdapter.set(index + 1, item); // add 1 because of header
-                        }
-                        break;
-                    case REMOVED:
-                        index = getProjectItemIndex(item.getProjectName());
-                        if (index != -1) {
-                            projectAdapter.remove(index + 1); // add 1 because of header
-                        }
-                        break;
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
     }
 
 }

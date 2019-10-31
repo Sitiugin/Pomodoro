@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.glebworx.pomodoro.api.ProjectApi;
+import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragment;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragmentPresenter;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
@@ -37,13 +39,17 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
     public void init() {
         IItemAdapter.Predicate<ProjectItem> predicate = getFilterPredicate();
         projectsObservable = getProjectEventObservable();
-        projectsObservable = projectsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
-        presenterListener.onInitView(predicate, projectsObservable);
+        projectsObservable = projectsObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io());
+        presenterListener.onInitView(predicate);
+        projectsObservable.subscribe(getObserver());
     }
 
     @Override
     public void destroy() {
-        projectsObservable = projectsObservable.unsubscribeOn(Schedulers.io());
+        //projectsObservable = projectsObservable.unsubscribeOn(Schedulers.io());
     }
 
     @Override
@@ -96,6 +102,41 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
             });
             emitter.setCancellable(listenerRegistration::remove);
         });
+    }
+
+    private io.reactivex.Observer<DocumentChange> getObserver() {
+        return new io.reactivex.Observer<DocumentChange>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(DocumentChange documentChange) {
+                ProjectItem item = new ProjectItem(documentChange.getDocument().toObject(ProjectModel.class));
+                switch (documentChange.getType()) {
+                    case ADDED:
+                        presenterListener.onItemAdded(item);
+                        break;
+                    case MODIFIED:
+                        presenterListener.onItemModified(item);
+                        break;
+                    case REMOVED:
+                        presenterListener.onItemDeleted(item);
+                        break;
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
     }
 
 }
