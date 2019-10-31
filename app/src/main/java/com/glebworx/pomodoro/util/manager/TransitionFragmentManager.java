@@ -9,9 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
@@ -108,7 +105,7 @@ public class TransitionFragmentManager {
     }
 
     public void popFromBackStack() {
-        if (backStack.isEmpty() || backStack.size() == 1) {
+        if (backStack.size() < 2) {
             return;
         }
         fragmentManager.executePendingTransactions();
@@ -118,6 +115,15 @@ public class TransitionFragmentManager {
                 .remove(backStack.pop())
                 .show(backStack.peek())
                 .commitAllowingStateLoss();
+    }
+
+    public void clearAllFragments() {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        for (Fragment fragment : fragmentManager.getFragments()) {
+            transaction.remove(fragment);
+        }
+        backStack.clear();
+        transaction.commitNowAllowingStateLoss();
     }
 
 }

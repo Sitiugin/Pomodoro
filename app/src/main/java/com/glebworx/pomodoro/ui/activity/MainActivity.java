@@ -76,6 +76,7 @@ public class MainActivity
     protected void onDestroy() {
         super.onDestroy();
         bottomSheetView.onClearViews();
+        fragmentManager.clearAllFragments();
         unbinder.unbind();
     }
 
