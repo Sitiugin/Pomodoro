@@ -111,28 +111,24 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
     @Override
     public void init() {
+
         progressStatus = PROGRESS_STATUS_IDLE;
+
         todayCountObservable = getCompletedTodayObservable();
         todayCountObservable = todayCountObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());
+
         taskEventObservable = getTaskEventObservable();
         taskEventObservable = taskEventObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());
-    }
 
-    @Override
-    public void subscribe() {
         todayCountObservable.subscribe(getTodayCountObserver());
-    }
+        taskEventObservable.subscribe(getTaskEventObserver());
 
-    @Override
-    public void unsubscribe() {
-        //todayCountObservable = todayCountObservable;
-        //taskEventObservable = taskEventObservable;
     }
 
     @Override

@@ -9,10 +9,6 @@ public interface IProgressBottomSheetViewPresenter {
 
     void init();
 
-    void subscribe();
-
-    void unsubscribe();
-
     void setTask(ProjectModel projectModel, TaskModel taskModel);
 
     void handleStartStopClick();

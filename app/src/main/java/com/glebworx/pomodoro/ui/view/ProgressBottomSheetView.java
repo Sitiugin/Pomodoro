@@ -110,7 +110,6 @@ public class ProgressBottomSheetView
             cancelButton.setOnClickListener(this);
             completeButton.setOnClickListener(this);
             dailyTargetButton.setOnClickListener(this);
-            presenter.subscribe();
         } else {
             bottomSheetListener = null;
             startStopButton.setOnClickListener(null);
@@ -118,7 +117,6 @@ public class ProgressBottomSheetView
             cancelButton.setOnClickListener(null);
             completeButton.setOnClickListener(null);
             dailyTargetButton.setOnClickListener(null);
-            presenter.unsubscribe();
         }
     }
 

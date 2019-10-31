@@ -48,11 +48,6 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
     }
 
     @Override
-    public void destroy() {
-        //projectsObservable = projectsObservable.unsubscribeOn(Schedulers.io());
-    }
-
-    @Override
     public void viewProject(ProjectItem projectItem) {
         if (interactionListener != null) {
             interactionListener.onViewProject(projectItem.getModel());

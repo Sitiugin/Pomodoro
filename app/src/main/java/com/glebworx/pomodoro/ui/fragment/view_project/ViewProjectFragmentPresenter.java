@@ -64,11 +64,6 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
     }
 
     @Override
-    public void destroy() {
-        //observable = observable.unsubscribeOn(Schedulers.io());
-    }
-
-    @Override
     public void editProject() {
         if (interactionListener != null) {
             interactionListener.onEditProject(projectModel);

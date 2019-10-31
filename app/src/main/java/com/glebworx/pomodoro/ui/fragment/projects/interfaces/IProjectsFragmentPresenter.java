@@ -6,8 +6,6 @@ public interface IProjectsFragmentPresenter {
 
     void init();
 
-    void destroy();
-
     void viewProject(ProjectItem projectItem);
 
     void editProject(ProjectItem projectItem);
