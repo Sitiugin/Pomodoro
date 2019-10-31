@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.glebworx.pomodoro.api.ProjectApi;
+import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragment;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragmentInteractionListener;
@@ -25,8 +26,8 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
     private @NonNull IProjectsFragment presenterListener;
     private @Nullable
     IProjectsFragmentInteractionListener interactionListener;
-    private @NonNull
-    Observable<DocumentChange> projectsObservable;
+    private Observable<DocumentChange> projectsObservable;
+    private Observable<Integer> todayTasksObservable;
 
     public ProjectsFragmentPresenter(@NonNull IProjectsFragment presenterListener,
                                      @Nullable IProjectsFragmentInteractionListener interactionListener) {
@@ -37,14 +38,26 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
 
     @Override
     public void init() {
+
         IItemAdapter.Predicate<ProjectItem> predicate = getFilterPredicate();
+
         projectsObservable = getProjectEventObservable();
         projectsObservable = projectsObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());
+
+        todayTasksObservable = getTodayTasksObservable();
+        todayTasksObservable = todayTasksObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io());
+
         presenterListener.onInitView(predicate);
-        projectsObservable.subscribe(getObserver());
+
+        projectsObservable.subscribe(getProjectEventObserver());
+        todayTasksObservable.subscribe(getTodayTasksObserver());
+
     }
 
     @Override
@@ -102,7 +115,7 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
         });
     }
 
-    private io.reactivex.Observer<DocumentChange> getObserver() {
+    private io.reactivex.Observer<DocumentChange> getProjectEventObserver() {
         return new io.reactivex.Observer<DocumentChange>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -123,6 +136,49 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
                         presenterListener.onItemDeleted(item);
                         break;
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+    }
+
+    private Observable<Integer> getTodayTasksObservable() {
+        return Observable.create(emitter -> {
+            ListenerRegistration listenerRegistration = TaskApi.addTodayTasksEventListener((querySnapshot, e) -> {
+                if (emitter.isDisposed()) {
+                    return;
+                }
+                if (e != null) {
+                    emitter.onError(e);
+                    return;
+                }
+                if (querySnapshot == null || querySnapshot.isEmpty()) {
+                    return;
+                }
+                emitter.onNext(querySnapshot.getDocuments().size());
+            });
+            emitter.setCancellable(listenerRegistration::remove);
+        });
+    }
+
+    private io.reactivex.Observer<Integer> getTodayTasksObserver() {
+        return new io.reactivex.Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(Integer todayTaskCount) {
+                presenterListener.onTodayTaskCountChanged(todayTaskCount);
             }
 
             @Override

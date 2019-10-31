@@ -13,6 +13,8 @@ public interface IProjectsFragment {
 
     void onItemDeleted(ProjectItem item);
 
+    void onTodayTaskCountChanged(int todayTaskCount);
+
     void onDeleteProjectFailed(int position);
 
 }

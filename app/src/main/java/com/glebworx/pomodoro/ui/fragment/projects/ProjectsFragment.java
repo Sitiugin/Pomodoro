@@ -152,6 +152,15 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
     }
 
     @Override
+    public void onTodayTaskCountChanged(int todayTaskCount) {
+        ProjectHeaderItem item = headerAdapter.getAdapterItem(0);
+        if (item != null) {
+            item.setTodayCount(todayTaskCount);
+            fastAdapter.notifyAdapterItemChanged(0);
+        }
+    }
+
+    @Override
     public void onDeleteProjectFailed(int position) {
         fastAdapter.notifyAdapterItemChanged(position);
         Toast.makeText(context, R.string.view_project_toast_project_delete_failed, LENGTH_LONG).show();
@@ -284,11 +293,6 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
             }
             return false;
         });
-    }
-
-    private void setOverdueCount(int count) {
-        headerAdapter.getAdapterItem(0).setOverdueCount(count);
-        fastAdapter.notifyAdapterItemChanged(0);
     }
 
     private void showOptionsPopup() {

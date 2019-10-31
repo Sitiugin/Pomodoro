@@ -16,6 +16,10 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+
 public class TaskApi extends BaseApi {
 
     //                                                                                     CONSTANTS
@@ -78,6 +82,13 @@ public class TaskApi extends BaseApi {
         getCollectionGroup(COLLECTION_TASKS)
                 .orderBy(FIELD_DUE_DATE, Query.Direction.DESCENDING)
                 .addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
+    }
+
+    public static ListenerRegistration addTodayTasksEventListener(@NonNull EventListener<QuerySnapshot> eventListener) {
+        Date today = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        return getCollectionGroup(COLLECTION_TASKS)
+                .whereGreaterThanOrEqualTo(FIELD_TIMESTAMP, today)
+                .addSnapshotListener(eventListener);
     }
 
     public static ListenerRegistration addTaskEventListener(@NonNull String projectName,
