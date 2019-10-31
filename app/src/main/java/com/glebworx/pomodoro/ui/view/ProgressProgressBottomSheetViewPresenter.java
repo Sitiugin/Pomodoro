@@ -2,7 +2,6 @@ package com.glebworx.pomodoro.ui.view;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.Toast;
 
@@ -24,6 +23,9 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.ListenerRegistration;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import io.reactivex.Observable;
@@ -41,6 +43,55 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     private static final int PROGRESS_STATUS_IDLE = 0;
     private static final int PROGRESS_STATUS_PAUSED = 1;
     private static final int PROGRESS_STATUS_ACTIVE = 2;
+
+    private static final Map<Integer, Integer> CHIP_ID_TO_TARGET_MAP;
+    private static final Map<Integer, Integer> TARGET_TO_CHIP_ID_MAP;
+
+    static {
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(View.NO_ID, 0);
+        map.put(R.id.chip_four, 4);
+        map.put(R.id.chip_five, 5);
+        map.put(R.id.chip_six, 6);
+        map.put(R.id.chip_seven, 7);
+        map.put(R.id.chip_eight, 8);
+        map.put(R.id.chip_nine, 9);
+        map.put(R.id.chip_ten, 10);
+        map.put(R.id.chip_eleven, 11);
+        map.put(R.id.chip_twelve, 12);
+        map.put(R.id.chip_thirteen, 13);
+        map.put(R.id.chip_fourteen, 14);
+        map.put(R.id.chip_fifteen, 15);
+        map.put(R.id.chip_sixteen, 16);
+        map.put(R.id.chip_seventeen, 17);
+        map.put(R.id.chip_eighteen, 18);
+        map.put(R.id.chip_nineteen, 19);
+        map.put(R.id.chip_twenty, 20);
+        CHIP_ID_TO_TARGET_MAP = Collections.unmodifiableMap(map);
+    }
+
+    static {
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, View.NO_ID);
+        map.put(4, R.id.chip_four);
+        map.put(5, R.id.chip_five);
+        map.put(6, R.id.chip_six);
+        map.put(7, R.id.chip_seven);
+        map.put(8, R.id.chip_eight);
+        map.put(9, R.id.chip_nine);
+        map.put(10, R.id.chip_ten);
+        map.put(11, R.id.chip_eleven);
+        map.put(12, R.id.chip_twelve);
+        map.put(13, R.id.chip_thirteen);
+        map.put(14, R.id.chip_fourteen);
+        map.put(15, R.id.chip_fifteen);
+        map.put(16, R.id.chip_sixteen);
+        map.put(17, R.id.chip_seventeen);
+        map.put(18, R.id.chip_eighteen);
+        map.put(19, R.id.chip_nineteen);
+        map.put(20, R.id.chip_twenty);
+        TARGET_TO_CHIP_ID_MAP = Collections.unmodifiableMap(map);
+    }
 
     private IProgressBottomSheetView presenterListener;
     private ProjectModel projectModel;
@@ -143,10 +194,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
         SharedPrefsManager sharedPrefsManager = new SharedPrefsManager(context);
 
-        SparseIntArray chipIdToTargetMap = getChipIdToTargetMap();
-        SparseIntArray targetToChipIdMap = getTargetToChipIdMap();
-
-        int defaultCheckedId = targetToChipIdMap.get(sharedPrefsManager.getPomodoroTarget());
+        int defaultCheckedId = TARGET_TO_CHIP_ID_MAP.get(sharedPrefsManager.getPomodoroTarget());
         if (defaultCheckedId != View.NO_ID) {
             Objects.requireNonNull(chipGroup).check(defaultCheckedId);
         }
@@ -155,7 +203,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
             if (view.getId() == R.id.button_negative) {
                 alertDialog.dismiss();
             } else if (view.getId() == R.id.button_positive) {
-                int pomodoroTarget = chipIdToTargetMap.get(Objects.requireNonNull(chipGroup).getCheckedChipId());
+                int pomodoroTarget = CHIP_ID_TO_TARGET_MAP.get(Objects.requireNonNull(chipGroup).getCheckedChipId());
                 sharedPrefsManager.setPomodoroTarget(pomodoroTarget);
                 alertDialog.dismiss();
                 int messageId = pomodoroTarget == 0
@@ -200,52 +248,6 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
                 taskModel,
                 task -> presenterListener.onPomodoroCompleted(
                         task.isSuccessful()));
-    }
-
-    private SparseIntArray getChipIdToTargetMap() {
-        SparseIntArray chipIdMap = new SparseIntArray();
-        chipIdMap.put(View.NO_ID, 0);
-        chipIdMap.put(R.id.chip_four, 4);
-        chipIdMap.put(R.id.chip_five, 5);
-        chipIdMap.put(R.id.chip_six, 6);
-        chipIdMap.put(R.id.chip_seven, 7);
-        chipIdMap.put(R.id.chip_eight, 8);
-        chipIdMap.put(R.id.chip_nine, 9);
-        chipIdMap.put(R.id.chip_ten, 10);
-        chipIdMap.put(R.id.chip_eleven, 11);
-        chipIdMap.put(R.id.chip_twelve, 12);
-        chipIdMap.put(R.id.chip_thirteen, 13);
-        chipIdMap.put(R.id.chip_fourteen, 14);
-        chipIdMap.put(R.id.chip_fifteen, 15);
-        chipIdMap.put(R.id.chip_sixteen, 16);
-        chipIdMap.put(R.id.chip_seventeen, 17);
-        chipIdMap.put(R.id.chip_eighteen, 18);
-        chipIdMap.put(R.id.chip_nineteen, 19);
-        chipIdMap.put(R.id.chip_twenty, 20);
-        return chipIdMap;
-    }
-
-    private SparseIntArray getTargetToChipIdMap() {
-        SparseIntArray chipIdMap = new SparseIntArray();
-        chipIdMap.put(0, View.NO_ID);
-        chipIdMap.put(4, R.id.chip_four);
-        chipIdMap.put(5, R.id.chip_five);
-        chipIdMap.put(6, R.id.chip_six);
-        chipIdMap.put(7, R.id.chip_seven);
-        chipIdMap.put(8, R.id.chip_eight);
-        chipIdMap.put(9, R.id.chip_nine);
-        chipIdMap.put(10, R.id.chip_ten);
-        chipIdMap.put(11, R.id.chip_eleven);
-        chipIdMap.put(12, R.id.chip_twelve);
-        chipIdMap.put(13, R.id.chip_thirteen);
-        chipIdMap.put(14, R.id.chip_fourteen);
-        chipIdMap.put(15, R.id.chip_fifteen);
-        chipIdMap.put(16, R.id.chip_sixteen);
-        chipIdMap.put(17, R.id.chip_seventeen);
-        chipIdMap.put(18, R.id.chip_eighteen);
-        chipIdMap.put(19, R.id.chip_nineteen);
-        chipIdMap.put(20, R.id.chip_twenty);
-        return chipIdMap;
     }
 
     private Observable<DocumentSnapshot> getTaskEventObservable() {
