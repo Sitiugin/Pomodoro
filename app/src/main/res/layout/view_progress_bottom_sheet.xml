@@ -40,6 +40,8 @@
         android:id="@+id/text_view_pomodoro_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_timer_gray_small"
+        android:drawablePadding="@dimen/margin_content_quarter"
         app:layout_constraintTop_toBottomOf="@+id/text_view_task"
         app:layout_constraintStart_toEndOf="@+id/text_view_task" />
 
@@ -80,6 +82,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingHorizontal="@dimen/margin_content"
+        android:drawableStart="@drawable/ic_timer_gray_small"
+        android:drawablePadding="@dimen/margin_content_quarter"
         android:visibility="invisible"
         android:text="@string/bottom_sheet_title_daily_target"
         app:layout_constraintBottom_toTopOf="@+id/text_view_time_remaining_large"

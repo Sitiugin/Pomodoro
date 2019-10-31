@@ -155,7 +155,7 @@ public class ProgressBottomSheetView
             taskTextView.setText(name);
             statusTextView.setText(R.string.bottom_sheet_text_status_idle);
             pomodoroNumberTextView.setText(context.getString(
-                    R.string.bottom_sheet_text_pomodoro_number,
+                    R.string.core_ratio,
                     String.valueOf(pomodorosCompleted),
                     String.valueOf(pomodorosAllocated)));
             String timeRemainingString = DateTimeManager.formatMMSSString(context, POMODORO_LENGTH * 60);
@@ -204,7 +204,7 @@ public class ProgressBottomSheetView
     @Override
     public void onPomodoroCompleted(boolean isSuccessful, int pomodorosAllocated, int pomodorosCompleted) {
         pomodoroNumberTextView.setText(context.getString( // TODO instead add a listener to a task model
-                R.string.bottom_sheet_text_pomodoro_number,
+                R.string.core_ratio,
                 String.valueOf(pomodorosCompleted),
                 String.valueOf(pomodorosAllocated)));
         Toast.makeText(

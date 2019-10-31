@@ -8,6 +8,7 @@ import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.MetadataChanges;
@@ -85,6 +86,16 @@ public class TaskApi extends BaseApi {
                 .document(projectName)
                 .collection(COLLECTION_TASKS)
                 .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
+                .addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
+    }
+
+    public static ListenerRegistration addSingleTaskEventListener(@NonNull String projectName,
+                                                                  @NonNull String taskName,
+                                                                  @NonNull EventListener<DocumentSnapshot> eventListener) {
+        return getCollection(COLLECTION_PROJECTS)
+                .document(projectName)
+                .collection(COLLECTION_TASKS)
+                .document(taskName)
                 .addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
     }
 

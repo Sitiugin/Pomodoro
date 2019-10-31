@@ -21,6 +21,7 @@ import com.glebworx.pomodoro.util.PomodoroTimer;
 import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.SharedPrefsManager;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.Objects;
@@ -48,6 +49,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     private int progressStatus;
     private @NonNull
     Observable<Integer> todayCountObservable;
+    Observable<DocumentSnapshot> taskEventObservable;
 
     ProgressProgressBottomSheetViewPresenter(@NonNull IProgressBottomSheetView presenterListener) {
         this.presenterListener = presenterListener;
@@ -61,16 +63,20 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         progressStatus = PROGRESS_STATUS_IDLE;
         todayCountObservable = getCompletedTodayObservable();
         todayCountObservable = todayCountObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+        taskEventObservable = getTaskEventObservable();
+        taskEventObservable = taskEventObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
     public void subscribe() {
         todayCountObservable.subscribe(getTodayCountObserver());
+        taskEventObservable.subscribe(getTaskEventObserver());
     }
 
     @Override
     public void unsubscribe() {
         todayCountObservable = todayCountObservable.unsubscribeOn(Schedulers.io());
+        taskEventObservable = taskEventObservable.unsubscribeOn(Schedulers.io());
     }
 
     @Override
@@ -236,6 +242,49 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         chipIdMap.put(19, R.id.chip_nineteen);
         chipIdMap.put(20, R.id.chip_twenty);
         return chipIdMap;
+    }
+
+    private Observable<DocumentSnapshot> getTaskEventObservable() {
+        return Observable.create(emitter -> {
+            ListenerRegistration listenerRegistration = TaskApi.addSingleTaskEventListener(
+                    projectModel.getName(),
+                    taskModel.getName(),
+                    (documentSnapshot, e) -> {
+                        if (e != null) {
+                            emitter.onError(e);
+                            return;
+                        }
+                        if (documentSnapshot == null) {
+                            return;
+                        }
+                        emitter.onNext(documentSnapshot);
+                    });
+            emitter.setCancellable(listenerRegistration::remove);
+        });
+    }
+
+    private io.reactivex.Observer<DocumentSnapshot> getTaskEventObserver() {
+        return new io.reactivex.Observer<DocumentSnapshot>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(DocumentSnapshot documentSnapshot) {
+                TaskModel model = documentSnapshot.toObject(TaskModel.class);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
     }
 
     private Observable<Integer> getCompletedTodayObservable() {
