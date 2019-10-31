@@ -150,14 +150,10 @@ public class ProgressBottomSheetView
     }
 
     @Override
-    public void onTaskSet(String name, int pomodorosAllocated, int pomodorosCompleted) {
+    public void onTaskSet(String name) {
         synchronized (object) {
             taskTextView.setText(name);
             statusTextView.setText(R.string.bottom_sheet_text_status_idle);
-            pomodoroNumberTextView.setText(context.getString(
-                    R.string.core_ratio,
-                    String.valueOf(pomodorosCompleted),
-                    String.valueOf(pomodorosAllocated)));
             String timeRemainingString = DateTimeManager.formatMMSSString(context, POMODORO_LENGTH * 60);
             timeRemainingLargeTextView.setText(timeRemainingString);
             timeRemainingTextView.setText(timeRemainingString);
@@ -202,11 +198,7 @@ public class ProgressBottomSheetView
     }
 
     @Override
-    public void onPomodoroCompleted(boolean isSuccessful, int pomodorosAllocated, int pomodorosCompleted) {
-        pomodoroNumberTextView.setText(context.getString( // TODO instead add a listener to a task model
-                R.string.core_ratio,
-                String.valueOf(pomodorosCompleted),
-                String.valueOf(pomodorosAllocated)));
+    public void onPomodoroCompleted(boolean isSuccessful) {
         Toast.makeText(
                 context,
                 isSuccessful
@@ -238,6 +230,14 @@ public class ProgressBottomSheetView
     @Override
     public void onPomodoroTargetUpdated(int completedToday, int newTarget) {
 
+    }
+
+    @Override
+    public void onTaskDataChanged(int pomodorosAllocated, int pomodorosCompleted) {
+        pomodoroNumberTextView.setText(context.getString(
+                R.string.core_ratio,
+                String.valueOf(pomodorosCompleted),
+                String.valueOf(pomodorosAllocated)));
     }
 
     @Override

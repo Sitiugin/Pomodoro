@@ -2,7 +2,7 @@ package com.glebworx.pomodoro.ui.view.interfaces;
 
 public interface IProgressBottomSheetView {
 
-    void onTaskSet(String name, int pomodorosAllocated, int pomodorosCompleted);
+    void onTaskSet(String name);
 
     void onTaskStarted();
 
@@ -10,11 +10,13 @@ public interface IProgressBottomSheetView {
 
     void onTaskPaused();
 
-    void onPomodoroCompleted(boolean isSuccessful, int pomodorosAllocated, int pomodorosCompleted);
+    void onPomodoroCompleted(boolean isSuccessful);
 
     void onTodayCountUpdated(int newCount);
 
     void onPomodoroTargetUpdated(int completedToday, int newTarget);
+
+    void onTaskDataChanged(int pomodorosAllocated, int pomodorosCompleted);
 
     void onTick(long millisUntilFinished);
 
