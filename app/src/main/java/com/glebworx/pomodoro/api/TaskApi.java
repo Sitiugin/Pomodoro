@@ -91,6 +91,20 @@ public class TaskApi extends BaseApi {
                 .addSnapshotListener(eventListener);
     }
 
+    public static ListenerRegistration addThisWeekTasksEventListener(@NonNull EventListener<QuerySnapshot> eventListener) { // TODO implement
+        Date today = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        return getCollectionGroup(COLLECTION_TASKS)
+                .whereGreaterThanOrEqualTo(FIELD_TIMESTAMP, today)
+                .addSnapshotListener(eventListener);
+    }
+
+    public static ListenerRegistration addOverdueTasksEventListener(@NonNull EventListener<QuerySnapshot> eventListener) { // TODO implement
+        Date today = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        return getCollectionGroup(COLLECTION_TASKS)
+                .whereGreaterThanOrEqualTo(FIELD_TIMESTAMP, today)
+                .addSnapshotListener(eventListener);
+    }
+
     public static ListenerRegistration addTaskEventListener(@NonNull String projectName,
                                                             @NonNull EventListener<QuerySnapshot> eventListener) {
         return getCollection(COLLECTION_PROJECTS)

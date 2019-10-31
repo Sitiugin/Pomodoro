@@ -15,6 +15,10 @@ public interface IProjectsFragment {
 
     void onTodayTaskCountChanged(int todayTaskCount);
 
+    void onThisWeekTaskCountChanged(int thisWeekTaskCount);
+
+    void onOverdueTaskCountChanged(int overdueTaskCount);
+
     void onDeleteProjectFailed(int position);
 
 }

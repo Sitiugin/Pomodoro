@@ -28,6 +28,8 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
     IProjectsFragmentInteractionListener interactionListener;
     private Observable<DocumentChange> projectsObservable;
     private Observable<Integer> todayTasksObservable;
+    private Observable<Integer> thisWeekTasksObservable;
+    private Observable<Integer> overdueTasksObservable;
 
     public ProjectsFragmentPresenter(@NonNull IProjectsFragment presenterListener,
                                      @Nullable IProjectsFragmentInteractionListener interactionListener) {
@@ -53,10 +55,24 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());
 
+        thisWeekTasksObservable = getTodayTasksObservable();
+        thisWeekTasksObservable = todayTasksObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io());
+
+        overdueTasksObservable = getTodayTasksObservable();
+        overdueTasksObservable = todayTasksObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io());
+
         presenterListener.onInitView(predicate);
 
         projectsObservable.subscribe(getProjectEventObserver());
         todayTasksObservable.subscribe(getTodayTasksObserver());
+        thisWeekTasksObservable.subscribe(getThisWeekTasksObserver());
+        overdueTasksObservable.subscribe(getOverdueTasksObserver());
 
     }
 
@@ -179,6 +195,92 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
             @Override
             public void onNext(Integer todayTaskCount) {
                 presenterListener.onTodayTaskCountChanged(todayTaskCount);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+    }
+
+    private Observable<Integer> getThisWeekTasksObservable() {
+        return Observable.create(emitter -> {
+            ListenerRegistration listenerRegistration = TaskApi.addThisWeekTasksEventListener((querySnapshot, e) -> {
+                if (emitter.isDisposed()) {
+                    return;
+                }
+                if (e != null) {
+                    emitter.onError(e);
+                    return;
+                }
+                if (querySnapshot == null || querySnapshot.isEmpty()) {
+                    return;
+                }
+                emitter.onNext(querySnapshot.getDocuments().size());
+            });
+            emitter.setCancellable(listenerRegistration::remove);
+        });
+    }
+
+    private io.reactivex.Observer<Integer> getThisWeekTasksObserver() {
+        return new io.reactivex.Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(Integer thisWeekTaskCount) {
+                presenterListener.onThisWeekTaskCountChanged(thisWeekTaskCount);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+    }
+
+    private Observable<Integer> getOverdueTasksObservable() {
+        return Observable.create(emitter -> {
+            ListenerRegistration listenerRegistration = TaskApi.addOverdueTasksEventListener((querySnapshot, e) -> {
+                if (emitter.isDisposed()) {
+                    return;
+                }
+                if (e != null) {
+                    emitter.onError(e);
+                    return;
+                }
+                if (querySnapshot == null || querySnapshot.isEmpty()) {
+                    return;
+                }
+                emitter.onNext(querySnapshot.getDocuments().size());
+            });
+            emitter.setCancellable(listenerRegistration::remove);
+        });
+    }
+
+    private io.reactivex.Observer<Integer> getOverdueTasksObserver() {
+        return new io.reactivex.Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(Integer overdueTaskCount) {
+                presenterListener.onOverdueTaskCountChanged(overdueTaskCount);
             }
 
             @Override
