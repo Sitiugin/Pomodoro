@@ -6,7 +6,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Source;
@@ -41,7 +40,7 @@ public class HistoryApi extends BaseApi {
                 //.orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
                 .whereEqualTo(FIELD_EVENT_TYPE, EVENT_POMODORO_COMPLETED)
                 .whereGreaterThanOrEqualTo(FIELD_TIMESTAMP, today)
-                .addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
+                .addSnapshotListener(eventListener);
     }
 
     public static void getHistory(@NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {

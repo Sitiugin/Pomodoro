@@ -303,7 +303,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
                     emitter.onError(e);
                     return;
                 }
-                if (querySnapshot == null || querySnapshot.isEmpty()) {
+                if (querySnapshot == null) {
                     return;
                 }
                 emitter.onNext(querySnapshot.getDocuments().size());
