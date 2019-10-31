@@ -98,9 +98,9 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     private TaskModel taskModel;
     private PomodoroTimer timer;
     private int progressStatus;
-    private @NonNull
-    Observable<Integer> todayCountObservable;
-    Observable<DocumentSnapshot> taskEventObservable;
+    private Observable<Integer> todayCountObservable;
+    private Observable<DocumentSnapshot> taskEventObservable;
+    private ListenerRegistration taskEventListenerRegistration;
 
     ProgressProgressBottomSheetViewPresenter(@NonNull IProgressBottomSheetView presenterListener) {
         this.presenterListener = presenterListener;
@@ -127,7 +127,6 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
                 .unsubscribeOn(Schedulers.io());
 
         todayCountObservable.subscribe(getTodayCountObserver());
-        taskEventObservable.subscribe(getTaskEventObserver());
 
     }
 
@@ -137,6 +136,10 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         this.projectModel = projectModel;
         this.taskModel = taskModel;
         presenterListener.onTaskSet(taskModel.getName());
+        if (taskEventListenerRegistration != null) {
+            taskEventListenerRegistration.remove();
+            taskEventListenerRegistration = null;
+        }
         taskEventObservable.subscribe(getTaskEventObserver());
     }
 
@@ -161,6 +164,10 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
     @Override
     public void cancelTask() {
+        if (taskEventListenerRegistration != null) {
+            taskEventListenerRegistration.remove();
+            taskEventListenerRegistration = null;
+        }
         progressStatus = PROGRESS_STATUS_IDLE;
         timer.cancel();
         presenterListener.onClearViews();
@@ -248,10 +255,13 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
     private Observable<DocumentSnapshot> getTaskEventObservable() {
         return Observable.create(emitter -> {
-            ListenerRegistration listenerRegistration = TaskApi.addSingleTaskEventListener(
+            taskEventListenerRegistration = TaskApi.addSingleTaskEventListener(
                     projectModel.getName(),
                     taskModel.getName(),
                     (documentSnapshot, e) -> {
+                        if (emitter.isDisposed()) {
+                            return;
+                        }
                         if (e != null) {
                             emitter.onError(e);
                             return;
@@ -261,7 +271,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
                         }
                         emitter.onNext(documentSnapshot);
                     });
-            emitter.setCancellable(listenerRegistration::remove);
+            emitter.setCancellable(taskEventListenerRegistration::remove);
         });
     }
 
@@ -299,6 +309,9 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     private Observable<Integer> getCompletedTodayObservable() {
         return Observable.create(emitter -> {
             ListenerRegistration listenerRegistration = HistoryApi.addTodayEventListener((querySnapshot, e) -> {
+                if (emitter.isDisposed()) {
+                    return;
+                }
                 if (e != null) {
                     emitter.onError(e);
                     return;
