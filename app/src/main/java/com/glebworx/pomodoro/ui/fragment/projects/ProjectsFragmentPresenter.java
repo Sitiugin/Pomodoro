@@ -49,7 +49,7 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());
 
-        todayTasksObservable = getTodayTasksObservable();
+        /*todayTasksObservable = getTodayTasksObservable();
         todayTasksObservable = todayTasksObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -65,14 +65,19 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
         overdueTasksObservable = todayTasksObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io());
+                .unsubscribeOn(Schedulers.io());*/
 
         presenterListener.onInitView(predicate);
 
         projectsObservable.subscribe(getProjectEventObserver());
-        todayTasksObservable.subscribe(getTodayTasksObserver());
-        thisWeekTasksObservable.subscribe(getThisWeekTasksObserver());
-        overdueTasksObservable.subscribe(getOverdueTasksObserver());
+        //todayTasksObservable.subscribe(getTodayTasksObserver());
+        //thisWeekTasksObservable.subscribe(getThisWeekTasksObserver());
+        //overdueTasksObservable.subscribe(getOverdueTasksObserver());
+
+    }
+
+    @Override
+    public void refreshTasksHeader() {
 
     }
 

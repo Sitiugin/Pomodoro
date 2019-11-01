@@ -16,15 +16,9 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.LineData;
 import com.glebworx.pomodoro.R;
-import com.glebworx.pomodoro.model.report.ReportPomodoroOverviewModel;
 import com.glebworx.pomodoro.ui.fragment.report.interfaces.IChart;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportPomodorosView;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
-
-import java.util.Locale;
-
-import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
 
 import static com.glebworx.pomodoro.util.constants.Constants.ANIM_DURATION;
 
@@ -76,12 +70,22 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
     }
 
     @Override
-    public void onObservablesReady(Observable<ReportPomodoroOverviewModel> overviewObservable,
-                                   Observable<LineData> pomodorosCompletedObservable,
-                                   Observable<BarData> weeklyTrendsObservable) {
-        overviewObservable.subscribe(getOverviewObserver());
-        pomodorosCompletedObservable.subscribe(getPomodorosCompletedObserver());
-        weeklyTrendsObservable.subscribe(getWeeklyTrendsObserver());
+    public void onInitOverview(String pomodorosCompletedString, String averagePerDayString, String streakString) {
+        pomodorosCompletedTextView.setText(pomodorosCompletedString);
+        averagePerDayTextView.setText(averagePerDayString);
+        streakTextView.setText(streakString);
+    }
+
+    @Override
+    public void onInitPomodorosCompletedChart(LineData lineData) {
+        pomodorosCompletedLineChart.setData(lineData);
+        pomodorosCompletedLineChart.animateY(ANIM_DURATION);
+    }
+
+    @Override
+    public void onInitWeeklyTrendsChart(BarData barData) {
+        weeklyTrendsBarChart.setData(barData);
+        weeklyTrendsBarChart.animateY(ANIM_DURATION);
     }
 
     private void init(Context context, AttributeSet attrs, int defStyle) {
@@ -135,85 +139,6 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
                     }
                 });
         popupWindow.showAsDropDown(rootView, 0, 0, Gravity.CENTER);
-    }
-
-    private io.reactivex.Observer<ReportPomodoroOverviewModel> getOverviewObserver() {
-        return new io.reactivex.Observer<ReportPomodoroOverviewModel>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(ReportPomodoroOverviewModel model) {
-                pomodorosCompletedTextView.setText(String.valueOf(model.getPomodorosCompleted()));
-                averagePerDayTextView.setText(String.format(
-                        Locale.getDefault(),
-                        "%.2f",
-                        model.getAveragePerDay()));
-                streakTextView.setText(String.valueOf(model.getStreak()));
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
-    }
-
-    private io.reactivex.Observer<LineData> getPomodorosCompletedObserver() {
-        return new io.reactivex.Observer<LineData>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(LineData lineData) {
-                pomodorosCompletedLineChart.setData(lineData);
-                pomodorosCompletedLineChart.animateY(ANIM_DURATION);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
-    }
-
-    private io.reactivex.Observer<BarData> getWeeklyTrendsObserver() {
-        return new io.reactivex.Observer<BarData>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(BarData barData) {
-                weeklyTrendsBarChart.setData(barData);
-                weeklyTrendsBarChart.animateY(ANIM_DURATION);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
     }
 
 }

@@ -37,6 +37,7 @@ import java.util.Set;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresenter {
@@ -64,19 +65,24 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
             Observable<ReportPomodoroOverviewModel> overviewObservable = getOverviewObservable(result);
             overviewObservable = overviewObservable
                     .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread());
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .unsubscribeOn(Schedulers.io());
 
             Observable<LineData> pomodorosCompletedObservable = getPomodorosCompletedObservable(result);
             pomodorosCompletedObservable = pomodorosCompletedObservable
                     .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread());
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .unsubscribeOn(Schedulers.io());
 
             Observable<BarData> weeklyTrendsObservable = getWeeklyTrendsObservable(result);
             weeklyTrendsObservable = weeklyTrendsObservable
                     .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread());
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .unsubscribeOn(Schedulers.io());
 
-            presenterListener.onObservablesReady(overviewObservable, pomodorosCompletedObservable, weeklyTrendsObservable);
+            overviewObservable.subscribe(getOverviewObserver());
+            pomodorosCompletedObservable.subscribe(getPomodorosCompletedObserver());
+            weeklyTrendsObservable.subscribe(getWeeklyTrendsObserver());
 
         }
 
@@ -106,6 +112,84 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
             emitter.onComplete();
 
         });
+    }
+
+    private io.reactivex.Observer<ReportPomodoroOverviewModel> getOverviewObserver() {
+        return new io.reactivex.Observer<ReportPomodoroOverviewModel>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(ReportPomodoroOverviewModel model) {
+                presenterListener.onInitOverview(
+                        String.valueOf(model.getPomodorosCompleted()),
+                        String.format(
+                                Locale.getDefault(),
+                                "%.2f",
+                                model.getAveragePerDay()),
+                        String.valueOf(model.getStreak()));
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+    }
+
+    private io.reactivex.Observer<LineData> getPomodorosCompletedObserver() {
+        return new io.reactivex.Observer<LineData>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(LineData lineData) {
+                presenterListener.onInitPomodorosCompletedChart(lineData);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+    }
+
+    private io.reactivex.Observer<BarData> getWeeklyTrendsObserver() {
+        return new io.reactivex.Observer<BarData>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(BarData barData) {
+                presenterListener.onInitWeeklyTrendsChart(barData);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
     }
 
     private void initOverview(ReportPomodoroOverviewModel overviewModel,
@@ -277,10 +361,6 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
 
         BarDataSet dataSet = new BarDataSet(entries, null);
         IChart.initDataSet(dataSet, ColorConstants.rgb(ColorConstants.COLOR_HIGHLIGHT_HEX));
-
-        //BarData barData = new BarData(dataSet);
-        //barData.setBarWidth(80f);
-        //return barData;
 
         return new BarData(dataSet);
 

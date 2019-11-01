@@ -110,6 +110,11 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
         super.onDetach();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.refreshTasksHeader();
+    }
 
     //                                                                                     INTERFACE
 

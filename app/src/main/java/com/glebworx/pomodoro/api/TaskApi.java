@@ -14,6 +14,7 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Source;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.time.LocalDate;
@@ -76,6 +77,30 @@ public class TaskApi extends BaseApi {
             batch.commit().addOnCompleteListener(onCompleteListener);
         }
 
+    }
+
+    public static void getTodayTasks(@NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
+        Date today = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        getCollectionGroup(COLLECTION_TASKS)
+                .whereGreaterThanOrEqualTo(FIELD_TIMESTAMP, today)
+                .get(Source.CACHE)
+                .addOnCompleteListener(onCompleteListener);
+    }
+
+    public static void getThisWeekTasks(@NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
+        Date today = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        getCollectionGroup(COLLECTION_TASKS)
+                .whereGreaterThanOrEqualTo(FIELD_TIMESTAMP, today)
+                .get(Source.CACHE)
+                .addOnCompleteListener(onCompleteListener);
+    }
+
+    public static void getOverdueTasks(@NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
+        Date today = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        getCollectionGroup(COLLECTION_TASKS)
+                .whereGreaterThanOrEqualTo(FIELD_TIMESTAMP, today)
+                .get(Source.CACHE)
+                .addOnCompleteListener(onCompleteListener);
     }
 
     public static void addAllTasksEventListener(@NonNull EventListener<QuerySnapshot> eventListener) {
