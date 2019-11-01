@@ -111,9 +111,11 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        presenter.refreshTasksHeader();
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            presenter.refreshTasksHeader();
+        }
     }
 
     //                                                                                     INTERFACE
@@ -203,13 +205,13 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
         headerAdapter.add(new ProjectHeaderItem(view -> {
             switch (view.getId()) {
                 case R.id.layout_today:
-                    // TODO
+                    fragmentListener.onViewTodayTasks();
                     break;
                 case R.id.layout_this_week:
-                    // TODO
+                    fragmentListener.onViewThisWeekTasks();
                     break;
                 case R.id.layout_overdue:
-                    // TODO
+                    fragmentListener.onViewOverdueTasks();
                     break;
             }
         }));

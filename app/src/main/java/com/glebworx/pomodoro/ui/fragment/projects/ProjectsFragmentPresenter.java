@@ -54,6 +54,8 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
 
         projectsObservable.subscribe(getProjectEventObserver());
 
+        refreshTasksHeader();
+
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.glebworx.pomodoro.ui.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -95,6 +96,11 @@ public class MainActivity
     //                                                                          NAVIGATION CALLBACKS
 
     @Override
+    public void onViewReport() {
+        fragmentManager.pushToBackStack(ReportFragment.newInstance());
+    }
+
+    @Override
     public void onAddProject() {
         fragmentManager.pushToBackStack(AddProjectFragment.newInstance());
     }
@@ -107,6 +113,24 @@ public class MainActivity
     @Override
     public void onViewProject(ProjectModel projectModel) {
         fragmentManager.pushToBackStack(ViewProjectFragment.newInstance(projectModel));
+    }
+
+    @Override
+    public void onViewTodayTasks() {
+        // TODO implement
+        Toast.makeText(this, "Today clicked", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onViewThisWeekTasks() {
+        // TODO implement
+        Toast.makeText(this, "This week clicked", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onViewOverdueTasks() {
+        // TODO implement
+        Toast.makeText(this, "Overdue clicked", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -130,11 +154,6 @@ public class MainActivity
     public void onHideBottomSheet() {
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         bottomSheetView.setVisibility(View.INVISIBLE);
-    }
-
-    @Override
-    public void onViewReport() {
-        fragmentManager.pushToBackStack(ReportFragment.newInstance());
     }
 
     @Override

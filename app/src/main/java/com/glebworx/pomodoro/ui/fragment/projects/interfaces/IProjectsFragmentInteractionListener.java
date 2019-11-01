@@ -4,12 +4,18 @@ import com.glebworx.pomodoro.model.ProjectModel;
 
 public interface IProjectsFragmentInteractionListener {
 
+    void onViewReport();
+
     void onAddProject();
+
+    void onEditProject(ProjectModel projectModel);
 
     void onViewProject(ProjectModel projectModel);
 
-    void onViewReport();
+    void onViewTodayTasks();
 
-    void onEditProject(ProjectModel projectModel);
+    void onViewThisWeekTasks();
+
+    void onViewOverdueTasks();
 
 }
