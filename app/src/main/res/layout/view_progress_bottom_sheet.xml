@@ -70,7 +70,7 @@
         style="@style/ButtonStyle.Borderless"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_content"
+        android:layout_marginTop="@dimen/height_app_bar"
         android:visibility="invisible"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/text_view_daily_target"

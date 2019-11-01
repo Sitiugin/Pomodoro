@@ -141,7 +141,7 @@ public class ProgressBottomSheetView
                 presenter.cancelSession((MainActivity) context);
                 break;
             case R.id.button_complete:
-                presenter.completeTask();
+                presenter.completeTask((MainActivity) context);
                 break;
             case R.id.button_daily_target:
                 presenter.showDailyTargetDialog(context);
@@ -204,6 +204,16 @@ public class ProgressBottomSheetView
                 isSuccessful
                         ? R.string.bottom_sheet_toast_pomodoro_completed_success
                         : R.string.bottom_sheet_toast_pomodoro_completed_failed,
+                Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onTaskCompleted(boolean isSuccessful) {
+        Toast.makeText(
+                context,
+                isSuccessful
+                        ? R.string.bottom_sheet_toast_task_completed_success
+                        : R.string.bottom_sheet_toast_task_completed_failed,
                 Toast.LENGTH_LONG).show();
     }
 

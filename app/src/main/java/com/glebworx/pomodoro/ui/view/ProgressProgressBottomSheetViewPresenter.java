@@ -179,8 +179,8 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     }
 
     @Override
-    public void completeTask() {
-        completePomodoro();
+    public void completeTask(Activity activity) {
+        showCompleteTaskDialog(activity);
     }
 
     @Override
@@ -248,6 +248,20 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         };
     }
 
+    private void completePomodoro() { // TODO need more logic here
+        progressStatus = PROGRESS_STATUS_IDLE;
+        timer.cancel();
+        presenterListener.onClearViews();
+        if (taskModel == null) {
+            return;
+        }
+        taskModel.addPomodoro();
+        TaskApi.completePomodoro(
+                projectModel,
+                taskModel,
+                task -> presenterListener.onPomodoroCompleted(task.isSuccessful()));
+    }
+
     private void cancelSession() {
         if (taskEventListenerRegistration != null) {
             taskEventListenerRegistration.remove();
@@ -280,17 +294,46 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         positiveButton.setOnClickListener(onClickListener);
     }
 
-    private void completePomodoro() {
+    private void showCompleteTaskDialog(Activity activity) {
+        AlertDialog alertDialog = DialogManager.showDialog(
+                activity,
+                R.id.container_main,
+                R.layout.dialog_generic);
+        ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_title))).setText(R.string.bottom_sheet_title_complete_task);
+        ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_description))).setText(R.string.bottom_sheet_text_complete_task);
+        AppCompatButton positiveButton = alertDialog.findViewById(R.id.button_positive);
+        Objects.requireNonNull(positiveButton).setText(R.string.bottom_sheet_title_complete_task);
+        View.OnClickListener onClickListener = view -> {
+            if (view.getId() == R.id.button_positive) {
+                completeTask();
+                alertDialog.dismiss();
+            } else if (view.getId() == R.id.button_negative) {
+                alertDialog.dismiss();
+            }
+        };
+        ((AppCompatButton) Objects.requireNonNull(alertDialog.findViewById(R.id.button_negative))).setOnClickListener(onClickListener);
+        positiveButton.setOnClickListener(onClickListener);
+    }
+
+    private void completeTask() {
+        if (taskEventListenerRegistration != null) {
+            taskEventListenerRegistration.remove();
+            taskEventListenerRegistration = null;
+        }
         progressStatus = PROGRESS_STATUS_IDLE;
+        timer.cancel();
         presenterListener.onClearViews();
+        presenterListener.onHideBottomSheet();
+
         if (taskModel == null) {
             return;
         }
         taskModel.addPomodoro();
-        TaskApi.completePomodoro(
+        taskModel.complete();
+        TaskApi.completeTask(
                 projectModel,
                 taskModel,
-                task -> presenterListener.onPomodoroCompleted(task.isSuccessful()));
+                task -> presenterListener.onTaskCompleted(task.isSuccessful()));
     }
 
     private Observable<DocumentSnapshot> getTaskEventObservable() {

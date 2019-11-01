@@ -12,6 +12,8 @@ public interface IProgressBottomSheetView {
 
     void onPomodoroCompleted(boolean isSuccessful);
 
+    void onTaskCompleted(boolean isSuccessful);
+
     void onTodayCountUpdated(int newCount);
 
     void onPomodoroTargetUpdated(int completedToday, int newTarget);

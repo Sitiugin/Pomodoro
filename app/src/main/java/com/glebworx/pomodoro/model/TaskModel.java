@@ -186,8 +186,8 @@ public class TaskModel extends AbstractModel {
         return isCompleted;
     }
 
-    public void setCompleted(boolean completed) {
-        isCompleted = completed;
+    public void complete() {
+        this.isCompleted = true;
     }
 
 }
