@@ -8,6 +8,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.HistoryApi;
@@ -163,15 +164,12 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     }
 
     @Override
-    public void cancelTask() {
-        if (taskEventListenerRegistration != null) {
-            taskEventListenerRegistration.remove();
-            taskEventListenerRegistration = null;
+    public void cancelSession(Activity activity) {
+        if (isStatusIdle()) {
+            cancelSession();
+        } else {
+            showCancelSessionDialog(activity);
         }
-        progressStatus = PROGRESS_STATUS_IDLE;
-        timer.cancel();
-        presenterListener.onClearViews();
-        presenterListener.onHideBottomSheet();
     }
 
     @Override
@@ -244,6 +242,38 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         };
     }
 
+    private void cancelSession() {
+        if (taskEventListenerRegistration != null) {
+            taskEventListenerRegistration.remove();
+            taskEventListenerRegistration = null;
+        }
+        progressStatus = PROGRESS_STATUS_IDLE;
+        timer.cancel();
+        presenterListener.onClearViews();
+        presenterListener.onHideBottomSheet();
+    }
+
+    private void showCancelSessionDialog(Activity activity) {
+        AlertDialog alertDialog = DialogManager.showDialog(
+                activity,
+                R.id.container_main,
+                R.layout.dialog_generic);
+        ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_title))).setText(R.string.bottom_sheet_title_cancel_session);
+        ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_description))).setText(R.string.bottom_sheet_text_cancel_session);
+        AppCompatButton positiveButton = alertDialog.findViewById(R.id.button_positive);
+        Objects.requireNonNull(positiveButton).setText(R.string.bottom_sheet_title_cancel_session);
+        View.OnClickListener onClickListener = view -> {
+            if (view.getId() == R.id.button_positive) {
+                cancelSession();
+                alertDialog.dismiss();
+            } else if (view.getId() == R.id.button_negative) {
+                alertDialog.dismiss();
+            }
+        };
+        ((AppCompatButton) Objects.requireNonNull(alertDialog.findViewById(R.id.button_negative))).setOnClickListener(onClickListener);
+        positiveButton.setOnClickListener(onClickListener);
+    }
+
     private void completePomodoro() {
         progressStatus = PROGRESS_STATUS_IDLE;
         presenterListener.onClearViews();
@@ -290,7 +320,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
             public void onNext(DocumentSnapshot documentSnapshot) {
                 TaskModel model = documentSnapshot.toObject(TaskModel.class);
                 if (model == null) {
-                    cancelTask();
+                    cancelSession();
                 } else {
                     presenterListener.onTaskDataChanged(
                             model.getPomodorosAllocated(),

@@ -15,6 +15,7 @@ import androidx.transition.TransitionManager;
 
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.glebworx.pomodoro.R;
+import com.glebworx.pomodoro.ui.activity.MainActivity;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetView;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewInteractionListener;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewPresenter;
@@ -137,7 +138,7 @@ public class ProgressBottomSheetView
                 presenter.handleStartStopClick();
                 break;
             case R.id.button_cancel:
-                presenter.cancelTask();
+                presenter.cancelSession((MainActivity) context);
                 break;
             case R.id.button_complete:
                 presenter.completeTask();

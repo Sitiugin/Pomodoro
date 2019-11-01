@@ -127,12 +127,12 @@
 
     <!--                                                                            BOTTOM SHEET -->
 
-    <string name="bottom_sheet_title_cancel_task">Cancel Task</string>
+    <string name="bottom_sheet_title_cancel_session">Cancel Session</string>
     <string name="bottom_sheet_title_complete_task">Complete Task</string>
     <string name="bottom_sheet_title_daily_target">Daily target</string>
     <string name="bottom_sheet_title_set_target">Set target</string>
+    <string name="bottom_sheet_text_cancel_session" formatted="true">Are you sure you want to cancel this work session</string>
     <string name="bottom_sheet_text_complete_task" formatted="true">Complete %1$s and move on to the next task?</string>
-    <string name="bottom_sheet_text_cancel_task" formatted="true">Are you sure you want to cancel %1$s</string>
     <string name="bottom_sheet_text_status_idle">Ready</string>
     <string name="bottom_sheet_text_status_paused">Paused</string>
     <string name="bottom_sheet_text_status_active">Working</string>

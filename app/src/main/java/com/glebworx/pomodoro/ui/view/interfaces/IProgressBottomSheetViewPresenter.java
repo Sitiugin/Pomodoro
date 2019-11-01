@@ -1,5 +1,6 @@
 package com.glebworx.pomodoro.ui.view.interfaces;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.glebworx.pomodoro.model.ProjectModel;
@@ -13,7 +14,7 @@ public interface IProgressBottomSheetViewPresenter {
 
     void handleStartStopClick();
 
-    void cancelTask();
+    void cancelSession(Activity activity);
 
     void completeTask();
 
