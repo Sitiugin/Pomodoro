@@ -23,6 +23,7 @@ import static com.glebworx.pomodoro.model.HistoryModel.EVENT_POMODORO_COMPLETED;
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_CREATED;
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_DELETED;
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_UPDATED;
+import static com.glebworx.pomodoro.model.HistoryModel.EVENT_TASK_COMPLETED;
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_TASK_CREATED;
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_TASK_DELETED;
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_TASK_UPDATED;
@@ -104,6 +105,11 @@ public class ReportHistoryItem extends AbstractItem<ReportHistoryItem, ReportHis
                         R.string.report_history_title_task_updated,
                         model.getTaskName(),
                         model.getName());
+            case EVENT_TASK_COMPLETED:
+                return context.getString(
+                        R.string.report_history_title_task_completed,
+                        model.getTaskName(),
+                        model.getName());
             case EVENT_TASK_DELETED:
                 return context.getString(
                         R.string.report_history_title_task_deleted,
@@ -115,7 +121,7 @@ public class ReportHistoryItem extends AbstractItem<ReportHistoryItem, ReportHis
                         model.getTaskName(),
                         model.getName());
             default:
-                return null;
+                return "";
         }
     }
 
