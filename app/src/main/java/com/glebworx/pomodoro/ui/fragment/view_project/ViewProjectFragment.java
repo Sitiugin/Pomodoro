@@ -222,6 +222,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     //                                                                                       HELPERS
 
     private void initRecyclerView(FastAdapter fastAdapter, ViewProjectHeaderItem headerItem) {
+
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty));
         recyclerView.setItemAnimator(new AlphaCrossFadeAnimator());

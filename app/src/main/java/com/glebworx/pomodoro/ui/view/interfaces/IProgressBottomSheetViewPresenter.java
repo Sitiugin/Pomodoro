@@ -19,4 +19,5 @@ public interface IProgressBottomSheetViewPresenter {
 
     void showDailyTargetDialog(Context context);
 
+    boolean isStatusIdle();
 }

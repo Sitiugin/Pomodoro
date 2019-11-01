@@ -407,6 +407,11 @@ public class ProgressBottomSheetView
 
     }
 
+    @Override
+    public boolean isStatusIdle() {
+        return presenter.isStatusIdle();
+    }
+
 
     //                                                                                       HELPERS
 

@@ -225,6 +225,11 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
     }
 
+    @Override
+    public boolean isStatusIdle() {
+        return progressStatus == PROGRESS_STATUS_IDLE;
+    }
+
     private void initTimer() {
         timer = new PomodoroTimer(POMODORO_LENGTH * 60000, 1000) {
             @Override
@@ -249,8 +254,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         TaskApi.completePomodoro(
                 projectModel,
                 taskModel,
-                task -> presenterListener.onPomodoroCompleted(
-                        task.isSuccessful()));
+                task -> presenterListener.onPomodoroCompleted(task.isSuccessful()));
     }
 
     private Observable<DocumentSnapshot> getTaskEventObservable() {

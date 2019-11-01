@@ -5,7 +5,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.ProjectModel;
@@ -23,8 +26,11 @@ import com.glebworx.pomodoro.ui.fragment.view_project.ViewProjectFragment;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.view.ProgressBottomSheetView;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewInteractionListener;
+import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.TransitionFragmentManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -145,9 +151,29 @@ public class MainActivity
 
     @Override
     public void onSelectTask(ProjectModel projectModel, TaskModel taskModel) {
-        bottomSheetView.setVisibility(View.VISIBLE);
-        bottomSheetView.getPresenter().setTask(projectModel, taskModel);
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        if (bottomSheetView.isStatusIdle()) {
+            setTask(projectModel, taskModel);
+        } else {
+            AlertDialog alertDialog = DialogManager.showDialog(
+                    MainActivity.this,
+                    R.id.container_main,
+                    R.layout.dialog_generic);
+            ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_title))).setText(R.string.main_title_replace_task);
+            ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_description))).setText(getString(R.string.main_text_replace_task, taskModel.getName()));
+            AppCompatButton positiveButton = alertDialog.findViewById(R.id.button_positive);
+            Objects.requireNonNull(positiveButton).setText(R.string.main_title_replace);
+            View.OnClickListener onClickListener = view -> {
+                if (view.getId() == R.id.button_positive) {
+                    setTask(projectModel, taskModel);
+                    alertDialog.dismiss();
+                } else if (view.getId() == R.id.button_negative) {
+                    alertDialog.dismiss();
+                }
+            };
+            ((AppCompatButton) Objects.requireNonNull(alertDialog.findViewById(R.id.button_negative))).setOnClickListener(onClickListener);
+            positiveButton.setOnClickListener(onClickListener);
+
+        }
     }
 
     @Override
@@ -191,6 +217,12 @@ public class MainActivity
             }
         });
 
+    }
+
+    private void setTask(ProjectModel projectModel, TaskModel taskModel) {
+        bottomSheetView.setVisibility(View.VISIBLE);
+        bottomSheetView.getPresenter().setTask(projectModel, taskModel);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
 }

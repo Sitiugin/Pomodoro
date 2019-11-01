@@ -28,4 +28,6 @@ public interface IProgressBottomSheetView {
 
     void collapseBottomSheetViews();
 
+    boolean isStatusIdle();
+
 }

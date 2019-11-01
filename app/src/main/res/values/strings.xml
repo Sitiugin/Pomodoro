@@ -118,6 +118,13 @@
     <string name="splash_err_email_invalid">Enter a valid email!</string>
 
 
+    <!--                                                                                    MAIN -->
+
+    <string name="main_title_replace_task">Replace task</string>
+    <string name="main_title_replace">Replace</string>
+    <string name="main_text_replace_task" formatted="true">Cancel current task and replace it with "%1$s"</string>
+
+
     <!--                                                                            BOTTOM SHEET -->
 
     <string name="bottom_sheet_title_cancel_task">Cancel Task</string>

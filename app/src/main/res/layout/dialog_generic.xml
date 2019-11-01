@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_content"
-        android:layout_marginStart="@dimen/margin_content"
+        android:layout_marginHorizontal="@dimen/margin_content"
         app:layout_constraintTop_toBottomOf="@+id/text_view_title"
         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -32,6 +32,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_content"
+        android:text="@string/core_cancel"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintTop_toBottomOf="@+id/text_view_description"
         app:layout_constraintStart_toStartOf="parent"
