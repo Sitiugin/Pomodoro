@@ -12,6 +12,7 @@ import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragmentPr
 import com.glebworx.pomodoro.ui.fragment.projects.item.ProjectItem;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mikepenz.fastadapter.IItemAdapter;
 
 import java.util.List;
@@ -49,36 +50,38 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());
 
-        /*todayTasksObservable = getTodayTasksObservable();
-        todayTasksObservable = todayTasksObservable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io());
-
-        thisWeekTasksObservable = getTodayTasksObservable();
-        thisWeekTasksObservable = todayTasksObservable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io());
-
-        overdueTasksObservable = getTodayTasksObservable();
-        overdueTasksObservable = todayTasksObservable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io());*/
-
         presenterListener.onInitView(predicate);
 
         projectsObservable.subscribe(getProjectEventObserver());
-        //todayTasksObservable.subscribe(getTodayTasksObserver());
-        //thisWeekTasksObservable.subscribe(getThisWeekTasksObserver());
-        //overdueTasksObservable.subscribe(getOverdueTasksObserver());
 
     }
 
     @Override
     public void refreshTasksHeader() {
-
+        TaskApi.getTodayTasks(task -> {
+            todayTasksObservable = getObservable(task.getResult());
+            todayTasksObservable = todayTasksObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .unsubscribeOn(Schedulers.io());
+            todayTasksObservable.subscribe(getTodayTasksObserver());
+        });
+        TaskApi.getThisWeekTasks(task -> {
+            thisWeekTasksObservable = getObservable(task.getResult());
+            thisWeekTasksObservable = thisWeekTasksObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .unsubscribeOn(Schedulers.io());
+            thisWeekTasksObservable.subscribe(getThisWeekTasksObserver());
+        });
+        TaskApi.getOverdueTasks(task -> {
+            overdueTasksObservable = getObservable(task.getResult());
+            overdueTasksObservable = overdueTasksObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .unsubscribeOn(Schedulers.io());
+            overdueTasksObservable.subscribe(getOverdueTasksObserver());
+        });
     }
 
     @Override
@@ -171,22 +174,13 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
         };
     }
 
-    private Observable<Integer> getTodayTasksObservable() {
+    private Observable<Integer> getObservable(QuerySnapshot snapshot) {
         return Observable.create(emitter -> {
-            ListenerRegistration listenerRegistration = TaskApi.addTodayTasksEventListener((querySnapshot, e) -> {
-                if (emitter.isDisposed()) {
-                    return;
-                }
-                if (e != null) {
-                    emitter.onError(e);
-                    return;
-                }
-                if (querySnapshot == null || querySnapshot.isEmpty()) {
-                    return;
-                }
-                emitter.onNext(querySnapshot.getDocuments().size());
-            });
-            emitter.setCancellable(listenerRegistration::remove);
+            if (emitter.isDisposed()) {
+                return;
+            }
+            emitter.onNext(snapshot.getDocuments().size());
+            emitter.onComplete();
         });
     }
 
@@ -214,25 +208,6 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
         };
     }
 
-    private Observable<Integer> getThisWeekTasksObservable() {
-        return Observable.create(emitter -> {
-            ListenerRegistration listenerRegistration = TaskApi.addThisWeekTasksEventListener((querySnapshot, e) -> {
-                if (emitter.isDisposed()) {
-                    return;
-                }
-                if (e != null) {
-                    emitter.onError(e);
-                    return;
-                }
-                if (querySnapshot == null || querySnapshot.isEmpty()) {
-                    return;
-                }
-                emitter.onNext(querySnapshot.getDocuments().size());
-            });
-            emitter.setCancellable(listenerRegistration::remove);
-        });
-    }
-
     private io.reactivex.Observer<Integer> getThisWeekTasksObserver() {
         return new io.reactivex.Observer<Integer>() {
             @Override
@@ -255,25 +230,6 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
 
             }
         };
-    }
-
-    private Observable<Integer> getOverdueTasksObservable() {
-        return Observable.create(emitter -> {
-            ListenerRegistration listenerRegistration = TaskApi.addOverdueTasksEventListener((querySnapshot, e) -> {
-                if (emitter.isDisposed()) {
-                    return;
-                }
-                if (e != null) {
-                    emitter.onError(e);
-                    return;
-                }
-                if (querySnapshot == null || querySnapshot.isEmpty()) {
-                    return;
-                }
-                emitter.onNext(querySnapshot.getDocuments().size());
-            });
-            emitter.setCancellable(listenerRegistration::remove);
-        });
     }
 
     private io.reactivex.Observer<Integer> getOverdueTasksObserver() {

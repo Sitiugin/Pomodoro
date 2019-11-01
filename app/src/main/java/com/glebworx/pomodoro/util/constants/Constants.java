@@ -16,6 +16,8 @@ public class Constants {
 
     public static final int LENGTH_SNACK_BAR = 5000;
 
+    public static final String TEXT_FORMAT_2_DECIMAL_PLACES = "%.2f";
+
     public static final String SANS_SERIF_LIGHT = "sans-serif-light";
 
     public static final Typeface TYPEFACE = Typeface.create(SANS_SERIF_LIGHT, Typeface.NORMAL);

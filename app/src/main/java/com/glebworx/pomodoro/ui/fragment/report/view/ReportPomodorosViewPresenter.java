@@ -40,6 +40,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.glebworx.pomodoro.util.constants.Constants.TEXT_FORMAT_2_DECIMAL_PLACES;
+
 public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresenter {
 
     private @NonNull
@@ -90,6 +92,9 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
 
     private Observable<ReportPomodoroOverviewModel> getOverviewObservable(QuerySnapshot snapshot) {
         return Observable.create(emitter -> {
+            if (emitter.isDisposed()) {
+                return;
+            }
             ReportPomodoroOverviewModel model = new ReportPomodoroOverviewModel();
             initOverview(model, snapshot.getDocuments());
             emitter.onNext(model);
@@ -100,6 +105,9 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
 
     private Observable<LineData> getPomodorosCompletedObservable(QuerySnapshot snapshot) {
         return Observable.create(emitter -> {
+            if (emitter.isDisposed()) {
+                return;
+            }
             emitter.onNext(getPomodorosCompletedData(snapshot.getDocuments()));
             emitter.onComplete();
 
@@ -108,6 +116,9 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
 
     private Observable<BarData> getWeeklyTrendsObservable(QuerySnapshot snapshot) {
         return Observable.create(emitter -> {
+            if (emitter.isDisposed()) {
+                return;
+            }
             emitter.onNext(getWeeklyTrendsData(snapshot.getDocuments()));
             emitter.onComplete();
 
@@ -127,7 +138,7 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
                         String.valueOf(model.getPomodorosCompleted()),
                         String.format(
                                 Locale.getDefault(),
-                                "%.2f",
+                                TEXT_FORMAT_2_DECIMAL_PLACES,
                                 model.getAveragePerDay()),
                         String.valueOf(model.getStreak()));
             }
