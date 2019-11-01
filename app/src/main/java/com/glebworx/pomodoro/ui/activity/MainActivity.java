@@ -151,7 +151,7 @@ public class MainActivity
 
     @Override
     public void onSelectTask(ProjectModel projectModel, TaskModel taskModel) {
-        if (bottomSheetView.isStatusIdle()) {
+        if (bottomSheetView.getPresenter().isStatusIdle()) {
             setTask(projectModel, taskModel);
         } else {
             showReplaceTaskDialog(projectModel, taskModel);

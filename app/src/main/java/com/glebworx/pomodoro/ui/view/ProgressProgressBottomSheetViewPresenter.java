@@ -133,7 +133,13 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
     @Override
     public void setTask(ProjectModel projectModel, TaskModel taskModel) {
+        if (taskEventListenerRegistration != null) {
+            taskEventListenerRegistration.remove();
+            taskEventListenerRegistration = null;
+        }
         progressStatus = PROGRESS_STATUS_IDLE;
+        timer.cancel();
+        presenterListener.onClearViews();
         this.projectModel = projectModel;
         this.taskModel = taskModel;
         presenterListener.onTaskSet(taskModel.getName());

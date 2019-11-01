@@ -156,6 +156,7 @@ public class ProgressBottomSheetView
             String timeRemainingString = DateTimeManager.formatMMSSString(context, POMODORO_LENGTH * 60);
             timeRemainingLargeTextView.setText(timeRemainingString);
             timeRemainingTextView.setText(timeRemainingString);
+            spinKitView.setVisibility(INVISIBLE);
         }
     }
 
@@ -406,11 +407,6 @@ public class ProgressBottomSheetView
 
         constraintSet.applyTo(this);
 
-    }
-
-    @Override
-    public boolean isStatusIdle() {
-        return presenter.isStatusIdle();
     }
 
 
