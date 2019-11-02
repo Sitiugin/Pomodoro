@@ -146,6 +146,7 @@ public class TaskApi extends BaseApi {
         return getCollection(COLLECTION_PROJECTS)
                 .document(projectName)
                 .collection(COLLECTION_TASKS)
+                .orderBy(FIELD_COMPLETED, Query.Direction.DESCENDING)
                 .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
                 .addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
     }

@@ -213,6 +213,11 @@
         <item name="android:textColor">@drawable/selector_tint_text_transparent</item>
     </style>
 
+    <style name="TextStyle.ShowDisabled" parent="TextStyle">
+        <item name="android:textColor">@drawable/selector_tint_text_transparent_enabled</item>
+        <item name="android:drawableTint">@drawable/selector_tint_text_transparent_enabled</item>
+    </style>
+
     <style name="TextStyle.Colored" parent="TextStyle">
         <item name="android:textColor">@color/colorHighlight</item>
     </style>
