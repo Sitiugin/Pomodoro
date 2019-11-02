@@ -59,7 +59,7 @@ public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> implem
 
     @Override
     public boolean isSwipeable() {
-        return true;
+        return isEnabled();
     }
 
     @Override
@@ -110,6 +110,7 @@ public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> implem
     protected static class ViewHolder extends FastAdapter.ViewHolder<TaskItem> {
 
         private Context context;
+        private View view;
         private AppCompatTextView titleTextView;
         private AppCompatTextView dueDateTextView;
         private AppCompatTextView pomodoroTextView;
@@ -117,6 +118,7 @@ public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> implem
         ViewHolder(View view) {
             super(view);
             this.context = view.getContext();
+            this.view = view;
             titleTextView = view.findViewById(R.id.text_view_title);
             dueDateTextView = view.findViewById(R.id.text_view_due_date);
             pomodoroTextView = view.findViewById(R.id.text_view_pomodoros);
@@ -125,6 +127,7 @@ public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> implem
         @Override
         public void bindView(@NonNull TaskItem item, @NonNull List<Object> payloads) {
             item.withEnabled(!item.isCompleted());
+            view.setEnabled(item.isEnabled());
             titleTextView.setText(item.getTaskName());
             dueDateTextView.setText(item.getDueDateString(context));
             pomodoroTextView.setText(item.getPomodoroRatio(context));
