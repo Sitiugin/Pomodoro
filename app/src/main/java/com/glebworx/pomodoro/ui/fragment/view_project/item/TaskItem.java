@@ -124,18 +124,25 @@ public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> implem
 
         @Override
         public void bindView(@NonNull TaskItem item, @NonNull List<Object> payloads) {
+            item.withEnabled(!item.isCompleted());
             titleTextView.setText(item.getTaskName());
             dueDateTextView.setText(item.getDueDateString(context));
+            pomodoroTextView.setText(item.getPomodoroRatio(context));
+
+            if (item.isCompleted()) {
+                titleTextView.setTextColor(context.getColor(android.R.color.darker_gray));
+                dueDateTextView.setTextColor(context.getColor(android.R.color.darker_gray));
+                pomodoroTextView.setTextColor(context.getColor(android.R.color.darker_gray));
+                setDrawableColorFilters(android.R.color.darker_gray);
+                return;
+            }
+
             if (item.isOverdue()) {
                 dueDateTextView.setTextColor(context.getColor(R.color.colorError));
             } else {
                 dueDateTextView.setTextColor(context.getColor(android.R.color.darker_gray));
             }
-            pomodoroTextView.setText(item.getPomodoroRatio(context));
-            if (item.isCompleted()) {
-                pomodoroTextView.setTextColor(context.getColor(R.color.colorHighlight));
-                setDrawableColorFilters(R.color.colorHighlight);
-            } else if (item.isOverLimit()) {
+            if (item.isOverLimit()) {
                 pomodoroTextView.setTextColor(context.getColor(R.color.colorError));
                 setDrawableColorFilters(R.color.colorError);
             } else {

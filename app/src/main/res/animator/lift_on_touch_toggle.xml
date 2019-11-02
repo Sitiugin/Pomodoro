@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:state_pressed="true">
+    <item
+        android:state_enabled="true"
+        android:state_pressed="true">
         <set>
             <objectAnimator
                 android:duration="@android:integer/config_shortAnimTime"
@@ -11,7 +13,9 @@
         </set>
     </item>
 
-    <item android:state_checked="true">
+    <item
+        android:state_checked="true"
+        android:state_enabled="true">
         <set>
             <objectAnimator
                 android:duration="@android:integer/config_shortAnimTime"
@@ -21,7 +25,9 @@
         </set>
     </item>
 
-    <item android:state_selected="true">
+    <item
+        android:state_enabled="true"
+        android:state_selected="true">
         <set>
             <objectAnimator
                 android:duration="@android:integer/config_shortAnimTime"
@@ -31,7 +37,9 @@
         </set>
     </item>
 
-    <item android:state_activated="true">
+    <item
+        android:state_activated="true"
+        android:state_enabled="true">
         <set>
             <objectAnimator
                 android:duration="@android:integer/config_shortAnimTime"

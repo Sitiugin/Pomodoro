@@ -21,6 +21,8 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
+
+// TODO dedicated apis for complete task/pomodoro
 public class TaskApi extends BaseApi {
 
     //                                                                                     CONSTANTS
@@ -49,12 +51,15 @@ public class TaskApi extends BaseApi {
     public static void completePomodoro(@NonNull ProjectModel projectModel,
                                         @NonNull TaskModel taskModel,
                                         @Nullable OnCompleteListener<Void> onCompleteListener) {
+        taskModel.addPomodoro();
         modifyTask(projectModel, taskModel, HistoryModel.EVENT_POMODORO_COMPLETED, onCompleteListener);
     }
 
     public static void completeTask(@NonNull ProjectModel projectModel,
                                     @NonNull TaskModel taskModel,
                                     @Nullable OnCompleteListener<Void> onCompleteListener) {
+        taskModel.addPomodoro();
+        taskModel.complete();
         modifyTask(projectModel, taskModel, HistoryModel.EVENT_TASK_COMPLETED, onCompleteListener);
     }
 

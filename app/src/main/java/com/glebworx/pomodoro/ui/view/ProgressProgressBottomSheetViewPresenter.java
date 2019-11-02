@@ -255,7 +255,6 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         if (taskModel == null) {
             return;
         }
-        taskModel.addPomodoro();
         TaskApi.completePomodoro(
                 projectModel,
                 taskModel,
@@ -328,8 +327,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         if (taskModel == null) {
             return;
         }
-        taskModel.addPomodoro();
-        taskModel.complete();
+
         TaskApi.completeTask(
                 projectModel,
                 taskModel,

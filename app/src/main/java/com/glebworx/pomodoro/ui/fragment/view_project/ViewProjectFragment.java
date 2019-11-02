@@ -289,10 +289,12 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         };
         closeButton.setOnClickListener(onClickListener);
         fastAdapter.withOnClickListener((view, adapter, item, position) -> {
-            if (view == null) {
+            if (view == null || !item.isEnabled()) {
                 return false;
             }
-            if (view.getId() == R.id.item_task && item instanceof TaskItem) {
+            if (view.getId() == R.id.item_task
+                    && item instanceof TaskItem
+                    && !((TaskItem) item).isCompleted()) {
                 presenter.selectTask(((TaskItem) item));
                 return true;
             }

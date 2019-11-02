@@ -47,7 +47,7 @@ public class TaskModel extends AbstractModel {
     private Date dueDate;
     private String section;
     private String recurrence;
-    private boolean isCompleted;
+    private boolean completed;
 
 
     //                                                                                  CONSTRUCTORS
@@ -60,7 +60,8 @@ public class TaskModel extends AbstractModel {
                      int pomodorosAllocated,
                      @Nullable Date dueDate,
                      @Nullable String section,
-                     @Nullable String recurrence) {
+                     @Nullable String recurrence,
+                     boolean completed) {
         super(name);
         this.pomodorosAllocated = pomodorosAllocated;
         this.pomodorosCompleted = 0;
@@ -79,7 +80,7 @@ public class TaskModel extends AbstractModel {
         } else {
             this.recurrence = null;
         }
-        this.isCompleted = false;
+        this.completed = completed;
     }
 
     public TaskModel(Parcel in) {
@@ -92,17 +93,19 @@ public class TaskModel extends AbstractModel {
         }
         this.section = in.readString();
         this.recurrence = in.readString();
-        this.isCompleted = in.readInt() == 1;
+        this.completed = in.readInt() == 1;
     }
 
     public TaskModel(@NonNull TaskModel taskModel) {
-        this(taskModel.getName(),
-        taskModel.getPomodorosAllocated(),
-        taskModel.getDueDate(),
-        taskModel.getSection(),
-        taskModel.getRecurrence());
+        this(
+                taskModel.getName(),
+                taskModel.getPomodorosAllocated(),
+                taskModel.getDueDate(),
+                taskModel.getSection(),
+                taskModel.getRecurrence(),
+                taskModel.isCompleted());
         this.pomodorosCompleted = taskModel.getPomodorosCompleted();
-        this.isCompleted = taskModel.isCompleted;
+        this.completed = taskModel.completed;
     }
 
 
@@ -120,7 +123,7 @@ public class TaskModel extends AbstractModel {
         }
         parcel.writeString(section);
         parcel.writeString(recurrence);
-        parcel.writeInt(isCompleted ? 1 : 0);
+        parcel.writeInt(completed ? 1 : 0);
     }
 
     @Exclude
@@ -155,7 +158,7 @@ public class TaskModel extends AbstractModel {
 
     @Exclude
     public boolean isOverLimit() {
-        return pomodorosCompleted >= pomodorosAllocated && !isCompleted;
+        return pomodorosCompleted >= pomodorosAllocated && !completed;
     }
 
     public Date getDueDate() {
@@ -183,11 +186,11 @@ public class TaskModel extends AbstractModel {
     }
 
     public boolean isCompleted() {
-        return isCompleted;
+        return completed;
     }
 
     public void complete() {
-        this.isCompleted = true;
+        this.completed = true;
     }
 
 }
