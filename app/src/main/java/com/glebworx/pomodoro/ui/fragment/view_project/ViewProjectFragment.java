@@ -304,9 +304,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
             if (view == null || !item.isEnabled()) {
                 return false;
             }
-            if (view.getId() == R.id.item_task
-                    && item instanceof TaskItem
-                    && !((TaskItem) item).isCompleted()) {
+            if (view.getId() == R.id.item_task) {
                 presenter.selectTask(((TaskItem) item));
                 return true;
             }

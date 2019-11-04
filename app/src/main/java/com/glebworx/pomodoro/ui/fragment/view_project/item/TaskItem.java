@@ -96,10 +96,6 @@ public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> implem
         return model.getDueDate().compareTo(new Date()) < 0;
     }
 
-    public boolean isCompleted() {
-        return model.isCompleted();
-    }
-
     public boolean isOverLimit() {
         return model.isOverLimit();
     }
@@ -110,7 +106,6 @@ public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> implem
     protected static class ViewHolder extends FastAdapter.ViewHolder<TaskItem> {
 
         private Context context;
-        private View view;
         private AppCompatTextView titleTextView;
         private AppCompatTextView dueDateTextView;
         private AppCompatTextView pomodoroTextView;
@@ -118,7 +113,6 @@ public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> implem
         ViewHolder(View view) {
             super(view);
             this.context = view.getContext();
-            this.view = view;
             titleTextView = view.findViewById(R.id.text_view_title);
             dueDateTextView = view.findViewById(R.id.text_view_due_date);
             pomodoroTextView = view.findViewById(R.id.text_view_pomodoros);
@@ -126,19 +120,9 @@ public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> implem
 
         @Override
         public void bindView(@NonNull TaskItem item, @NonNull List<Object> payloads) {
-            item.withEnabled(!item.isCompleted());
-            view.setEnabled(item.isEnabled());
             titleTextView.setText(item.getTaskName());
             dueDateTextView.setText(item.getDueDateString(context));
             pomodoroTextView.setText(item.getPomodoroRatio(context));
-
-            if (item.isCompleted()) {
-                titleTextView.setTextColor(context.getColor(android.R.color.darker_gray));
-                dueDateTextView.setTextColor(context.getColor(android.R.color.darker_gray));
-                pomodoroTextView.setTextColor(context.getColor(android.R.color.darker_gray));
-                setDrawableColorFilters(android.R.color.darker_gray);
-                return;
-            }
 
             if (item.isOverdue()) {
                 dueDateTextView.setTextColor(context.getColor(R.color.colorError));
