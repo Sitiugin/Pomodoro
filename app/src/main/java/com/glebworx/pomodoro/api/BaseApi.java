@@ -20,10 +20,12 @@ import com.google.firebase.firestore.WriteBatch;
 
 public abstract class BaseApi {
 
-    //                                                                             PRIVATE CONSTANTS
+
+    //                                                                                     CONSTANTS
 
     private static final String COLLECTION_GLOBAL = "global";
     private static final String COLLECTION_USERS = "users";
+
     static final String COLLECTION_PROJECTS = "projects";
     static final String COLLECTION_TASKS = "tasks";
     static final String COLLECTION_HISTORY = "history";
@@ -105,7 +107,6 @@ public abstract class BaseApi {
         return getUserDocument().collection(collection);
     }
 
-    // TODO add firestore rules to restrict non-user collections access
     protected static Query getCollectionGroup(@NonNull String collection) {
         return FirebaseFirestore.getInstance().collectionGroup(collection);
     }
