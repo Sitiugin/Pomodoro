@@ -146,8 +146,18 @@ public class TaskApi extends BaseApi {
         return getCollection(COLLECTION_PROJECTS)
                 .document(projectName)
                 .collection(COLLECTION_TASKS)
-                .orderBy(FIELD_COMPLETED, Query.Direction.DESCENDING)
-                .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
+                .whereEqualTo(FIELD_COMPLETED, false)
+                //.orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
+                .addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
+    }
+
+    public static ListenerRegistration addCompletedTaskEventListener(@NonNull String projectName,
+                                                                     @NonNull EventListener<QuerySnapshot> eventListener) {
+        return getCollection(COLLECTION_PROJECTS)
+                .document(projectName)
+                .collection(COLLECTION_TASKS)
+                .whereEqualTo(FIELD_COMPLETED, true)
+                //.orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
                 .addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
     }
 

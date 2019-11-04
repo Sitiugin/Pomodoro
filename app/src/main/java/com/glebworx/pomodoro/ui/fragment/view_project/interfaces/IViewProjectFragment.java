@@ -1,5 +1,6 @@
 package com.glebworx.pomodoro.ui.fragment.view_project.interfaces;
 
+import com.glebworx.pomodoro.ui.fragment.view_project.item.CompletedTaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.TaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.ViewProjectHeaderItem;
 
@@ -15,6 +16,8 @@ public interface IViewProjectFragment {
     void onTaskModified(TaskItem item);
 
     void onTaskDeleted(TaskItem item);
+
+    void onTaskCompleted(TaskItem item, CompletedTaskItem completedItem);
 
     void onProjectDeleted(boolean isSuccessful);
 

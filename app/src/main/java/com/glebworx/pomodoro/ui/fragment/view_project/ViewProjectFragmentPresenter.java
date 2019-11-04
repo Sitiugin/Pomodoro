@@ -13,16 +13,20 @@ import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragment;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentPresenter;
+import com.glebworx.pomodoro.ui.fragment.view_project.item.CompletedTaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.TaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.ViewProjectHeaderItem;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -39,6 +43,8 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
     ProjectModel projectModel;
     private @NonNull
     Observable<DocumentChange> observable;
+    private @NonNull
+    Observable<DocumentChange> completedObservable;
 
     public ViewProjectFragmentPresenter(@NonNull IViewProjectFragment presenterListener,
                                         @Nullable IViewProjectFragmentInteractionListener interactionListener,
@@ -51,16 +57,28 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
 
     @Override
     public void init(Bundle arguments, View.OnClickListener onClickListener) {
+
         projectModel = Objects.requireNonNull(arguments.getParcelable(ARG_PROJECT_MODEL));
+
         observable = getObservable(projectModel.getName());
         observable = observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());
+
+        completedObservable = getCompletedObservable(projectModel.getName());
+        completedObservable = completedObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io());
+
         presenterListener.onInitView(
                 projectModel.getName(),
                 new ViewProjectHeaderItem(projectModel, onClickListener));
+
         observable.subscribe(getObserver());
+        completedObservable.subscribe(getCompletedObserver());
+
     }
 
     @Override
@@ -119,24 +137,35 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
         presenterListener.onSubtitleChanged(projectModel.getDueDate(), new Date());
     }
 
+    private EventListener<QuerySnapshot> getEventListener(ObservableEmitter<DocumentChange> emitter) {
+        return (querySnapshot, e) -> {
+            if (emitter.isDisposed()) {
+                return;
+            }
+            if (e != null) {
+                emitter.onError(e);
+                return;
+            }
+            if (querySnapshot == null || querySnapshot.isEmpty()) {
+                return;
+            }
+            List<DocumentChange> documentChanges = querySnapshot.getDocumentChanges();
+            for (DocumentChange change : documentChanges) {
+                emitter.onNext(change);
+            }
+        };
+    }
+
     private Observable<DocumentChange> getObservable(@NonNull String projectName) {
         return Observable.create(emitter -> {
-            ListenerRegistration listenerRegistration = TaskApi.addTaskEventListener(projectName, (querySnapshot, e) -> {
-                if (emitter.isDisposed()) {
-                    return;
-                }
-                if (e != null) {
-                    emitter.onError(e);
-                    return;
-                }
-                if (querySnapshot == null || querySnapshot.isEmpty()) {
-                    return;
-                }
-                List<DocumentChange> documentChanges = querySnapshot.getDocumentChanges();
-                for (DocumentChange change : documentChanges) {
-                    emitter.onNext(change);
-                }
-            });
+            ListenerRegistration listenerRegistration = TaskApi.addTaskEventListener(projectName, getEventListener(emitter));
+            emitter.setCancellable(listenerRegistration::remove);
+        });
+    }
+
+    private Observable<DocumentChange> getCompletedObservable(@NonNull String projectName) {
+        return Observable.create(emitter -> {
+            ListenerRegistration listenerRegistration = TaskApi.addCompletedTaskEventListener(projectName, getEventListener(emitter));
             emitter.setCancellable(listenerRegistration::remove);
         });
     }
@@ -161,6 +190,36 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
                     case REMOVED:
                         presenterListener.onTaskDeleted(item);
                         break;
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+    }
+
+    private io.reactivex.Observer<DocumentChange> getCompletedObserver() {
+        return new io.reactivex.Observer<DocumentChange>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(DocumentChange documentChange) {
+                TaskModel model = documentChange.getDocument().toObject(TaskModel.class);
+                TaskItem item = new TaskItem(model);
+                CompletedTaskItem completedItem = new CompletedTaskItem(model);
+                switch (documentChange.getType()) {
+                    case ADDED:
+                        presenterListener.onTaskCompleted(item, completedItem);
                 }
             }
 

@@ -23,6 +23,7 @@ import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragment;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.AddTaskItem;
+import com.glebworx.pomodoro.ui.fragment.view_project.item.CompletedTaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.TaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.ViewProjectHeaderItem;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
@@ -70,6 +71,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     private FastAdapter<AbstractItem> fastAdapter;
     private ItemAdapter<ViewProjectHeaderItem> headerAdapter;
     private ItemAdapter<TaskItem> taskAdapter;
+    private ItemAdapter<CompletedTaskItem> completedTaskAdapter;
     private UndoHelper<AbstractItem> undoHelper;
     private IViewProjectFragmentInteractionListener fragmentListener;
     private Unbinder unbinder;
@@ -149,6 +151,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
                            ViewProjectHeaderItem headerItem) {
         headerAdapter = new ItemAdapter<>();
         taskAdapter = new ItemAdapter<>();
+        completedTaskAdapter = new ItemAdapter<>();
         fastAdapter = new FastAdapter<>();
         undoHelper = new UndoHelper<>(fastAdapter, (positions, removed) -> {
             for (FastAdapter.RelativeInfo<AbstractItem> relativeInfo : removed) {
@@ -179,6 +182,15 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         if (index != -1) {
             taskAdapter.remove(index + 1);
         }
+    }
+
+    @Override
+    public void onTaskCompleted(TaskItem item, CompletedTaskItem completedItem) {
+        int index = getTaskItemIndex(item.getTaskName());
+        if (index != -1) {
+            taskAdapter.remove(index + 1);
+        }
+        completedTaskAdapter.add(completedItem);
     }
 
     @Override
@@ -234,8 +246,8 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
 
         fastAdapter.addAdapter(0, headerAdapter);
         fastAdapter.addAdapter(1, taskAdapter);
-        //fastAdapter.addAdapter(2, completedAdapter);
-        fastAdapter.addAdapter(2, addAdapter);
+        fastAdapter.addAdapter(2, completedTaskAdapter);
+        fastAdapter.addAdapter(3, addAdapter);
 
         fastAdapter.setHasStableIds(true);
         fastAdapter.withSelectable(true);

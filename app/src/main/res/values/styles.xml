@@ -248,6 +248,10 @@
         <item name="android:fontFamily">@string/font_sans_serif_normal</item>
     </style>
 
+    <style name="TextStyle.Title.Disabled" parent="TextStyle.Title">
+        <item name="android:textColor">@android:color/darker_gray</item>
+    </style>
+
     <style name="TextStyle.Title.Selectable" parent="TextStyle.Title">
         <item name="android:textColor">@drawable/selector_tint_text</item>
     </style>
