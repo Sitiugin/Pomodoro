@@ -93,15 +93,17 @@ public class TaskApi extends BaseApi {
     public static void getTodayTasks(@NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
         Date today = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
         getCollectionGroup(COLLECTION_TASKS)
-                .whereGreaterThanOrEqualTo(FIELD_TIMESTAMP, today)
+                .whereEqualTo(FIELD_COMPLETED, false)
+                .whereGreaterThanOrEqualTo(FIELD_DUE_DATE, today)
                 .get(Source.CACHE)
                 .addOnCompleteListener(onCompleteListener);
     }
 
     public static void getThisWeekTasks(@NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
-        Date today = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date inAWeek = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).plusDays(7).toInstant());
         getCollectionGroup(COLLECTION_TASKS)
-                .whereGreaterThanOrEqualTo(FIELD_TIMESTAMP, today)
+                .whereEqualTo(FIELD_COMPLETED, false)
+                .whereLessThanOrEqualTo(FIELD_DUE_DATE, inAWeek)
                 .get(Source.CACHE)
                 .addOnCompleteListener(onCompleteListener);
     }
@@ -109,7 +111,8 @@ public class TaskApi extends BaseApi {
     public static void getOverdueTasks(@NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
         Date today = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
         getCollectionGroup(COLLECTION_TASKS)
-                .whereGreaterThanOrEqualTo(FIELD_TIMESTAMP, today)
+                .whereEqualTo(FIELD_COMPLETED, false)
+                .whereLessThan(FIELD_DUE_DATE, today)
                 .get(Source.CACHE)
                 .addOnCompleteListener(onCompleteListener);
     }
