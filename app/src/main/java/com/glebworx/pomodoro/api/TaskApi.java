@@ -123,43 +123,37 @@ public class TaskApi extends BaseApi {
                 .addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
     }
 
-    public static ListenerRegistration addTodayTasksEventListener(@NonNull EventListener<QuerySnapshot> eventListener) {
+    public static ListenerRegistration addTodayTasksEventListener(@NonNull EventListener<QuerySnapshot> eventListener, boolean completed) {
         Date today = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
         return getCollectionGroup(COLLECTION_TASKS)
-                .whereGreaterThanOrEqualTo(FIELD_TIMESTAMP, today)
+                .whereEqualTo(FIELD_COMPLETED, completed)
+                .whereGreaterThanOrEqualTo(FIELD_DUE_DATE, today)
                 .addSnapshotListener(eventListener);
     }
 
-    public static ListenerRegistration addThisWeekTasksEventListener(@NonNull EventListener<QuerySnapshot> eventListener) { // TODO implement
-        Date today = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+    public static ListenerRegistration addThisWeekTasksEventListener(@NonNull EventListener<QuerySnapshot> eventListener, boolean completed) {
+        Date inAWeek = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).plusDays(7).toInstant());
         return getCollectionGroup(COLLECTION_TASKS)
-                .whereGreaterThanOrEqualTo(FIELD_TIMESTAMP, today)
+                .whereEqualTo(FIELD_COMPLETED, completed)
+                .whereLessThanOrEqualTo(FIELD_DUE_DATE, inAWeek)
                 .addSnapshotListener(eventListener);
     }
 
-    public static ListenerRegistration addOverdueTasksEventListener(@NonNull EventListener<QuerySnapshot> eventListener) { // TODO implement
+    public static ListenerRegistration addOverdueTasksEventListener(@NonNull EventListener<QuerySnapshot> eventListener, boolean completed) {
         Date today = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
         return getCollectionGroup(COLLECTION_TASKS)
-                .whereGreaterThanOrEqualTo(FIELD_TIMESTAMP, today)
+                .whereEqualTo(FIELD_COMPLETED, completed)
+                .whereLessThan(FIELD_DUE_DATE, today)
                 .addSnapshotListener(eventListener);
     }
 
     public static ListenerRegistration addTaskEventListener(@NonNull String projectName,
-                                                            @NonNull EventListener<QuerySnapshot> eventListener) {
+                                                            @NonNull EventListener<QuerySnapshot> eventListener,
+                                                            boolean completed) {
         return getCollection(COLLECTION_PROJECTS)
                 .document(projectName)
                 .collection(COLLECTION_TASKS)
-                .whereEqualTo(FIELD_COMPLETED, false)
-                //.orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
-                .addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
-    }
-
-    public static ListenerRegistration addCompletedTaskEventListener(@NonNull String projectName,
-                                                                     @NonNull EventListener<QuerySnapshot> eventListener) {
-        return getCollection(COLLECTION_PROJECTS)
-                .document(projectName)
-                .collection(COLLECTION_TASKS)
-                .whereEqualTo(FIELD_COMPLETED, true)
+                .whereEqualTo(FIELD_COMPLETED, completed)
                 //.orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
                 .addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
     }

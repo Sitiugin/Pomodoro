@@ -60,13 +60,13 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
 
         projectModel = Objects.requireNonNull(arguments.getParcelable(ARG_PROJECT_MODEL));
 
-        observable = getObservable(projectModel.getName());
+        observable = getObservable(projectModel.getName(), false);
         observable = observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());
 
-        completedObservable = getCompletedObservable(projectModel.getName());
+        completedObservable = getObservable(projectModel.getName(), true);
         completedObservable = completedObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -156,16 +156,9 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
         };
     }
 
-    private Observable<DocumentChange> getObservable(@NonNull String projectName) {
+    private Observable<DocumentChange> getObservable(@NonNull String projectName, boolean completed) {
         return Observable.create(emitter -> {
-            ListenerRegistration listenerRegistration = TaskApi.addTaskEventListener(projectName, getEventListener(emitter));
-            emitter.setCancellable(listenerRegistration::remove);
-        });
-    }
-
-    private Observable<DocumentChange> getCompletedObservable(@NonNull String projectName) {
-        return Observable.create(emitter -> {
-            ListenerRegistration listenerRegistration = TaskApi.addCompletedTaskEventListener(projectName, getEventListener(emitter));
+            ListenerRegistration listenerRegistration = TaskApi.addTaskEventListener(projectName, getEventListener(emitter), completed);
             emitter.setCancellable(listenerRegistration::remove);
         });
     }
