@@ -130,11 +130,6 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
         }
     }
 
-    @Override
-    public void updateSubtitle() {
-        presenterListener.onSubtitleChanged(projectModel.getDueDate(), new Date());
-    }
-
     private EventListener<QuerySnapshot> getEventListener(ObservableEmitter<DocumentChange> emitter) {
         return (querySnapshot, e) -> {
             if (emitter.isDisposed()) {
@@ -264,6 +259,7 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
                         projectModel.getEstimatedTime(),
                         projectModel.getElapsedTime(),
                         projectModel.getProgressRatio());
+                presenterListener.onSubtitleChanged(projectModel.getDueDate(), new Date());
             }
 
             @Override
