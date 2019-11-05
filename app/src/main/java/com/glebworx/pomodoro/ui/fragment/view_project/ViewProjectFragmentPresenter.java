@@ -125,7 +125,7 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
     }
 
     @Override
-    public void updateHeaderItem() {
+    public void updateHeaderItem() { // TODO this has to be a listener
         presenterListener.onHeaderItemChanged(
                 projectModel.getEstimatedTime(),
                 projectModel.getElapsedTime(),

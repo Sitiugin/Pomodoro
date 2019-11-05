@@ -19,6 +19,7 @@ import com.google.firebase.firestore.WriteBatch;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 
@@ -50,16 +51,71 @@ public class TaskApi extends BaseApi {
     public static void completePomodoro(@NonNull ProjectModel projectModel,
                                         @NonNull TaskModel taskModel,
                                         @Nullable OnCompleteListener<Void> onCompleteListener) {
-        taskModel.addPomodoro(); // TODO handle failure
-        modifyTask(projectModel, taskModel, HistoryModel.EVENT_POMODORO_COMPLETED, onCompleteListener);
+        //taskModel.addPomodoro(); // TODO handle failure
+        //modifyTask(projectModel, taskModel, HistoryModel.EVENT_POMODORO_COMPLETED, onCompleteListener);
+
+        taskModel.addPomodoro();
+        projectModel.addPomodoro();
+
+        WriteBatch batch = getWriteBatch();
+
+        DocumentReference projectDocument = getCollection(COLLECTION_PROJECTS).document(projectModel.getName());
+
+        batch.set(
+                projectDocument.collection(COLLECTION_TASKS).document(taskModel.getName()),
+                taskModel);
+
+        batch.update(projectDocument,
+                FIELD_TASKS, projectModel.getTasks(),
+                FIELD_POMODOROS_ALLOCATED, projectModel.getPomodorosAllocated(),
+                FIELD_POMODOROS_COMPLETED, projectModel.getPomodorosCompleted());
+
+        batch.set(
+                getCollection(COLLECTION_HISTORY).document(),
+                new HistoryModel(projectModel.getName(), projectModel.getColorTag(), taskModel.getName(), HistoryModel.EVENT_POMODORO_COMPLETED));
+
+        if (onCompleteListener == null) {
+            batch.commit();
+        } else {
+            batch.commit().addOnCompleteListener(onCompleteListener);
+        }
+
     }
 
     public static void completeTask(@NonNull ProjectModel projectModel,
                                     @NonNull TaskModel taskModel,
                                     @Nullable OnCompleteListener<Void> onCompleteListener) {
-        taskModel.addPomodoro(); // TODO handle failure
+        /*taskModel.addPomodoro(); // TODO handle failure
         taskModel.complete();
-        modifyTask(projectModel, taskModel, HistoryModel.EVENT_TASK_COMPLETED, onCompleteListener);
+        modifyTask(projectModel, taskModel, HistoryModel.EVENT_TASK_COMPLETED, onCompleteListener);*/
+
+        taskModel.addPomodoro();
+        projectModel.addPomodoro();
+        taskModel.complete();
+
+        WriteBatch batch = getWriteBatch();
+
+        DocumentReference projectDocument = getCollection(COLLECTION_PROJECTS).document(projectModel.getName());
+
+        batch.set(
+                projectDocument.collection(COLLECTION_TASKS).document(taskModel.getName()),
+                taskModel);
+
+        batch.update(projectDocument,
+                FIELD_TASKS, projectModel.getTasks(),
+                FIELD_POMODOROS_ALLOCATED, projectModel.getPomodorosAllocated(),
+                FIELD_POMODOROS_COMPLETED, projectModel.getPomodorosCompleted());
+
+        batch.set(
+                getCollection(COLLECTION_HISTORY).document(),
+                new HistoryModel(projectModel.getName(), projectModel.getColorTag(), taskModel.getName(), HistoryModel.EVENT_TASK_COMPLETED));
+
+        if (onCompleteListener == null) {
+            batch.commit();
+        } else {
+            batch.commit().addOnCompleteListener(onCompleteListener);
+        }
+
     }
 
     public static void deleteTask(@NonNull ProjectModel projectModel,
@@ -90,10 +146,11 @@ public class TaskApi extends BaseApi {
     }
 
     public static void getTodayTasks(@NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
-        Date today = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        ZonedDateTime todayDateTime = LocalDate.now().atStartOfDay(ZoneId.systemDefault());
         getCollectionGroup(COLLECTION_TASKS)
                 .whereEqualTo(FIELD_COMPLETED, false)
-                .whereGreaterThanOrEqualTo(FIELD_DUE_DATE, today)
+                .whereGreaterThanOrEqualTo(FIELD_DUE_DATE, Date.from(todayDateTime.toInstant()))
+                .whereLessThan(FIELD_DUE_DATE, Date.from(todayDateTime.plusDays(1).toInstant()))
                 .get(Source.CACHE)
                 .addOnCompleteListener(onCompleteListener);
     }
@@ -123,10 +180,11 @@ public class TaskApi extends BaseApi {
     }
 
     public static ListenerRegistration addTodayTasksEventListener(@NonNull EventListener<QuerySnapshot> eventListener, boolean completed) {
-        Date today = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        ZonedDateTime todayDateTime = LocalDate.now().atStartOfDay(ZoneId.systemDefault());
         return getCollectionGroup(COLLECTION_TASKS)
                 .whereEqualTo(FIELD_COMPLETED, completed)
-                .whereGreaterThanOrEqualTo(FIELD_DUE_DATE, today)
+                .whereGreaterThanOrEqualTo(FIELD_DUE_DATE, Date.from(todayDateTime.toInstant()))
+                .whereLessThan(FIELD_DUE_DATE, Date.from(todayDateTime.plusDays(1).toInstant()))
                 .addSnapshotListener(eventListener);
     }
 

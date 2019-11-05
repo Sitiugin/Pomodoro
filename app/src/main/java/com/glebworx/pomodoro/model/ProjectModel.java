@@ -183,6 +183,11 @@ public class ProjectModel extends AbstractModel {
         pomodorosCompleted -= taskModel.getPomodorosCompleted();
     }
 
+    @Exclude
+    public void addPomodoro() {
+        pomodorosCompleted++;
+    }
+
     public int getPomodorosAllocated() {
         return pomodorosAllocated;
     }
@@ -230,7 +235,7 @@ public class ProjectModel extends AbstractModel {
     }
 
     @Exclude
-    public double getProgressRatio() {
+    public double getProgressRatio() { // TODO calculating progress based on pomodoros is incorrect
         if (pomodorosAllocated == 0) {
             return 0;
         }

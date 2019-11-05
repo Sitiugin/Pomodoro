@@ -40,7 +40,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.glebworx.pomodoro.util.constants.Constants.TEXT_FORMAT_2_DECIMAL_PLACES;
+import static com.glebworx.pomodoro.util.constants.Constants.FORMAT_DECIMAL_1PT;
 
 public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresenter {
 
@@ -138,7 +138,7 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
                         String.valueOf(model.getPomodorosCompleted()),
                         String.format(
                                 Locale.getDefault(),
-                                TEXT_FORMAT_2_DECIMAL_PLACES,
+                                FORMAT_DECIMAL_1PT,
                                 model.getAveragePerDay()),
                         String.valueOf(model.getStreak()));
             }
