@@ -36,7 +36,7 @@ import static com.glebworx.pomodoro.util.manager.DateTimeManager.POMODORO_LENGTH
 
 public class ProgressBottomSheetView
         extends ConstraintLayout
-        implements IProgressBottomSheetView, View.OnClickListener {
+        implements IProgressBottomSheetView, View.OnClickListener { // TODO vibration can be handled by presenter
 
 
     //                                                                                       BINDING
@@ -435,7 +435,7 @@ public class ProgressBottomSheetView
         this.context = context;
         this.bottomSheetState = BottomSheetBehavior.STATE_COLLAPSED;
         this.vibrationManager = new VibrationManager(context);
-        this.presenter = new ProgressProgressBottomSheetViewPresenter(this);
+        this.presenter = new ProgressProgressBottomSheetViewPresenter(this, context);
         this.constraintSet = new ConstraintSet();
     }
 

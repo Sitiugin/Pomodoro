@@ -8,7 +8,7 @@ import com.glebworx.pomodoro.model.TaskModel;
 
 public interface IProgressBottomSheetViewPresenter {
 
-    void init();
+    void init(Context context);
 
     void setTask(ProjectModel projectModel, TaskModel taskModel);
 

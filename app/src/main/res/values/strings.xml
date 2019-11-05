@@ -5,6 +5,12 @@
 
     <string name="notification_channel_name">Pomodoro Notifications</string>
     <string name="notification_channel_description">Pomodoro notifications</string>
+    <string name="notification_title_start">Start</string>
+    <string name="notification_title_pause">Pause</string>
+    <string name="notification_title_resume">Resume</string>
+    <string name="notification_title_ready">Ready</string>
+    <string name="notification_title_working">Working</string>
+    <string name="notification_title_paused">Paused</string>
 
     <string name="core_cancel">Cancel</string>
     <string name="core_save">Save</string>

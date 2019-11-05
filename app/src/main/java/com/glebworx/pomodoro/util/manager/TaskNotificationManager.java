@@ -18,6 +18,10 @@ import java.util.Objects;
 
 public class TaskNotificationManager {
 
+    public static final String STATUS_READY = "status_ready";
+    public static final String STATUS_WORKING = "status_working";
+    public static final String STATUS_PAUSED = "status_paused";
+
     private static final String CHANNEL_ID = "notification_channel_pomodoro";
 
     private Context context;
@@ -43,12 +47,38 @@ public class TaskNotificationManager {
     public int showPersistentNotification(String taskName, String status) {
         if (notificationManager.areNotificationsEnabled()) {
             notificationId = IdGenerator.next();
-            Notification notification = getNotificationBuilder(taskName, status).build();
-            notification.flags = Notification.FLAG_ONGOING_EVENT;
-            notificationManager.notify(notificationId, notification);
+            NotificationCompat.Builder builder = getNotificationBuilder();
+            setContent(builder, taskName, status);
+            addAction(builder, status);
+            notify(builder, notificationId);
             return notificationId;
         }
         return 0;
+    }
+
+    public void updateNotification(String taskName,
+                                   String status,
+                                   int progress) {
+        if (notificationManager.areNotificationsEnabled()) {
+            NotificationCompat.Builder builder = getNotificationBuilder();
+            setContent(builder, taskName, status);
+            setProgress(builder, progress);
+            addAction(builder, status);
+            notify(builder, notificationId);
+        }
+    }
+
+    public void updateNotification(int notificationId,
+                                   String taskName,
+                                   String status,
+                                   int progress) {
+        if (notificationManager.areNotificationsEnabled()) {
+            NotificationCompat.Builder builder = getNotificationBuilder();
+            setContent(builder, taskName, status);
+            setProgress(builder, progress);
+            addAction(builder, status);
+            notify(builder, notificationId);
+        }
     }
 
     public void cancelNotification() {
@@ -69,28 +99,86 @@ public class TaskNotificationManager {
         }
     }
 
-    private NotificationCompat.Builder getNotificationBuilder(String taskName, String status) {
+    private NotificationCompat.Builder getNotificationBuilder() {
         return new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_timer_black)
-                .setContentTitle(taskName)
-                .setContentText(status)
-                //.setStyle(new NotificationCompat.BigTextStyle().bigText(status))
+                .setSmallIcon(R.drawable.ic_timer_gray_small)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setCategory(NotificationCompat.CATEGORY_PROGRESS)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setContentIntent(getIntent())
                 .setAutoCancel(false)
-                .setOnlyAlertOnce(true)
-                .setProgress(100, 50, false)
-                .addAction(
-                        R.drawable.ic_pause_highlight,
-                        context.getString(R.string.bottom_sheet_text_status_paused),
-                        getPauseIntent());
+                .setOnlyAlertOnce(true);
+    }
+
+    private void notify(NotificationCompat.Builder builder, int notificationId) {
+        Notification notification = builder.build();
+        notification.flags = Notification.FLAG_ONGOING_EVENT;
+        notificationManager.notify(notificationId, notification);
     }
 
     private PendingIntent getIntent() {
         Intent intent = new Intent(context, MainActivity.class);
         //intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT); // TODO figure out flags
+        return PendingIntent.getActivity(context, 0, intent, 0);
+    }
+
+    private void setContent(NotificationCompat.Builder builder, String taskName, String status) {
+        builder.setContentTitle(taskName);
+        switch (status) {
+            case STATUS_READY:
+                builder.setContentText(context.getString(R.string.notification_title_ready));
+                break;
+            case STATUS_WORKING:
+                builder.setContentText(context.getString(R.string.notification_title_working));
+                break;
+            case STATUS_PAUSED:
+                builder.setContentText(context.getString(R.string.notification_title_paused));
+                break;
+        }
+    }
+
+    private void setProgress(NotificationCompat.Builder builder, int progress) {
+        builder.setProgress(100, progress, false);
+    }
+
+    private void addAction(NotificationCompat.Builder builder, String status) {
+        switch (status) {
+            case STATUS_READY:
+                addStartAction(builder);
+                break;
+            case STATUS_WORKING:
+                addPauseAction(builder);
+                break;
+            case STATUS_PAUSED:
+                addResumeAction(builder);
+                break;
+        }
+    }
+
+    private void addStartAction(NotificationCompat.Builder builder) {
+        builder.addAction(
+                R.drawable.ic_play_highlight,
+                context.getString(R.string.notification_title_start),
+                getStartIntent());
+    }
+
+    private void addPauseAction(NotificationCompat.Builder builder) {
+        builder.addAction(
+                R.drawable.ic_pause_highlight,
+                context.getString(R.string.notification_title_pause),
+                getPauseIntent());
+    }
+
+    private void addResumeAction(NotificationCompat.Builder builder) {
+        builder.addAction(
+                R.drawable.ic_play_highlight,
+                context.getString(R.string.notification_title_resume),
+                getResumeIntent());
+    }
+
+    private PendingIntent getStartIntent() { // TODO implement
+        Intent intent = new Intent(context, MainActivity.class);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         return PendingIntent.getActivity(context, 0, intent, 0);
     }
 
