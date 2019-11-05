@@ -80,8 +80,8 @@ public class MainActivity
 
         fragmentManager.addRootFragment(ProjectsFragment.newInstance());
 
-        /*TaskNotificationManager notificationManager = new TaskNotificationManager(MainActivity.this);
-        notificationManager.showPersistentNotification();*/
+        TaskNotificationManager notificationManager = new TaskNotificationManager(MainActivity.this);
+        notificationManager.showPersistentNotification("Some Task", "Started");
 
     }
 

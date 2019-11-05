@@ -1,5 +1,6 @@
 package com.glebworx.pomodoro.util.manager;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -21,6 +22,7 @@ public class TaskNotificationManager {
 
     private Context context;
     private NotificationManagerCompat notificationManager;
+    private int notificationId;
 
     public TaskNotificationManager(Context context) {
         this.context = context;
@@ -28,43 +30,79 @@ public class TaskNotificationManager {
     }
 
     public static void createNotificationChannel(Context context) {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
         CharSequence name = context.getString(R.string.notification_channel_name);
         String description = context.getString(R.string.notification_channel_description);
         int importance = NotificationManager.IMPORTANCE_DEFAULT;
         NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
         channel.setDescription(description);
-        // Register the channel with the system; you can't change the importance
-        // or other notification behaviors after this
+        //channel.setSound(); // TODO
         NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
         Objects.requireNonNull(notificationManager).createNotificationChannel(channel);
     }
 
-    public void showPersistentNotification() {
-        notificationManager.notify(IdGenerator.next(), getNotificationBuilder().build());
-        /*Notification not = new Notification(R.drawable.icon, "Application started", System.currentTimeMillis());
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, main.class), Notification.FLAG_ONGOING_EVENT);
-        not.flags = Notification.FLAG_ONGOING_EVENT;
-        not.setLatestEventInfo(this, "Application Name", "Application Description", contentIntent);
-        mNotificationManager.notify(1, not);*/
+    public int showPersistentNotification(String taskName, String status) {
+        if (notificationManager.areNotificationsEnabled()) {
+            notificationId = IdGenerator.next();
+            Notification notification = getNotificationBuilder(taskName, status).build();
+            notification.flags = Notification.FLAG_ONGOING_EVENT;
+            notificationManager.notify(notificationId, notification);
+            return notificationId;
+        }
+        return 0;
     }
 
-    private NotificationCompat.Builder getNotificationBuilder() {
+    public void cancelNotification() {
+        if (notificationManager.areNotificationsEnabled()) {
+            notificationManager.cancel(notificationId);
+        }
+    }
+
+    public void cancelNotification(int notificationId) {
+        if (notificationManager.areNotificationsEnabled()) {
+            notificationManager.cancel(notificationId);
+        }
+    }
+
+    public void cancelAllNotifications() {
+        if (notificationManager.areNotificationsEnabled()) {
+            notificationManager.cancelAll();
+        }
+    }
+
+    private NotificationCompat.Builder getNotificationBuilder(String taskName, String status) {
         return new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_timer_black)
-                .setContentTitle("My notification")
-                .setContentText("Much longer text that cannot fit one line...")
-                .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText("Much longer text that cannot fit one line..."))
+                .setContentTitle(taskName)
+                .setContentText(status)
+                //.setStyle(new NotificationCompat.BigTextStyle().bigText(status))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setCategory(NotificationCompat.CATEGORY_PROGRESS)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setContentIntent(getIntent())
-                .setAutoCancel(false);
+                .setAutoCancel(false)
+                .setOnlyAlertOnce(true)
+                .setProgress(100, 50, false)
+                .addAction(
+                        R.drawable.ic_pause_highlight,
+                        context.getString(R.string.bottom_sheet_text_status_paused),
+                        getPauseIntent());
     }
 
     private PendingIntent getIntent() {
         Intent intent = new Intent(context, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT); // TODO figure out flags
+        return PendingIntent.getActivity(context, 0, intent, 0);
+    }
+
+    private PendingIntent getPauseIntent() { // TODO implement
+        Intent intent = new Intent(context, MainActivity.class);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        return PendingIntent.getActivity(context, 0, intent, 0);
+    }
+
+    private PendingIntent getResumeIntent() { // TODO implement
+        Intent intent = new Intent(context, MainActivity.class);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         return PendingIntent.getActivity(context, 0, intent, 0);
     }
 
