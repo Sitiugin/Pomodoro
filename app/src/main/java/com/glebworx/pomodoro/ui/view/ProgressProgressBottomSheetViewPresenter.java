@@ -245,6 +245,11 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         return progressStatus == PROGRESS_STATUS_IDLE;
     }
 
+    @Override
+    public void clearNotifications() {
+        notificationManager.cancelAllNotifications();
+    }
+
     private void initTimer() {
         timer = new PomodoroTimer(POMODORO_LENGTH * 60000, 1000) {
             @Override
