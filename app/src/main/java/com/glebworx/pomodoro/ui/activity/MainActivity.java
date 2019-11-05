@@ -27,6 +27,7 @@ import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFra
 import com.glebworx.pomodoro.ui.view.ProgressBottomSheetView;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewInteractionListener;
 import com.glebworx.pomodoro.util.manager.DialogManager;
+import com.glebworx.pomodoro.util.manager.TaskNotificationManager;
 import com.glebworx.pomodoro.util.manager.TransitionFragmentManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
@@ -65,6 +66,8 @@ public class MainActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        TaskNotificationManager.createNotificationChannel(MainActivity.this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         unbinder = ButterKnife.bind(this);
@@ -76,6 +79,9 @@ public class MainActivity
         initBottomSheet();
 
         fragmentManager.addRootFragment(ProjectsFragment.newInstance());
+
+        /*TaskNotificationManager notificationManager = new TaskNotificationManager(MainActivity.this);
+        notificationManager.showPersistentNotification();*/
 
     }
 
