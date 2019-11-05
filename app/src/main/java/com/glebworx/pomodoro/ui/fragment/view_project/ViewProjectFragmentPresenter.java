@@ -17,6 +17,7 @@ import com.glebworx.pomodoro.ui.fragment.view_project.item.CompletedTaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.TaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.ViewProjectHeaderItem;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -41,10 +42,6 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
     IViewProjectFragmentInteractionListener interactionListener;
     private @NonNull
     ProjectModel projectModel;
-    private @NonNull
-    Observable<DocumentChange> observable;
-    private @NonNull
-    Observable<DocumentChange> completedObservable;
 
     public ViewProjectFragmentPresenter(@NonNull IViewProjectFragment presenterListener,
                                         @Nullable IViewProjectFragmentInteractionListener interactionListener,
@@ -60,14 +57,22 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
 
         projectModel = Objects.requireNonNull(arguments.getParcelable(ARG_PROJECT_MODEL));
 
-        observable = getObservable(projectModel.getName(), false);
+        String projectName = projectModel.getName();
+
+        Observable<DocumentChange> observable = getObservable(projectName, false);
         observable = observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());
 
-        completedObservable = getObservable(projectModel.getName(), true);
+        Observable<DocumentChange> completedObservable = getObservable(projectName, true);
         completedObservable = completedObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io());
+
+        Observable<DocumentSnapshot> headerObservable = getHeaderObservable(projectName);
+        headerObservable = headerObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());
@@ -78,6 +83,7 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
 
         observable.subscribe(getObserver());
         completedObservable.subscribe(getCompletedObserver());
+        headerObservable.subscribe(getHeaderObserver());
 
     }
 
@@ -125,14 +131,6 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
     }
 
     @Override
-    public void updateHeaderItem() { // TODO this has to be a listener
-        presenterListener.onHeaderItemChanged(
-                projectModel.getEstimatedTime(),
-                projectModel.getElapsedTime(),
-                projectModel.getProgressRatio());
-    }
-
-    @Override
     public void updateSubtitle() {
         presenterListener.onSubtitleChanged(projectModel.getDueDate(), new Date());
     }
@@ -160,6 +158,27 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
         return Observable.create(emitter -> {
             ListenerRegistration listenerRegistration = TaskApi.addTaskEventListener(projectName, getEventListener(emitter), completed);
             emitter.setCancellable(listenerRegistration::remove);
+        });
+    }
+
+    private Observable<DocumentSnapshot> getHeaderObservable(@NonNull String projectName) {
+        return Observable.create(emitter -> {
+            ListenerRegistration taskEventListenerRegistration = ProjectApi.addDocumentModelEventListener(
+                    projectName,
+                    (documentSnapshot, e) -> {
+                        if (emitter.isDisposed()) {
+                            return;
+                        }
+                        if (e != null) {
+                            emitter.onError(e);
+                            return;
+                        }
+                        if (documentSnapshot == null) {
+                            return;
+                        }
+                        emitter.onNext(documentSnapshot);
+                    });
+            emitter.setCancellable(taskEventListenerRegistration::remove);
         });
     }
 
@@ -214,6 +233,37 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
                     case ADDED:
                         presenterListener.onTaskCompleted(item, completedItem);
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+    }
+
+    private io.reactivex.Observer<DocumentSnapshot> getHeaderObserver() {
+        return new io.reactivex.Observer<DocumentSnapshot>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(DocumentSnapshot documentSnapshot) {
+                ProjectModel projectModel = documentSnapshot.toObject(ProjectModel.class);
+                if (projectModel == null) {
+                    return;
+                }
+                presenterListener.onHeaderItemChanged(
+                        projectModel.getEstimatedTime(),
+                        projectModel.getElapsedTime(),
+                        projectModel.getProgressRatio());
             }
 
             @Override

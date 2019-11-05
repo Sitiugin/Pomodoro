@@ -111,7 +111,6 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
                 fragmentListener,
                 getArguments(),
                 getHeaderClickListener());
-        presenter.updateHeaderItem();
         presenter.updateSubtitle();
         return rootView;
     }
@@ -126,7 +125,6 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
-            presenter.updateHeaderItem();
             presenter.updateSubtitle();
         }
     }

@@ -75,10 +75,10 @@ public abstract class BaseApi {
         return collectionReference.orderBy("timestamp", Query.Direction.DESCENDING).addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
     }
 
-    protected static void addDocumentModelEventListener(@NonNull EventListener<DocumentSnapshot> eventListener,
-                                                        @NonNull CollectionReference collectionReference,
-                                                        @NonNull String documentName) {
-        collectionReference.document(documentName).addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
+    protected static ListenerRegistration addDocumentModelEventListener(@NonNull String documentName,
+                                                                        @NonNull EventListener<DocumentSnapshot> eventListener,
+                                                                        @NonNull CollectionReference collectionReference) {
+        return collectionReference.document(documentName).addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
     }
 
 

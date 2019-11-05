@@ -21,8 +21,6 @@ public interface IViewProjectFragmentPresenter {
 
     void selectTask(TaskItem taskItem);
 
-    void updateHeaderItem();
-
     void updateSubtitle();
 
 }
