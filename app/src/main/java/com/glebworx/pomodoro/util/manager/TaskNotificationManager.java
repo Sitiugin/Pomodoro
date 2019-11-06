@@ -13,8 +13,14 @@ import androidx.core.app.NotificationManagerCompat;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.ui.activity.MainActivity;
 import com.glebworx.pomodoro.util.IdGenerator;
+import com.glebworx.pomodoro.util.NotificationReceiver;
 
 import java.util.Objects;
+
+import static com.glebworx.pomodoro.util.NotificationReceiver.ACTION_PAUSE;
+import static com.glebworx.pomodoro.util.NotificationReceiver.ACTION_RESUME;
+import static com.glebworx.pomodoro.util.NotificationReceiver.ACTION_START;
+import static com.glebworx.pomodoro.util.NotificationReceiver.KEY_ACTION;
 
 public class TaskNotificationManager {
 
@@ -75,19 +81,6 @@ public class TaskNotificationManager {
             setContent(builder, taskName, STATUS_WORKING);
             setProgress(builder, progress);
             addAction(builder, STATUS_WORKING);
-            notify(builder, notificationId);
-        }
-    }
-
-    public void updateNotification(int notificationId,
-                                   String taskName,
-                                   String status,
-                                   int progress) {
-        if (notificationManager.areNotificationsEnabled()) {
-            NotificationCompat.Builder builder = getNotificationBuilder();
-            setContent(builder, taskName, status);
-            setProgress(builder, progress);
-            addAction(builder, status);
             notify(builder, notificationId);
         }
     }
@@ -164,21 +157,21 @@ public class TaskNotificationManager {
         builder.addAction(
                 R.drawable.ic_play_highlight,
                 context.getString(R.string.notification_title_start),
-                getStartIntent());
+                getActionIntent(ACTION_START));
     }
 
     private void addPauseAction(NotificationCompat.Builder builder) {
         builder.addAction(
                 R.drawable.ic_pause_highlight,
                 context.getString(R.string.notification_title_pause),
-                getPauseIntent());
+                getActionIntent(ACTION_PAUSE));
     }
 
     private void addResumeAction(NotificationCompat.Builder builder) {
         builder.addAction(
                 R.drawable.ic_play_highlight,
                 context.getString(R.string.notification_title_resume),
-                getResumeIntent());
+                getActionIntent(ACTION_RESUME));
     }
 
     private PendingIntent getIntent() {
@@ -187,22 +180,10 @@ public class TaskNotificationManager {
         return PendingIntent.getActivity(context, 0, intent, 0);
     }
 
-    private PendingIntent getStartIntent() { // TODO implement
-        Intent intent = new Intent(context, MainActivity.class);
-        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        return PendingIntent.getActivity(context, 0, intent, 0);
-    }
-
-    private PendingIntent getPauseIntent() { // TODO implement
-        Intent intent = new Intent(context, MainActivity.class);
-        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        return PendingIntent.getActivity(context, 0, intent, 0);
-    }
-
-    private PendingIntent getResumeIntent() { // TODO implement
-        Intent intent = new Intent(context, MainActivity.class);
-        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        return PendingIntent.getActivity(context, 0, intent, 0);
+    private PendingIntent getActionIntent(String action) {
+        Intent intent = new Intent(context, NotificationReceiver.class);
+        intent.putExtra(KEY_ACTION, action);
+        return PendingIntent.getBroadcast(context, 0, intent, 0);
     }
 
 }
