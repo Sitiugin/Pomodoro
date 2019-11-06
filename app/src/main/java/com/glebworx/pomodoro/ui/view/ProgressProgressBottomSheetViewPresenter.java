@@ -104,6 +104,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     private TaskModel taskModel;
     private PomodoroTimer timer;
     private int progressStatus;
+    private int progress;
     private VibrationManager vibrationManager;
     private TaskNotificationManager notificationManager;
     private Observable<Integer> todayCountObservable;
@@ -121,6 +122,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     public void init(Context context) {
 
         progressStatus = PROGRESS_STATUS_IDLE;
+        progress = 0;
 
         vibrationManager = new VibrationManager(context);
         notificationManager = new TaskNotificationManager(context);
@@ -148,6 +150,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
             taskEventListenerRegistration = null;
         }
         progressStatus = PROGRESS_STATUS_IDLE;
+        progress = 0;
         timer.cancel();
         presenterListener.onClearViews();
         this.projectModel = projectModel;
@@ -170,7 +173,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
             timer.pause();
             presenterListener.onTaskPaused();
             vibrationManager.vibrateShort();
-            notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_PAUSED);
+            notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_PAUSED, progress);
         } else if (progressStatus == PROGRESS_STATUS_IDLE){
             progressStatus = PROGRESS_STATUS_ACTIVE;
             timer.cancel();
@@ -178,13 +181,13 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
             timer.start();
             presenterListener.onTaskStarted();
             vibrationManager.vibrateShort();
-            notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_WORKING);
+            notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_WORKING, progress);
         } else {
             progressStatus = PROGRESS_STATUS_ACTIVE;
             timer.resume();
             presenterListener.onTaskResumed();
             vibrationManager.vibrateShort();
-            notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_WORKING);
+            notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_WORKING, progress);
         }
     }
 
@@ -263,7 +266,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         timer = new PomodoroTimer(POMODORO_LENGTH * 60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                int progress = 100 - (int) (millisUntilFinished / DURATION_PERCENT);
+                progress = 100 - (int) (millisUntilFinished / DURATION_PERCENT);
                 presenterListener.onTick(millisUntilFinished, progress);
                 notificationManager.updateNotification(taskModel.getName(), progress);
             }
@@ -277,6 +280,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
     private void completePomodoro() { // TODO need more logic here
         progressStatus = PROGRESS_STATUS_IDLE;
+        progress = 0;
         timer.cancel();
         presenterListener.onClearViews();
         if (taskModel == null) {
@@ -297,6 +301,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
             taskEventListenerRegistration = null;
         }
         progressStatus = PROGRESS_STATUS_IDLE;
+        progress = 0;
         timer.cancel();
         presenterListener.onClearViews();
         presenterListener.onHideBottomSheet();
@@ -350,6 +355,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
             taskEventListenerRegistration = null;
         }
         progressStatus = PROGRESS_STATUS_IDLE;
+        progress = 0;
         timer.cancel();
         presenterListener.onClearViews();
         presenterListener.onHideBottomSheet();

@@ -57,10 +57,12 @@ public class TaskNotificationManager {
     }
 
     public void updateNotification(String taskName,
-                                   String status) {
+                                   String status,
+                                   int progress) {
         if (notificationManager.areNotificationsEnabled()) {
             NotificationCompat.Builder builder = getNotificationBuilder();
             setContent(builder, taskName, status);
+            setProgress(builder, progress);
             addAction(builder, status);
             notify(builder, notificationId);
         }
@@ -125,12 +127,6 @@ public class TaskNotificationManager {
         notificationManager.notify(notificationId, notification);
     }
 
-    private PendingIntent getIntent() {
-        Intent intent = new Intent(context, MainActivity.class);
-        //intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT); // TODO figure out flags
-        return PendingIntent.getActivity(context, 0, intent, 0);
-    }
-
     private void setContent(NotificationCompat.Builder builder, String taskName, String status) {
         builder.setContentTitle(taskName);
         switch (status) {
@@ -183,6 +179,12 @@ public class TaskNotificationManager {
                 R.drawable.ic_play_highlight,
                 context.getString(R.string.notification_title_resume),
                 getResumeIntent());
+    }
+
+    private PendingIntent getIntent() {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        return PendingIntent.getActivity(context, 0, intent, 0);
     }
 
     private PendingIntent getStartIntent() { // TODO implement
