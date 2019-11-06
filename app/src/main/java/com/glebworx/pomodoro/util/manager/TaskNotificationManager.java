@@ -57,13 +57,22 @@ public class TaskNotificationManager {
     }
 
     public void updateNotification(String taskName,
-                                   String status,
-                                   int progress) {
+                                   String status) {
         if (notificationManager.areNotificationsEnabled()) {
             NotificationCompat.Builder builder = getNotificationBuilder();
             setContent(builder, taskName, status);
-            setProgress(builder, progress);
             addAction(builder, status);
+            notify(builder, notificationId);
+        }
+    }
+
+    public void updateNotification(String taskName,
+                                   int progress) {
+        if (notificationManager.areNotificationsEnabled()) {
+            NotificationCompat.Builder builder = getNotificationBuilder();
+            setContent(builder, taskName, STATUS_WORKING);
+            setProgress(builder, progress);
+            addAction(builder, STATUS_WORKING);
             notify(builder, notificationId);
         }
     }

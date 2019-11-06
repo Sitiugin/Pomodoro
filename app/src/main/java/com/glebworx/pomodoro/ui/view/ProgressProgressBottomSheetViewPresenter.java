@@ -47,6 +47,8 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     private static final int PROGRESS_STATUS_PAUSED = 1;
     private static final int PROGRESS_STATUS_ACTIVE = 2;
 
+    private static final int DURATION_PERCENT = POMODORO_LENGTH * 600;
+
     private static final Map<Integer, Integer> CHIP_ID_TO_TARGET_MAP;
     private static final Map<Integer, Integer> TARGET_TO_CHIP_ID_MAP;
 
@@ -96,6 +98,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         TARGET_TO_CHIP_ID_MAP = Collections.unmodifiableMap(map);
     }
 
+    private Context context;
     private IProgressBottomSheetView presenterListener;
     private ProjectModel projectModel;
     private TaskModel taskModel;
@@ -156,6 +159,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         }
         taskEventObservable.subscribe(getTaskEventObserver());
 
+        vibrationManager.vibrateMedium();
         notificationManager.showPersistentNotification(taskModel.getName(), TaskNotificationManager.STATUS_READY);
     }
 
@@ -166,7 +170,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
             timer.pause();
             presenterListener.onTaskPaused();
             vibrationManager.vibrateShort();
-            notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_PAUSED, 0);
+            notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_PAUSED);
         } else if (progressStatus == PROGRESS_STATUS_IDLE){
             progressStatus = PROGRESS_STATUS_ACTIVE;
             timer.cancel();
@@ -174,13 +178,13 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
             timer.start();
             presenterListener.onTaskStarted();
             vibrationManager.vibrateShort();
-            notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_WORKING, 0);
+            notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_WORKING);
         } else {
             progressStatus = PROGRESS_STATUS_ACTIVE;
             timer.resume();
             presenterListener.onTaskResumed();
             vibrationManager.vibrateShort();
-            notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_WORKING, 0);
+            notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_WORKING);
         }
     }
 
@@ -197,8 +201,6 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     @Override
     public void completeTask(Activity activity) {
         showCompleteTaskDialog(activity);
-        notificationManager.cancelNotification();
-        vibrationManager.vibrateLong();
     }
 
     @Override
@@ -261,14 +263,14 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         timer = new PomodoroTimer(POMODORO_LENGTH * 60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                presenterListener.onTick(millisUntilFinished);
+                int progress = 100 - (int) (millisUntilFinished / DURATION_PERCENT);
+                presenterListener.onTick(millisUntilFinished, progress);
+                notificationManager.updateNotification(taskModel.getName(), progress);
             }
 
             @Override
             public void onFinish() {
                 completePomodoro();
-                notificationManager.cancelNotification();
-                vibrationManager.vibrateLong();
             }
         };
     }
@@ -284,6 +286,9 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
                 projectModel,
                 taskModel,
                 task -> presenterListener.onPomodoroCompleted(task.isSuccessful()));
+
+        vibrationManager.vibrateLong();
+        notificationManager.cancelNotification();
     }
 
     private void cancelSession() {
@@ -357,6 +362,10 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
                 projectModel,
                 taskModel,
                 task -> presenterListener.onTaskCompleted(task.isSuccessful()));
+
+        notificationManager.cancelNotification();
+        vibrationManager.vibrateLong();
+
     }
 
     private Observable<DocumentSnapshot> getTaskEventObservable() {

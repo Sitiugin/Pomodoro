@@ -8,7 +8,8 @@ import java.util.Objects;
 
 public class VibrationManager {
 
-    private static final int DURATION_SHORT = 500;
+    private static final int DURATION_SHORT = 20;
+    private static final int DURATION_MEDIUM = 400;
     private static final int DURATION_LONG = 2000;
 
     private Vibrator vibrator;
@@ -19,6 +20,10 @@ public class VibrationManager {
 
     public void vibrateShort() {
         Objects.requireNonNull(vibrator).vibrate(VibrationEffect.createOneShot(DURATION_SHORT, VibrationEffect.DEFAULT_AMPLITUDE));
+    }
+
+    public void vibrateMedium() {
+        Objects.requireNonNull(vibrator).vibrate(VibrationEffect.createOneShot(DURATION_MEDIUM, VibrationEffect.DEFAULT_AMPLITUDE));
     }
 
     public void vibrateLong() {

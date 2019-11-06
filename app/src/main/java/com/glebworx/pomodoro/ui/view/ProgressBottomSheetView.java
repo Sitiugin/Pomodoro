@@ -59,11 +59,6 @@ public class ProgressBottomSheetView
     SpinKitView spinKitView;
 
 
-    //                                                                                     CONSTANTS
-
-    private static final int DURATION_PERCENT = POMODORO_LENGTH * 600;
-
-
     //                                                                                    ATTRIBUTES
 
     private Context context;
@@ -251,10 +246,9 @@ public class ProgressBottomSheetView
     }
 
     @Override
-    public void onTick(long millisUntilFinished) {
+    public void onTick(long millisUntilFinished, int progress) {
 
         String minutesUntilFinished = DateTimeManager.formatMMSSString(context, (int) (millisUntilFinished / 1000));
-        int progress = 100 - (int) (millisUntilFinished / DURATION_PERCENT);
 
         if (bottomSheetState == BottomSheetBehavior.STATE_EXPANDED) {
             synchronized (object) {

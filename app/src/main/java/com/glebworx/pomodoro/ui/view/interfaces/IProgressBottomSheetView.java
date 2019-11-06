@@ -20,7 +20,7 @@ public interface IProgressBottomSheetView {
 
     void onTaskDataChanged(int pomodorosAllocated, int pomodorosCompleted);
 
-    void onTick(long millisUntilFinished);
+    void onTick(long millisUntilFinished, int progress);
 
     void onClearViews();
 
