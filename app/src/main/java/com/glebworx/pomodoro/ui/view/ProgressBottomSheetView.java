@@ -21,7 +21,6 @@ import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewInteract
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewPresenter;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.SharedPrefsManager;
-import com.glebworx.pomodoro.util.manager.VibrationManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.triggertrap.seekarc.SeekArc;
@@ -36,7 +35,7 @@ import static com.glebworx.pomodoro.util.manager.DateTimeManager.POMODORO_LENGTH
 
 public class ProgressBottomSheetView
         extends ConstraintLayout
-        implements IProgressBottomSheetView, View.OnClickListener { // TODO vibration can be handled by presenter
+        implements IProgressBottomSheetView, View.OnClickListener {
 
 
     //                                                                                       BINDING
@@ -71,7 +70,6 @@ public class ProgressBottomSheetView
     private ConstraintSet constraintSet;
     private IProgressBottomSheetViewInteractionListener bottomSheetListener;
     private int bottomSheetState;
-    private VibrationManager vibrationManager;
     private Unbinder unbinder;
     private ProgressProgressBottomSheetViewPresenter presenter;
     private final Object object = new Object();
@@ -160,7 +158,6 @@ public class ProgressBottomSheetView
             timeRemainingTextView.setText(timeRemainingString);
             spinKitView.setVisibility(INVISIBLE);
         }
-        vibrationManager.vibrateShort();
     }
 
     @Override
@@ -171,7 +168,6 @@ public class ProgressBottomSheetView
             statusTextView.setText(R.string.bottom_sheet_text_status_active);
             spinKitView.setVisibility(VISIBLE);
         }
-        vibrationManager.vibrateShort();
     }
 
     @Override
@@ -182,7 +178,6 @@ public class ProgressBottomSheetView
             statusTextView.setText(R.string.bottom_sheet_text_status_active);
             spinKitView.setVisibility(VISIBLE);
         }
-        vibrationManager.vibrateShort();
     }
 
     @Override
@@ -200,7 +195,6 @@ public class ProgressBottomSheetView
             }
             spinKitView.setVisibility(INVISIBLE);
         }
-        vibrationManager.vibrateShort();
     }
 
     @Override
@@ -211,7 +205,6 @@ public class ProgressBottomSheetView
                         ? R.string.bottom_sheet_toast_pomodoro_completed_success
                         : R.string.bottom_sheet_toast_pomodoro_completed_failed,
                 Toast.LENGTH_LONG).show();
-        vibrationManager.vibrateLong();
     }
 
     @Override
@@ -222,7 +215,6 @@ public class ProgressBottomSheetView
                         ? R.string.bottom_sheet_toast_task_completed_success
                         : R.string.bottom_sheet_toast_task_completed_failed,
                 Toast.LENGTH_LONG).show();
-        vibrationManager.vibrateLong();
     }
 
     @Override
@@ -434,7 +426,6 @@ public class ProgressBottomSheetView
         inflate(context, R.layout.view_progress_bottom_sheet, this);
         this.context = context;
         this.bottomSheetState = BottomSheetBehavior.STATE_COLLAPSED;
-        this.vibrationManager = new VibrationManager(context);
         this.presenter = new ProgressProgressBottomSheetViewPresenter(this, context);
         this.constraintSet = new ConstraintSet();
     }

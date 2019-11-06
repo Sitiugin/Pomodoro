@@ -21,6 +21,7 @@ import com.glebworx.pomodoro.util.PomodoroTimer;
 import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.SharedPrefsManager;
 import com.glebworx.pomodoro.util.manager.TaskNotificationManager;
+import com.glebworx.pomodoro.util.manager.VibrationManager;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -100,6 +101,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     private TaskModel taskModel;
     private PomodoroTimer timer;
     private int progressStatus;
+    private VibrationManager vibrationManager;
     private TaskNotificationManager notificationManager;
     private Observable<Integer> todayCountObservable;
     private Observable<DocumentSnapshot> taskEventObservable;
@@ -117,6 +119,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
         progressStatus = PROGRESS_STATUS_IDLE;
 
+        vibrationManager = new VibrationManager(context);
         notificationManager = new TaskNotificationManager(context);
 
         todayCountObservable = getCompletedTodayObservable();
@@ -162,6 +165,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
             progressStatus = PROGRESS_STATUS_PAUSED;
             timer.pause();
             presenterListener.onTaskPaused();
+            vibrationManager.vibrateShort();
             notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_PAUSED, 0);
         } else if (progressStatus == PROGRESS_STATUS_IDLE){
             progressStatus = PROGRESS_STATUS_ACTIVE;
@@ -169,11 +173,13 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
             initTimer();
             timer.start();
             presenterListener.onTaskStarted();
+            vibrationManager.vibrateShort();
             notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_WORKING, 0);
         } else {
             progressStatus = PROGRESS_STATUS_ACTIVE;
             timer.resume();
             presenterListener.onTaskResumed();
+            vibrationManager.vibrateShort();
             notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_WORKING, 0);
         }
     }
@@ -192,6 +198,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     public void completeTask(Activity activity) {
         showCompleteTaskDialog(activity);
         notificationManager.cancelNotification();
+        vibrationManager.vibrateLong();
     }
 
     @Override
@@ -260,6 +267,8 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
             @Override
             public void onFinish() {
                 completePomodoro();
+                notificationManager.cancelNotification();
+                vibrationManager.vibrateLong();
             }
         };
     }
