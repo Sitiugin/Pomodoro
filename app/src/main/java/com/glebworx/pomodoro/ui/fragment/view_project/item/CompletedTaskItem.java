@@ -93,6 +93,16 @@ public class CompletedTaskItem extends AbstractItem<CompletedTaskItem, Completed
         return this;
     }
 
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean isSelectable() {
+        return false;
+    }
+
 
     //                                                                                   VIEW HOLDER
 
