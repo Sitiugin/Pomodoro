@@ -88,7 +88,7 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
     public static AddTaskFragment newInstance(ProjectModel projectModel) {
         AddTaskFragment fragment = new AddTaskFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_PROJECT_MODEL, projectModel);
+        args.putParcelable(ARG_PROJECT_MODEL, new ProjectModel(projectModel));
         fragment.setArguments(args);
         return fragment;
     }
@@ -96,8 +96,8 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
     public static AddTaskFragment newInstance(ProjectModel projectModel, TaskModel taskModel) {
         AddTaskFragment fragment = new AddTaskFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_PROJECT_MODEL, projectModel);
-        args.putParcelable(ARG_TASK_MODEL, taskModel);
+        args.putParcelable(ARG_PROJECT_MODEL, new ProjectModel(projectModel));
+        args.putParcelable(ARG_TASK_MODEL, new TaskModel(taskModel));
         fragment.setArguments(args);
         return fragment;
     }

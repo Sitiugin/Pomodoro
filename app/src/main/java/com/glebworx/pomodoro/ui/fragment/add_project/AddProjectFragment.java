@@ -87,7 +87,7 @@ public class AddProjectFragment extends Fragment implements IAddProjectFragment 
     public static AddProjectFragment newInstance(ProjectModel projectModel) {
         AddProjectFragment fragment = new AddProjectFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_PROJECT_MODEL, projectModel);
+        args.putParcelable(ARG_PROJECT_MODEL, new ProjectModel(projectModel));
         fragment.setArguments(args);
         return fragment;
     }

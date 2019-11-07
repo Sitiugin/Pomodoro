@@ -92,7 +92,7 @@ class AddProjectFragmentPresenter implements IAddProjectFragmentPresenter {
     //                                                                                    ATTRIBUTES
 
     private IAddProjectFragment presenterListener;
-    private ProjectModel editModel;
+    private ProjectModel projectModel;
     private boolean isEditing;
 
 
@@ -110,67 +110,62 @@ class AddProjectFragmentPresenter implements IAddProjectFragmentPresenter {
     @Override
     public void init(Bundle arguments) {
 
-        ProjectModel projectModel;
-
         if (arguments != null) {
             projectModel = arguments.getParcelable(ARG_PROJECT_MODEL);
-        } else {
-            projectModel = null;
         }
 
         if (projectModel == null) {
             isEditing = false;
-            editModel = new ProjectModel();
-            editModel.setDueDate(new Date());
+            projectModel = new ProjectModel();
+            projectModel.setDueDate(new Date());
         } else {
             isEditing = true;
-            editModel = new ProjectModel(projectModel);
         }
 
         int checkedChipId;
-        if (editModel.getColorTag() == null) {
+        if (projectModel.getColorTag() == null) {
             checkedChipId = 0;
         } else {
-            checkedChipId = COLOR_TAG_TO_CHIP_MAP.get(editModel.getColorTag());
+            checkedChipId = COLOR_TAG_TO_CHIP_MAP.get(projectModel.getColorTag());
         }
         presenterListener.onInitView(
                 isEditing,
-                editModel.getName(),
+                projectModel.getName(),
                 checkedChipId,
-                DateTimeManager.getDateString(editModel.getDueDate(), new Date()));
+                DateTimeManager.getDateString(projectModel.getDueDate(), new Date()));
 
     }
 
     @Override
     public void editProjectName(String name) {
         if (!isEditing) {
-            editModel.setName(name);
+            projectModel.setName(name);
             presenterListener.onProjectNameChanged();
         }
     }
 
     @Override
     public void selectColorTag(int checkedId) {
-        editModel.setColorTag(CHIP_TO_COLOR_TAG_MAP.get(checkedId));
+        projectModel.setColorTag(CHIP_TO_COLOR_TAG_MAP.get(checkedId));
     }
 
     @Override
     public void editDueDate() {
-        presenterListener.onEditDueDate(editModel.getDueDate());
+        presenterListener.onEditDueDate(projectModel.getDueDate());
     }
 
     @Override
     public void selectDueDate(int year, int monthOfYear, int dayOfMonth) {
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.set(year, monthOfYear, dayOfMonth, 0, 0, 0);
-        editModel.setDueDate(calendar.getTime());
-        presenterListener.onSelectDueDate(DateTimeManager.getDateString(editModel.getDueDate(), new Date()));
+        projectModel.setDueDate(calendar.getTime());
+        presenterListener.onSelectDueDate(DateTimeManager.getDateString(projectModel.getDueDate(), new Date()));
     }
 
     @Override
     public void saveProject() {
 
-        if (editModel.isValid()) {
+        if (projectModel.isValid()) {
 
             presenterListener.onSaveProjectStart();
             if (isEditing) {
@@ -182,8 +177,8 @@ class AddProjectFragmentPresenter implements IAddProjectFragmentPresenter {
         } else {
 
             presenterListener.onProjectValidationFailed(
-                    editModel.getName() == null
-                            || editModel.getName().isEmpty());
+                    projectModel.getName() == null
+                            || projectModel.getName().isEmpty());
 
         }
 
@@ -193,9 +188,8 @@ class AddProjectFragmentPresenter implements IAddProjectFragmentPresenter {
     //                                                                                       HELPERS
 
     private void addProject() {
-        ProjectApi.addProject(editModel, task -> {
+        ProjectApi.addProject(projectModel, task -> {
             if (task.isSuccessful()) {
-                //projectModel.updateFromModel(editModel);
                 presenterListener.onSaveProjectSuccess(isEditing);
             } else {
                 presenterListener.onSaveProjectFailure(isEditing);
@@ -204,7 +198,7 @@ class AddProjectFragmentPresenter implements IAddProjectFragmentPresenter {
     }
 
     private void updateProject() {
-        ProjectApi.updateProject(editModel, task -> {
+        ProjectApi.updateProject(projectModel, task -> {
             if (task.isSuccessful()) {
                 presenterListener.onSaveProjectSuccess(isEditing);
             } else {
