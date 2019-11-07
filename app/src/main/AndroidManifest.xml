@@ -14,6 +14,16 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
 
+        <receiver
+            android:name=".util.NotificationReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="ACCTION_START_TASK" />
+                <action android:name="ACTION_PAUSE_TASK" />
+                <action android:name="ACTION_RESUME_TASK" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".ui.activity.SplashActivity"
             android:theme="@style/SplashTheme"
