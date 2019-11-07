@@ -85,6 +85,18 @@ public class ProjectModel extends AbstractModel {
         this.isCompleted = false;
     }
 
+    public ProjectModel(ProjectModel projectModel) {
+        super(projectModel.getName());
+        dueDate = projectModel.getDueDate();
+        colorTag = projectModel.getColorTag();
+        tasks = projectModel.getTasks();
+        sections = projectModel.getSections();
+        pomodorosAllocated = projectModel.getPomodorosAllocated();
+        pomodorosCompleted = projectModel.getPomodorosCompleted();
+        layout = projectModel.getLayout();
+        isCompleted = projectModel.isCompleted();
+    }
+
     public ProjectModel(Parcel in) {
         super(in);
         long dueDate = in.readLong();
@@ -181,6 +193,10 @@ public class ProjectModel extends AbstractModel {
         tasks.remove(taskModel.getName());
         pomodorosAllocated -= taskModel.getPomodorosAllocated();
         pomodorosCompleted -= taskModel.getPomodorosCompleted();
+    }
+
+    public List<String> getSections() {
+        return sections;
     }
 
     @Exclude
