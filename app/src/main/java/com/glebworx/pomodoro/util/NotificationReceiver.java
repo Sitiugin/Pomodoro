@@ -15,6 +15,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        //((ProgressBottomSheetView) context).getPresenter().handleStartStopClick();
         Toast.makeText(context, "ACTION CLICKED", Toast.LENGTH_LONG).show();
         String action = intent.getStringExtra(KEY_ACTION);
         if (action == null) {
