@@ -55,7 +55,7 @@ public class TaskNotificationManager {
             notificationId = IdGenerator.next();
             NotificationCompat.Builder builder = getNotificationBuilder();
             setContent(builder, taskName, status);
-            addAction(builder, status);
+            //addAction(builder, status);
             notify(builder, notificationId);
             return notificationId;
         }
@@ -69,7 +69,7 @@ public class TaskNotificationManager {
             NotificationCompat.Builder builder = getNotificationBuilder();
             setContent(builder, taskName, status);
             setProgress(builder, progress);
-            addAction(builder, status);
+            //addAction(builder, status);
             notify(builder, notificationId);
         }
     }
@@ -80,7 +80,7 @@ public class TaskNotificationManager {
             NotificationCompat.Builder builder = getNotificationBuilder();
             setContent(builder, taskName, STATUS_WORKING);
             setProgress(builder, progress);
-            addAction(builder, STATUS_WORKING);
+            //addAction(builder, STATUS_WORKING);
             notify(builder, notificationId);
         }
     }
