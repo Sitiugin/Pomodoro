@@ -9,48 +9,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/margin_content"
-        android:text="@string/projects_title_sort"/>
+        android:text="@string/projects_title_options" />
     <androidx.appcompat.widget.AppCompatButton
         style="@style/ButtonStyle.Borderless"
+        android:id="@+id/button_about"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/ic_about_black"
+        android:drawablePadding="@dimen/margin_content"
         android:gravity="start"
-        android:text="Alphabetically"/>
+        android:text="@string/projects_title_about" />
     <androidx.appcompat.widget.AppCompatButton
         style="@style/ButtonStyle.Borderless"
+        android:id="@+id/button_send_feedback"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/ic_send_black"
+        android:drawablePadding="@dimen/margin_content"
         android:gravity="start"
-        android:text="Due Date"/>
-    <androidx.appcompat.widget.AppCompatButton
-        style="@style/ButtonStyle.Borderless"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:text="Modified Date"/>
-    <androidx.appcompat.widget.AppCompatTextView
-        style="@style/TextStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/margin_content"
-        android:text="@string/projects_title_other"/>
-    <androidx.appcompat.widget.AppCompatButton
-        style="@style/ButtonStyle.Borderless"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:text="About"/>
-    <androidx.appcompat.widget.AppCompatButton
-        style="@style/ButtonStyle.Borderless"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:text="Premium"/>
+        android:text="@string/projects_title_send_feedback" />
     <androidx.appcompat.widget.AppCompatButton
         style="@style/ButtonStyle.Borderless"
         android:id="@+id/button_settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/ic_settings_black"
+        android:drawablePadding="@dimen/margin_content"
         android:gravity="start"
-        android:text="Settings"/>
+        android:text="@string/projects_title_settings" />
 </androidx.appcompat.widget.LinearLayoutCompat>
