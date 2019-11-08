@@ -52,6 +52,12 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
     }
 
     @Override
+    protected void onDetachedFromWindow() {
+        presenter.destroy();
+        super.onDetachedFromWindow();
+    }
+
+    @Override
     public void onInitView() {
         IChart.initChart(pomodorosCompletedLineChart, false, true, null);
         IChart.initChart(weeklyTrendsBarChart, false, false, null);

@@ -37,6 +37,7 @@ import java.util.Set;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -46,6 +47,7 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
 
     private @NonNull
     IReportPomodorosView presenterListener;
+    private CompositeDisposable compositeDisposable;
 
     ReportPomodorosViewPresenter(@NonNull IReportPomodorosView presenterListener) {
         this.presenterListener = presenterListener;
@@ -55,7 +57,13 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
     @Override
     public void init() {
         presenterListener.onInitView();
+        compositeDisposable = new CompositeDisposable();
         HistoryApi.getPomodoroCompletionHistory(this::handleHistory);
+    }
+
+    @Override
+    public void destroy() {
+        compositeDisposable.clear();
     }
 
     private void handleHistory(Task<QuerySnapshot> task) {
@@ -128,8 +136,8 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
     private io.reactivex.Observer<ReportPomodoroOverviewModel> getOverviewObserver() {
         return new io.reactivex.Observer<ReportPomodoroOverviewModel>() {
             @Override
-            public void onSubscribe(Disposable d) {
-
+            public void onSubscribe(Disposable disposable) {
+                compositeDisposable.add(disposable);
             }
 
             @Override
@@ -158,8 +166,8 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
     private io.reactivex.Observer<LineData> getPomodorosCompletedObserver() {
         return new io.reactivex.Observer<LineData>() {
             @Override
-            public void onSubscribe(Disposable d) {
-
+            public void onSubscribe(Disposable disposable) {
+                compositeDisposable.add(disposable);
             }
 
             @Override
@@ -182,8 +190,8 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
     private io.reactivex.Observer<BarData> getWeeklyTrendsObserver() {
         return new io.reactivex.Observer<BarData>() {
             @Override
-            public void onSubscribe(Disposable d) {
-
+            public void onSubscribe(Disposable disposable) {
+                compositeDisposable.add(disposable);
             }
 
             @Override

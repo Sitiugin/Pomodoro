@@ -4,4 +4,6 @@ public interface IReportPomodorosViewPresenter {
 
     void init();
 
+    void destroy();
+
 }

@@ -74,7 +74,10 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
         if (task.isSuccessful() && task.getResult() != null) {
             Observable<DocumentSnapshot> observable = getObservable(task.getResult());
             if (observable != null) {
-                observable = observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+                observable = observable
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .unsubscribeOn(Schedulers.io());
                 observable.subscribe(getObserver());
             }
         } else {
