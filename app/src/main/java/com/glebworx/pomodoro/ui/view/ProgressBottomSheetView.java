@@ -118,6 +118,7 @@ public class ProgressBottomSheetView
 
     @Override
     protected void onDetachedFromWindow() {
+        presenter.destroy();
         super.onDetachedFromWindow();
         unbinder.unbind();
     }

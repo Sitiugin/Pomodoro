@@ -33,6 +33,7 @@ import java.util.Objects;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -110,6 +111,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     private Observable<Integer> todayCountObservable;
     private Observable<DocumentSnapshot> taskEventObservable;
     private ListenerRegistration taskEventListenerRegistration;
+    private CompositeDisposable compositeDisposable;
 
     ProgressProgressBottomSheetViewPresenter(@NonNull IProgressBottomSheetView presenterListener, Context context) {
         this.presenterListener = presenterListener;
@@ -127,6 +129,8 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         vibrationManager = new VibrationManager(context);
         notificationManager = new TaskNotificationManager(context);
 
+        compositeDisposable = new CompositeDisposable();
+
         todayCountObservable = getCompletedTodayObservable();
         todayCountObservable = todayCountObservable
                 .subscribeOn(Schedulers.io())
@@ -141,6 +145,11 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
         todayCountObservable.subscribe(getTodayCountObserver());
 
+    }
+
+    @Override
+    public void destroy() {
+        compositeDisposable.clear();
     }
 
     @Override
@@ -396,11 +405,30 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         });
     }
 
+    private Observable<Integer> getCompletedTodayObservable() {
+        return Observable.create(emitter -> {
+            ListenerRegistration listenerRegistration = HistoryApi.addTodayEventListener((querySnapshot, e) -> {
+                if (emitter.isDisposed()) {
+                    return;
+                }
+                if (e != null) {
+                    emitter.onError(e);
+                    return;
+                }
+                if (querySnapshot == null) {
+                    return;
+                }
+                emitter.onNext(querySnapshot.getDocuments().size());
+            });
+            emitter.setCancellable(listenerRegistration::remove);
+        });
+    }
+
     private io.reactivex.Observer<DocumentSnapshot> getTaskEventObserver() {
         return new io.reactivex.Observer<DocumentSnapshot>() {
             @Override
-            public void onSubscribe(Disposable d) {
-
+            public void onSubscribe(Disposable disposable) {
+                compositeDisposable.add(disposable);
             }
 
             @Override
@@ -427,30 +455,11 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         };
     }
 
-    private Observable<Integer> getCompletedTodayObservable() {
-        return Observable.create(emitter -> {
-            ListenerRegistration listenerRegistration = HistoryApi.addTodayEventListener((querySnapshot, e) -> {
-                if (emitter.isDisposed()) {
-                    return;
-                }
-                if (e != null) {
-                    emitter.onError(e);
-                    return;
-                }
-                if (querySnapshot == null) {
-                    return;
-                }
-                emitter.onNext(querySnapshot.getDocuments().size());
-            });
-            emitter.setCancellable(listenerRegistration::remove);
-        });
-    }
-
     private io.reactivex.Observer<Integer> getTodayCountObserver() {
         return new io.reactivex.Observer<Integer>() {
             @Override
-            public void onSubscribe(Disposable d) {
-
+            public void onSubscribe(Disposable disposable) {
+                compositeDisposable.add(disposable);
             }
 
             @Override
