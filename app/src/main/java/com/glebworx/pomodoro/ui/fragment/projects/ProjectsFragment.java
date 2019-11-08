@@ -327,6 +327,26 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
                 R.layout.popup_options_projects,
                 optionsButton,
                 Gravity.BOTTOM | Gravity.END);
+        View.OnClickListener onClickListener = view -> {
+            switch (view.getId()) {
+                case R.id.button_about:
+                    Toast.makeText(context, "About clicked", Toast.LENGTH_SHORT).show();
+                    // TODO implement
+                    break;
+                case R.id.button_send_feedback:
+                    Toast.makeText(context, "Send feedback clicked", Toast.LENGTH_SHORT).show();
+                    // TODO implement
+                    break;
+                case R.id.button_settings:
+                    Toast.makeText(context, "Settings clicked", Toast.LENGTH_SHORT).show();
+                    // TODO implement
+                    break;
+            }
+        };
+        View contentView = popupWindow.getContentView();
+        contentView.findViewById(R.id.button_about).setOnClickListener(onClickListener);
+        contentView.findViewById(R.id.button_send_feedback).setOnClickListener(onClickListener);
+        contentView.findViewById(R.id.button_settings).setOnClickListener(onClickListener);
     }
 
 }
