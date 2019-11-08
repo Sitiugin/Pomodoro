@@ -9,6 +9,8 @@ public interface IReportHistoryViewPresenter {
 
     void init();
 
+    void destroy();
+
     void setCalendarDate(Date newDate,
                          FastAdapter<ReportHistoryItem> fastAdapter,
                          boolean updateCalendar,

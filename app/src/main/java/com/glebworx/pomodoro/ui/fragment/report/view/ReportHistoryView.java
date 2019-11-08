@@ -61,6 +61,12 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
     }
 
     @Override
+    protected void onDetachedFromWindow() {
+        presenter.destroy();
+        super.onDetachedFromWindow();
+    }
+
+    @Override
     public void onInitView() {
         historyAdapter = new ItemAdapter<>();
         fastAdapter = new FastAdapter<>();

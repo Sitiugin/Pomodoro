@@ -107,7 +107,6 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
             initOverview(model, snapshot.getDocuments());
             emitter.onNext(model);
             emitter.onComplete();
-
         });
     }
 
@@ -118,7 +117,6 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
             }
             emitter.onNext(getPomodorosCompletedData(snapshot.getDocuments()));
             emitter.onComplete();
-
         });
     }
 
@@ -129,7 +127,6 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
             }
             emitter.onNext(getWeeklyTrendsData(snapshot.getDocuments()));
             emitter.onComplete();
-
         });
     }
 

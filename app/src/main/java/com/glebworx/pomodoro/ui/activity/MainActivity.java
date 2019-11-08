@@ -38,15 +38,16 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
+// TODO observable error - log
 public class MainActivity
         extends AppCompatActivity
         implements
-            IProjectsFragmentInteractionListener,
-            IAddProjectFragmentInteractionListener,
-            IViewProjectFragmentInteractionListener,
-            IAddTaskFragmentInteractionListener,
-            IReportFragmentInteractionListener,
-            ISettingsFragmentInteractionListener,
+        IProjectsFragmentInteractionListener,
+        IAddProjectFragmentInteractionListener,
+        IViewProjectFragmentInteractionListener,
+        IAddTaskFragmentInteractionListener,
+        IReportFragmentInteractionListener,
+        ISettingsFragmentInteractionListener,
         IProgressBottomSheetViewInteractionListener {
 
 

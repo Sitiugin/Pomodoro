@@ -16,6 +16,7 @@ import java.util.Date;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -27,6 +28,7 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
     Date calendarDate;
 
     private DocumentSnapshot startAfterSnapshot;
+    private CompositeDisposable compositeDisposable;
 
     public ReportHistoryViewPresenter(@NonNull IReportHistoryView presenterListener) {
         this.presenterListener = presenterListener;
@@ -38,7 +40,13 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
         calendarDate = new Date();
         presenterListener.onInitView();
         startAfterSnapshot = null;
+        compositeDisposable = new CompositeDisposable();
         HistoryApi.getHistory(this::handleHistory);
+    }
+
+    @Override
+    public void destroy() {
+        compositeDisposable.clear();
     }
 
     @Override
@@ -98,8 +106,8 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
     private io.reactivex.Observer<DocumentSnapshot> getObserver() {
         return new io.reactivex.Observer<DocumentSnapshot>() {
             @Override
-            public void onSubscribe(Disposable d) {
-
+            public void onSubscribe(Disposable disposable) {
+                compositeDisposable.add(disposable);
             }
 
             @Override
