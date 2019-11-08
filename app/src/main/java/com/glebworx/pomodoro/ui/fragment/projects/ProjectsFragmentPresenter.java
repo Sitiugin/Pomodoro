@@ -19,6 +19,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -31,6 +32,7 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
     private Observable<Integer> todayTasksObservable;
     private Observable<Integer> thisWeekTasksObservable;
     private Observable<Integer> overdueTasksObservable;
+    private CompositeDisposable compositeDisposable;
 
     public ProjectsFragmentPresenter(@NonNull IProjectsFragment presenterListener,
                                      @Nullable IProjectsFragmentInteractionListener interactionListener) {
@@ -44,6 +46,8 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
 
         IItemAdapter.Predicate<ProjectItem> predicate = getFilterPredicate();
 
+        compositeDisposable = new CompositeDisposable();
+
         projectsObservable = getProjectEventObservable();
         projectsObservable = projectsObservable
                 .subscribeOn(Schedulers.io())
@@ -56,6 +60,11 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
 
         refreshTasksHeader();
 
+    }
+
+    @Override
+    public void destroy() {
+        compositeDisposable.clear();
     }
 
     @Override
@@ -189,8 +198,8 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
     private io.reactivex.Observer<Integer> getTodayTasksObserver() {
         return new io.reactivex.Observer<Integer>() {
             @Override
-            public void onSubscribe(Disposable d) {
-
+            public void onSubscribe(Disposable disposable) {
+                compositeDisposable.add(disposable);
             }
 
             @Override
@@ -213,8 +222,8 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
     private io.reactivex.Observer<Integer> getThisWeekTasksObserver() {
         return new io.reactivex.Observer<Integer>() {
             @Override
-            public void onSubscribe(Disposable d) {
-
+            public void onSubscribe(Disposable disposable) {
+                compositeDisposable.add(disposable);
             }
 
             @Override
@@ -237,8 +246,8 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
     private io.reactivex.Observer<Integer> getOverdueTasksObserver() {
         return new io.reactivex.Observer<Integer>() {
             @Override
-            public void onSubscribe(Disposable d) {
-
+            public void onSubscribe(Disposable disposable) {
+                compositeDisposable.add(disposable);
             }
 
             @Override
