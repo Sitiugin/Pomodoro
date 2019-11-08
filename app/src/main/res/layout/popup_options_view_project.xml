@@ -4,6 +4,13 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_content"
+        android:text="@string/view_project_title_options" />
     <androidx.appcompat.widget.AppCompatButton
         style="@style/ButtonStyle.Borderless"
         android:id="@+id/button_edit"

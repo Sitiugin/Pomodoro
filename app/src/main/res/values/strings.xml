@@ -12,6 +12,12 @@
     <string name="notification_title_working">Working</string>
     <string name="notification_title_paused">Paused</string>
 
+    <string name="email_title_send_feedback">Send Feedback</string>
+    <string name="email_address">glib.sitiugin@gmail.com</string>
+    <string name="email_subject_feedback">Feedback for Pomodoro</string>
+    <string name="email_text" formatted="true"><![CDATA[Hi Pomodoro support,<br><br>]]></string>
+    <string name="email_no_clients_found">No email clients installed!</string>
+
     <string name="core_cancel">Cancel</string>
     <string name="core_save">Save</string>
     <string name="core_add">Add</string>
@@ -215,6 +221,7 @@
 
     <!--                                                                            VIEW PROJECT -->
 
+    <string name="view_project_title_options">Options</string>
     <string name="view_project_title_add_task">Add Task</string>
     <string name="view_project_title_edit_project">Edit Project</string>
     <string name="view_project_title_delete_project">Delete Project</string>

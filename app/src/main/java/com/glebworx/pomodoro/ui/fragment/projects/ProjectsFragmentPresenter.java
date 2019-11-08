@@ -1,8 +1,14 @@
 package com.glebworx.pomodoro.ui.fragment.projects;
 
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
@@ -116,6 +122,24 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
                 presenterListener.onDeleteProjectFailed(position);
             }
         });
+    }
+
+    @Override
+    public void sendFeedback(Context context) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setType("message/rfc822");
+        String[] emailAddress = new String[1];
+        emailAddress[0] = context.getString(R.string.email_address);
+        intent.putExtra(Intent.EXTRA_EMAIL, emailAddress);
+        intent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.email_subject_feedback));
+        intent.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.email_text));
+        try {
+            context.startActivity(Intent.createChooser(intent, context.getString(R.string.email_title_send_feedback)));
+        } catch (ActivityNotFoundException exception) {
+            Toast.makeText(context, context.getString(R.string.email_no_clients_found), Toast.LENGTH_LONG).show();
+        }
+
+
     }
 
     private IItemAdapter.Predicate<ProjectItem> getFilterPredicate() {

@@ -18,4 +18,8 @@ public interface IProjectsFragmentInteractionListener {
 
     void onViewOverdueTasks();
 
+    void onViewAboutInfo();
+
+    void onViewSettings();
+
 }

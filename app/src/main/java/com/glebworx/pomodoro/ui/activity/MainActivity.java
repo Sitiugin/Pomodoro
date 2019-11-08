@@ -13,6 +13,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
+import com.glebworx.pomodoro.ui.fragment.about.AboutFragment;
 import com.glebworx.pomodoro.ui.fragment.add_project.AddProjectFragment;
 import com.glebworx.pomodoro.ui.fragment.add_project.interfaces.IAddProjectFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.add_task.AddTaskFragment;
@@ -21,6 +22,7 @@ import com.glebworx.pomodoro.ui.fragment.projects.ProjectsFragment;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.report.ReportFragment;
 import com.glebworx.pomodoro.ui.fragment.report.interfaces.IReportFragmentInteractionListener;
+import com.glebworx.pomodoro.ui.fragment.settings.SettingsFragment;
 import com.glebworx.pomodoro.ui.fragment.settings.interfaces.ISettingsFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.view_project.ViewProjectFragment;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentInteractionListener;
@@ -143,6 +145,16 @@ public class MainActivity
     public void onViewOverdueTasks() {
         // TODO implement
         Toast.makeText(this, "Overdue clicked", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onViewAboutInfo() {
+        fragmentManager.pushToBackStack(AboutFragment.newInstance());
+    }
+
+    @Override
+    public void onViewSettings() {
+        fragmentManager.pushToBackStack(SettingsFragment.newInstance());
     }
 
     @Override

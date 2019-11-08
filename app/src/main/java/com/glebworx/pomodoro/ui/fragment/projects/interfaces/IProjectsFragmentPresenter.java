@@ -1,5 +1,7 @@
 package com.glebworx.pomodoro.ui.fragment.projects.interfaces;
 
+import android.content.Context;
+
 import com.glebworx.pomodoro.ui.fragment.projects.item.ProjectItem;
 
 public interface IProjectsFragmentPresenter {
@@ -15,5 +17,7 @@ public interface IProjectsFragmentPresenter {
     void editProject(ProjectItem projectItem);
 
     void deleteProject(ProjectItem projectItem, int position);
+
+    void sendFeedback(Context context);
 
 }

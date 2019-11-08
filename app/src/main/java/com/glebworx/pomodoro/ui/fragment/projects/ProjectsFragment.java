@@ -330,16 +330,16 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
         View.OnClickListener onClickListener = view -> {
             switch (view.getId()) {
                 case R.id.button_about:
-                    Toast.makeText(context, "About clicked", Toast.LENGTH_SHORT).show();
-                    // TODO implement
+                    popupWindow.dismiss();
+                    fragmentListener.onViewAboutInfo();
                     break;
                 case R.id.button_send_feedback:
-                    Toast.makeText(context, "Send feedback clicked", Toast.LENGTH_SHORT).show();
-                    // TODO implement
+                    popupWindow.dismiss();
+                    presenter.sendFeedback(context);
                     break;
                 case R.id.button_settings:
-                    Toast.makeText(context, "Settings clicked", Toast.LENGTH_SHORT).show();
-                    // TODO implement
+                    popupWindow.dismiss();
+                    fragmentListener.onViewSettings();
                     break;
             }
         };
