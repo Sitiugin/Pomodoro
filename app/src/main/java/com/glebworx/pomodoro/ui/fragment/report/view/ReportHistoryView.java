@@ -17,13 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.glebworx.pomodoro.R;
-import com.glebworx.pomodoro.model.HistoryModel;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportHistoryView;
 import com.glebworx.pomodoro.ui.fragment.report.view.item.ReportHistoryItem;
 import com.glebworx.pomodoro.util.manager.ColorManager;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.DialogManager;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter_extensions.scroll.EndlessRecyclerOnScrollListener;
@@ -33,9 +31,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
-
-import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
 
 public class ReportHistoryView extends ConstraintLayout implements IReportHistoryView {
 
@@ -76,8 +71,9 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
     }
 
     @Override
-    public void onHistoryReceived(Observable<DocumentSnapshot> observable) {
-        observable.subscribe(getObserver());
+    public void onHistoryReceived(ReportHistoryItem item, String colorTag, long date) {
+        historyAdapter.add(item);
+        calendarView.addEvent(new Event(ColorManager.getColor(context, colorTag), date));
     }
 
     @Override
@@ -214,38 +210,6 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
                 presenter.getHistoryItems();
             }
         });
-    }
-
-    private io.reactivex.Observer<DocumentSnapshot> getObserver() {
-        return new io.reactivex.Observer<DocumentSnapshot>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(DocumentSnapshot documentSnapshot) {
-                HistoryModel model = documentSnapshot.toObject(HistoryModel.class);
-                if (model == null) {
-                    return;
-                }
-                ReportHistoryItem item = new ReportHistoryItem(model);
-                historyAdapter.add(item);
-                calendarView.addEvent(new Event(
-                        ColorManager.getColor(context, model.getColorTag()),
-                        model.getTimestamp().getTime()));
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
     }
 
 }

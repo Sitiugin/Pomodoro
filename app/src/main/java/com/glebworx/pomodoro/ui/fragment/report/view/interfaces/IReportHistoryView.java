@@ -1,16 +1,14 @@
 package com.glebworx.pomodoro.ui.fragment.report.view.interfaces;
 
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.glebworx.pomodoro.ui.fragment.report.view.item.ReportHistoryItem;
 
 import java.util.Date;
-
-import io.reactivex.Observable;
 
 public interface IReportHistoryView {
 
     void onInitView();
 
-    void onHistoryReceived(Observable<DocumentSnapshot> observable);
+    void onHistoryReceived(ReportHistoryItem item, String colorTag, long date);
 
     void onHistoryRequestFailed();
 

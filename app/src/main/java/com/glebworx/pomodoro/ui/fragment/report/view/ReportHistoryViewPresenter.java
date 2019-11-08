@@ -3,6 +3,7 @@ package com.glebworx.pomodoro.ui.fragment.report.view;
 import androidx.annotation.NonNull;
 
 import com.glebworx.pomodoro.api.HistoryApi;
+import com.glebworx.pomodoro.model.HistoryModel;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportHistoryView;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportHistoryViewPresenter;
 import com.glebworx.pomodoro.ui.fragment.report.view.item.ReportHistoryItem;
@@ -15,6 +16,7 @@ import java.util.Date;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
@@ -73,7 +75,7 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
             Observable<DocumentSnapshot> observable = getObservable(task.getResult());
             if (observable != null) {
                 observable = observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
-                presenterListener.onHistoryReceived(observable);
+                observable.subscribe(getObserver());
             }
         } else {
             presenterListener.onHistoryRequestFailed();
@@ -88,6 +90,35 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
         }
         startAfterSnapshot = snapshot.getDocuments().get(snapshotSize - 1);
         return Observable.fromIterable(snapshot.getDocuments());
+    }
+
+    private io.reactivex.Observer<DocumentSnapshot> getObserver() {
+        return new io.reactivex.Observer<DocumentSnapshot>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(DocumentSnapshot documentSnapshot) {
+                HistoryModel model = documentSnapshot.toObject(HistoryModel.class);
+                if (model == null) {
+                    return;
+                }
+                ReportHistoryItem item = new ReportHistoryItem(model);
+                presenterListener.onHistoryReceived(item, model.getColorTag(), model.getTimestamp().getTime());
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
     }
 
     private int getIndexByDate(FastAdapter<ReportHistoryItem> adapter, Date date) {
