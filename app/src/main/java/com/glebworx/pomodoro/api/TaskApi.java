@@ -54,6 +54,9 @@ public class TaskApi extends BaseApi {
         //taskModel.addPomodoro(); // TODO handle failure
         //modifyTask(projectModel, taskModel, HistoryModel.EVENT_POMODORO_COMPLETED, onCompleteListener);
 
+        projectModel.updateTimestamp();
+        taskModel.updateTimestamp();
+
         taskModel.addPomodoro();
         projectModel.addPomodoro();
 
@@ -88,6 +91,9 @@ public class TaskApi extends BaseApi {
         /*taskModel.addPomodoro(); // TODO handle failure
         taskModel.complete();
         modifyTask(projectModel, taskModel, HistoryModel.EVENT_TASK_COMPLETED, onCompleteListener);*/
+
+        projectModel.updateTimestamp();
+        taskModel.updateTimestamp();
 
         taskModel.addPomodoro();
         projectModel.addPomodoro();
@@ -229,6 +235,9 @@ public class TaskApi extends BaseApi {
                                    @NonNull TaskModel taskModel,
                                    @NonNull String eventType,
                                    @Nullable OnCompleteListener<Void> onCompleteListener) {
+
+        projectModel.updateTimestamp();
+        taskModel.updateTimestamp();
 
         WriteBatch batch = getWriteBatch();
 

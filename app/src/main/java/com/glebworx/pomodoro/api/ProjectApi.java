@@ -93,6 +93,8 @@ public class ProjectApi extends BaseApi {
                                       @NonNull String eventType,
                                       @Nullable OnCompleteListener<Void> onCompleteListener) {
 
+        projectModel.updateTimestamp();
+
         WriteBatch batch = getWriteBatch();
 
         DocumentReference projectDocument = getCollection(COLLECTION_PROJECTS).document(projectModel.getName());

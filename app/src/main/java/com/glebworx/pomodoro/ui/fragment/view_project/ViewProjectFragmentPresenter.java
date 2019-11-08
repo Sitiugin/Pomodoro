@@ -29,11 +29,14 @@ import java.util.Objects;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.glebworx.pomodoro.ui.fragment.view_project.ViewProjectFragment.ARG_PROJECT_MODEL;
 
+
+// TODO remove listener registrations or check out bookmark
 public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresenter {
 
     private @NonNull
@@ -84,6 +87,9 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
         observable.subscribe(getObserver());
         completedObservable.subscribe(getCompletedObserver());
         headerObservable.subscribe(getHeaderObserver());
+
+        CompositeDisposable compositeDisposable = new CompositeDisposable();
+        //completedObservable.
 
     }
 
