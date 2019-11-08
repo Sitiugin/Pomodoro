@@ -36,7 +36,6 @@ import io.reactivex.schedulers.Schedulers;
 import static com.glebworx.pomodoro.ui.fragment.view_project.ViewProjectFragment.ARG_PROJECT_MODEL;
 
 
-// TODO remove listener registrations or check out bookmark
 public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresenter {
 
     private @NonNull
@@ -45,6 +44,8 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
     IViewProjectFragmentInteractionListener interactionListener;
     private @NonNull
     ProjectModel projectModel;
+
+    private CompositeDisposable compositeDisposable;
 
     public ViewProjectFragmentPresenter(@NonNull IViewProjectFragment presenterListener,
                                         @Nullable IViewProjectFragmentInteractionListener interactionListener,
@@ -61,6 +62,8 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
         projectModel = Objects.requireNonNull(arguments.getParcelable(ARG_PROJECT_MODEL));
 
         String projectName = projectModel.getName();
+
+        compositeDisposable = new CompositeDisposable();
 
         Observable<DocumentChange> observable = getObservable(projectName, false);
         observable = observable
@@ -88,9 +91,11 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
         completedObservable.subscribe(getCompletedObserver());
         headerObservable.subscribe(getHeaderObserver());
 
-        CompositeDisposable compositeDisposable = new CompositeDisposable();
-        //completedObservable.
+    }
 
+    @Override
+    public void destroy() {
+        compositeDisposable.clear();
     }
 
     @Override
@@ -186,8 +191,8 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
     private io.reactivex.Observer<DocumentChange> getObserver() {
         return new io.reactivex.Observer<DocumentChange>() {
             @Override
-            public void onSubscribe(Disposable d) {
-
+            public void onSubscribe(Disposable disposable) {
+                compositeDisposable.add(disposable);
             }
 
             @Override
@@ -221,8 +226,8 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
     private io.reactivex.Observer<DocumentChange> getCompletedObserver() {
         return new io.reactivex.Observer<DocumentChange>() {
             @Override
-            public void onSubscribe(Disposable d) {
-
+            public void onSubscribe(Disposable disposable) {
+                compositeDisposable.add(disposable);
             }
 
             @Override
@@ -251,8 +256,8 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
     private io.reactivex.Observer<DocumentSnapshot> getHeaderObserver() {
         return new io.reactivex.Observer<DocumentSnapshot>() {
             @Override
-            public void onSubscribe(Disposable d) {
-
+            public void onSubscribe(Disposable disposable) {
+                compositeDisposable.add(disposable);
             }
 
             @Override

@@ -116,6 +116,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
 
     @Override
     public void onDestroyView() {
+        presenter.destroy();
         super.onDestroyView();
         unbinder.unbind();
     }

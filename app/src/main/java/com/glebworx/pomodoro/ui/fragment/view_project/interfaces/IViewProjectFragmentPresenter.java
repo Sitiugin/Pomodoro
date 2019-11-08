@@ -9,6 +9,8 @@ public interface IViewProjectFragmentPresenter {
 
     void init(Bundle arguments, View.OnClickListener headerClickListener);
 
+    void destroy();
+
     void editProject();
 
     void deleteProject();
