@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clipChildren="false"
     android:clipToPadding="false"
     tools:context=".ui.fragment.report.ReportFragment">
@@ -42,7 +42,7 @@
                     android:layout_marginStart="@dimen/margin_content"
                     android:layout_marginTop="@dimen/margin_content"
                     android:drawablePadding="@dimen/margin_content_quarter"
-                    android:text="Report"
+                    android:text="@string/report_title_report"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

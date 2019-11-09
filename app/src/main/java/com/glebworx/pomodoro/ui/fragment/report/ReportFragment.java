@@ -113,6 +113,13 @@ public class ReportFragment extends Fragment implements IReportFragment {
         });
     }*/
 
+    private void initTabs() {
+        ReportPagerAdapter adapter = new ReportPagerAdapter(context);
+        viewPager.setOffscreenPageLimit(2);
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+    }
+
     private void initClickEvents() {
         View.OnClickListener onClickListener = view -> {
             if (view.getId() == R.id.button_close) {
@@ -120,14 +127,6 @@ public class ReportFragment extends Fragment implements IReportFragment {
             }
         };
         closeButton.setOnClickListener(onClickListener);
-    }
-
-
-    private void initTabs() {
-        ReportPagerAdapter adapter = new ReportPagerAdapter(context);
-        viewPager.setOffscreenPageLimit(2);
-        viewPager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(viewPager);
     }
 
 }
