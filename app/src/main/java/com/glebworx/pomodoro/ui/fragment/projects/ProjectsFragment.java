@@ -1,6 +1,7 @@
 package com.glebworx.pomodoro.ui.fragment.projects;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -25,6 +26,7 @@ import com.glebworx.pomodoro.ui.fragment.projects.item.AddProjectItem;
 import com.glebworx.pomodoro.ui.fragment.projects.item.ProjectHeaderItem;
 import com.glebworx.pomodoro.ui.fragment.projects.item.ProjectItem;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
+import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IItemAdapter;
@@ -350,7 +352,17 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
     }
 
     private void showSignOutDialog() {
-
+        Activity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
+        DialogManager.showGenericDialog(
+                activity,
+                R.id.container_main,
+                R.string.projects_title_sign_out,
+                R.string.projects_text_sign_out,
+                R.string.projects_title_sign_out,
+                () -> presenter.signOut());
     }
 
 }

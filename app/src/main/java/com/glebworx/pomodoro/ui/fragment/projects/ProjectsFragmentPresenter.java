@@ -140,6 +140,11 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
         }
     }
 
+    @Override
+    public void signOut() {
+        // TODO implement
+    }
+
     private IItemAdapter.Predicate<ProjectItem> getFilterPredicate() {
         return (item, constraint) -> {
             if (constraint == null) {
