@@ -87,18 +87,15 @@ public class DialogManager {
     }
 
     private static View.OnClickListener getOnClickListener(AlertDialog alertDialog, IDialogManager callback) {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!alertDialog.isShowing()) {
-                    return;
-                }
-                if (view.getId() == R.id.button_positive) {
-                    alertDialog.dismiss();
-                    callback.onPositiveButtonClicked();
-                } else if (view.getId() == R.id.button_negative) {
-                    alertDialog.dismiss();
-                }
+        return view -> {
+            if (!alertDialog.isShowing()) {
+                return;
+            }
+            if (view.getId() == R.id.button_positive) {
+                alertDialog.dismiss();
+                callback.onPositiveButtonClicked();
+            } else if (view.getId() == R.id.button_negative) {
+                alertDialog.dismiss();
             }
         };
     }

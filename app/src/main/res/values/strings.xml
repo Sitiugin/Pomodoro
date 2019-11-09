@@ -22,6 +22,7 @@
     <string name="core_add">Add</string>
     <string name="core_complete">Complete</string>
     <string name="core_open">Open</string>
+    <string name="core_close">Close</string>
     <string name="core_edit_something" formatted="true">Edit %1$s</string>
     <string name="core_filter">Filter</string>
     <string name="core_undo">Undo</string>

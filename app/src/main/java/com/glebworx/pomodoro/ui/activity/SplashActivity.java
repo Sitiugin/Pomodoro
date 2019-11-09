@@ -10,12 +10,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.util.manager.AuthManager;
+import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.SharedPrefsManager;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -108,10 +111,10 @@ public class SplashActivity extends AppCompatActivity {
                     validateAndSendSignInLink(emailInputLayout);
                     break;
                 case R.id.button_terms_of_service:
-                    // TODO implement
+                    showInfoDialog(R.layout.dialog_terms, R.string.splash_title_terms);
                     break;
                 case R.id.button_privacy:
-                    // TODO implement
+                    showInfoDialog(R.layout.dialog_privacy, R.string.splash_title_privacy);
                     break;
             }
         };
@@ -126,6 +129,14 @@ public class SplashActivity extends AppCompatActivity {
             emailEditText.setText(email);
         }
 
+    }
+
+    private void showInfoDialog(int layoutId, int titleId) {
+        AlertDialog alertDialog = DialogManager.showDialog(SplashActivity.this, R.id.container_splash, layoutId);
+        ((AppCompatTextView) alertDialog.findViewById(R.id.text_view_title)).setText(titleId);
+        AppCompatButton positiveButton = alertDialog.findViewById(R.id.button_positive);
+        positiveButton.setText(R.string.core_close);
+        positiveButton.setOnClickListener(view -> alertDialog.dismiss());
     }
 
     private void validateAndSendSignInLink(TextInputLayout textInputLayout) {

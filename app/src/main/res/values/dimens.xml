@@ -34,6 +34,7 @@
     <dimen name="height_seek_arc">288dp</dimen>
     <dimen name="height_chart">192dp</dimen>
     <dimen name="height_calendar">224dp</dimen>
+    <dimen name="height_info">400dp</dimen>
     <dimen name="size_divider">1dp</dimen>
     <dimen name="size_divider_thick">2dp</dimen>
     <dimen name="size_icon">24dp</dimen>
