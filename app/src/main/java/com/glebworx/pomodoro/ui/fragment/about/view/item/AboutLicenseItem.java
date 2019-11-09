@@ -62,7 +62,7 @@ public class AboutLicenseItem extends AbstractItem<AboutLicenseItem, AboutLicens
     }
 
     public boolean hasUri() {
-        return uri != null;
+        return uri != null && !uri.isEmpty();
     }
 
     protected static class ViewHolder extends FastAdapter.ViewHolder<AboutLicenseItem> {

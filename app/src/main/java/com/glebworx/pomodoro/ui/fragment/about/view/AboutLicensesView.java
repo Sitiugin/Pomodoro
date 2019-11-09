@@ -1,15 +1,15 @@
 package com.glebworx.pomodoro.ui.fragment.about.view;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.AttributeSet;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutLicensesView;
 import com.glebworx.pomodoro.ui.fragment.about.view.item.AboutLicenseItem;
 import com.mikepenz.fastadapter.FastAdapter;
@@ -47,13 +47,25 @@ public class AboutLicensesView extends RecyclerView implements IAboutLicensesVie
         FastAdapter<AboutLicenseItem> fastAdapter = new FastAdapter<>();
         fastAdapter.addAdapter(0, adapter);
         fastAdapter.setHasStableIds(true);
+        fastAdapter.withOnClickListener((v, adapter1, item, position) -> {
+            if (item.hasUri()) {
+                showUriDialog(item.getUri());
+                return true;
+            }
+            return false;
+        });
         this.setAdapter(fastAdapter);
     }
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
-        View rootView = inflate(context, R.layout.view_about_licenses, this);
+        //RecyclerView rootView = (RecyclerView) inflate(context, R.layout.view_about_licenses, this);
         this.context = context;
         presenter = new AboutLicensesViewPresenter(this, context);
+    }
+
+    private void showUriDialog(String uri) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        context.startActivity(browserIntent);
     }
 
 }

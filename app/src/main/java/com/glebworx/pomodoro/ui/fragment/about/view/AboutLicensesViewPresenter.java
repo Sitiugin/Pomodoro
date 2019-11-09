@@ -37,7 +37,8 @@ public class AboutLicensesViewPresenter implements IAboutViewPresenter {
                 context,
                 R.string.about_licenses_title_mit,
                 R.string.about_licenses_text_mit,
-                R.string.about_licenses_text_mit_libraries));
+                R.string.about_licenses_text_mit_libraries,
+                R.string.about_licenses_text_mit_uri));
 
         items.add(getSimpleItem(
                 context,
@@ -63,18 +64,6 @@ public class AboutLicensesViewPresenter implements IAboutViewPresenter {
                 uri,
                 null,
                 uri);
-    }
-
-    private AboutLicenseItem getItem(
-            Context context,
-            int titleId,
-            int textId,
-            int librariesId) {
-        return new AboutLicenseItem(
-                context.getString(titleId),
-                context.getString(textId),
-                context.getString(librariesId),
-                null);
     }
 
     private AboutLicenseItem getItem(
