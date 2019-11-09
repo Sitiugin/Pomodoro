@@ -9,8 +9,12 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.glebworx.pomodoro.R;
+import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutView;
+import com.glebworx.pomodoro.ui.fragment.about.view.item.AboutItem;
 
-public class AboutTermsView extends RecyclerView {
+import java.util.List;
+
+public class AboutTermsView extends RecyclerView implements IAboutView {
 
     public AboutTermsView(@NonNull Context context) {
         super(context);
@@ -25,6 +29,11 @@ public class AboutTermsView extends RecyclerView {
     public AboutTermsView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs, defStyleAttr);
+    }
+
+    @Override
+    public void onInitView(List<AboutItem> items) {
+
     }
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
