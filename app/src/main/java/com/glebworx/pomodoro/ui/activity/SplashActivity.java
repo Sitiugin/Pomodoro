@@ -17,6 +17,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.glebworx.pomodoro.R;
+import com.glebworx.pomodoro.ui.activity.interfaces.ISplashActivity;
 import com.glebworx.pomodoro.util.manager.AuthManager;
 import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.SharedPrefsManager;
@@ -25,16 +26,18 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity implements ISplashActivity {
 
     private SpinKitView spinKitView;
 
     private boolean isSplashLayoutInflated;
+    private SplashActivityPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        presenter = new SplashActivityPresenter(this);
         isSplashLayoutInflated = false;
 
         // listen for dynamic link
