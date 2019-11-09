@@ -55,13 +55,13 @@ public class AboutLicenseItem extends AbstractItem<AboutLicenseItem, AboutLicens
 
         private AppCompatTextView titleTextView;
         private AppCompatTextView descriptionTextView;
-        private AppCompatTextView librariesTextView;
+        private AppCompatTextView librariesListTextView;
 
         ViewHolder(View view) {
             super(view);
             titleTextView = view.findViewById(R.id.text_view_title);
             descriptionTextView = view.findViewById(R.id.text_view_description);
-            librariesTextView = view.findViewById(R.id.text_view_libraries);
+            librariesListTextView = view.findViewById(R.id.text_view_libraries_list);
         }
 
         @Override
@@ -69,14 +69,14 @@ public class AboutLicenseItem extends AbstractItem<AboutLicenseItem, AboutLicens
             String title = item.getTitle();
             titleTextView.setText(title);
             descriptionTextView.setText(item.getDescription());
-            librariesTextView.setText(item.getLibraries());
+            librariesListTextView.setText(item.getLibraries());
         }
 
         @Override
         public void unbindView(@NonNull AboutLicenseItem item) {
             titleTextView.setText(null);
             descriptionTextView.setText(null);
-            librariesTextView.setText(null);
+            librariesListTextView.setText(null);
         }
     }
 

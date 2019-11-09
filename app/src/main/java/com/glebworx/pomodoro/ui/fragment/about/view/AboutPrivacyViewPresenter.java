@@ -1,5 +1,7 @@
 package com.glebworx.pomodoro.ui.fragment.about.view;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 
 import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutView;
@@ -11,11 +13,11 @@ public class AboutPrivacyViewPresenter implements IAboutViewPresenter {
 
     public AboutPrivacyViewPresenter(@NonNull IAboutView presenterListener) {
         this.presenterListener = presenterListener;
-        init();
+        init(null);
     }
 
     @Override
-    public void init() {
+    public void init(Context context) {
 
     }
 
