@@ -13,9 +13,8 @@
     <string name="notification_title_paused">Paused</string>
 
     <string name="email_title_send_feedback">Send Feedback</string>
-    <string name="email_address">glib.sitiugin@gmail.com</string>
+    <string name="email_address_mailto">mailto: glib.sitiugin@gmail.com</string>
     <string name="email_subject_feedback">Feedback for Pomodoro</string>
-    <string name="email_text" formatted="true"><![CDATA[Hi Pomodoro support,<br><br>]]></string>
     <string name="email_no_clients_found">No email clients installed!</string>
 
     <string name="core_cancel">Cancel</string>

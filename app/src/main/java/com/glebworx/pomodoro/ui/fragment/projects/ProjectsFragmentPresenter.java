@@ -1,8 +1,10 @@
 package com.glebworx.pomodoro.ui.fragment.projects;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -127,19 +129,15 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
     @Override
     public void sendFeedback(Context context) {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setType("message/rfc822");
-        String[] emailAddress = new String[1];
-        emailAddress[0] = context.getString(R.string.email_address);
-        intent.putExtra(Intent.EXTRA_EMAIL, emailAddress);
+        intent.setData(Uri.parse(context.getString(R.string.email_address_mailto)));
         intent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.email_subject_feedback));
-        intent.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.email_text));
-        try {
-            context.startActivity(Intent.createChooser(intent, context.getString(R.string.email_title_send_feedback)));
-        } catch (ActivityNotFoundException exception) {
+        final PackageManager packageManager = context.getPackageManager();
+        List<ResolveInfo> list = packageManager.queryIntentActivities(intent, 0);
+        if (list.isEmpty()) {
             Toast.makeText(context, context.getString(R.string.email_no_clients_found), Toast.LENGTH_LONG).show();
+        } else {
+            context.startActivity(Intent.createChooser(intent, context.getString(R.string.email_title_send_feedback)));
         }
-
-
     }
 
     private IItemAdapter.Predicate<ProjectItem> getFilterPredicate() {
