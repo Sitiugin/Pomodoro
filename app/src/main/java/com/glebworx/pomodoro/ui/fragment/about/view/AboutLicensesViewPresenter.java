@@ -30,7 +30,8 @@ public class AboutLicensesViewPresenter implements IAboutViewPresenter {
                 context,
                 R.string.about_licenses_title_apache_2,
                 R.string.about_licenses_text_apache_2,
-                R.string.about_licenses_text_apache_2_libraries));
+                R.string.about_licenses_text_apache_2_libraries,
+                R.string.about_licenses_text_apache_2_uri));
 
         items.add(getItem(
                 context,
@@ -38,8 +39,30 @@ public class AboutLicensesViewPresenter implements IAboutViewPresenter {
                 R.string.about_licenses_text_mit,
                 R.string.about_licenses_text_mit_libraries));
 
+        items.add(getSimpleItem(
+                context,
+                R.string.about_licenses_title_firebase,
+                R.string.about_licenses_text_firebase_uri));
+
+        items.add(getSimpleItem(
+                context,
+                R.string.about_licenses_title_linear_icons,
+                R.string.about_licenses_text_linear_icons_uri));
+
         presenterListener.onInitView(items);
 
+    }
+
+    private AboutLicenseItem getSimpleItem(
+            Context context,
+            int titleId,
+            int textId) {
+        String uri = context.getString(textId);
+        return new AboutLicenseItem(
+                context.getString(titleId),
+                uri,
+                null,
+                uri);
     }
 
     private AboutLicenseItem getItem(
@@ -50,7 +73,21 @@ public class AboutLicensesViewPresenter implements IAboutViewPresenter {
         return new AboutLicenseItem(
                 context.getString(titleId),
                 context.getString(textId),
-                context.getString(librariesId));
+                context.getString(librariesId),
+                null);
+    }
+
+    private AboutLicenseItem getItem(
+            Context context,
+            int titleId,
+            int textId,
+            int librariesId,
+            int uriId) {
+        return new AboutLicenseItem(
+                context.getString(titleId),
+                context.getString(textId),
+                context.getString(librariesId),
+                context.getString(uriId));
     }
 
 }
