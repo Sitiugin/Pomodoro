@@ -362,7 +362,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
                 R.string.projects_title_sign_out,
                 R.string.projects_text_sign_out,
                 R.string.projects_title_sign_out,
-                () -> presenter.signOut());
+                () -> presenter.signOut(context));
     }
 
 }

@@ -14,10 +14,12 @@ import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
+import com.glebworx.pomodoro.ui.activity.SplashActivity;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragment;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragmentPresenter;
 import com.glebworx.pomodoro.ui.fragment.projects.item.ProjectItem;
+import com.glebworx.pomodoro.util.manager.AuthManager;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -141,8 +143,11 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
     }
 
     @Override
-    public void signOut() {
-        // TODO implement
+    public void signOut(Context context) {
+        Intent intent = new Intent(context, SplashActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(intent);
+        AuthManager.getInstance().signOut();
     }
 
     private IItemAdapter.Predicate<ProjectItem> getFilterPredicate() {

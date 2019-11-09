@@ -20,6 +20,6 @@ public interface IProjectsFragmentPresenter {
 
     void sendFeedback(Context context);
 
-    void signOut();
+    void signOut(Context context);
 
 }
