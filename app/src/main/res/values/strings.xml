@@ -270,6 +270,14 @@
     <string name="about_app_text_description">Pomodoro app is the implementation of the Pomodoro productivity technique. The technique uses a timer to break down work into intervals, traditionally 25 minutes in length, separated by short breaks. A goal of the technique is to reduce the impact of internal and external interruptions on focus and flow. A pomodoro is indivisible; when interrupted during a pomodoro, either the other activity must be recorded and postponed, or the pomodoro must be abandoned</string>
     <string name="about_app_text_features">&#8226; Organization of tasks into color coded projects\n&#8226; Task planner\n&#8226; Productivity report</string>
 
+
+    <!--                                                                          ABOUT LICENSES -->
+
+    <string name="about_licenses_title_libraries">Libraries</string>
+    <string name="about_licenses_title_apache_2">Apache License, Version 2.0</string>
+    <string name="about_licenses_text_apache_2">Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at\n\nhttp://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</string>
+
+
     <!--                                                                          REPORT HISTORY -->
 
     <string name="report_history_title_project_added" formatted="true"><![CDATA[Project <b>%1$s</b> added]]></string>
