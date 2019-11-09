@@ -16,6 +16,8 @@ import java.util.List;
 
 public class AboutPrivacyView extends RecyclerView implements IAboutView {
 
+    private AboutPrivacyViewPresenter presenter;
+
     public AboutPrivacyView(@NonNull Context context) {
         super(context);
         init(context, null, 0);
@@ -38,6 +40,7 @@ public class AboutPrivacyView extends RecyclerView implements IAboutView {
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         View rootView = inflate(context, R.layout.view_about_privacy, this);
+        presenter = new AboutPrivacyViewPresenter(this);
     }
 
 }

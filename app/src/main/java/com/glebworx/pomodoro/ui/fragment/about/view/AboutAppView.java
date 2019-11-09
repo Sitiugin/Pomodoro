@@ -6,7 +6,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.core.widget.NestedScrollView;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutView;
@@ -14,7 +14,9 @@ import com.glebworx.pomodoro.ui.fragment.about.view.item.AboutItem;
 
 import java.util.List;
 
-public class AboutAppView extends RecyclerView implements IAboutView {
+public class AboutAppView extends NestedScrollView implements IAboutView {
+
+    private AboutAppViewPresenter presenter;
 
     public AboutAppView(@NonNull Context context) {
         super(context);
@@ -38,6 +40,7 @@ public class AboutAppView extends RecyclerView implements IAboutView {
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         View rootView = inflate(context, R.layout.view_about_app, this);
+        presenter = new AboutAppViewPresenter(this);
     }
 
 }

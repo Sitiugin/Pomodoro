@@ -16,6 +16,11 @@ public class AboutItem extends AbstractItem<AboutItem, AboutItem.ViewHolder> {
     private String title;
     private String description;
 
+    public AboutItem(String description) {
+        this.title = null;
+        this.description = description;
+    }
+
     public AboutItem(String title, String description) {
         this.title = title;
         this.description = description;
@@ -58,7 +63,9 @@ public class AboutItem extends AbstractItem<AboutItem, AboutItem.ViewHolder> {
 
         @Override
         public void bindView(@NonNull AboutItem item, @NonNull List<Object> payloads) {
-            titleTextView.setText(item.getTitle());
+            String title = item.getTitle();
+            titleTextView.setText(title);
+            titleTextView.setVisibility(title == null ? View.GONE : View.VISIBLE);
             descriptionTextView.setText(item.getDescription());
         }
 

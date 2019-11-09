@@ -16,6 +16,8 @@ import java.util.List;
 
 public class AboutTermsView extends RecyclerView implements IAboutView {
 
+    private AboutTermsViewPresenter presenter;
+
     public AboutTermsView(@NonNull Context context) {
         super(context);
         init(context, null, 0);
@@ -38,6 +40,7 @@ public class AboutTermsView extends RecyclerView implements IAboutView {
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         View rootView = inflate(context, R.layout.view_about_terms, this);
+        presenter = new AboutTermsViewPresenter(this);
     }
 
 }
