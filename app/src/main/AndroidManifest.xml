@@ -20,6 +20,7 @@
         </receiver>
 
         <activity
+            android:launchMode="singleTask"
             android:name=".ui.activity.SplashActivity"
             android:theme="@style/SplashTheme"
             android:screenOrientation="portrait"

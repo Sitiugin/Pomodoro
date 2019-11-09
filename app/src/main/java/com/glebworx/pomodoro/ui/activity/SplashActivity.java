@@ -38,26 +38,35 @@ public class SplashActivity extends AppCompatActivity {
         if (AuthManager.getInstance().isSignedIn()) { // already signed in, start Main Activity
             startMainActivity();
         } else { // not signed in, check for dynamic link
-            Intent intent = getIntent();
-            if (intent == null) {
-                inflateSplashLayout();
-                return;
-            }
-            Uri uri = intent.getData();
-            if (uri == null) {
-                inflateSplashLayout();
-                return;
-            }
-            String dynamicLink = uri.toString();
-            SharedPrefsManager sharedPrefsManager = new SharedPrefsManager(SplashActivity.this);
-            String email = sharedPrefsManager.getEmail();
-            if (email == null) {
-                inflateSplashLayout();
-                return;
-            }
-            signInAndStartMainActivity(email, dynamicLink); // dynamic link present
+            handleIntent(getIntent());
         }
 
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        if (intent == null) {
+            inflateSplashLayout();
+            return;
+        }
+        Uri uri = intent.getData();
+        if (uri == null) {
+            inflateSplashLayout();
+            return;
+        }
+        String dynamicLink = uri.toString();
+        SharedPrefsManager sharedPrefsManager = new SharedPrefsManager(SplashActivity.this);
+        String email = sharedPrefsManager.getEmail();
+        if (email == null) {
+            inflateSplashLayout();
+            return;
+        }
+        signInAndStartMainActivity(email, dynamicLink); // dynamic link present
     }
 
     private void startMainActivity() {
