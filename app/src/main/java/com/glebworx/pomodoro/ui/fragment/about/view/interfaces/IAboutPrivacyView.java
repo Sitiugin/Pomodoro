@@ -4,7 +4,7 @@ import com.glebworx.pomodoro.ui.fragment.about.view.item.AboutItem;
 
 import java.util.List;
 
-public interface IAboutView {
+public interface IAboutPrivacyView {
 
     void onInitView(List<AboutItem> items);
 

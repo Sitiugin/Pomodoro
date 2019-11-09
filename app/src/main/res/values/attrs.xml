@@ -1,0 +1,12 @@
+<resources>
+
+    <attr name="embedded" format="boolean" />
+
+    <declare-styleable name="AboutTermsView">
+        <attr name="embedded" />
+    </declare-styleable>
+    <declare-styleable name="AboutPrivacyView">
+        <attr name="embedded" />
+    </declare-styleable>
+
+</resources>

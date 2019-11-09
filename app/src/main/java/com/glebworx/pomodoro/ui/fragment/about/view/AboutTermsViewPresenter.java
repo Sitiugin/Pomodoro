@@ -4,20 +4,20 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutView;
-import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutViewPresenter;
+import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutTermsView;
+import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutTermsViewPresenter;
 
-public class AboutTermsViewPresenter implements IAboutViewPresenter {
+public class AboutTermsViewPresenter implements IAboutTermsViewPresenter {
 
-    private IAboutView presenterListener;
+    private IAboutTermsView presenterListener;
 
-    AboutTermsViewPresenter(@NonNull IAboutView presenterListener) {
+    AboutTermsViewPresenter(@NonNull IAboutTermsView presenterListener, boolean isEmbedded) {
         this.presenterListener = presenterListener;
-        init(null);
+        init(null, isEmbedded);
     }
 
     @Override
-    public void init(Context context) {
+    public void init(Context context, boolean isEmbedded) {
 
     }
 

@@ -6,13 +6,13 @@ import androidx.annotation.NonNull;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutLicensesView;
-import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutViewPresenter;
+import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutLicensesViewPresenter;
 import com.glebworx.pomodoro.ui.fragment.about.view.item.AboutLicenseItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AboutLicensesViewPresenter implements IAboutViewPresenter {
+public class AboutLicensesViewPresenter implements IAboutLicensesViewPresenter {
 
     private IAboutLicensesView presenterListener;
 

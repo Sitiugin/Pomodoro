@@ -9,12 +9,12 @@ import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
 
 import com.glebworx.pomodoro.R;
-import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutView;
+import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutAppView;
 import com.glebworx.pomodoro.ui.fragment.about.view.item.AboutItem;
 
 import java.util.List;
 
-public class AboutAppView extends NestedScrollView implements IAboutView {
+public class AboutAppView extends NestedScrollView implements IAboutAppView {
 
     private AboutAppViewPresenter presenter;
 

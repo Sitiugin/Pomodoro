@@ -5,24 +5,24 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.glebworx.pomodoro.R;
-import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutView;
-import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutViewPresenter;
+import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutPrivacyView;
+import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutPrivacyViewPresenter;
 import com.glebworx.pomodoro.ui.fragment.about.view.item.AboutItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AboutPrivacyViewPresenter implements IAboutViewPresenter {
+public class AboutPrivacyViewPresenter implements IAboutPrivacyViewPresenter {
 
-    private IAboutView presenterListener;
+    private IAboutPrivacyView presenterListener;
 
-    AboutPrivacyViewPresenter(@NonNull IAboutView presenterListener, Context context) {
+    AboutPrivacyViewPresenter(@NonNull IAboutPrivacyView presenterListener, Context context, boolean isEmbedded) {
         this.presenterListener = presenterListener;
-        init(context);
+        init(context, isEmbedded);
     }
 
     @Override
-    public void init(Context context) {
+    public void init(Context context, boolean isEmbedded) {
 
         List<AboutItem> items = new ArrayList<>();
 

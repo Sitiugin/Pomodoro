@@ -4,14 +4,14 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutView;
-import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutViewPresenter;
+import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutAppView;
+import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutAppViewPresenter;
 
-public class AboutAppViewPresenter implements IAboutViewPresenter {
+public class AboutAppViewPresenter implements IAboutAppViewPresenter {
 
-    private IAboutView presenterListener;
+    private IAboutAppView presenterListener;
 
-    AboutAppViewPresenter(@NonNull IAboutView presenterListener) {
+    AboutAppViewPresenter(@NonNull IAboutAppView presenterListener) {
         this.presenterListener = presenterListener;
         init(null);
     }

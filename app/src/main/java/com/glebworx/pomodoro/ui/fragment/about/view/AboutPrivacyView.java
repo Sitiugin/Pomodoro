@@ -1,6 +1,7 @@
 package com.glebworx.pomodoro.ui.fragment.about.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 
 import androidx.annotation.NonNull;
@@ -8,7 +9,8 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutView;
+import com.glebworx.pomodoro.R;
+import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutPrivacyView;
 import com.glebworx.pomodoro.ui.fragment.about.view.item.AboutItem;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
@@ -16,7 +18,7 @@ import com.mikepenz.itemanimators.AlphaCrossFadeAnimator;
 
 import java.util.List;
 
-public class AboutPrivacyView extends RecyclerView implements IAboutView {
+public class AboutPrivacyView extends RecyclerView implements IAboutPrivacyView {
 
     private Context context;
     private AboutPrivacyViewPresenter presenter;
@@ -49,8 +51,19 @@ public class AboutPrivacyView extends RecyclerView implements IAboutView {
     }
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
+        TypedArray a = context.getTheme().obtainStyledAttributes(
+                attrs,
+                R.styleable.AboutPrivacyView,
+                0, 0);
+
+        boolean isEmbedded;
+        try {
+            isEmbedded = a.getBoolean(R.styleable.AboutPrivacyView_embedded, false);
+        } finally {
+            a.recycle();
+        }
         this.context = context;
-        presenter = new AboutPrivacyViewPresenter(this, context);
+        presenter = new AboutPrivacyViewPresenter(this, context, isEmbedded);
     }
 
 }
