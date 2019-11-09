@@ -20,6 +20,4 @@ public interface IProjectsFragmentInteractionListener {
 
     void onViewAboutInfo();
 
-    void onViewSettings();
-
 }

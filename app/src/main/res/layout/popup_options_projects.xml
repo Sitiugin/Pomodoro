@@ -30,11 +30,11 @@
         android:text="@string/projects_title_send_feedback" />
     <androidx.appcompat.widget.AppCompatButton
         style="@style/ButtonStyle.Borderless"
-        android:id="@+id/button_settings"
+        android:id="@+id/button_sign_out"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableEnd="@drawable/ic_settings_black"
+        android:drawableEnd="@drawable/ic_sign_out_black"
         android:drawablePadding="@dimen/margin_content"
         android:gravity="start"
-        android:text="@string/projects_title_settings" />
+        android:text="@string/projects_title_sign_out" />
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -337,16 +337,20 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
                     popupWindow.dismiss();
                     presenter.sendFeedback(context);
                     break;
-                case R.id.button_settings:
+                case R.id.button_sign_out:
                     popupWindow.dismiss();
-                    fragmentListener.onViewSettings();
+                    showSignOutDialog();
                     break;
             }
         };
         View contentView = popupWindow.getContentView();
         contentView.findViewById(R.id.button_about).setOnClickListener(onClickListener);
         contentView.findViewById(R.id.button_send_feedback).setOnClickListener(onClickListener);
-        contentView.findViewById(R.id.button_settings).setOnClickListener(onClickListener);
+        contentView.findViewById(R.id.button_sign_out).setOnClickListener(onClickListener);
+    }
+
+    private void showSignOutDialog() {
+
     }
 
 }

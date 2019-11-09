@@ -22,8 +22,6 @@ import com.glebworx.pomodoro.ui.fragment.projects.ProjectsFragment;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.report.ReportFragment;
 import com.glebworx.pomodoro.ui.fragment.report.interfaces.IReportFragmentInteractionListener;
-import com.glebworx.pomodoro.ui.fragment.settings.SettingsFragment;
-import com.glebworx.pomodoro.ui.fragment.settings.interfaces.ISettingsFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.view_project.ViewProjectFragment;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.view.ProgressBottomSheetView;
@@ -49,7 +47,6 @@ public class MainActivity
         IViewProjectFragmentInteractionListener,
         IAddTaskFragmentInteractionListener,
         IReportFragmentInteractionListener,
-        ISettingsFragmentInteractionListener,
         IProgressBottomSheetViewInteractionListener {
 
 
@@ -150,11 +147,6 @@ public class MainActivity
     @Override
     public void onViewAboutInfo() {
         fragmentManager.pushToBackStack(AboutFragment.newInstance());
-    }
-
-    @Override
-    public void onViewSettings() {
-        fragmentManager.pushToBackStack(SettingsFragment.newInstance());
     }
 
     @Override
