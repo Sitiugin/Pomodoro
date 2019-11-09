@@ -73,6 +73,7 @@ public class AboutItem extends AbstractItem<AboutItem, AboutItem.ViewHolder> {
         public void unbindView(@NonNull AboutItem item) {
             titleTextView.setText(null);
             descriptionTextView.setText(null);
+            titleTextView.setVisibility(View.VISIBLE);
         }
     }
 
