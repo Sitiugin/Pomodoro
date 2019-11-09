@@ -22,7 +22,6 @@
         style="@style/TextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_content"
         app:layout_constraintTop_toBottomOf="@+id/text_view_title" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -40,7 +39,6 @@
         style="@style/TextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_content"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_title" />
+        app:layout_constraintTop_toBottomOf="@+id/text_view_libraries" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

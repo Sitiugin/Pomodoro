@@ -32,6 +32,12 @@ public class AboutLicensesViewPresenter implements IAboutViewPresenter {
                 R.string.about_licenses_text_apache_2,
                 R.string.about_licenses_text_apache_2_libraries));
 
+        items.add(getItem(
+                context,
+                R.string.about_licenses_title_mit,
+                R.string.about_licenses_text_mit,
+                R.string.about_licenses_text_mit_libraries));
+
         presenterListener.onInitView(items);
 
     }

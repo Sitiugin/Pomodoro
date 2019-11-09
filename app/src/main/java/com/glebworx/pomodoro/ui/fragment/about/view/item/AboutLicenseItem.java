@@ -16,11 +16,13 @@ public class AboutLicenseItem extends AbstractItem<AboutLicenseItem, AboutLicens
     private String title;
     private String description;
     private String libraries;
+    private String uri;
 
-    public AboutLicenseItem(String title, String description, String libraries) {
+    public AboutLicenseItem(String title, String description, String libraries, String uri) {
         this.title = title;
         this.description = description;
         this.libraries = libraries;
+        this.uri = uri;
     }
 
     @NonNull
@@ -49,6 +51,10 @@ public class AboutLicenseItem extends AbstractItem<AboutLicenseItem, AboutLicens
 
     private String getLibraries() {
         return libraries;
+    }
+
+    public String getUri() {
+        return uri;
     }
 
     protected static class ViewHolder extends FastAdapter.ViewHolder<AboutLicenseItem> {
