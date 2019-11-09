@@ -7,16 +7,19 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutTermsView;
 import com.glebworx.pomodoro.ui.fragment.about.view.item.AboutItem;
+import com.mikepenz.itemanimators.AlphaCrossFadeAnimator;
 
 import java.util.List;
 
 public class AboutTermsView extends RecyclerView implements IAboutTermsView {
 
+    private Context context;
     private AboutTermsViewPresenter presenter;
 
     public AboutTermsView(@NonNull Context context) {
@@ -36,7 +39,9 @@ public class AboutTermsView extends RecyclerView implements IAboutTermsView {
 
     @Override
     public void onInitView(List<AboutItem> items) {
-
+        this.setLayoutManager(new LinearLayoutManager(context));
+        this.setHasFixedSize(true);
+        this.setItemAnimator(new AlphaCrossFadeAnimator());
     }
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -52,6 +57,7 @@ public class AboutTermsView extends RecyclerView implements IAboutTermsView {
             a.recycle();
         }
         View rootView = inflate(context, R.layout.view_about_terms, this);
+        this.context = context;
         presenter = new AboutTermsViewPresenter(this, isEmbedded);
     }
 

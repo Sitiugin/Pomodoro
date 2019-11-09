@@ -16,6 +16,7 @@ import java.util.List;
 
 public class AboutAppView extends NestedScrollView implements IAboutAppView {
 
+    private Context context;
     private AboutAppViewPresenter presenter;
 
     public AboutAppView(@NonNull Context context) {
@@ -40,6 +41,7 @@ public class AboutAppView extends NestedScrollView implements IAboutAppView {
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         View rootView = inflate(context, R.layout.view_about_app, this);
+        this.context = context;
         presenter = new AboutAppViewPresenter(this);
     }
 

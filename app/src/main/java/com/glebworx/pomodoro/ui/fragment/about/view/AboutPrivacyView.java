@@ -41,6 +41,7 @@ public class AboutPrivacyView extends RecyclerView implements IAboutPrivacyView 
     @Override
     public void onInitView(List<AboutItem> items) {
         this.setLayoutManager(new LinearLayoutManager(context));
+        this.setHasFixedSize(true);
         this.setItemAnimator(new AlphaCrossFadeAnimator());
         ItemAdapter<AboutItem> adapter = new ItemAdapter<>();
         adapter.add(items);

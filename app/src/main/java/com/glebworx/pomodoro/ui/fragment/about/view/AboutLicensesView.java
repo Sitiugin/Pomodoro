@@ -45,6 +45,7 @@ public class AboutLicensesView extends RecyclerView implements IAboutLicensesVie
     @Override
     public void onInitView(List<AboutLicenseItem> items) {
         this.setLayoutManager(new LinearLayoutManager(context));
+        this.setHasFixedSize(true);
         this.setItemAnimator(new AlphaCrossFadeAnimator());
         ItemAdapter<AboutLicenseItem> adapter = new ItemAdapter<>();
         adapter.add(items);

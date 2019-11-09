@@ -20,7 +20,6 @@
         android:id="@+id/view_terms"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_info"
-        android:layout_marginHorizontal="@dimen/margin_content"
         app:layout_constraintTop_toBottomOf="@+id/text_view_title"
         custom:embedded="true" />
 
@@ -29,7 +28,6 @@
         style="@style/ButtonStyle.Borderless.Colored"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_terms"
         app:layout_constraintWidth_default="percent"
