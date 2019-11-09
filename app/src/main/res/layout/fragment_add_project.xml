@@ -212,7 +212,7 @@
         style="@style/ExtendedFloatingActionButtonStyle"
         android:id="@+id/button_save"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_app_bar"
+        android:layout_height="@dimen/height_fab"
         android:layout_marginBottom="@dimen/height_app_bar"
         android:text="@string/add_project_title_add_project"
         android:outlineAmbientShadowColor="@color/colorHighlight"
@@ -221,16 +221,5 @@
         app:icon="@drawable/ic_check_highlight"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:targetApi="p" />
-
-    <!--<androidx.appcompat.widget.AppCompatButton
-        style="@style/ButtonStyle.Borderless.Colored"
-        android:id="@+id/button_save"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/add_project_title_add_project"
-        android:drawableEnd="@drawable/ic_check_highlight"
-        android:gravity="start"
-        android:transitionName="@string/shared_element_add_btn"
-        app:layout_constraintBottom_toBottomOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

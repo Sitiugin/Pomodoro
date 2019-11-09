@@ -30,6 +30,7 @@
 
     <dimen name="size_splash">64dp</dimen>
     <dimen name="height_app_bar">56dp</dimen>
+    <dimen name="height_fab">56dp</dimen>
     <dimen name="height_seek_arc">288dp</dimen>
     <dimen name="height_chart">192dp</dimen>
     <dimen name="height_calendar">224dp</dimen>

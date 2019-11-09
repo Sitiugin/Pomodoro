@@ -54,7 +54,7 @@
         style="@style/ExtendedFloatingActionButtonStyle"
         android:id="@+id/button_sign_in"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/height_fab"
         android:layout_marginTop="@dimen/margin_content_double"
         android:text="@string/splash_title_sign_in"
         android:outlineAmbientShadowColor="@color/colorHighlight"
