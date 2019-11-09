@@ -58,13 +58,13 @@ public class AboutPagerAdapter extends PagerAdapter {
     private int getViewId(int position) {
         switch (position) {
             case 0:
-                return R.id.recycler_view_app;
+                return R.id.view_app;
             case 1:
-                return R.id.recycler_view_terms;
+                return R.id.view_terms;
             case 2:
-                return R.id.recycler_view_privacy;
+                return R.id.view_privacy;
             case 3:
-                return R.id.recycler_view_licenses;
+                return R.id.view_licenses;
         }
         return 0;
     }

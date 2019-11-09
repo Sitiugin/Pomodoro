@@ -74,40 +74,25 @@
         android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_app"
+        <com.glebworx.pomodoro.ui.fragment.about.view.AboutAppView
+            android:id="@+id/view_app"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_terms"
+        <com.glebworx.pomodoro.ui.fragment.about.view.AboutTermsView
+            android:id="@+id/view_terms"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_privacy"
+        <com.glebworx.pomodoro.ui.fragment.about.view.AboutPrivacyView
+            android:id="@+id/view_privacy"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_licenses"
+        <com.glebworx.pomodoro.ui.fragment.about.view.AboutLicensesView
+            android:id="@+id/view_licenses"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-        <!--<com.glebworx.pomodoro.ui.fragment.report.view.ReportPomodorosView
-            android:id="@+id/view_pomodoros"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <com.glebworx.pomodoro.ui.fragment.report.view.ReportProjectsView
-            android:id="@+id/view_tasks"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <com.glebworx.pomodoro.ui.fragment.report.view.ReportHistoryView
-            android:id="@+id/view_history"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />-->
-
     </androidx.viewpager.widget.ViewPager>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
