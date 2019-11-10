@@ -40,12 +40,7 @@ public class SplashActivity extends AppCompatActivity implements ISplashActivity
         presenter = new SplashActivityPresenter(this);
         isSplashLayoutInflated = false;
 
-        // listen for dynamic link
-        if (AuthManager.getInstance().isSignedIn()) { // already signed in, start Main Activity
-            startMainActivity();
-        } else { // not signed in, check for dynamic link
-            handleIntent(getIntent());
-        }
+        handleIntent(getIntent());
 
     }
 
@@ -56,23 +51,28 @@ public class SplashActivity extends AppCompatActivity implements ISplashActivity
     }
 
     private void handleIntent(Intent intent) {
-        if (intent == null) {
-            inflateSplashLayout();
-            return;
+        // listen for dynamic link
+        if (AuthManager.getInstance().isSignedIn()) { // already signed in, start Main Activity
+            startMainActivity();
+        } else { // not signed in, check for dynamic link
+            if (intent == null) {
+                inflateSplashLayout();
+                return;
+            }
+            Uri uri = intent.getData();
+            if (uri == null) {
+                inflateSplashLayout();
+                return;
+            }
+            String dynamicLink = uri.toString();
+            SharedPrefsManager sharedPrefsManager = new SharedPrefsManager(SplashActivity.this);
+            String email = sharedPrefsManager.getEmail();
+            if (email == null) {
+                inflateSplashLayout();
+                return;
+            }
+            signInAndStartMainActivity(email, dynamicLink); // dynamic link present
         }
-        Uri uri = intent.getData();
-        if (uri == null) {
-            inflateSplashLayout();
-            return;
-        }
-        String dynamicLink = uri.toString();
-        SharedPrefsManager sharedPrefsManager = new SharedPrefsManager(SplashActivity.this);
-        String email = sharedPrefsManager.getEmail();
-        if (email == null) {
-            inflateSplashLayout();
-            return;
-        }
-        signInAndStartMainActivity(email, dynamicLink); // dynamic link present
     }
 
     private void startMainActivity() {
