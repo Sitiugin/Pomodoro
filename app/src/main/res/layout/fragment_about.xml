@@ -88,12 +88,14 @@
             android:id="@+id/view_privacy"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipToPadding="false"
             android:paddingVertical="@dimen/margin_content_half" />
 
         <com.glebworx.pomodoro.ui.fragment.about.view.AboutLicensesView
             android:id="@+id/view_licenses"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipToPadding="false"
             android:paddingVertical="@dimen/margin_content_half" />
 
     </androidx.viewpager.widget.ViewPager>

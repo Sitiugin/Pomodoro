@@ -57,7 +57,6 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
     @BindView(R.id.text_view_section_name) AppCompatTextView taskNameSectionTextView;
     @BindView(R.id.button_due_date) AppCompatButton dueDateButton;
     @BindView(R.id.spinner_pomodoros_allocated) AppCompatSpinner allocatedTimeSpinner;
-    @BindView(R.id.spinner_recurrence) AppCompatSpinner recurrenceSpinner;
     @BindView(R.id.button_save) ExtendedFloatingActionButton saveButton;
     @BindView(R.id.spin_kit_view) SpinKitView spinKitView;
 
@@ -146,8 +145,7 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
     public void onInitView(boolean isEditing,
                            String taskName,
                            String dueDate,
-                           int pomodorosAllocated,
-                           int recurrenceCode) {
+                           int pomodorosAllocated) {
 
         if (isEditing) {
             taskNameEditText.setVisibility(View.GONE);
@@ -155,7 +153,6 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
             titleTextView.setText(context.getString(R.string.core_edit_something, taskName));
             dueDateButton.setText(dueDate);
             allocatedTimeSpinner.setSelection(pomodorosAllocated - 1, true);
-            recurrenceSpinner.setSelection(recurrenceCode);
             saveButton.setText(R.string.add_task_title_update_task);
         } else {
             dueDateButton.setText(dueDate);
@@ -240,26 +237,6 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
             public void onNothingSelected(AdapterView<?> adapterView) { }
         });
         allocatedTimeSpinner.setOnTouchListener((view, motionEvent) -> {
-            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                updateName();
-                return true;
-            } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                view.performClick();
-                return true;
-            }
-            return false;
-        });
-        recurrenceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                presenter.selectRecurrence(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) { }
-
-        });
-        recurrenceSpinner.setOnTouchListener((view, motionEvent) -> {
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                 updateName();
                 return true;

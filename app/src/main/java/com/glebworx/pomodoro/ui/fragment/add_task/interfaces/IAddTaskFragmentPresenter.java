@@ -14,8 +14,6 @@ public interface IAddTaskFragmentPresenter {
 
     void selectPomodorosAllocated(int position);
 
-    void selectRecurrence(int position);
-
     void saveTask();
 
 }

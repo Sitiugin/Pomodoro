@@ -13,63 +13,13 @@ import com.glebworx.pomodoro.ui.fragment.add_task.interfaces.IAddTaskFragmentPre
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
-import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_DAY;
-import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_FIVE_DAYS;
-import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_FOUR_DAYS;
-import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_SIX_DAYS;
-import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_THREE_DAYS;
-import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_TWO_DAYS;
-import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_EVERY_WEEKLY;
-import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_MONTHLY;
-import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_WEEKDAY;
-import static com.glebworx.pomodoro.model.TaskModel.RECURRENCE_WEEKEND;
 import static com.glebworx.pomodoro.ui.fragment.add_task.AddTaskFragment.ARG_PROJECT_MODEL;
 import static com.glebworx.pomodoro.ui.fragment.add_task.AddTaskFragment.ARG_TASK_MODEL;
 
 public class AddTaskFragmentPresenter implements IAddTaskFragmentPresenter {
-
-
-    //                                                                                     CONSTANTS
-
-    private static final Map<Integer, String> RECURRENCE_TO_CODE_MAP;
-    private static final Map<String, Integer> CODE_TO_RECURRENCE_MAP;
-
-    static {
-        Map<Integer, String> map = new HashMap<>();
-        map.put(0, null);
-        map.put(1, RECURRENCE_EVERY_DAY);
-        map.put(2, RECURRENCE_EVERY_TWO_DAYS);
-        map.put(3, RECURRENCE_EVERY_THREE_DAYS);
-        map.put(4, RECURRENCE_EVERY_FOUR_DAYS);
-        map.put(5, RECURRENCE_EVERY_FIVE_DAYS);
-        map.put(6, RECURRENCE_EVERY_SIX_DAYS);
-        map.put(7, RECURRENCE_EVERY_WEEKLY);
-        map.put(8, RECURRENCE_WEEKDAY);
-        map.put(9, RECURRENCE_WEEKEND);
-        map.put(10, RECURRENCE_MONTHLY);
-        RECURRENCE_TO_CODE_MAP = Collections.unmodifiableMap(map);
-    }
-
-    static {
-        Map<String, Integer> map = new HashMap<>();
-        map.put(RECURRENCE_EVERY_DAY, 1);
-        map.put(RECURRENCE_EVERY_TWO_DAYS, 2);
-        map.put(RECURRENCE_EVERY_THREE_DAYS, 3);
-        map.put(RECURRENCE_EVERY_FOUR_DAYS, 4);
-        map.put(RECURRENCE_EVERY_FIVE_DAYS, 5);
-        map.put(RECURRENCE_EVERY_SIX_DAYS, 6);
-        map.put(RECURRENCE_EVERY_WEEKLY, 7);
-        map.put(RECURRENCE_WEEKDAY, 8);
-        map.put(RECURRENCE_WEEKEND, 9);
-        map.put(RECURRENCE_MONTHLY, 10);
-        CODE_TO_RECURRENCE_MAP = Collections.unmodifiableMap(map);
-    }
 
 
     //                                                                                    ATTRIBUTES
@@ -110,19 +60,11 @@ public class AddTaskFragmentPresenter implements IAddTaskFragmentPresenter {
             oldTaskModel = new TaskModel(taskModel);
         }
 
-        int recurrenceCode;
-        if (taskModel.getRecurrence() == null) {
-            recurrenceCode = 0;
-        } else {
-            recurrenceCode = CODE_TO_RECURRENCE_MAP.get(taskModel.getRecurrence());
-        }
-
         presenterListener.onInitView(
                 isEditing,
                 taskModel.getName(),
                 DateTimeManager.getDateString(taskModel.getDueDate(), new Date()),
-                taskModel.getPomodorosAllocated(),
-                recurrenceCode);
+                taskModel.getPomodorosAllocated());
 
     }
 
@@ -150,11 +92,6 @@ public class AddTaskFragmentPresenter implements IAddTaskFragmentPresenter {
     @Override
     public void selectPomodorosAllocated(int position) {
         taskModel.setPomodorosAllocated(position + 1);
-    }
-
-    @Override
-    public void selectRecurrence(int position) {
-        taskModel.setRecurrence(RECURRENCE_TO_CODE_MAP.get(position));
     }
 
     @Override
