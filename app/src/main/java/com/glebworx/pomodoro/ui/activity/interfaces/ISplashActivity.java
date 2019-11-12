@@ -6,6 +6,8 @@ public interface ISplashActivity {
 
     void onInflateSplashLayout();
 
+    void onHideViews();
+
     void onShowSendConfirmationViews();
 
     void onShowOpenEmailViews();

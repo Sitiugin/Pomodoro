@@ -21,6 +21,7 @@
 
         <activity
             android:name=".ui.activity.SplashActivity"
+            android:launchMode="singleTop"
             android:theme="@style/SplashTheme"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden">

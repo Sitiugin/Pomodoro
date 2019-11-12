@@ -65,6 +65,7 @@ public class SplashActivityPresenter implements ISplashActivityPresenter {
     public void sendSignInLink(String email, boolean isRepeat, Context context) {
 
         presenterListener.onShowSpinKit();
+        presenterListener.onHideViews();
 
         AuthManager authManager = AuthManager.getInstance();
         authManager.sendVerificationEmail(email, task -> {
@@ -78,6 +79,9 @@ public class SplashActivityPresenter implements ISplashActivityPresenter {
                 }
             } else {
                 Toast.makeText(context, context.getString(R.string.splash_toast_confirmation_email_sent_failed, email), Toast.LENGTH_LONG).show();
+                if (!isRepeat) {
+                    presenterListener.onShowSendConfirmationViews();
+                }
             }
         });
 
@@ -85,6 +89,7 @@ public class SplashActivityPresenter implements ISplashActivityPresenter {
 
     @Override
     public void openEmailClient(Context context) {
+        presenterListener.onHideViews();
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_APP_EMAIL);
         //context.startActivity(intent);
@@ -107,7 +112,9 @@ public class SplashActivityPresenter implements ISplashActivityPresenter {
             } else {
                 Toast.makeText(context, context.getString(R.string.splash_toast_sign_in_failed), Toast.LENGTH_LONG).show();
                 presenterListener.onHideSpinKit();
-                if (!isSplashLayoutInflated) {
+                if (isSplashLayoutInflated) {
+                    presenterListener.onShowSendConfirmationViews();
+                } else {
                     isSplashLayoutInflated = true;
                     presenterListener.onInflateSplashLayout();
                 }

@@ -79,6 +79,25 @@ public class SplashActivity extends AppCompatActivity implements ISplashActivity
     }
 
     @Override
+    public void onHideViews() {
+
+        if (rootView == null) {
+            return;
+        }
+
+        TransitionManager.endTransitions(rootView);
+        TransitionManager.beginDelayedTransition(rootView);
+        constraintSet.clone(rootView);
+
+        constraintSet.setVisibility(R.id.button_open_email, ConstraintSet.GONE);
+        constraintSet.setVisibility(R.id.button_send_again, ConstraintSet.GONE);
+        constraintSet.setVisibility(R.id.button_send_confirmation, ConstraintSet.GONE);
+
+        constraintSet.applyTo(rootView);
+
+    }
+
+    @Override
     public void onShowSendConfirmationViews() {
 
         if (rootView == null) {
