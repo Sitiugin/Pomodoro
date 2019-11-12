@@ -3,7 +3,6 @@ package com.glebworx.pomodoro.ui.fragment.about.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutTermsView;
 import com.glebworx.pomodoro.ui.fragment.about.view.item.AboutItem;
+import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.itemanimators.AlphaCrossFadeAnimator;
 
 import java.util.List;
@@ -42,6 +43,12 @@ public class AboutTermsView extends RecyclerView implements IAboutTermsView {
         this.setLayoutManager(new LinearLayoutManager(context));
         this.setHasFixedSize(true);
         this.setItemAnimator(new AlphaCrossFadeAnimator());
+        ItemAdapter<AboutItem> adapter = new ItemAdapter<>();
+        adapter.add(items);
+        FastAdapter<AboutItem> fastAdapter = new FastAdapter<>();
+        fastAdapter.addAdapter(0, adapter);
+        fastAdapter.setHasStableIds(true);
+        this.setAdapter(fastAdapter);
     }
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -56,9 +63,8 @@ public class AboutTermsView extends RecyclerView implements IAboutTermsView {
         } finally {
             a.recycle();
         }
-        View rootView = inflate(context, R.layout.view_about_terms, this);
         this.context = context;
-        presenter = new AboutTermsViewPresenter(this, isEmbedded);
+        presenter = new AboutTermsViewPresenter(this, context, isEmbedded);
     }
 
 }

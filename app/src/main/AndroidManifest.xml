@@ -20,7 +20,6 @@
         </receiver>
 
         <activity
-            android:launchMode="singleTask"
             android:name=".ui.activity.SplashActivity"
             android:theme="@style/SplashTheme"
             android:screenOrientation="portrait"
@@ -44,7 +43,7 @@
 
         <activity
             android:name=".ui.activity.MainActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden"/>
 

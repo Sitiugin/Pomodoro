@@ -248,6 +248,26 @@
     <string name="about_app_text_features">&#8226; Organization of tasks into color coded projects\n&#8226; Task planner\n&#8226; Productivity report</string>
 
 
+    <!--                                                                             ABOUT TERMS -->
+
+    <string name="about_terms_title_prohibited_uses">Prohibited Uses</string>
+    <string name="about_terms_title_intellectual_property">Intellectual Property</string>
+    <string name="about_terms_title_prohibited_user_generated_content">User-Generated Content</string>
+    <string name="about_terms_title_prohibited_copyright_infringement">Copyright Infringement</string>
+    <string name="about_terms_title_prohibited_payment_clauses">Payment Clauses</string>
+    <string name="about_terms_title_prohibited_limitation_of_liability_and_warranties">Limitation of Liability and Warranties</string>
+    <string name="about_terms_title_prohibited_right_to_terminate_accounts">Right to Terminate Accounts</string>
+    <string name="about_terms_title_prohibited_governing_law_and_jurisdiction">Governing Law and Jurisdiction</string>
+    <string name="about_terms_text_prohibited_uses">Prohibited Uses</string>
+    <string name="about_terms_text_intellectual_property">Intellectual Property</string>
+    <string name="about_terms_text_prohibited_user_generated_content">User-Generated Content</string>
+    <string name="about_terms_text_prohibited_copyright_infringement">Copyright Infringement</string>
+    <string name="about_terms_text_prohibited_payment_clauses">Payment Clauses</string>
+    <string name="about_terms_text_prohibited_limitation_of_liability_and_warranties">Limitation of Liability and Warranties</string>
+    <string name="about_terms_text_prohibited_right_to_terminate_accounts">Right to Terminate Accounts</string>
+    <string name="about_terms_text_prohibited_governing_law_and_jurisdiction">Governing Law and Jurisdiction</string>
+
+
     <!--                                                                           ABOUT PRIVACY -->
 
     <string name="about_privacy_title_information_collection_and_use">Information Collection And Use</string>
