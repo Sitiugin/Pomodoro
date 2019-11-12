@@ -24,6 +24,9 @@
     <string name="core_complete">Complete</string>
     <string name="core_open">Open</string>
     <string name="core_close">Close</string>
+    <string name="core_set">Set</string>
+    <string name="core_pomodoro" formatted="true">%1$s Pomodoro</string>
+    <string name="core_pomodoros" formatted="true">%1$s Pomodoros</string>
     <string name="core_edit_something" formatted="true">Edit %1$s</string>
     <string name="core_filter">Filter</string>
     <string name="core_undo">Undo</string>
@@ -51,33 +54,6 @@
         <item>On weekdays</item>
         <item>On weekends</item>
         <item>Every month</item>
-    </string-array>
-    <string-array name="core_pomodoro_count">
-        <item>1 pomodoro</item>
-        <item>2 pomodoros</item>
-        <item>3 pomodoros</item>
-        <item>4 pomodoros</item>
-        <item>5 pomodoros</item>
-        <item>6 pomodoros</item>
-        <item>7 pomodoros</item>
-        <item>8 pomodoros</item>
-        <item>9 pomodoros</item>
-        <item>10 pomodoros</item>
-        <item>11 pomodoros</item>
-        <item>12 pomodoros</item>
-        <item>13 pomodoros</item>
-        <item>14 pomodoros</item>
-        <item>15 pomodoros</item>
-        <item>16 pomodoros</item>
-        <item>17 pomodoros</item>
-        <item>18 pomodoros</item>
-        <item>19 pomodoros</item>
-        <item>20 pomodoros</item>
-        <item>21 pomodoro</item>
-        <item>22 pomodoros</item>
-        <item>23 pomodoros</item>
-        <item>24 pomodoros</item>
-        <item>25 pomodoros</item>
     </string-array>
 
     <string name="shared_element_add_btn">Add Project</string>
@@ -185,6 +161,8 @@
 
     <string name="add_task_title_add_task">Add Task</string>
     <string name="add_task_title_update_task">Update Task</string>
+    <string name="add_task_title_allocate_pomodoros">Allocate Pomodoros</string>
+    <string name="add_task_title_allocate">Allocate</string>
     <string name="add_task_text_name">Name</string>
     <string name="add_task_text_due">Due</string>
     <string name="add_task_text_pomodoros_allocated">Allocated time</string>

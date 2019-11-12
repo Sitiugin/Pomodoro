@@ -13,6 +13,10 @@ public interface IAddTaskFragment {
 
     void onEditDueDate(Date dueDate);
 
+    void onEditPomodorosAllocated(int pomodorosAllocated);
+
+    void onPomodorosChanged(int pomodorosAllocated);
+
     void onSelectDueDate(String dateString);
 
     void onAddTaskStart();

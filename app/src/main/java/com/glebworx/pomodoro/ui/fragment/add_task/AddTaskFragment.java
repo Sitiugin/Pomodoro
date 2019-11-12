@@ -5,12 +5,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.DatePicker;
+import android.widget.NumberPicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,7 +17,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -56,7 +54,8 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
     @BindView(R.id.edit_text_name) AppCompatEditText taskNameEditText;
     @BindView(R.id.text_view_section_name) AppCompatTextView taskNameSectionTextView;
     @BindView(R.id.button_due_date) AppCompatButton dueDateButton;
-    @BindView(R.id.spinner_pomodoros_allocated) AppCompatSpinner allocatedTimeSpinner;
+    @BindView(R.id.button_pomodoros_allocated)
+    AppCompatButton pomodorosAllocatedButton;
     @BindView(R.id.button_save) ExtendedFloatingActionButton saveButton;
     @BindView(R.id.spin_kit_view) SpinKitView spinKitView;
 
@@ -147,19 +146,20 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
                            String dueDate,
                            int pomodorosAllocated) {
 
+        dueDateButton.setText(dueDate);
+        pomodorosAllocatedButton.setText(getString(
+                pomodorosAllocated == 1 ? R.string.core_pomodoro : R.string.core_pomodoros,
+                String.valueOf(pomodorosAllocated)));
+
         if (isEditing) {
             taskNameEditText.setVisibility(View.GONE);
             taskNameSectionTextView.setVisibility(View.GONE);
             titleTextView.setText(context.getString(R.string.core_edit_something, taskName));
-            dueDateButton.setText(dueDate);
-            allocatedTimeSpinner.setSelection(pomodorosAllocated - 1, true);
             saveButton.setText(R.string.add_task_title_update_task);
         } else {
-            dueDateButton.setText(dueDate);
             initEditText();
         }
 
-        initSpinners();
         initClickEvents();
 
     }
@@ -174,6 +174,45 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
     public void onEditDueDate(Date dueDate) {
         updateName();
         showDatePickerDialog(dueDate);
+    }
+
+    @Override
+    public void onEditPomodorosAllocated(int pomodorosAllocated) {
+        AlertDialog alertDialog = DialogManager.showDialog(
+                activity,
+                R.id.container_main,
+                R.layout.dialog_pomodoro_picker);
+        NumberPicker picker = alertDialog.findViewById(R.id.number_picker);
+        picker.setMinValue(1);
+        picker.setMaxValue(25);
+        picker.setWrapSelectorWheel(true);
+        picker.setFormatter(value -> {
+            if (value == 1) {
+                return getString(R.string.core_pomodoro, String.valueOf(value));
+            }
+            return getString(R.string.core_pomodoros, String.valueOf(value));
+        });
+        picker.setValue(pomodorosAllocated);
+
+        View.OnClickListener onClickListener = view -> {
+            if (view.getId() == R.id.button_positive) {
+                presenter.selectPomodorosAllocated(picker.getValue());
+                alertDialog.dismiss();
+            } else if (view.getId() == R.id.button_negative) {
+                alertDialog.dismiss();
+            }
+        };
+
+        alertDialog.findViewById(R.id.button_positive).setOnClickListener(onClickListener);
+        alertDialog.findViewById(R.id.button_negative).setOnClickListener(onClickListener);
+
+    }
+
+    @Override
+    public void onPomodorosChanged(int pomodorosAllocated) {
+        pomodorosAllocatedButton.setText(getString(
+                pomodorosAllocated == 1 ? R.string.core_pomodoro : R.string.core_pomodoros,
+                String.valueOf(pomodorosAllocated)));
     }
 
     @Override
@@ -226,45 +265,27 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
         KeyboardManager.showKeyboard(activity, taskNameEditText);
     }
 
-    private void initSpinners() {
-        allocatedTimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                presenter.selectPomodorosAllocated(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) { }
-        });
-        allocatedTimeSpinner.setOnTouchListener((view, motionEvent) -> {
-            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                updateName();
-                return true;
-            } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                view.performClick();
-                return true;
-            }
-            return false;
-        });
-    }
-
     private void initClickEvents() {
         View.OnClickListener onClickListener = view -> {
+            KeyboardManager.hideKeyboard(activity);
             switch (view.getId()) {
                 case R.id.button_due_date:
                     presenter.editDueDate();
+                    break;
+                case R.id.button_pomodoros_allocated:
+                    presenter.editPomodorosAllocated();
                     break;
                 case R.id.button_save:
                     updateName();
                     presenter.saveTask();
                     break;
                 case R.id.button_close:
-                    KeyboardManager.hideKeyboard(activity);
                     fragmentListener.onCloseFragment();
                     break;
             }
         };
         dueDateButton.setOnClickListener(onClickListener);
+        pomodorosAllocatedButton.setOnClickListener(onClickListener);
         saveButton.setOnClickListener(onClickListener);
         closeButton.setOnClickListener(onClickListener);
     }

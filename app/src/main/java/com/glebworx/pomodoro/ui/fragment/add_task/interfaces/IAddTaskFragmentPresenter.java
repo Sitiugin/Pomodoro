@@ -10,9 +10,11 @@ public interface IAddTaskFragmentPresenter {
 
     void editDueDate();
 
+    void editPomodorosAllocated();
+
     void selectDueDate(int year, int monthOfYear, int dayOfMonth);
 
-    void selectPomodorosAllocated(int position);
+    void selectPomodorosAllocated(int pomodorosAllocated);
 
     void saveTask();
 

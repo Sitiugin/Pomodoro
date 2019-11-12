@@ -87,15 +87,14 @@
         android:drawablePadding="@dimen/margin_content_quarter"
         app:layout_constraintTop_toBottomOf="@+id/button_due_date"
         app:layout_constraintStart_toStartOf="parent"/>
-    <androidx.appcompat.widget.AppCompatSpinner
-        style="@style/SpinnerStyle"
-        android:id="@+id/spinner_pomodoros_allocated"
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_pomodoros_allocated"
+        style="@style/ButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_content"
         android:gravity="start"
-        android:entries="@array/core_pomodoro_count"
-        android:spinnerMode="dialog"
         app:layout_constraintTop_toBottomOf="@+id/text_view_section_pomodoros_allocated" />
 
     <!--<androidx.appcompat.widget.AppCompatTextView
@@ -127,7 +126,7 @@
         android:layout_height="wrap_content"
         android:visibility="invisible"
         app:SpinKit_Color="@color/colorHighlight"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_recurrence"
+        app:layout_constraintTop_toBottomOf="@+id/button_pomodoros_allocated"
         app:layout_constraintBottom_toTopOf="@+id/button_save"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

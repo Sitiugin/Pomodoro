@@ -82,6 +82,11 @@ public class AddTaskFragmentPresenter implements IAddTaskFragmentPresenter {
     }
 
     @Override
+    public void editPomodorosAllocated() {
+        presenterListener.onEditPomodorosAllocated(taskModel.getPomodorosAllocated());
+    }
+
+    @Override
     public void selectDueDate(int year, int monthOfYear, int dayOfMonth) {
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.set(year, monthOfYear, dayOfMonth, 0, 0, 0);
@@ -90,8 +95,9 @@ public class AddTaskFragmentPresenter implements IAddTaskFragmentPresenter {
     }
 
     @Override
-    public void selectPomodorosAllocated(int position) {
-        taskModel.setPomodorosAllocated(position + 1);
+    public void selectPomodorosAllocated(int pomodorosAllocated) {
+        taskModel.setPomodorosAllocated(pomodorosAllocated);
+        presenterListener.onPomodorosChanged(pomodorosAllocated);
     }
 
     @Override
