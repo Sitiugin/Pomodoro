@@ -1,14 +1,12 @@
 package com.glebworx.pomodoro.ui.activity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,52 +28,23 @@ public class SplashActivity extends AppCompatActivity implements ISplashActivity
 
     private SpinKitView spinKitView;
 
-    private boolean isSplashLayoutInflated;
     private SplashActivityPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         presenter = new SplashActivityPresenter(this);
-        isSplashLayoutInflated = false;
-
-        handleIntent(getIntent());
-
+        presenter.handleIntent(getIntent(), SplashActivity.this);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        handleIntent(intent);
+        presenter.handleIntent(intent, SplashActivity.this);
     }
 
-    private void handleIntent(Intent intent) {
-        // listen for dynamic link
-        if (AuthManager.getInstance().isSignedIn()) { // already signed in, start Main Activity
-            startMainActivity();
-        } else { // not signed in, check for dynamic link
-            if (intent == null) {
-                inflateSplashLayout();
-                return;
-            }
-            Uri uri = intent.getData();
-            if (uri == null) {
-                inflateSplashLayout();
-                return;
-            }
-            String dynamicLink = uri.toString();
-            SharedPrefsManager sharedPrefsManager = new SharedPrefsManager(SplashActivity.this);
-            String email = sharedPrefsManager.getEmail();
-            if (email == null) {
-                inflateSplashLayout();
-                return;
-            }
-            signInAndStartMainActivity(email, dynamicLink); // dynamic link present
-        }
-    }
-
-    private void startMainActivity() {
+    @Override
+    public void onStartMainActivity() {
         String name = AuthManager.getInstance().getName();
         String message = name == null
                 ? getString(R.string.splash_toast_sign_in_success)
@@ -87,15 +56,25 @@ public class SplashActivity extends AppCompatActivity implements ISplashActivity
         finishAffinity();
     }
 
-    private void inflateSplashLayout() {
-
-        isSplashLayoutInflated = true;
-
+    @Override
+    public void onInflateSplashLayout() {
         setContentView(R.layout.activity_splash);
         initSplashViews();
-
         this.spinKitView = findViewById(R.id.spin_kit_view);
+    }
 
+    @Override
+    public void onShowSpinKit() {
+        if (spinKitView != null && !spinKitView.isShown()) {
+            spinKitView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onHideSpinKit() {
+        if (spinKitView != null && spinKitView.isShown()) {
+            spinKitView.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void initSplashViews() {
@@ -103,14 +82,14 @@ public class SplashActivity extends AppCompatActivity implements ISplashActivity
         // init interactive views
         TextInputLayout emailInputLayout = findViewById(R.id.layout_email_input);
         TextInputEditText emailEditText = findViewById(R.id.edit_text_email);
-        ExtendedFloatingActionButton signInButton = findViewById(R.id.button_sign_in);
+        ExtendedFloatingActionButton sendConfirmationButton = findViewById(R.id.button_send_confirmation);
         AppCompatButton termsOfServiceButton = findViewById(R.id.button_terms_of_service);
         AppCompatButton privacyButton = findViewById(R.id.button_privacy);
 
         // init click listeners
         View.OnClickListener onClickListener = view -> {
             switch (view.getId()) {
-                case R.id.button_sign_in:
+                case R.id.button_send_confirmation:
                     validateAndSendSignInLink(emailInputLayout);
                     break;
                 case R.id.button_terms_of_service:
@@ -121,7 +100,7 @@ public class SplashActivity extends AppCompatActivity implements ISplashActivity
                     break;
             }
         };
-        signInButton.setOnClickListener(onClickListener);
+        sendConfirmationButton.setOnClickListener(onClickListener);
         termsOfServiceButton.setOnClickListener(onClickListener);
         privacyButton.setOnClickListener(onClickListener);
 
@@ -148,7 +127,7 @@ public class SplashActivity extends AppCompatActivity implements ISplashActivity
             textInputLayout.setError(getString(R.string.splash_err_email_invalid));
             return;
         }
-        sendSignInLink(email);
+        presenter.sendSignInLink(email, SplashActivity.this);
     }
 
     private String getInput(@Nullable EditText editText) {
@@ -160,52 +139,6 @@ public class SplashActivity extends AppCompatActivity implements ISplashActivity
             return null;
         }
         return editable.toString();
-    }
-
-    private void sendSignInLink(String email) {
-
-        showSpinKit();
-
-        AuthManager authManager = AuthManager.getInstance();
-        authManager.sendVerificationEmail(email, task -> {
-            hideSpinKit();
-            if (task.isSuccessful()) {
-                SharedPrefsManager sharedPrefsManager = new SharedPrefsManager(SplashActivity.this);
-                sharedPrefsManager.setEmail(email);
-                Toast.makeText(SplashActivity.this, getString(R.string.splash_toast_confirmation_email_sent_success, email), Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(SplashActivity.this, getString(R.string.splash_toast_confirmation_email_sent_failed, email), Toast.LENGTH_LONG).show();
-            }
-        });
-
-    }
-
-    private void showSpinKit() {
-        if (spinKitView != null && !spinKitView.isShown()) {
-            spinKitView.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void hideSpinKit() {
-        if (spinKitView != null && spinKitView.isShown()) {
-            spinKitView.setVisibility(View.INVISIBLE);
-        }
-    }
-
-    private void signInAndStartMainActivity(@NonNull String email, @NonNull String emailLink) {
-        Toast.makeText(SplashActivity.this, getString(R.string.splash_toast_signing_in), Toast.LENGTH_SHORT).show();
-        showSpinKit();
-        AuthManager.getInstance().signIn(email, emailLink, task -> {
-            if (task.isSuccessful()) {
-                startMainActivity();
-            } else {
-                Toast.makeText(SplashActivity.this, getString(R.string.splash_toast_sign_in_failed), Toast.LENGTH_LONG).show();
-                hideSpinKit();
-                if (!isSplashLayoutInflated) {
-                    inflateSplashLayout();
-                }
-            }
-        });
     }
 
 }

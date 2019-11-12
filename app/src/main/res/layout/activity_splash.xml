@@ -52,18 +52,33 @@
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         style="@style/ExtendedFloatingActionButtonStyle"
-        android:id="@+id/button_sign_in"
+        android:id="@+id/button_send_confirmation"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/height_fab"
         android:layout_marginTop="@dimen/margin_content_double"
-        android:text="@string/splash_title_sign_in"
+        android:text="@string/splash_title_send_confirmation"
+        android:outlineAmbientShadowColor="@color/colorHighlight"
+        android:outlineSpotShadowColor="@color/colorHighlight"
+        app:icon="@drawable/ic_send_black"
+        app:layout_constraintTop_toBottomOf="@+id/layout_email_input"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:targetApi="p" />
+
+    <!--<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        style="@style/ExtendedFloatingActionButtonStyle"
+        android:id="@+id/button_open_email"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/height_fab"
+        android:layout_marginTop="@dimen/margin_content_double"
+        android:text="@string/splash_title_send_confirmation"
         android:outlineAmbientShadowColor="@color/colorHighlight"
         android:outlineSpotShadowColor="@color/colorHighlight"
         app:icon="@drawable/ic_sign_in_black"
         app:layout_constraintTop_toBottomOf="@+id/layout_email_input"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:targetApi="p" />
+        tools:targetApi="p" />-->
 
     <com.github.ybq.android.spinkit.SpinKitView
         style="@style/SpinKitView.Large.Pulse"
@@ -72,7 +87,7 @@
         android:layout_height="wrap_content"
         android:visibility="invisible"
         app:SpinKit_Color="@color/colorHighlight"
-        app:layout_constraintTop_toBottomOf="@+id/button_sign_in"
+        app:layout_constraintTop_toBottomOf="@+id/button_send_confirmation"
         app:layout_constraintBottom_toTopOf="@+id/text_view_tos_privacy_description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

@@ -91,7 +91,8 @@
 
     <!--                                                                                  SPLASH -->
 
-    <string name="splash_title_sign_in">Sign In</string>
+    <string name="splash_title_send_confirmation">Send Confirmation</string>
+    <string name="splash_title_open_email_client">Open Email Client</string>
     <string name="splash_title_send_again">Send Again</string>
     <string name="splash_title_try_other_email">Try a Different Email</string>
     <string name="splash_title_email_verification">Email Verification</string>
