@@ -35,6 +35,7 @@ public class SplashActivity extends AppCompatActivity implements ISplashActivity
     private ConstraintLayout rootView;
     private ExtendedFloatingActionButton sendConfirmationButton;
     private ExtendedFloatingActionButton openEmailButton;
+    private AppCompatButton sendAgainButton;
     private SpinKitView spinKitView;
     private ConstraintSet constraintSet;
     private SplashActivityPresenter presenter;
@@ -72,6 +73,7 @@ public class SplashActivity extends AppCompatActivity implements ISplashActivity
         rootView = findViewById(R.id.container_splash);
         sendConfirmationButton = findViewById(R.id.button_send_confirmation);
         openEmailButton = findViewById(R.id.button_open_email);
+        sendAgainButton = findViewById(R.id.button_send_again);
         spinKitView = findViewById(R.id.spin_kit_view);
         initSplashViews();
     }
@@ -88,6 +90,7 @@ public class SplashActivity extends AppCompatActivity implements ISplashActivity
         constraintSet.clone(rootView);
 
         constraintSet.setVisibility(R.id.button_open_email, ConstraintSet.GONE);
+        constraintSet.setVisibility(R.id.button_send_again, ConstraintSet.GONE);
         constraintSet.setVisibility(R.id.button_send_confirmation, ConstraintSet.VISIBLE);
 
         constraintSet.applyTo(rootView);
@@ -107,6 +110,7 @@ public class SplashActivity extends AppCompatActivity implements ISplashActivity
 
         constraintSet.setVisibility(R.id.button_send_confirmation, ConstraintSet.GONE);
         constraintSet.setVisibility(R.id.button_open_email, ConstraintSet.VISIBLE);
+        constraintSet.setVisibility(R.id.button_send_again, ConstraintSet.VISIBLE);
 
         constraintSet.applyTo(rootView);
 
@@ -143,6 +147,9 @@ public class SplashActivity extends AppCompatActivity implements ISplashActivity
                 case R.id.button_open_email:
                     presenter.openEmailClient(SplashActivity.this);
                     break;
+                case R.id.button_send_again:
+                    validateAndSendAgainSignInLink(emailInputLayout);
+                    break;
                 case R.id.button_terms_of_service:
                     showInfoDialog(R.layout.dialog_terms, R.string.splash_title_terms);
                     break;
@@ -154,6 +161,7 @@ public class SplashActivity extends AppCompatActivity implements ISplashActivity
 
         sendConfirmationButton.setOnClickListener(onClickListener);
         openEmailButton.setOnClickListener(onClickListener);
+        sendAgainButton.setOnClickListener(onClickListener);
         termsOfServiceButton.setOnClickListener(onClickListener);
         privacyButton.setOnClickListener(onClickListener);
 
@@ -194,17 +202,30 @@ public class SplashActivity extends AppCompatActivity implements ISplashActivity
         positiveButton.setOnClickListener(view -> alertDialog.dismiss());
     }
 
-    private void validateAndSendSignInLink(TextInputLayout textInputLayout) {
-        String email = getInput(textInputLayout.getEditText());
+    private boolean validateEmail(TextInputLayout textInputLayout, String email) {
         if (email == null || email.isEmpty()) {
             textInputLayout.setError(getString(R.string.splash_err_email_empty));
-            return;
+            return false;
         }
         if (!email.matches(REGEX_EMAIL)) {
             textInputLayout.setError(getString(R.string.splash_err_email_invalid));
-            return;
+            return false;
         }
-        presenter.sendSignInLink(email, SplashActivity.this);
+        return true;
+    }
+
+    private void validateAndSendSignInLink(TextInputLayout textInputLayout) {
+        String email = getInput(textInputLayout.getEditText());
+        if (validateEmail(textInputLayout, email)) {
+            presenter.sendSignInLink(email, false, SplashActivity.this);
+        }
+    }
+
+    private void validateAndSendAgainSignInLink(TextInputLayout textInputLayout) {
+        String email = getInput(textInputLayout.getEditText());
+        if (validateEmail(textInputLayout, email)) {
+            presenter.sendSignInLink(email, true, SplashActivity.this);
+        }
     }
 
     private String getInput(@Nullable EditText editText) {

@@ -78,11 +78,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_send_again"
+        style="@style/ButtonStyle.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_content"
+        android:text="@string/splash_title_send_again"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_open_email" />
+
     <com.github.ybq.android.spinkit.SpinKitView
         style="@style/SpinKitView.Large.Pulse"
         android:id="@+id/spin_kit_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:elevation="@dimen/elevation_fab_high"
         android:visibility="invisible"
         app:SpinKit_Color="@color/colorHighlight"
         app:layout_constraintTop_toBottomOf="@+id/button_send_confirmation"

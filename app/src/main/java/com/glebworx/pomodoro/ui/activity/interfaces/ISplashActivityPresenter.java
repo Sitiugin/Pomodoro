@@ -9,7 +9,7 @@ public interface ISplashActivityPresenter {
 
     void handleIntent(Intent intent, Context context);
 
-    void sendSignInLink(String email, Context context);
+    void sendSignInLink(String email, boolean isRepeat, Context context);
 
     void openEmailClient(Context context);
 }

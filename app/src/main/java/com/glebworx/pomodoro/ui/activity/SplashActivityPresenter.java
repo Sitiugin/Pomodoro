@@ -62,7 +62,7 @@ public class SplashActivityPresenter implements ISplashActivityPresenter {
     }
 
     @Override
-    public void sendSignInLink(String email, Context context) {
+    public void sendSignInLink(String email, boolean isRepeat, Context context) {
 
         presenterListener.onShowSpinKit();
 
@@ -73,7 +73,9 @@ public class SplashActivityPresenter implements ISplashActivityPresenter {
                 SharedPrefsManager sharedPrefsManager = new SharedPrefsManager(context);
                 sharedPrefsManager.setEmail(email);
                 Toast.makeText(context, context.getString(R.string.splash_toast_confirmation_email_sent_success, email), Toast.LENGTH_LONG).show();
-                presenterListener.onShowOpenEmailViews();
+                if (!isRepeat) {
+                    presenterListener.onShowOpenEmailViews();
+                }
             } else {
                 Toast.makeText(context, context.getString(R.string.splash_toast_confirmation_email_sent_failed, email), Toast.LENGTH_LONG).show();
             }
