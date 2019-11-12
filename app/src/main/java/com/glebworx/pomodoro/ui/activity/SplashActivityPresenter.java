@@ -2,6 +2,8 @@ package com.glebworx.pomodoro.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.widget.Toast;
 
@@ -12,6 +14,8 @@ import com.glebworx.pomodoro.ui.activity.interfaces.ISplashActivity;
 import com.glebworx.pomodoro.ui.activity.interfaces.ISplashActivityPresenter;
 import com.glebworx.pomodoro.util.manager.AuthManager;
 import com.glebworx.pomodoro.util.manager.SharedPrefsManager;
+
+import java.util.List;
 
 public class SplashActivityPresenter implements ISplashActivityPresenter {
 
@@ -69,11 +73,27 @@ public class SplashActivityPresenter implements ISplashActivityPresenter {
                 SharedPrefsManager sharedPrefsManager = new SharedPrefsManager(context);
                 sharedPrefsManager.setEmail(email);
                 Toast.makeText(context, context.getString(R.string.splash_toast_confirmation_email_sent_success, email), Toast.LENGTH_LONG).show();
+                presenterListener.onShowOpenEmailViews();
             } else {
                 Toast.makeText(context, context.getString(R.string.splash_toast_confirmation_email_sent_failed, email), Toast.LENGTH_LONG).show();
             }
         });
 
+    }
+
+    @Override
+    public void openEmailClient(Context context) {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_APP_EMAIL);
+        //context.startActivity(intent);
+        //context.startActivity(Intent.createChooser(intent, getString(R.string.ChoseEmailClient)));
+        final PackageManager packageManager = context.getPackageManager();
+        List<ResolveInfo> list = packageManager.queryIntentActivities(intent, 0);
+        if (list.isEmpty()) {
+            Toast.makeText(context, context.getString(R.string.email_no_clients_found), Toast.LENGTH_LONG).show();
+        } else {
+            context.startActivity(Intent.createChooser(intent, context.getString(R.string.email_title_open_email)));
+        }
     }
 
     private void signInAndStartMainActivity(@NonNull String email, @NonNull String emailLink, Context context) {

@@ -13,6 +13,7 @@
     <string name="notification_title_paused">Paused</string>
 
     <string name="email_title_send_feedback">Send Feedback</string>
+    <string name="email_title_open_email">Open Email</string>
     <string name="email_address_mailto">mailto: glib.sitiugin@gmail.com</string>
     <string name="email_subject_feedback">Feedback for Pomodoro</string>
     <string name="email_no_clients_found">No email clients installed!</string>
@@ -108,7 +109,8 @@
     <string name="splash_toast_signed_in_as" formatted="true">Signed in as %1$s</string>
     <string name="splash_toast_confirmation_email_sent_success" formatted="true">We sent the confirmation email to %1$s</string>
     <string name="splash_toast_confirmation_email_sent_failed" formatted="true">We could not send the confirmation email to %1$s</string>
-    <string name="splash_err_email_invalid">Enter a valid email!</string>
+    <string name="splash_err_email_empty">Email cannot be empty!</string>
+    <string name="splash_err_email_invalid">Not a valid email address!</string>
 
 
     <!--                                                                                    MAIN -->

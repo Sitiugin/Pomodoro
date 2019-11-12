@@ -65,20 +65,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:targetApi="p" />
 
-    <!--<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        style="@style/ExtendedFloatingActionButtonStyle"
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        style="@style/ExtendedFloatingActionButtonStyle.Light"
         android:id="@+id/button_open_email"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/height_fab"
+        android:text="@string/splash_title_open_email_client"
         android:layout_marginTop="@dimen/margin_content_double"
-        android:text="@string/splash_title_send_confirmation"
-        android:outlineAmbientShadowColor="@color/colorHighlight"
-        android:outlineSpotShadowColor="@color/colorHighlight"
+        android:visibility="gone"
         app:icon="@drawable/ic_sign_in_black"
         app:layout_constraintTop_toBottomOf="@+id/layout_email_input"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:targetApi="p" />-->
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <com.github.ybq.android.spinkit.SpinKitView
         style="@style/SpinKitView.Large.Pulse"

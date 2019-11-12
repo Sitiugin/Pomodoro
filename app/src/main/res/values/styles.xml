@@ -77,11 +77,17 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="backgroundTint">@color/colorHighlight</item>
         <item name="iconTint">@android:color/white</item>
-        <item name="rippleColor">@android:color/white</item>
+        <item name="rippleColor">@color/colorRippleLight</item>
         <item name="elevation">@dimen/elevation_fab</item>
         <item name="pressedTranslationZ">@dimen/elevation_fab_high</item>
     </style>
 
+    <style name="ExtendedFloatingActionButtonStyle.Light" parent="ExtendedFloatingActionButtonStyle">
+        <item name="android:textColor">@color/colorDark</item>
+        <item name="backgroundTint">@color/colorForeground</item>
+        <item name="iconTint">@color/colorDark</item>
+        <item name="rippleColor">@color/colorRipple</item>
+    </style>
 
 
     <!--                                                                            BUTTON THEME -->
@@ -283,6 +289,8 @@
         <item name="boxStrokeColor">@color/colorHighlight</item>
         <item name="errorTextColor">@color/colorError</item>
         <item name="errorTextAppearance">@style/TextStyle</item>
+        <item name="errorIconTint">@color/colorError</item>
+        <item name="errorIconDrawable">@drawable/ic_error_red</item>
     </style>
 
 

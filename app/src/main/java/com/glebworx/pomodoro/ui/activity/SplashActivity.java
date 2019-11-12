@@ -3,6 +3,7 @@ package com.glebworx.pomodoro.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -12,6 +13,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.transition.TransitionManager;
 
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.glebworx.pomodoro.R;
@@ -26,14 +30,20 @@ import com.google.android.material.textfield.TextInputLayout;
 
 public class SplashActivity extends AppCompatActivity implements ISplashActivity {
 
-    private SpinKitView spinKitView;
+    private static final String REGEX_EMAIL = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
 
+    private ConstraintLayout rootView;
+    private ExtendedFloatingActionButton sendConfirmationButton;
+    private ExtendedFloatingActionButton openEmailButton;
+    private SpinKitView spinKitView;
+    private ConstraintSet constraintSet;
     private SplashActivityPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new SplashActivityPresenter(this);
+        constraintSet = new ConstraintSet();
         presenter.handleIntent(getIntent(), SplashActivity.this);
     }
 
@@ -59,8 +69,47 @@ public class SplashActivity extends AppCompatActivity implements ISplashActivity
     @Override
     public void onInflateSplashLayout() {
         setContentView(R.layout.activity_splash);
+        rootView = findViewById(R.id.container_splash);
+        sendConfirmationButton = findViewById(R.id.button_send_confirmation);
+        openEmailButton = findViewById(R.id.button_open_email);
+        spinKitView = findViewById(R.id.spin_kit_view);
         initSplashViews();
-        this.spinKitView = findViewById(R.id.spin_kit_view);
+    }
+
+    @Override
+    public void onShowSendConfirmationViews() {
+
+        if (rootView == null) {
+            return;
+        }
+
+        TransitionManager.endTransitions(rootView);
+        TransitionManager.beginDelayedTransition(rootView);
+        constraintSet.clone(rootView);
+
+        constraintSet.setVisibility(R.id.button_open_email, ConstraintSet.GONE);
+        constraintSet.setVisibility(R.id.button_send_confirmation, ConstraintSet.VISIBLE);
+
+        constraintSet.applyTo(rootView);
+
+    }
+
+    @Override
+    public void onShowOpenEmailViews() {
+
+        if (rootView == null) {
+            return;
+        }
+
+        TransitionManager.endTransitions(rootView);
+        TransitionManager.beginDelayedTransition(rootView);
+        constraintSet.clone(rootView);
+
+        constraintSet.setVisibility(R.id.button_send_confirmation, ConstraintSet.GONE);
+        constraintSet.setVisibility(R.id.button_open_email, ConstraintSet.VISIBLE);
+
+        constraintSet.applyTo(rootView);
+
     }
 
     @Override
@@ -82,7 +131,6 @@ public class SplashActivity extends AppCompatActivity implements ISplashActivity
         // init interactive views
         TextInputLayout emailInputLayout = findViewById(R.id.layout_email_input);
         TextInputEditText emailEditText = findViewById(R.id.edit_text_email);
-        ExtendedFloatingActionButton sendConfirmationButton = findViewById(R.id.button_send_confirmation);
         AppCompatButton termsOfServiceButton = findViewById(R.id.button_terms_of_service);
         AppCompatButton privacyButton = findViewById(R.id.button_privacy);
 
@@ -92,6 +140,9 @@ public class SplashActivity extends AppCompatActivity implements ISplashActivity
                 case R.id.button_send_confirmation:
                     validateAndSendSignInLink(emailInputLayout);
                     break;
+                case R.id.button_open_email:
+                    presenter.openEmailClient(SplashActivity.this);
+                    break;
                 case R.id.button_terms_of_service:
                     showInfoDialog(R.layout.dialog_terms, R.string.splash_title_terms);
                     break;
@@ -100,9 +151,31 @@ public class SplashActivity extends AppCompatActivity implements ISplashActivity
                     break;
             }
         };
+
         sendConfirmationButton.setOnClickListener(onClickListener);
+        openEmailButton.setOnClickListener(onClickListener);
         termsOfServiceButton.setOnClickListener(onClickListener);
         privacyButton.setOnClickListener(onClickListener);
+
+        // init edit text listener
+        emailEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (sendConfirmationButton.getVisibility() == View.GONE) {
+                    onShowSendConfirmationViews();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         // if signed in before, show email previously used for sign in
         SharedPrefsManager sharedPrefsManager = new SharedPrefsManager(SplashActivity.this);
@@ -124,6 +197,10 @@ public class SplashActivity extends AppCompatActivity implements ISplashActivity
     private void validateAndSendSignInLink(TextInputLayout textInputLayout) {
         String email = getInput(textInputLayout.getEditText());
         if (email == null || email.isEmpty()) {
+            textInputLayout.setError(getString(R.string.splash_err_email_empty));
+            return;
+        }
+        if (!email.matches(REGEX_EMAIL)) {
             textInputLayout.setError(getString(R.string.splash_err_email_invalid));
             return;
         }
