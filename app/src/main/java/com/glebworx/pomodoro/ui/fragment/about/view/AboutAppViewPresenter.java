@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutAppView;
 import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutAppViewPresenter;
+import com.glebworx.pomodoro.ui.fragment.about.view.item.AboutAppHeaderItem;
 import com.glebworx.pomodoro.ui.fragment.about.view.item.AboutItem;
 
 import java.util.ArrayList;
@@ -24,9 +25,8 @@ public class AboutAppViewPresenter implements IAboutAppViewPresenter {
     @Override
     public void init(Context context) {
         List<AboutItem> items = new ArrayList<>();
-        //
         addItems(context, items);
-        presenterListener.onInitView(items);
+        presenterListener.onInitView(new AboutAppHeaderItem(), items);
     }
 
     private void addItems(Context context, List<AboutItem> items) {

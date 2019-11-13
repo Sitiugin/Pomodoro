@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.glebworx.pomodoro.ui.fragment.about.view.interfaces.IAboutAppView;
+import com.glebworx.pomodoro.ui.fragment.about.view.item.AboutAppHeaderItem;
 import com.glebworx.pomodoro.ui.fragment.about.view.item.AboutItem;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
@@ -37,14 +38,17 @@ public class AboutAppView extends RecyclerView implements IAboutAppView {
     }
 
     @Override
-    public void onInitView(List<AboutItem> items) {
+    public void onInitView(AboutAppHeaderItem headerItem, List<AboutItem> items) {
         this.setLayoutManager(new LinearLayoutManager(context));
         this.setHasFixedSize(true);
         this.setItemAnimator(new AlphaCrossFadeAnimator());
+        ItemAdapter<AboutAppHeaderItem> headerAdapter = new ItemAdapter<>();
+        headerAdapter.add(headerItem);
         ItemAdapter<AboutItem> adapter = new ItemAdapter<>();
         adapter.add(items);
-        FastAdapter<AboutItem> fastAdapter = new FastAdapter<>();
-        fastAdapter.addAdapter(0, adapter);
+        FastAdapter fastAdapter = new FastAdapter<>();
+        fastAdapter.addAdapter(0, headerAdapter);
+        fastAdapter.addAdapter(1, adapter);
         fastAdapter.setHasStableIds(true);
         this.setAdapter(fastAdapter);
     }
