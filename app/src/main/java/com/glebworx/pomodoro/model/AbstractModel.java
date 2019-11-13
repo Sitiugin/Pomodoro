@@ -21,17 +21,17 @@ public abstract class AbstractModel implements Comparable<AbstractModel>, Parcel
 
     //                                                                                  CONSTRUCTORS
 
-    public AbstractModel() {
+    AbstractModel() {
         this.name = null;
         this.timestamp = new Date();
     }
 
-    public AbstractModel(@NonNull String name) {
+    AbstractModel(@NonNull String name) {
         this.name = name;
         this.timestamp = new Date();
     }
 
-    public AbstractModel(Parcel in) {
+    AbstractModel(Parcel in) {
         this.name = in.readString();
         this.timestamp = new Date(in.readLong());
     }

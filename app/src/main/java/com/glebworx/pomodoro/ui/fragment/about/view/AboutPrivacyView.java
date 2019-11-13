@@ -52,10 +52,12 @@ public class AboutPrivacyView extends RecyclerView implements IAboutPrivacyView 
     }
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
+
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
                 R.styleable.AboutPrivacyView,
-                0, 0);
+                defStyleAttr,
+                0);
 
         boolean isEmbedded;
         try {
@@ -63,8 +65,10 @@ public class AboutPrivacyView extends RecyclerView implements IAboutPrivacyView 
         } finally {
             a.recycle();
         }
+
         this.context = context;
         presenter = new AboutPrivacyViewPresenter(this, context, isEmbedded);
+
     }
 
 }

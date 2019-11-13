@@ -24,17 +24,13 @@ public class AboutPrivacyViewPresenter implements IAboutPrivacyViewPresenter {
 
     @Override
     public void init(Context context, boolean isEmbedded) {
-
         List<AboutItem> items = new ArrayList<>();
-
         if (isEmbedded) {
             addEmbeddedItems(context, items);
         } else {
             addItems(context, items);
         }
-
         presenterListener.onInitView(items);
-
     }
 
     private void addEmbeddedItems(Context context, List<AboutItem> items) {

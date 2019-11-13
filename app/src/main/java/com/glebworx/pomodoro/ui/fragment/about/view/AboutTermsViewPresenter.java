@@ -25,13 +25,11 @@ public class AboutTermsViewPresenter implements IAboutTermsViewPresenter {
     @Override
     public void init(Context context, boolean isEmbedded) {
         List<AboutItem> items = new ArrayList<>();
-
         if (isEmbedded) {
             addEmbeddedItems(context, items);
         } else {
             addItems(context, items);
         }
-
         presenterListener.onInitView(items);
     }
 

@@ -1,0 +1,42 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_about_app_header"
+    style="@style/ViewStyle.Rounded"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/margin_content"
+    android:layout_marginVertical="@dimen/margin_content_half"
+    android:padding="@dimen/margin_content">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/image_view_icon"
+        android:layout_width="@dimen/size_splash"
+        android:layout_height="@dimen/size_splash"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_view_title_app"
+        style="@style/TextStyle.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_content"
+        android:text="@string/app_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_view_icon" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_view_version_app"
+        style="@style/TextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_version"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_title_app" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

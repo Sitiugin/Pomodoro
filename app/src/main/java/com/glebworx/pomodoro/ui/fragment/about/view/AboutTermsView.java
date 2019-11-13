@@ -52,10 +52,12 @@ public class AboutTermsView extends RecyclerView implements IAboutTermsView {
     }
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
+
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
                 R.styleable.AboutTermsView,
-                0, 0);
+                defStyleAttr,
+                0);
 
         boolean isEmbedded;
         try {
@@ -63,8 +65,10 @@ public class AboutTermsView extends RecyclerView implements IAboutTermsView {
         } finally {
             a.recycle();
         }
+
         this.context = context;
         presenter = new AboutTermsViewPresenter(this, context, isEmbedded);
+
     }
 
 }
