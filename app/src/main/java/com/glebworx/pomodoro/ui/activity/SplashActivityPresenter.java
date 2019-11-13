@@ -74,14 +74,10 @@ public class SplashActivityPresenter implements ISplashActivityPresenter {
                 SharedPrefsManager sharedPrefsManager = new SharedPrefsManager(context);
                 sharedPrefsManager.setEmail(email);
                 Toast.makeText(context, context.getString(R.string.splash_toast_confirmation_email_sent_success, email), Toast.LENGTH_LONG).show();
-                if (!isRepeat) {
-                    presenterListener.onShowOpenEmailViews();
-                }
+                presenterListener.onShowOpenEmailViews();
             } else {
                 Toast.makeText(context, context.getString(R.string.splash_toast_confirmation_email_sent_failed, email), Toast.LENGTH_LONG).show();
-                if (!isRepeat) {
-                    presenterListener.onShowSendConfirmationViews();
-                }
+                presenterListener.onShowSendConfirmationViews();
             }
         });
 

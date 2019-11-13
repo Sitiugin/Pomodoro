@@ -46,7 +46,7 @@ public class AboutAppView extends RecyclerView implements IAboutAppView {
         headerAdapter.add(headerItem);
         ItemAdapter<AboutItem> adapter = new ItemAdapter<>();
         adapter.add(items);
-        FastAdapter fastAdapter = new FastAdapter<>();
+        FastAdapter fastAdapter = new FastAdapter<>(); // TODO use generics
         fastAdapter.addAdapter(0, headerAdapter);
         fastAdapter.addAdapter(1, adapter);
         fastAdapter.setHasStableIds(true);
