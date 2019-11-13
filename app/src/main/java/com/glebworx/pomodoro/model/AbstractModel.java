@@ -9,7 +9,6 @@ import com.google.firebase.firestore.Exclude;
 
 import java.util.Date;
 import java.util.Objects;
-import java.util.UUID;
 
 public abstract class AbstractModel implements Comparable<AbstractModel>, Parcelable {
 
@@ -92,7 +91,7 @@ public abstract class AbstractModel implements Comparable<AbstractModel>, Parcel
 
     @Exclude
     public boolean isValid() {
-        return name != null && !(name.contains(".")
+        return name != null && !name.isEmpty() && !(name.contains(".")
                 || name.contains("$")
                 || name.contains("[")
                 || name.contains("]")
