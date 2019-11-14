@@ -239,7 +239,7 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
 
         long daysElapsed = ChronoUnit.DAYS.between(minDate.toInstant(), new Date().toInstant());
 
-        overviewModel.setAveragePerDay((float) totalPomodoros / daysElapsed);
+        overviewModel.setAveragePerDay(daysElapsed == 0 ? 0 : (float) totalPomodoros / daysElapsed);
 
         Collections.sort(dates);
 

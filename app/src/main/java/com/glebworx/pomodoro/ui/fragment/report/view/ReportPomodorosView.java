@@ -132,6 +132,10 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
                         IChart.rotateChart(expandedChart);
                         IChart.initChart(expandedChart, true, true, "");
                         expandedChart.setData(chart.getData());
+                        if (chart.getData().getEntryCount() == 0) {
+                            expandedChart.setNoDataText(context.getString(R.string.core_text_no_data));
+                            expandedChart.invalidate();
+                        }
                         expandedChart.animateY(ANIM_DURATION);
                     }
                 });
