@@ -114,6 +114,10 @@ public class TaskApi extends BaseApi {
 
         batch.set(
                 getCollection(COLLECTION_HISTORY).document(),
+                new HistoryModel(projectModel.getName(), projectModel.getColorTag(), taskModel.getName(), HistoryModel.EVENT_POMODORO_COMPLETED));
+
+        batch.set(
+                getCollection(COLLECTION_HISTORY).document(),
                 new HistoryModel(projectModel.getName(), projectModel.getColorTag(), taskModel.getName(), HistoryModel.EVENT_TASK_COMPLETED));
 
         if (onCompleteListener == null) {
