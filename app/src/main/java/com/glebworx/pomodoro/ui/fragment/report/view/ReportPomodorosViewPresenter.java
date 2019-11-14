@@ -94,6 +94,12 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
             pomodorosCompletedObservable.subscribe(getPomodorosCompletedObserver());
             weeklyTrendsObservable.subscribe(getWeeklyTrendsObserver());
 
+            if (result.isEmpty()) {
+                presenterListener.onChartDataEmpty();
+            }
+
+        } else {
+            presenterListener.onChartDataEmpty();
         }
 
     }

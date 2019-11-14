@@ -94,6 +94,17 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
         weeklyTrendsBarChart.animateY(ANIM_DURATION);
     }
 
+    @Override
+    public void onChartDataEmpty() {
+        pomodorosCompletedTextView.setText(String.valueOf(0));
+        averagePerDayTextView.setText(String.valueOf(0));
+        streakTextView.setText(String.valueOf(0));
+        pomodorosCompletedLineChart.setNoDataText(context.getString(R.string.core_text_no_data));
+        pomodorosCompletedLineChart.invalidate();
+        weeklyTrendsBarChart.setNoDataText(context.getString(R.string.core_text_no_data));
+        weeklyTrendsBarChart.invalidate();
+    }
+
     private void init(Context context, AttributeSet attrs, int defStyle) {
         rootView = inflate(context, R.layout.view_report_pomodoros, this);
         pomodorosCompletedTextView = rootView.findViewById(R.id.text_view_pomodoros_completed);
