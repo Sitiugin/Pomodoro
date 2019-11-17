@@ -21,6 +21,7 @@ import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragmentPr
 import com.glebworx.pomodoro.ui.fragment.projects.item.ProjectItem;
 import com.glebworx.pomodoro.util.manager.AuthManager;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mikepenz.fastadapter.IItemAdapter;
@@ -28,6 +29,7 @@ import com.mikepenz.fastadapter.IItemAdapter;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -64,11 +66,32 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());
 
+        todayTasksObservable = getTodayObservable();
+        todayTasksObservable = todayTasksObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io());
+
+        thisWeekTasksObservable = getThisWeekObservable();
+        thisWeekTasksObservable = thisWeekTasksObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io());
+
+        overdueTasksObservable = getOverdueObservable();
+        overdueTasksObservable = overdueTasksObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io());
+
         presenterListener.onInitView(predicate);
 
         projectsObservable.subscribe(getProjectEventObserver());
+        todayTasksObservable.subscribe(getTodayTasksObserver());
+        thisWeekTasksObservable.subscribe(getThisWeekTasksObserver());
+        overdueTasksObservable.subscribe(getOverdueTasksObserver());
 
-        refreshTasksHeader();
+        //refreshTasksHeader();
 
     }
 
@@ -77,7 +100,7 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
         compositeDisposable.clear();
     }
 
-    @Override
+    /*@Override
     public void refreshTasksHeader() {
         TaskApi.getTodayTasks(task -> {
             todayTasksObservable = getObservable(task.getResult());
@@ -103,7 +126,7 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
                     .unsubscribeOn(Schedulers.io());
             overdueTasksObservable.subscribe(getOverdueTasksObserver());
         });
-    }
+    }*/
 
     @Override
     public void viewProject(ProjectItem projectItem) {
@@ -214,6 +237,43 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
             public void onComplete() {
 
             }
+        };
+    }
+
+    private Observable<Integer> getTodayObservable() {
+        return Observable.create(emitter -> {
+            ListenerRegistration listenerRegistration = TaskApi.addTodayTasksEventListener(getObservableEventListener(emitter));
+            emitter.setCancellable(listenerRegistration::remove);
+        });
+    }
+
+    private Observable<Integer> getThisWeekObservable() {
+        return Observable.create(emitter -> {
+            ListenerRegistration listenerRegistration = TaskApi.addThisWeekTasksEventListener(getObservableEventListener(emitter));
+            emitter.setCancellable(listenerRegistration::remove);
+        });
+    }
+
+    private Observable<Integer> getOverdueObservable() {
+        return Observable.create(emitter -> {
+            ListenerRegistration listenerRegistration = TaskApi.addOverdueTasksEventListener(getObservableEventListener(emitter));
+            emitter.setCancellable(listenerRegistration::remove);
+        });
+    }
+
+    private EventListener<QuerySnapshot> getObservableEventListener(ObservableEmitter<Integer> emitter) {
+        return (querySnapshot, e) -> {
+            if (emitter.isDisposed()) {
+                return;
+            }
+            if (e != null) {
+                emitter.onError(e);
+                return;
+            }
+            if (querySnapshot == null || querySnapshot.isEmpty()) {
+                return;
+            }
+            emitter.onNext(querySnapshot.size());
         };
     }
 

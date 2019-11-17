@@ -155,7 +155,8 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
                 dueDateTextView.setTextColor(context.getColor(android.R.color.darker_gray));
             }
             double progressRatio = item.getProgressRatio();
-            progressSeekArc.setProgress((int) Math.round(progressRatio * 100));
+            int progress = (int) Math.round(progressRatio * 100);
+            progressSeekArc.setProgress(progress > 100 ? 100 : progress);
             progressTextView.setText(item.getProgressString(progressRatio));
         }
 

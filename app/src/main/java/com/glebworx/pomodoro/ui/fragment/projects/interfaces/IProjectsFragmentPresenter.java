@@ -10,7 +10,7 @@ public interface IProjectsFragmentPresenter {
 
     void destroy();
 
-    void refreshTasksHeader();
+    //void refreshTasksHeader();
 
     void viewProject(ProjectItem projectItem);
 

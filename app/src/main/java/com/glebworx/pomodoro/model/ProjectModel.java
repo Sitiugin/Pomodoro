@@ -46,6 +46,7 @@ public class ProjectModel extends AbstractModel {
     private List<String> tasks;
     private int pomodorosAllocated;
     private int pomodorosCompleted;
+    private int completedTasksPomodorosAllocated;
     private int elapsedTime;
     private String layout;
     private boolean isCompleted;
@@ -66,16 +67,13 @@ public class ProjectModel extends AbstractModel {
                         @Nullable String colorTag,
                         @Nullable String layout) {
         super(name);
-        if (dueDate != null) {
-            this.dueDate = dueDate;
-        } else {
-            this.dueDate = null;
-        }
+        this.dueDate = dueDate;
         this.colorTag = colorTag;
         this.tasks = new ArrayList<>();
         this.sections = new ArrayList<>();
         this.pomodorosAllocated = 0;
         this.pomodorosCompleted = 0;
+        this.completedTasksPomodorosAllocated = 0;
         this.elapsedTime = 0;
         if (this.layout != null) {
             this.layout = layout;
@@ -220,6 +218,14 @@ public class ProjectModel extends AbstractModel {
         this.pomodorosCompleted = pomodorosCompleted;
     }
 
+    public int getCompletedTasksPomodorosAllocated() {
+        return completedTasksPomodorosAllocated;
+    }
+
+    public void setCompletedTasksPomodorosAllocated(int completedTasksPomodorosAllocated) {
+        this.completedTasksPomodorosAllocated = completedTasksPomodorosAllocated;
+    }
+
     @Exclude
     public int getEstimatedTime() {
         return pomodorosAllocated * POMODORO_LENGTH;
@@ -251,11 +257,11 @@ public class ProjectModel extends AbstractModel {
     }
 
     @Exclude
-    public double getProgressRatio() { // TODO calculating progress based on pomodoros is incorrect
+    public double getProgressRatio() {
         if (pomodorosAllocated == 0) {
-            return 0;
+            return 0.0;
         }
-        return (double) pomodorosCompleted / pomodorosAllocated;
+        return (double) completedTasksPomodorosAllocated / pomodorosAllocated;
     }
 
 }

@@ -113,13 +113,13 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
         super.onDetach();
     }
 
-    @Override
+    /*@Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
             presenter.refreshTasksHeader();
         }
-    }
+    }*/
 
     //                                                                                     INTERFACE
 

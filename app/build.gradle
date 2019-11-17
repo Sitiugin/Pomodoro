@@ -41,7 +41,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-dynamic-links:19.0.0'
     implementation 'com.google.firebase:firebase-database:19.2.0'
     implementation 'com.google.firebase:firebase-invites:17.0.0'
-    implementation 'com.google.firebase:firebase-firestore:21.2.1'
+    implementation 'com.google.firebase:firebase-firestore:21.3.0'
     implementation 'com.google.firebase:firebase-functions:19.0.1'
 
     testImplementation 'junit:junit:4.12'
