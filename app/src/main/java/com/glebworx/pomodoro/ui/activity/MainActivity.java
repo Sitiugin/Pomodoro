@@ -2,7 +2,6 @@ package com.glebworx.pomodoro.ui.activity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -25,6 +24,7 @@ import com.glebworx.pomodoro.ui.fragment.report.ReportFragment;
 import com.glebworx.pomodoro.ui.fragment.report.interfaces.IReportFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.view_project.ViewProjectFragment;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentInteractionListener;
+import com.glebworx.pomodoro.ui.fragment.view_tasks.ViewTasksFragment;
 import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.view.ProgressBottomSheetView;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewInteractionListener;
@@ -132,20 +132,17 @@ public class MainActivity
 
     @Override
     public void onViewTodayTasks() {
-        // TODO implement
-        Toast.makeText(this, "Today clicked", Toast.LENGTH_SHORT).show();
+        fragmentManager.pushToBackStack(ViewTasksFragment.newInstance(ViewTasksFragment.TYPE_TODAY));
     }
 
     @Override
     public void onViewThisWeekTasks() {
-        // TODO implement
-        Toast.makeText(this, "This week clicked", Toast.LENGTH_SHORT).show();
+        fragmentManager.pushToBackStack(ViewTasksFragment.newInstance(ViewTasksFragment.TYPE_THIS_WEEK));
     }
 
     @Override
     public void onViewOverdueTasks() {
-        // TODO implement
-        Toast.makeText(this, "Overdue clicked", Toast.LENGTH_SHORT).show();
+        fragmentManager.pushToBackStack(ViewTasksFragment.newInstance(ViewTasksFragment.TYPE_OVERDUE));
     }
 
     @Override

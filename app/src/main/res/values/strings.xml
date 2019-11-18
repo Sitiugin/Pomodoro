@@ -193,6 +193,15 @@
     <string name="view_project_toast_task_delete_success">Task deleted</string>
     <string name="view_project_toast_task_delete_failed">Failed to delete task. Please try again later.</string>
 
+
+    <!--                                                                              VIEW TASKS -->
+
+    <string name="view_tasks_title_tasks">Tasks</string>
+    <string name="view_tasks_text_today">Today</string>
+    <string name="view_tasks_text_this_week">This week</string>
+    <string name="view_tasks_text_overdue">Overdue</string>
+
+
     <!--                                                                              MAIN TASKS -->
 
     <string name="main_tasks_text_tap_to_start">Tap the button to begin</string>

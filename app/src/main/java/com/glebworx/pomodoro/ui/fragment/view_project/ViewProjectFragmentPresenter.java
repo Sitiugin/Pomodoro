@@ -121,9 +121,7 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
 
     @Override
     public void editTask(TaskItem taskItem) {
-        if (interactionListener != null) {
-            interactionListener.onEditTask(projectModel, taskItem.getModel());
-        }
+        interactionListener.onEditTask(projectModel, taskItem.getModel());
     }
 
     @Override
@@ -136,9 +134,7 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
 
     @Override
     public void selectTask(TaskItem taskItem) {
-        if (interactionListener != null) {
-            interactionListener.onSelectTask(projectModel, taskItem.getModel());
-        }
+        interactionListener.onSelectTask(projectModel, taskItem.getModel());
     }
 
     private EventListener<QuerySnapshot> getEventListener(ObservableEmitter<DocumentChange> emitter) {

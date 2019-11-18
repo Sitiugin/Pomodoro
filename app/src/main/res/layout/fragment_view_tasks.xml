@@ -39,11 +39,20 @@
                     style="@style/TextStyle.AppBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@string/view_tasks_title_tasks"
                     android:layout_marginStart="@dimen/margin_content"
                     android:layout_marginTop="@dimen/margin_content"
                     android:drawablePadding="@dimen/margin_content_quarter"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/text_view_subtitle"
+                    style="@style/TextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="@+id/text_view_title"
+                    app:layout_constraintTop_toBottomOf="@+id/text_view_title" />
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/button_close"
