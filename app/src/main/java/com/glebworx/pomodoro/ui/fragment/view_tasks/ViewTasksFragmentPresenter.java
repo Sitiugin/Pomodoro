@@ -9,9 +9,13 @@ import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragmen
 import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragmentPresenter;
 
+import java.util.Objects;
+
 import javax.annotation.Nullable;
 
 import io.reactivex.disposables.CompositeDisposable;
+
+import static com.glebworx.pomodoro.ui.fragment.view_tasks.ViewTasksFragment.ARG_TYPE;
 
 public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
 
@@ -34,6 +38,8 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
     @Override
     public void init(Bundle arguments) {
 
+        this.type = Objects.requireNonNull(arguments.getString(ARG_TYPE));
+        presenterListener.onInitView(type);
     }
 
     @Override

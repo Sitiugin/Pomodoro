@@ -2,14 +2,12 @@ package com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces;
 
 import com.glebworx.pomodoro.ui.fragment.view_project.item.CompletedTaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.TaskItem;
-import com.glebworx.pomodoro.ui.fragment.view_project.item.ViewProjectHeaderItem;
 
 import java.util.Date;
 
 public interface IViewTasksFragment {
 
-    void onInitView(String projectName,
-                    ViewProjectHeaderItem headerItem);
+    void onInitView(String type);
 
     void onTaskAdded(TaskItem item);
 

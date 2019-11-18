@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.CompletedTaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.TaskItem;
-import com.glebworx.pomodoro.ui.fragment.view_project.item.ViewProjectHeaderItem;
 import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragment;
 import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragmentInteractionListener;
 
@@ -37,7 +36,8 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
 
     //                                                                                     CONSTANTS
-    private static final String ARG_TYPE = "type";
+
+    public static final String ARG_TYPE = "type";
     @BindView(R.id.text_view_subtitle)
     AppCompatTextView subtitleTextView;
     @BindView(R.id.button_close)
@@ -111,8 +111,18 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
     //                                                                                IMPLEMENTATION
 
     @Override
-    public void onInitView(String projectName, ViewProjectHeaderItem headerItem) {
-
+    public void onInitView(String type) {
+        switch (type) {
+            case TYPE_TODAY:
+                subtitleTextView.setText(R.string.view_tasks_text_today);
+                break;
+            case TYPE_THIS_WEEK:
+                subtitleTextView.setText(R.string.view_tasks_text_this_week);
+                break;
+            case TYPE_OVERDUE:
+                subtitleTextView.setText(R.string.view_tasks_text_overdue);
+                break;
+        }
     }
 
     @Override
