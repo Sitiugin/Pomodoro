@@ -100,9 +100,7 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
 
     @Override
     public void editProject() {
-        if (interactionListener != null) {
-            interactionListener.onEditProject(projectModel);
-        }
+        interactionListener.onEditProject(projectModel);
     }
 
     @Override
@@ -114,9 +112,7 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
 
     @Override
     public void addTask() {
-        if (interactionListener != null) {
-            interactionListener.onAddTask(projectModel);
-        }
+        interactionListener.onAddTask(projectModel);
     }
 
     @Override

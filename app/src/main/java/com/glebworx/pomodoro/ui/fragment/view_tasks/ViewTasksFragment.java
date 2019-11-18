@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.glebworx.pomodoro.R;
@@ -18,6 +19,10 @@ import com.glebworx.pomodoro.ui.fragment.view_project.item.CompletedTaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.TaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragment;
 import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragmentInteractionListener;
+import com.glebworx.pomodoro.util.ZeroStateDecoration;
+import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.items.AbstractItem;
+import com.mikepenz.itemanimators.AlphaCrossFadeAnimator;
 
 import java.util.Date;
 
@@ -123,6 +128,9 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
                 subtitleTextView.setText(R.string.view_tasks_text_overdue);
                 break;
         }
+        FastAdapter<AbstractItem> fastAdapter = new FastAdapter<>();
+        initRecyclerView(fastAdapter);
+        initClickEvents(fastAdapter);
     }
 
     @Override
@@ -158,6 +166,40 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
     @Override
     public void onSubtitleChanged(Date dueDate, Date today) {
 
+    }
+
+
+    //                                                                                       HELPERS
+
+    private void initRecyclerView(FastAdapter fastAdapter) {
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty));
+        recyclerView.setItemAnimator(new AlphaCrossFadeAnimator());
+
+        fastAdapter.setHasStableIds(true);
+        fastAdapter.withSelectable(true);
+        recyclerView.setAdapter(fastAdapter);
+
+    }
+
+    private void initClickEvents(FastAdapter<AbstractItem> fastAdapter) {
+        View.OnClickListener onClickListener = view -> {
+            if (view.getId() == R.id.button_close) {
+                fragmentListener.onCloseFragment();
+            }
+        };
+        closeButton.setOnClickListener(onClickListener);
+        fastAdapter.withOnClickListener((view, adapter, item, position) -> {
+            if (view == null || !item.isEnabled()) {
+                return false;
+            }
+            if (view.getId() == R.id.item_task) {
+                presenter.selectTask(((TaskItem) item));
+                return true;
+            }
+            return false;
+        });
     }
 
 }
