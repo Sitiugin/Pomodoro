@@ -40,17 +40,17 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
 
     private @NonNull
     IViewProjectFragment presenterListener;
-    private @Nullable
+    private @NonNull
     IViewProjectFragmentInteractionListener interactionListener;
     private @NonNull
     ProjectModel projectModel;
 
     private CompositeDisposable compositeDisposable;
 
-    public ViewProjectFragmentPresenter(@NonNull IViewProjectFragment presenterListener,
-                                        @Nullable IViewProjectFragmentInteractionListener interactionListener,
-                                        @Nullable Bundle arguments,
-                                        View.OnClickListener headerClickListener) {
+    ViewProjectFragmentPresenter(@NonNull IViewProjectFragment presenterListener,
+                                 @NonNull IViewProjectFragmentInteractionListener interactionListener,
+                                 @Nullable Bundle arguments,
+                                 View.OnClickListener headerClickListener) {
         this.presenterListener = presenterListener;
         this.interactionListener = interactionListener;
         init(arguments, headerClickListener);

@@ -25,6 +25,7 @@ import com.glebworx.pomodoro.ui.fragment.report.ReportFragment;
 import com.glebworx.pomodoro.ui.fragment.report.interfaces.IReportFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.view_project.ViewProjectFragment;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentInteractionListener;
+import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.view.ProgressBottomSheetView;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewInteractionListener;
 import com.glebworx.pomodoro.util.manager.DialogManager;
@@ -46,6 +47,7 @@ public class MainActivity
         IProjectsFragmentInteractionListener,
         IAddProjectFragmentInteractionListener,
         IViewProjectFragmentInteractionListener,
+        IViewTasksFragmentInteractionListener,
         IAddTaskFragmentInteractionListener,
         IReportFragmentInteractionListener,
         IAboutFragmentInteractionListener,
