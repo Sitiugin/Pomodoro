@@ -24,7 +24,6 @@ import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.itemanimators.AlphaCrossFadeAnimator;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -192,21 +191,6 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
     @Override
     public void onTaskCompleted(TaskItem item, CompletedTaskItem completedItem) {
-
-    }
-
-    @Override
-    public void onTaskDeleted(boolean isSuccessful, int position) {
-
-    }
-
-    @Override
-    public void onHeaderItemChanged(int estimatedTime, int elapsedTime, double progressRatio) {
-
-    }
-
-    @Override
-    public void onSubtitleChanged(Date dueDate, Date today) {
 
     }
 
