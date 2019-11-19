@@ -22,13 +22,13 @@ import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragmen
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
-import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.itemanimators.AlphaCrossFadeAnimator;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.IntStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,11 +59,11 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
     private Context context;
     private final Object object = new Object();
-    private Map<String, ItemAdapter<AbstractItem>> adapterMap;
+    private Map<String, ItemAdapter<TaskItem>> adapterMap;
     private IViewTasksFragmentInteractionListener fragmentListener;
     private Unbinder unbinder;
     private ViewTasksFragmentPresenter presenter;
-    private FastAdapter<AbstractItem> fastAdapter;
+    private FastAdapter<TaskItem> fastAdapter;
 
 
     //                                                                                  CONSTRUCTORS
@@ -147,12 +147,12 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
         String taskName = item.getTaskName();
         if (adapterMap.containsKey(taskName)) {
             synchronized (object) {
-                ItemAdapter<AbstractItem> adapter = adapterMap.get(taskName);
+                ItemAdapter<TaskItem> adapter = adapterMap.get(taskName);
                 Objects.requireNonNull(adapter).add(item);
             }
         } else {
             synchronized (object) {
-                ItemAdapter<AbstractItem> adapter = new ItemAdapter<>();
+                ItemAdapter<TaskItem> adapter = new ItemAdapter<>();
                 adapter.add(item);
                 adapterMap.put(taskName, adapter);
                 int index = fastAdapter.getItemCount();
@@ -164,12 +164,30 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
     @Override
     public void onTaskModified(TaskItem item) {
-
+        String taskName = item.getTaskName();
+        if (adapterMap.containsKey(taskName)) {
+            synchronized (object) {
+                ItemAdapter<TaskItem> adapter = adapterMap.get(taskName);
+                int index = getTaskItemIndex(taskName, Objects.requireNonNull(adapter));
+                if (index != -1) {
+                    adapter.set(index, item);
+                }
+            }
+        }
     }
 
     @Override
     public void onTaskDeleted(TaskItem item) {
-
+        String taskName = item.getTaskName();
+        if (adapterMap.containsKey(taskName)) {
+            synchronized (object) {
+                ItemAdapter<TaskItem> adapter = adapterMap.get(taskName);
+                int index = getTaskItemIndex(taskName, Objects.requireNonNull(adapter));
+                if (index != -1) {
+                    adapter.remove(index);
+                }
+            }
+        }
     }
 
     @Override
@@ -207,7 +225,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
     }
 
-    private void initClickEvents(FastAdapter<AbstractItem> fastAdapter) {
+    private void initClickEvents(FastAdapter<TaskItem> fastAdapter) {
         View.OnClickListener onClickListener = view -> {
             if (view.getId() == R.id.button_close) {
                 fragmentListener.onCloseFragment();
@@ -219,11 +237,17 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
                 return false;
             }
             if (view.getId() == R.id.item_task) {
-                presenter.selectTask(((TaskItem) item));
+                presenter.selectTask(item);
                 return true;
             }
             return false;
         });
+    }
+
+    private int getTaskItemIndex(@NonNull String name, @NonNull ItemAdapter<TaskItem> adapter) {
+        return IntStream.range(0, adapter.getAdapterItems().size())
+                .filter(i -> name.equals(adapter.getAdapterItems().get(i).getTaskName()))
+                .findFirst().orElse(-1);
     }
 
 }
