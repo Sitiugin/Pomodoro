@@ -5,9 +5,9 @@ import androidx.annotation.NonNull;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.TaskItem;
 
-public class ViewTaskItem extends TaskItem {
+public class ViewTasksItem extends TaskItem {
 
-    public ViewTaskItem(@NonNull TaskModel model) {
+    public ViewTasksItem(@NonNull TaskModel model) {
         super(model);
     }
 

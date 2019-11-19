@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_view_tasks_header"
+    style="@style/ViewStyle.Rounded.Clickable"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/margin_content"
+    android:layout_marginTop="@dimen/margin_content_half"
+    android:background="@drawable/drawable_foreground_rounded_small_top"
+    android:clipChildren="false"
+    android:clipToPadding="false">
+
+    <View
+        android:id="@+id/view_color_tag"
+        android:layout_width="@dimen/radius_small"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/margin_content"
+        android:background="@drawable/drawable_color_tag_view_project"
+        app:layout_constraintBottom_toTopOf="@+id/text_view_tasks_section"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="1" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_view_title"
+        style="@style/TextStyle.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_content"
+        android:layout_marginTop="@dimen/margin_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

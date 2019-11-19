@@ -80,15 +80,15 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
         return false;
     }
 
-    public String getColorTag() {
-        return this.model.getColorTag();
-    }
-
 
     //                                                                                       HELPERS
 
     public View.OnClickListener getOnClickListener() {
         return onClickListener;
+    }
+
+    public String getColorTag() {
+        return this.model.getColorTag();
     }
 
     public int getEstimatedTime() {
