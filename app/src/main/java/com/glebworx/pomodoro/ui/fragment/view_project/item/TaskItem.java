@@ -74,6 +74,11 @@ public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> implem
         return this.model;
     }
 
+    public @NonNull
+    String getProjectName() {
+        return this.model.getProjectName();
+    }
+
     public @Nonnull String getTaskName() {
         return this.model.getName();
     }

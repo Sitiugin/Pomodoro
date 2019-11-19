@@ -52,7 +52,7 @@ public class AddTaskFragmentPresenter implements IAddTaskFragmentPresenter {
 
         if (taskModel == null) {
             isEditing = false;
-            taskModel = new TaskModel();
+            taskModel = new TaskModel(projectModel.getName());
             taskModel.setDueDate(new Date());
             taskModel.setPomodorosAllocated(1);
         } else {

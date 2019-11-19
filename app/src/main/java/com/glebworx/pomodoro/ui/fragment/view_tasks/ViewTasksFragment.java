@@ -19,9 +19,12 @@ import com.glebworx.pomodoro.ui.fragment.view_project.item.CompletedTaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.TaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragment;
 import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragmentInteractionListener;
+import com.glebworx.pomodoro.ui.fragment.view_tasks.item.ViewTasksFooterItem;
+import com.glebworx.pomodoro.ui.fragment.view_tasks.item.ViewTasksHeaderItem;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
+import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.itemanimators.AlphaCrossFadeAnimator;
 
 import java.util.HashMap;
@@ -58,11 +61,11 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
     private Context context;
     private final Object object = new Object();
-    private Map<String, ItemAdapter<TaskItem>> adapterMap;
+    private Map<String, ItemAdapter<AbstractItem>> adapterMap;
     private IViewTasksFragmentInteractionListener fragmentListener;
     private Unbinder unbinder;
     private ViewTasksFragmentPresenter presenter;
-    private FastAdapter<TaskItem> fastAdapter;
+    private FastAdapter<AbstractItem> fastAdapter;
 
 
     //                                                                                  CONSTRUCTORS
@@ -124,6 +127,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
     @Override
     public void onInitView(String type) {
+
         switch (type) {
             case TYPE_TODAY:
                 subtitleTextView.setText(R.string.view_tasks_text_today);
@@ -135,29 +139,49 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
                 subtitleTextView.setText(R.string.view_tasks_text_overdue);
                 break;
         }
+
         adapterMap = new HashMap<>();
         fastAdapter = new FastAdapter<>();
+
         initRecyclerView(fastAdapter);
         initClickEvents(fastAdapter);
+
     }
 
     @Override
     public void onTaskAdded(TaskItem item) {
+
         String taskName = item.getTaskName();
+
         if (adapterMap.containsKey(taskName)) {
+
             synchronized (object) {
-                ItemAdapter<TaskItem> adapter = adapterMap.get(taskName);
+                ItemAdapter<AbstractItem> adapter = adapterMap.get(taskName);
                 Objects.requireNonNull(adapter).add(item);
             }
+
         } else {
+
             synchronized (object) {
-                ItemAdapter<TaskItem> adapter = new ItemAdapter<>();
+
+                ItemAdapter<AbstractItem> adapter = new ItemAdapter<>();
+                ItemAdapter<AbstractItem> headerAdapter = new ItemAdapter<>();
+                ItemAdapter<AbstractItem> footerAdapter = new ItemAdapter<>();
+
                 adapter.add(item);
                 adapterMap.put(taskName, adapter);
                 int index = fastAdapter.getItemCount();
-                fastAdapter.addAdapter(index, adapter);
-                fastAdapter.notifyAdapterItemChanged(index);
+
+                headerAdapter.add(new ViewTasksHeaderItem(item.getProjectName()));
+                footerAdapter.add(new ViewTasksFooterItem());
+
+                fastAdapter.addAdapter(index, headerAdapter);
+                fastAdapter.addAdapter(index + 1, adapter);
+                fastAdapter.addAdapter(index + 2, footerAdapter);
+                fastAdapter.notifyAdapterItemRangeChanged(index, 3);
+
             }
+
         }
     }
 
@@ -166,7 +190,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
         String taskName = item.getTaskName();
         if (adapterMap.containsKey(taskName)) {
             synchronized (object) {
-                ItemAdapter<TaskItem> adapter = adapterMap.get(taskName);
+                ItemAdapter<AbstractItem> adapter = adapterMap.get(taskName);
                 int index = getTaskItemIndex(taskName, Objects.requireNonNull(adapter));
                 if (index != -1) {
                     adapter.set(index, item);
@@ -180,7 +204,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
         String taskName = item.getTaskName();
         if (adapterMap.containsKey(taskName)) {
             synchronized (object) {
-                ItemAdapter<TaskItem> adapter = adapterMap.get(taskName);
+                ItemAdapter<AbstractItem> adapter = adapterMap.get(taskName);
                 int index = getTaskItemIndex(taskName, Objects.requireNonNull(adapter));
                 if (index != -1) {
                     adapter.remove(index);
@@ -209,7 +233,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
     }
 
-    private void initClickEvents(FastAdapter<TaskItem> fastAdapter) {
+    private void initClickEvents(FastAdapter<AbstractItem> fastAdapter) {
         View.OnClickListener onClickListener = view -> {
             if (view.getId() == R.id.button_close) {
                 fragmentListener.onCloseFragment();
@@ -221,16 +245,16 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
                 return false;
             }
             if (view.getId() == R.id.item_task) {
-                presenter.selectTask(item);
+                presenter.selectTask((TaskItem) item);
                 return true;
             }
             return false;
         });
     }
 
-    private int getTaskItemIndex(@NonNull String name, @NonNull ItemAdapter<TaskItem> adapter) {
+    private int getTaskItemIndex(@NonNull String name, @NonNull ItemAdapter<AbstractItem> adapter) {
         return IntStream.range(0, adapter.getAdapterItems().size())
-                .filter(i -> name.equals(adapter.getAdapterItems().get(i).getTaskName()))
+                .filter(i -> name.equals(((TaskItem) adapter.getAdapterItems().get(i)).getTaskName()))
                 .findFirst().orElse(-1);
     }
 
