@@ -42,9 +42,9 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
     String type;
     private CompositeDisposable compositeDisposable;
 
-    public ViewTasksFragmentPresenter(@NonNull IViewTasksFragment presenterListener,
-                                      @NonNull IViewTasksFragmentInteractionListener interactionListener,
-                                      @Nullable Bundle arguments) {
+    ViewTasksFragmentPresenter(@NonNull IViewTasksFragment presenterListener,
+                               @NonNull IViewTasksFragmentInteractionListener interactionListener,
+                               @Nullable Bundle arguments) {
         this.presenterListener = presenterListener;
         this.interactionListener = interactionListener;
         init(Objects.requireNonNull(arguments));
@@ -56,23 +56,26 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
         compositeDisposable = new CompositeDisposable();
 
         type = Objects.requireNonNull(arguments.getString(ARG_TYPE));
-        Observable<DocumentChange> observable;
+
+        Observable<DocumentChange> observable = null;
         switch (type) {
             case TYPE_TODAY:
                 observable = getTodayObservable();
-                observable = initObservable(observable);
-                observable.subscribe(getObserver());
+
                 break;
             case TYPE_THIS_WEEK:
                 observable = getThisWeekObservable();
-                observable = initObservable(observable);
-                observable.subscribe(getObserver());
                 break;
             case TYPE_OVERDUE:
                 observable = getOverdueObservable();
-                observable = initObservable(observable);
-                observable.subscribe(getObserver());
                 break;
+        }
+        if (observable != null) {
+            observable = observable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .unsubscribeOn(Schedulers.io());
+            observable.subscribe(getObserver());
         }
 
         presenterListener.onInitView(type);
@@ -87,13 +90,6 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
     @Override
     public void selectTask(TaskItem taskItem) {
 
-    }
-
-    private Observable<DocumentChange> initObservable(Observable<DocumentChange> observable) {
-        return observable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io());
     }
 
     private Observable<DocumentChange> getTodayObservable() {
