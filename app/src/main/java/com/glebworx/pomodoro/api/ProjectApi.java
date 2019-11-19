@@ -52,8 +52,8 @@ public class ProjectApi extends BaseApi {
         }
     }*/
 
-    public static void getModel(@NonNull String projectName,
-                                @NonNull OnCompleteListener<DocumentSnapshot> onCompleteListener) {
+    public static void getProject(@NonNull String projectName,
+                                  @NonNull OnCompleteListener<DocumentSnapshot> onCompleteListener) {
         getModel(projectName, getCollection(COLLECTION_PROJECTS), onCompleteListener);
     }
 
