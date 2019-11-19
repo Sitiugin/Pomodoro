@@ -17,7 +17,7 @@
         android:layout_height="0dp"
         android:layout_marginBottom="@dimen/margin_content"
         android:background="@drawable/drawable_color_tag_view_project"
-        app:layout_constraintBottom_toTopOf="@+id/text_view_tasks_section"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_weight="1" />
