@@ -6,6 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.glebworx.pomodoro.R;
+import com.glebworx.pomodoro.api.ProjectApi;
+import com.glebworx.pomodoro.model.ProjectModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
 
@@ -14,9 +19,16 @@ import java.util.List;
 public class ViewTasksHeaderItem extends AbstractItem<ViewTasksHeaderItem, ViewTasksHeaderItem.ViewHolder> {
 
     private String projectName;
+    private ProjectModel projectModel;
 
     public ViewTasksHeaderItem(String projectName) {
         this.projectName = projectName;
+        ProjectApi.getModel(projectName, new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                // TODO
+            }
+        });
     }
 
 
@@ -48,6 +60,14 @@ public class ViewTasksHeaderItem extends AbstractItem<ViewTasksHeaderItem, ViewT
 
     public String getTitle() {
         return this.projectName;
+    }
+
+    public boolean isProjectModelReady() {
+        return this.projectModel != null;
+    }
+
+    public ProjectModel projectModel() {
+        return this.projectModel;
     }
 
 

@@ -31,6 +31,16 @@ public class ViewTasksFooterItem extends AbstractItem<ViewTasksFooterItem, ViewT
         return R.layout.item_view_tasks_footer;
     }
 
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean isSelectable() {
+        return false;
+    }
+
     //                                                                                   VIEW HOLDER
 
     protected static class ViewHolder extends FastAdapter.ViewHolder<ViewTasksFooterItem> {

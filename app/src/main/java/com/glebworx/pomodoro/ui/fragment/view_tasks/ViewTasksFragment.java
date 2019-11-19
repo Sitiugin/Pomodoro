@@ -176,9 +176,11 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
                 footerAdapter.add(new ViewTasksFooterItem());
 
                 fastAdapter.addAdapter(index, headerAdapter);
+                fastAdapter.notifyDataSetChanged();
                 fastAdapter.addAdapter(index + 1, adapter);
+                fastAdapter.notifyDataSetChanged();
                 fastAdapter.addAdapter(index + 2, footerAdapter);
-                fastAdapter.notifyAdapterItemRangeChanged(index, 3);
+                fastAdapter.notifyDataSetChanged();
 
             }
 
