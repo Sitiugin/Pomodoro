@@ -47,7 +47,7 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
                                       @Nullable Bundle arguments) {
         this.presenterListener = presenterListener;
         this.interactionListener = interactionListener;
-        init(arguments);
+        init(Objects.requireNonNull(arguments));
     }
 
     @Override
@@ -61,21 +61,22 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
             case TYPE_TODAY:
                 observable = getTodayObservable();
                 observable = initObservable(observable);
-                observable.subscribe(getTodayTasksObserver());
+                observable.subscribe(getObserver());
                 break;
             case TYPE_THIS_WEEK:
                 observable = getThisWeekObservable();
                 observable = initObservable(observable);
-                observable.subscribe(getThisWeekTasksObserver());
+                observable.subscribe(getObserver());
                 break;
             case TYPE_OVERDUE:
                 observable = getOverdueObservable();
                 observable = initObservable(observable);
-                observable.subscribe(getOverdueTasksObserver());
+                observable.subscribe(getObserver());
                 break;
         }
 
         presenterListener.onInitView(type);
+
     }
 
     @Override
@@ -135,7 +136,7 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
         };
     }
 
-    private io.reactivex.Observer<DocumentChange> getTodayTasksObserver() {
+    private io.reactivex.Observer<DocumentChange> getObserver() {
         return new io.reactivex.Observer<DocumentChange>() {
             @Override
             public void onSubscribe(Disposable disposable) {
@@ -144,55 +145,18 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
 
             @Override
             public void onNext(DocumentChange documentChange) {
-                TaskModel taskModel = documentChange.getDocument().toObject(TaskModel.class);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
-    }
-
-    private io.reactivex.Observer<DocumentChange> getThisWeekTasksObserver() {
-        return new io.reactivex.Observer<DocumentChange>() {
-            @Override
-            public void onSubscribe(Disposable disposable) {
-                compositeDisposable.add(disposable);
-            }
-
-            @Override
-            public void onNext(DocumentChange documentChange) {
-                TaskModel taskModel = documentChange.getDocument().toObject(TaskModel.class);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
-    }
-
-    private io.reactivex.Observer<DocumentChange> getOverdueTasksObserver() {
-        return new io.reactivex.Observer<DocumentChange>() {
-            @Override
-            public void onSubscribe(Disposable disposable) {
-                compositeDisposable.add(disposable);
-            }
-
-            @Override
-            public void onNext(DocumentChange documentChange) {
-                TaskModel taskModel = documentChange.getDocument().toObject(TaskModel.class);
+                TaskItem item = new TaskItem(documentChange.getDocument().toObject(TaskModel.class));
+                switch (documentChange.getType()) {
+                    case ADDED:
+                        presenterListener.onTaskAdded(item);
+                        break;
+                    case MODIFIED:
+                        presenterListener.onTaskModified(item);
+                        break;
+                    case REMOVED:
+                        presenterListener.onTaskDeleted(item);
+                        break;
+                }
             }
 
             @Override

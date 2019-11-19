@@ -53,7 +53,7 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
                                  View.OnClickListener headerClickListener) {
         this.presenterListener = presenterListener;
         this.interactionListener = interactionListener;
-        init(arguments, headerClickListener);
+        init(Objects.requireNonNull(arguments), headerClickListener);
     }
 
     @Override
