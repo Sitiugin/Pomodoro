@@ -12,4 +12,6 @@ public interface IViewTasksFragmentPresenter {
 
     void selectTask(TaskItem taskItem);
 
+    void viewProject(String projectName);
+
 }

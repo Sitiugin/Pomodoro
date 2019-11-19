@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 
 import com.glebworx.pomodoro.api.TaskApi;
+import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.TaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragment;
@@ -15,7 +16,9 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.annotation.Nullable;
@@ -40,6 +43,8 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
     IViewTasksFragmentInteractionListener interactionListener;
     private @NonNull
     String type;
+    private @NonNull
+    Map<String, ProjectModel> projectModelMap; // TODO put models into map when added
     private CompositeDisposable compositeDisposable;
 
     ViewTasksFragmentPresenter(@NonNull IViewTasksFragment presenterListener,
@@ -56,12 +61,12 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
         compositeDisposable = new CompositeDisposable();
 
         type = Objects.requireNonNull(arguments.getString(ARG_TYPE));
+        projectModelMap = new HashMap<>();
 
         Observable<DocumentChange> observable = null;
         switch (type) {
             case TYPE_TODAY:
                 observable = getTodayObservable();
-
                 break;
             case TYPE_THIS_WEEK:
                 observable = getThisWeekObservable();
@@ -89,7 +94,18 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
 
     @Override
     public void selectTask(TaskItem taskItem) {
+        ProjectModel projectModel = projectModelMap.get(taskItem.getProjectName());
+        if (projectModel != null) {
+            interactionListener.onSelectTask(projectModel, taskItem.getModel());
+        }
+    }
 
+    @Override
+    public void viewProject(String projectName) {
+        ProjectModel projectModel = projectModelMap.get(projectName);
+        if (projectModel != null) {
+            interactionListener.onViewProject(projectModel);
+        }
     }
 
     private Observable<DocumentChange> getTodayObservable() {
