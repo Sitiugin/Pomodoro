@@ -21,10 +21,14 @@ import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragmen
 import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragmentInteractionListener;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.itemanimators.AlphaCrossFadeAnimator;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +39,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
     //                                                                                       BINDING
 
+    static final String ARG_TYPE = "type";
     public static final String TYPE_TODAY = "today";
     public static final String TYPE_THIS_WEEK = "this_week";
     public static final String TYPE_OVERDUE = "overdue";
@@ -42,7 +47,6 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
     //                                                                                     CONSTANTS
 
-    public static final String ARG_TYPE = "type";
     @BindView(R.id.text_view_subtitle)
     AppCompatTextView subtitleTextView;
     @BindView(R.id.button_close)
@@ -52,10 +56,14 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
 
     //                                                                                    ATTRIBUTES
+
     private Context context;
+    private final Object object = new Object();
+    private Map<String, ItemAdapter<AbstractItem>> adapterMap;
     private IViewTasksFragmentInteractionListener fragmentListener;
     private Unbinder unbinder;
     private ViewTasksFragmentPresenter presenter;
+    private FastAdapter<AbstractItem> fastAdapter;
 
 
     //                                                                                  CONSTRUCTORS
@@ -128,14 +136,30 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
                 subtitleTextView.setText(R.string.view_tasks_text_overdue);
                 break;
         }
-        FastAdapter<AbstractItem> fastAdapter = new FastAdapter<>();
+        adapterMap = new HashMap<>();
+        fastAdapter = new FastAdapter<>();
         initRecyclerView(fastAdapter);
         initClickEvents(fastAdapter);
     }
 
     @Override
     public void onTaskAdded(TaskItem item) {
-
+        String taskName = item.getTaskName();
+        if (adapterMap.containsKey(taskName)) {
+            synchronized (object) {
+                ItemAdapter<AbstractItem> adapter = adapterMap.get(taskName);
+                Objects.requireNonNull(adapter).add(item);
+            }
+        } else {
+            synchronized (object) {
+                ItemAdapter<AbstractItem> adapter = new ItemAdapter<>();
+                adapter.add(item);
+                adapterMap.put(taskName, adapter);
+                int index = fastAdapter.getItemCount();
+                fastAdapter.addAdapter(index, adapter);
+                fastAdapter.notifyAdapterItemChanged(index);
+            }
+        }
     }
 
     @Override

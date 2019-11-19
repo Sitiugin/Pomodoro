@@ -227,9 +227,8 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
                 TaskModel model = documentChange.getDocument().toObject(TaskModel.class);
                 TaskItem item = new TaskItem(model);
                 CompletedTaskItem completedItem = new CompletedTaskItem(model);
-                switch (documentChange.getType()) {
-                    case ADDED:
-                        presenterListener.onTaskCompleted(item, completedItem);
+                if (documentChange.getType() == DocumentChange.Type.ADDED) {
+                    presenterListener.onTaskCompleted(item, completedItem);
                 }
             }
 
