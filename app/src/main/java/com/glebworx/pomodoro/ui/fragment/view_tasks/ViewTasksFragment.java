@@ -63,6 +63,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
     private final Object object = new Object();
     private Map<String, ItemAdapter<AbstractItem>> headerAdapterMap;
     private Map<String, ItemAdapter<AbstractItem>> adapterMap;
+    private Map<String, ItemAdapter<AbstractItem>> completedAdapterMap;
     private IViewTasksFragmentInteractionListener fragmentListener;
     private Unbinder unbinder;
     private ViewTasksFragmentPresenter presenter;
@@ -144,6 +145,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
         headerAdapterMap = new HashMap<>();
         adapterMap = new HashMap<>();
+        completedAdapterMap = new HashMap<>();
         fastAdapter = new FastAdapter<>();
         adapterCount = 0;
 
@@ -168,6 +170,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
                 ItemAdapter<AbstractItem> adapter = new ItemAdapter<>();
                 ItemAdapter<AbstractItem> headerAdapter = new ItemAdapter<>();
+                ItemAdapter<AbstractItem> completedAdapter = new ItemAdapter<>();
                 ItemAdapter<AbstractItem> footerAdapter = new ItemAdapter<>();
 
                 adapter.add(item);
@@ -180,8 +183,9 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
                 fastAdapter.addAdapter(adapterCount++, headerAdapter);
                 fastAdapter.addAdapter(adapterCount++, adapter);
+                fastAdapter.addAdapter(adapterCount++, completedAdapter);
                 fastAdapter.addAdapter(adapterCount++, footerAdapter);
-                fastAdapter.notifyAdapterItemRangeChanged(adapterCount, 3);
+                fastAdapter.notifyAdapterItemRangeChanged(adapterCount, 4);
 
             }
 
@@ -218,7 +222,13 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
     @Override
     public void onTaskCompleted(TaskItem item, CompletedTaskItem completedItem) {
-        // TODO implement
+        synchronized (object) {
+            /*int index = getTaskItemIndex(item.getTaskName());
+            if (index != -1) {
+                taskAdapter.remove(index + 1);
+            }
+            completedTaskAdapter.add(completedItem);*/
+        }
     }
 
     @Override

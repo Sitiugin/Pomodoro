@@ -70,6 +70,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
     private IProjectsFragmentInteractionListener fragmentListener;
     private Unbinder unbinder;
     private ProjectsFragmentPresenter presenter;
+    private final Object object = new Object();
 
 
     //                                                                                  CONSTRUCTORS
@@ -142,55 +143,69 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
 
     @Override
     public void onItemAdded(ProjectItem item) {
-        projectAdapter.add(item);
+        synchronized (object) {
+            projectAdapter.add(item);
+        }
     }
 
     @Override
     public void onItemModified(ProjectItem item) {
-        int index = getProjectItemIndex(item.getProjectName());
-        if (index != -1) {
-            projectAdapter.set(index + 1, item); // add 1 because of header
+        synchronized (object) {
+            int index = getProjectItemIndex(item.getProjectName());
+            if (index != -1) {
+                projectAdapter.set(index + 1, item); // add 1 because of header
+            }
         }
     }
 
     @Override
     public void onItemDeleted(ProjectItem item) {
-        int index = getProjectItemIndex(item.getProjectName());
-        if (index != -1) {
-            projectAdapter.remove(index + 1); // add 1 because of header
+        synchronized (object) {
+            int index = getProjectItemIndex(item.getProjectName());
+            if (index != -1) {
+                projectAdapter.remove(index + 1); // add 1 because of header
+            }
         }
     }
 
     @Override
     public void onTodayTaskCountChanged(int todayTaskCount) {
-        ProjectHeaderItem item = headerAdapter.getAdapterItem(0);
-        if (item != null) {
-            item.setTodayCount(todayTaskCount);
-            fastAdapter.notifyAdapterItemChanged(0);
+        synchronized (object) {
+            ProjectHeaderItem item = headerAdapter.getAdapterItem(0);
+            if (item != null) {
+                item.setTodayCount(todayTaskCount);
+                fastAdapter.notifyAdapterItemChanged(0);
+            }
         }
     }
 
     @Override
     public void onThisWeekTaskCountChanged(int thisWeekTaskCount) {
-        ProjectHeaderItem item = headerAdapter.getAdapterItem(0);
-        if (item != null) {
-            item.setThisWeekCount(thisWeekTaskCount);
-            fastAdapter.notifyAdapterItemChanged(0);
+        synchronized (object) {
+            ProjectHeaderItem item = headerAdapter.getAdapterItem(0);
+            if (item != null) {
+                item.setThisWeekCount(thisWeekTaskCount);
+                fastAdapter.notifyAdapterItemChanged(0);
+            }
         }
     }
 
     @Override
     public void onOverdueTaskCountChanged(int overdueTaskCount) {
-        ProjectHeaderItem item = headerAdapter.getAdapterItem(0);
-        if (item != null) {
-            item.setOverdueCount(overdueTaskCount);
-            fastAdapter.notifyAdapterItemChanged(0);
+        synchronized (object) {
+            ProjectHeaderItem item = headerAdapter.getAdapterItem(0);
+            if (item != null) {
+                item.setOverdueCount(overdueTaskCount);
+                fastAdapter.notifyAdapterItemChanged(0);
+            }
         }
     }
 
     @Override
     public void onDeleteProjectFailed(int position) {
-        fastAdapter.notifyAdapterItemChanged(position);
+        synchronized (object) {
+            fastAdapter.notifyAdapterItemChanged(position);
+        }
         Toast.makeText(context, R.string.view_project_toast_project_delete_failed, LENGTH_LONG).show();
     }
 

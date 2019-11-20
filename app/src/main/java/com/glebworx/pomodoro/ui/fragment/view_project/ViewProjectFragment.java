@@ -76,6 +76,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     private IViewProjectFragmentInteractionListener fragmentListener;
     private Unbinder unbinder;
     private ViewProjectFragmentPresenter presenter;
+    private final Object object = new Object();
 
 
     //                                                                                  CONSTRUCTORS
@@ -155,32 +156,40 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
 
     @Override
     public void onTaskAdded(TaskItem item) {
-        taskAdapter.add(item);
+        synchronized (object) {
+            taskAdapter.add(item);
+        }
     }
 
     @Override
     public void onTaskModified(TaskItem item) {
-        int index = getTaskItemIndex(item.getTaskName());
-        if (index != -1) {
-            taskAdapter.set(index + 1, item);
+        synchronized (object) {
+            int index = getTaskItemIndex(item.getTaskName());
+            if (index != -1) {
+                taskAdapter.set(index + 1, item);
+            }
         }
     }
 
     @Override
     public void onTaskDeleted(TaskItem item) {
-        int index = getTaskItemIndex(item.getTaskName());
-        if (index != -1) {
-            taskAdapter.remove(index + 1);
+        synchronized (object) {
+            int index = getTaskItemIndex(item.getTaskName());
+            if (index != -1) {
+                taskAdapter.remove(index + 1);
+            }
         }
     }
 
     @Override
     public void onTaskCompleted(TaskItem item, CompletedTaskItem completedItem) {
-        int index = getTaskItemIndex(item.getTaskName());
-        if (index != -1) {
-            taskAdapter.remove(index + 1);
+        synchronized (object) {
+            int index = getTaskItemIndex(item.getTaskName());
+            if (index != -1) {
+                taskAdapter.remove(index + 1);
+            }
+            completedTaskAdapter.add(completedItem);
         }
-        completedTaskAdapter.add(completedItem);
     }
 
     @Override
@@ -198,18 +207,22 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         if (isSuccessful) {
             Toast.makeText(context, R.string.view_project_toast_task_delete_success, Toast.LENGTH_SHORT).show();
         } else {
-            fastAdapter.notifyAdapterItemChanged(position);
+            synchronized (object) {
+                fastAdapter.notifyAdapterItemChanged(position);
+            }
             Toast.makeText(context, R.string.view_project_toast_task_delete_failed, Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     public void onHeaderItemChanged(int estimatedTime, int elapsedTime, double progressRatio) {
-        ViewProjectHeaderItem item = headerAdapter.getAdapterItem(0);
-        item.setEstimatedTime(estimatedTime);
-        item.setElapsedTime(elapsedTime);
-        item.setProgress(progressRatio);
-        fastAdapter.notifyAdapterItemChanged(0);
+        synchronized (object) {
+            ViewProjectHeaderItem item = headerAdapter.getAdapterItem(0);
+            item.setEstimatedTime(estimatedTime);
+            item.setElapsedTime(elapsedTime);
+            item.setProgress(progressRatio);
+            fastAdapter.notifyAdapterItemChanged(0);
+        }
     }
 
     @Override
