@@ -262,10 +262,10 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
             if (view.getId() == R.id.item_task) {
                 presenter.selectTask((TaskItem) item);
                 return true;
-            }/* else if (view.getId() == R.id.item_view_tasks_header && ((ViewTasksHeaderItem) item).isProjectModelReady()) {
-                fragmentListener.onViewProject(((ViewTasksHeaderItem) item).getProjectModel());
+            } else if (view.getId() == R.id.item_view_tasks_header) {
+                presenter.viewProject(((ViewTasksHeaderItem) item).getTitle());
                 return true;
-            }*/
+            }
             return false;
         });
     }
