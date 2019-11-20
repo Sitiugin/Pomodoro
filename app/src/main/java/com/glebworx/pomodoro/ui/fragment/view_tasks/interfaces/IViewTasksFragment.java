@@ -15,4 +15,6 @@ public interface IViewTasksFragment {
 
     void onTaskCompleted(TaskItem item, CompletedTaskItem completedItem);
 
+    void onProjectChanged(String projectName, String tagColor);
+
 }

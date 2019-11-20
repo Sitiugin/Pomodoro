@@ -161,7 +161,7 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
 
     private Observable<DocumentSnapshot> getHeaderObservable(@NonNull String projectName) {
         return Observable.create(emitter -> {
-            ListenerRegistration taskEventListenerRegistration = ProjectApi.addDocumentModelEventListener(
+            ListenerRegistration taskEventListenerRegistration = ProjectApi.addProjectEventListener(
                     projectName,
                     (documentSnapshot, e) -> {
                         if (emitter.isDisposed()) {

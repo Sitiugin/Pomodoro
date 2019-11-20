@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
@@ -12,6 +13,7 @@ import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragmen
 import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragmentPresenter;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -148,6 +150,27 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
         };
     }
 
+    private Observable<DocumentSnapshot> getProjectObservable(@NonNull String projectName) {
+        return Observable.create(emitter -> {
+            ListenerRegistration taskEventListenerRegistration = ProjectApi.addProjectEventListener(
+                    projectName,
+                    (documentSnapshot, e) -> {
+                        if (emitter.isDisposed()) {
+                            return;
+                        }
+                        if (e != null) {
+                            emitter.onError(e);
+                            return;
+                        }
+                        if (documentSnapshot == null) {
+                            return;
+                        }
+                        emitter.onNext(documentSnapshot);
+                    });
+            emitter.setCancellable(taskEventListenerRegistration::remove);
+        });
+    }
+
     private io.reactivex.Observer<DocumentChange> getObserver() {
         return new io.reactivex.Observer<DocumentChange>() {
             @Override
@@ -161,6 +184,7 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
                 switch (documentChange.getType()) {
                     case ADDED:
                         presenterListener.onTaskAdded(item);
+                        observeProject(item.getProjectName());
                         break;
                     case MODIFIED:
                         presenterListener.onTaskModified(item);
@@ -169,6 +193,44 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
                         presenterListener.onTaskDeleted(item);
                         break;
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+    }
+
+    private void observeProject(String projectName) {
+        Observable<DocumentSnapshot> projectObservable = getProjectObservable(projectName);
+        projectObservable = projectObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io());
+        projectObservable.subscribe(getProjectObserver());
+    }
+
+    private io.reactivex.Observer<DocumentSnapshot> getProjectObserver() {
+        return new io.reactivex.Observer<DocumentSnapshot>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                compositeDisposable.add(disposable);
+            }
+
+            @Override
+            public void onNext(DocumentSnapshot documentSnapshot) {
+                ProjectModel projectModel = documentSnapshot.toObject(ProjectModel.class);
+                if (projectModel == null) {
+                    return;
+                }
+                projectModelMap.put(projectModel.getName(), projectModel);
+                presenterListener.onProjectChanged(projectModel.getName(), projectModel.getColorTag());
             }
 
             @Override

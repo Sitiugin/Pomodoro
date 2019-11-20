@@ -114,12 +114,12 @@ public class ProjectApi extends BaseApi {
 
     }
 
-    public static ListenerRegistration addModelEventListener(@NonNull EventListener<QuerySnapshot> eventListener) {
+    public static ListenerRegistration addProjectsEventListener(@NonNull EventListener<QuerySnapshot> eventListener) {
         return addModelEventListener(eventListener, getCollection(COLLECTION_PROJECTS));
     }
 
-    public static ListenerRegistration addDocumentModelEventListener(@NonNull String documentName, @NonNull EventListener<DocumentSnapshot> eventListener) {
-        return addDocumentModelEventListener(documentName, eventListener, getCollection(COLLECTION_PROJECTS));
+    public static ListenerRegistration addProjectEventListener(@NonNull String projectName, @NonNull EventListener<DocumentSnapshot> eventListener) {
+        return addDocumentModelEventListener(projectName, eventListener, getCollection(COLLECTION_PROJECTS));
     }
 
 }

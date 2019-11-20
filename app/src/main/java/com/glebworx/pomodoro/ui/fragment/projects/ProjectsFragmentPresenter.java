@@ -185,7 +185,7 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
 
     private Observable<DocumentChange> getProjectEventObservable() {
         return Observable.create(emitter -> {
-            ListenerRegistration listenerRegistration = ProjectApi.addModelEventListener((querySnapshot, e) -> {
+            ListenerRegistration listenerRegistration = ProjectApi.addProjectsEventListener((querySnapshot, e) -> {
                 if (emitter.isDisposed()) {
                     return;
                 }

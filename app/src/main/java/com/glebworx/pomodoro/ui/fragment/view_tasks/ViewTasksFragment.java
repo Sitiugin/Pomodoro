@@ -61,6 +61,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
     private Context context;
     private final Object object = new Object();
+    private Map<String, ItemAdapter<AbstractItem>> headerAdapterMap;
     private Map<String, ItemAdapter<AbstractItem>> adapterMap;
     private IViewTasksFragmentInteractionListener fragmentListener;
     private Unbinder unbinder;
@@ -141,6 +142,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
                 break;
         }
 
+        headerAdapterMap = new HashMap<>();
         adapterMap = new HashMap<>();
         fastAdapter = new FastAdapter<>();
         adapterCount = 0;
@@ -172,6 +174,8 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
                 adapterMap.put(projectName, adapter);
 
                 headerAdapter.add(new ViewTasksHeaderItem(item.getProjectName()));
+                headerAdapterMap.put(projectName, headerAdapter);
+
                 footerAdapter.add(new ViewTasksFooterItem());
 
                 fastAdapter.addAdapter(adapterCount++, headerAdapter);
@@ -214,9 +218,21 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
     @Override
     public void onTaskCompleted(TaskItem item, CompletedTaskItem completedItem) {
-
+        // TODO implement
     }
 
+    @Override
+    public void onProjectChanged(String projectName, String tagColor) {
+        synchronized (object) {
+            ItemAdapter<AbstractItem> headerAdapter = headerAdapterMap.get(projectName);
+            if (headerAdapter != null) {
+                AbstractItem headerItem = Objects.requireNonNull(headerAdapter).getAdapterItem(0);
+                ((ViewTasksHeaderItem) headerItem).setColorTag(tagColor);
+                //fastAdapter.notifyItemChanged(fastAdapter.getPosition(headerItem)); // TODO why this doesn't work?
+                fastAdapter.notifyAdapterDataSetChanged();
+            }
+        }
+    }
 
     //                                                                                       HELPERS
 
