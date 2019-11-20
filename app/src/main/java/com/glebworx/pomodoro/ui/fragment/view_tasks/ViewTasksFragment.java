@@ -66,7 +66,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
     private Unbinder unbinder;
     private ViewTasksFragmentPresenter presenter;
     private FastAdapter<AbstractItem> fastAdapter;
-
+    private int adapterCount;
 
     //                                                                                  CONSTRUCTORS
 
@@ -137,11 +137,13 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
                 break;
             case TYPE_OVERDUE:
                 subtitleTextView.setText(R.string.view_tasks_text_overdue);
+                subtitleTextView.setTextColor(context.getColor(R.color.colorError));
                 break;
         }
 
         adapterMap = new HashMap<>();
         fastAdapter = new FastAdapter<>();
+        adapterCount = 0;
 
         initRecyclerView(fastAdapter);
         initClickEvents(fastAdapter);
@@ -151,36 +153,31 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
     @Override
     public void onTaskAdded(TaskItem item) {
 
-        String taskName = item.getTaskName();
+        synchronized (object) {
 
-        if (adapterMap.containsKey(taskName)) {
+            String projectName = item.getProjectName();
 
-            synchronized (object) {
-                ItemAdapter<AbstractItem> adapter = adapterMap.get(taskName);
+            if (adapterMap.containsKey(projectName)) {
+
+                ItemAdapter<AbstractItem> adapter = adapterMap.get(projectName);
                 Objects.requireNonNull(adapter).add(item);
-            }
 
-        } else {
-
-            synchronized (object) {
+            } else {
 
                 ItemAdapter<AbstractItem> adapter = new ItemAdapter<>();
                 ItemAdapter<AbstractItem> headerAdapter = new ItemAdapter<>();
                 ItemAdapter<AbstractItem> footerAdapter = new ItemAdapter<>();
 
                 adapter.add(item);
-                adapterMap.put(taskName, adapter);
-                int index = fastAdapter.getItemCount();
+                adapterMap.put(projectName, adapter);
 
                 headerAdapter.add(new ViewTasksHeaderItem(item.getProjectName()));
                 footerAdapter.add(new ViewTasksFooterItem());
 
-                fastAdapter.addAdapter(index, headerAdapter);
-                fastAdapter.notifyDataSetChanged();
-                fastAdapter.addAdapter(index + 1, adapter);
-                fastAdapter.notifyDataSetChanged();
-                fastAdapter.addAdapter(index + 2, footerAdapter);
-                fastAdapter.notifyDataSetChanged();
+                fastAdapter.addAdapter(adapterCount++, headerAdapter);
+                fastAdapter.addAdapter(adapterCount++, adapter);
+                fastAdapter.addAdapter(adapterCount++, footerAdapter);
+                fastAdapter.notifyAdapterItemRangeChanged(adapterCount, 3);
 
             }
 
@@ -189,9 +186,9 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
     @Override
     public void onTaskModified(TaskItem item) {
-        String taskName = item.getTaskName();
-        if (adapterMap.containsKey(taskName)) {
-            synchronized (object) {
+        synchronized (object) {
+            String taskName = item.getTaskName();
+            if (adapterMap.containsKey(taskName)) {
                 ItemAdapter<AbstractItem> adapter = adapterMap.get(taskName);
                 int index = getTaskItemIndex(taskName, Objects.requireNonNull(adapter));
                 if (index != -1) {
@@ -203,9 +200,9 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
     @Override
     public void onTaskDeleted(TaskItem item) {
-        String taskName = item.getTaskName();
-        if (adapterMap.containsKey(taskName)) {
-            synchronized (object) {
+        synchronized (object) {
+            String taskName = item.getTaskName();
+            if (adapterMap.containsKey(taskName)) {
                 ItemAdapter<AbstractItem> adapter = adapterMap.get(taskName);
                 int index = getTaskItemIndex(taskName, Objects.requireNonNull(adapter));
                 if (index != -1) {
