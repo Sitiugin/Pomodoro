@@ -62,8 +62,8 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
 
     //                                                                                     CONSTANTS
 
-    public static final String ARG_PROJECT_MODEL = "project_model";
-    public static final String ARG_TASK_MODEL = "task_model";
+    static final String ARG_PROJECT_MODEL = "project_model";
+    static final String ARG_TASK_MODEL = "task_model";
 
 
     //                                                                                    ATTRIBUTES
@@ -221,26 +221,12 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
     }
 
     @Override
-    public void onAddTaskStart() {
-        startSaveStartedAnimation();
-    }
-
-    @Override
-    public void onAddTaskSuccess(boolean isEditing) {
+    public void onAddTask(boolean isEditing) {
         Toast.makeText(
                 context,
                 isEditing ? R.string.add_task_toast_update_success : R.string.add_task_toast_add_success,
                 Toast.LENGTH_SHORT).show();
         fragmentListener.onCloseFragment();
-    }
-
-    @Override
-    public void onAddTaskFailure(boolean isEditing) {
-        Toast.makeText(
-                context,
-                isEditing ? R.string.add_task_toast_update_failed : R.string.add_task_toast_add_failed,
-                Toast.LENGTH_LONG).show();
-        startSaveCanceledAnimation();
     }
 
     @Override

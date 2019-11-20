@@ -19,11 +19,7 @@ public interface IAddTaskFragment {
 
     void onSelectDueDate(String dateString);
 
-    void onAddTaskStart();
-
-    void onAddTaskSuccess(boolean isEditing);
-
-    void onAddTaskFailure(boolean isEditing);
+    void onAddTask(boolean isEditing);
 
     void onTaskValidationFailed(boolean isEmpty);
 
