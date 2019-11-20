@@ -15,11 +15,7 @@ public interface IAddProjectFragment {
 
     void onSelectDueDate(String dateString);
 
-    void onSaveProjectStart();
-
-    void onSaveProjectSuccess(boolean isEditing);
-
-    void onSaveProjectFailure(boolean isEditing);
+    void onSaveProject(boolean isEditing);
 
     void onProjectValidationFailed(boolean isEmpty);
 

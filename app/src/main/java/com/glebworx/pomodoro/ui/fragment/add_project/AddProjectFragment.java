@@ -172,26 +172,12 @@ public class AddProjectFragment extends Fragment implements IAddProjectFragment 
     }
 
     @Override
-    public void onSaveProjectStart() {
-        startSaveStartedAnimation();
-    }
-
-    @Override
-    public void onSaveProjectSuccess(boolean isEditing) {
+    public void onSaveProject(boolean isEditing) {
         Toast.makeText(
                 context,
                 isEditing ? R.string.add_project_toast_update_success : R.string.add_project_toast_add_success,
                 Toast.LENGTH_SHORT).show();
         fragmentListener.onCloseFragment();
-    }
-
-    @Override
-    public void onSaveProjectFailure(boolean isEditing) {
-        Toast.makeText(
-                context,
-                isEditing ? R.string.add_project_toast_update_failed : R.string.add_project_toast_add_failed,
-                Toast.LENGTH_LONG).show();
-        startSaveCanceledAnimation();
     }
 
     @Override

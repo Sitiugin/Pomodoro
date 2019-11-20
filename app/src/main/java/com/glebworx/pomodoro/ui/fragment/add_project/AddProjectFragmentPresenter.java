@@ -167,11 +167,12 @@ class AddProjectFragmentPresenter implements IAddProjectFragmentPresenter {
 
         if (projectModel.isValid()) {
 
-            presenterListener.onSaveProjectStart();
             if (isEditing) {
                 updateProject();
+                presenterListener.onSaveProject(true);
             } else {
                 addProject();
+                presenterListener.onSaveProject(false);
             }
 
         } else {
@@ -188,23 +189,11 @@ class AddProjectFragmentPresenter implements IAddProjectFragmentPresenter {
     //                                                                                       HELPERS
 
     private void addProject() {
-        ProjectApi.addProject(projectModel, task -> {
-            if (task.isSuccessful()) {
-                presenterListener.onSaveProjectSuccess(isEditing);
-            } else {
-                presenterListener.onSaveProjectFailure(isEditing);
-            }
-        });
+        ProjectApi.addProject(projectModel, null);
     }
 
     private void updateProject() {
-        ProjectApi.updateProject(projectModel, task -> {
-            if (task.isSuccessful()) {
-                presenterListener.onSaveProjectSuccess(isEditing);
-            } else {
-                presenterListener.onSaveProjectFailure(isEditing);
-            }
-        });
+        ProjectApi.updateProject(projectModel, null);
     }
 
 }
