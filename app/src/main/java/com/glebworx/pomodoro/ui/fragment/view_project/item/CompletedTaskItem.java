@@ -103,6 +103,10 @@ public class CompletedTaskItem extends AbstractItem<CompletedTaskItem, Completed
         return false;
     }
 
+    public String getProjectName() {
+        return model.getProjectName();
+    }
+
 
     //                                                                                   VIEW HOLDER
 

@@ -8,6 +8,7 @@ import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
+import com.glebworx.pomodoro.ui.fragment.view_project.item.CompletedTaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.TaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragment;
 import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragmentInteractionListener;
@@ -66,15 +67,19 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
         projectModelMap = new HashMap<>();
 
         Observable<DocumentChange> observable = null;
+        Observable<DocumentChange> completedObservable = null;
         switch (type) {
             case TYPE_TODAY:
-                observable = getTodayObservable();
+                observable = getTodayObservable(false);
+                completedObservable = getTodayObservable(true);
                 break;
             case TYPE_THIS_WEEK:
-                observable = getThisWeekObservable();
+                observable = getThisWeekObservable(false);
+                completedObservable = getThisWeekObservable(true);
                 break;
             case TYPE_OVERDUE:
-                observable = getOverdueObservable();
+                observable = getOverdueObservable(false);
+                completedObservable = getOverdueObservable(true);
                 break;
         }
         if (observable != null) {
@@ -83,6 +88,13 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
                     .observeOn(AndroidSchedulers.mainThread())
                     .unsubscribeOn(Schedulers.io());
             observable.subscribe(getObserver());
+        }
+        if (completedObservable != null) {
+            completedObservable = completedObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .unsubscribeOn(Schedulers.io());
+            completedObservable.subscribe(getCompletedObserver());
         }
 
         presenterListener.onInitView(type);
@@ -110,23 +122,23 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
         }
     }
 
-    private Observable<DocumentChange> getTodayObservable() {
+    private Observable<DocumentChange> getTodayObservable(boolean completed) {
         return Observable.create(emitter -> {
-            ListenerRegistration listenerRegistration = TaskApi.addTodayTasksEventListener(getObservableEventListener(emitter));
+            ListenerRegistration listenerRegistration = TaskApi.addTodayTasksEventListener(getObservableEventListener(emitter), completed);
             emitter.setCancellable(listenerRegistration::remove);
         });
     }
 
-    private Observable<DocumentChange> getThisWeekObservable() {
+    private Observable<DocumentChange> getThisWeekObservable(boolean completed) {
         return Observable.create(emitter -> {
-            ListenerRegistration listenerRegistration = TaskApi.addThisWeekTasksEventListener(getObservableEventListener(emitter));
+            ListenerRegistration listenerRegistration = TaskApi.addThisWeekTasksEventListener(getObservableEventListener(emitter), completed);
             emitter.setCancellable(listenerRegistration::remove);
         });
     }
 
-    private Observable<DocumentChange> getOverdueObservable() {
+    private Observable<DocumentChange> getOverdueObservable(boolean completed) {
         return Observable.create(emitter -> {
-            ListenerRegistration listenerRegistration = TaskApi.addOverdueTasksEventListener(getObservableEventListener(emitter));
+            ListenerRegistration listenerRegistration = TaskApi.addOverdueTasksEventListener(getObservableEventListener(emitter), completed);
             emitter.setCancellable(listenerRegistration::remove);
         });
     }
@@ -192,6 +204,35 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
                     case REMOVED:
                         presenterListener.onTaskDeleted(item);
                         break;
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+    }
+
+    private io.reactivex.Observer<DocumentChange> getCompletedObserver() {
+        return new io.reactivex.Observer<DocumentChange>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                compositeDisposable.add(disposable);
+            }
+
+            @Override
+            public void onNext(DocumentChange documentChange) {
+                TaskModel model = documentChange.getDocument().toObject(TaskModel.class);
+                TaskItem item = new TaskItem(model);
+                CompletedTaskItem completedItem = new CompletedTaskItem(model);
+                if (documentChange.getType() == DocumentChange.Type.ADDED) {
+                    presenterListener.onTaskCompleted(item, completedItem);
                 }
             }
 

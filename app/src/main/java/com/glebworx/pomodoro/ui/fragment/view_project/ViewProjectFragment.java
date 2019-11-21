@@ -176,15 +176,15 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         synchronized (object) {
             int index = getTaskItemIndex(item.getTaskName());
             if (index != -1) {
-                taskAdapter.remove(index + 1);
+                taskAdapter.remove(index + 1); // TODO while + 1?
             }
         }
     }
 
     @Override
-    public void onTaskCompleted(TaskItem item, CompletedTaskItem completedItem) {
+    public void onTaskCompleted(CompletedTaskItem completedItem) {
         synchronized (object) {
-            int index = getTaskItemIndex(item.getTaskName());
+            int index = getTaskItemIndex(completedItem.getTaskName());
             if (index != -1) {
                 taskAdapter.remove(index + 1);
             }

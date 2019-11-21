@@ -190,15 +190,16 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
             }
 
         }
+
     }
 
     @Override
     public void onTaskModified(TaskItem item) {
         synchronized (object) {
-            String taskName = item.getTaskName();
-            if (adapterMap.containsKey(taskName)) {
-                ItemAdapter<AbstractItem> adapter = adapterMap.get(taskName);
-                int index = getTaskItemIndex(taskName, Objects.requireNonNull(adapter));
+            String projectName = item.getProjectName();
+            if (adapterMap.containsKey(projectName)) {
+                ItemAdapter<AbstractItem> adapter = adapterMap.get(projectName);
+                int index = getTaskItemIndex(item.getTaskName(), Objects.requireNonNull(adapter));
                 if (index != -1) {
                     adapter.set(index, item);
                 }
@@ -209,10 +210,10 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
     @Override
     public void onTaskDeleted(TaskItem item) {
         synchronized (object) {
-            String taskName = item.getTaskName();
-            if (adapterMap.containsKey(taskName)) {
-                ItemAdapter<AbstractItem> adapter = adapterMap.get(taskName);
-                int index = getTaskItemIndex(taskName, Objects.requireNonNull(adapter));
+            String projectName = item.getProjectName();
+            if (adapterMap.containsKey(projectName)) {
+                ItemAdapter<AbstractItem> adapter = adapterMap.get(projectName);
+                int index = getTaskItemIndex(item.getTaskName(), Objects.requireNonNull(adapter));
                 if (index != -1) {
                     adapter.remove(index);
                 }
@@ -222,13 +223,46 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
     @Override
     public void onTaskCompleted(TaskItem item, CompletedTaskItem completedItem) {
-        synchronized (object) { // TODO need another observable for completed items
-            /*int index = getTaskItemIndex(item.getTaskName());
-            if (index != -1) {
-                taskAdapter.remove(index + 1);
-            }
-            completedTaskAdapter.add(completedItem);*/
+
+        synchronized (object) {
+
+            /*String projectName = completedItem.getProjectName();
+
+            if (adapterMap.containsKey(projectName)) {
+
+                ItemAdapter<AbstractItem> adapter = adapterMap.get(projectName);
+                String taskName = item.getTaskName();
+                Objects.requireNonNull(adapter).add(completedItem);
+                int index = getTaskItemIndex(taskName, Objects.requireNonNull(adapter));
+                if (index != -1) {
+                    adapter.remove(index);
+                }
+
+            } else {
+
+                ItemAdapter<AbstractItem> adapter = new ItemAdapter<>();
+                ItemAdapter<AbstractItem> headerAdapter = new ItemAdapter<>();
+                ItemAdapter<AbstractItem> completedAdapter = new ItemAdapter<>();
+                ItemAdapter<AbstractItem> footerAdapter = new ItemAdapter<>();
+
+                adapter.add(item);
+                adapterMap.put(projectName, adapter);
+
+                headerAdapter.add(new ViewTasksHeaderItem(item.getProjectName()));
+                headerAdapterMap.put(projectName, headerAdapter);
+
+                footerAdapter.add(new ViewTasksFooterItem());
+
+                fastAdapter.addAdapter(adapterCount++, headerAdapter);
+                fastAdapter.addAdapter(adapterCount++, adapter);
+                fastAdapter.addAdapter(adapterCount++, completedAdapter);
+                fastAdapter.addAdapter(adapterCount++, footerAdapter);
+                fastAdapter.notifyAdapterItemRangeChanged(adapterCount, 4);
+
+            }*/
+
         }
+
     }
 
     @Override

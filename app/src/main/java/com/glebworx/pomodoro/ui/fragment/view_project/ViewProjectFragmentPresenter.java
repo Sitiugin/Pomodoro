@@ -225,10 +225,9 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
             @Override
             public void onNext(DocumentChange documentChange) {
                 TaskModel model = documentChange.getDocument().toObject(TaskModel.class);
-                TaskItem item = new TaskItem(model);
                 CompletedTaskItem completedItem = new CompletedTaskItem(model);
                 if (documentChange.getType() == DocumentChange.Type.ADDED) {
-                    presenterListener.onTaskCompleted(item, completedItem);
+                    presenterListener.onTaskCompleted(completedItem);
                 }
             }
 

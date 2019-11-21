@@ -17,7 +17,7 @@ public interface IViewProjectFragment {
 
     void onTaskDeleted(TaskItem item);
 
-    void onTaskCompleted(TaskItem item, CompletedTaskItem completedItem);
+    void onTaskCompleted(CompletedTaskItem completedItem);
 
     void onProjectDeleted(boolean isSuccessful);
 
