@@ -77,26 +77,30 @@
         <com.glebworx.pomodoro.ui.fragment.about.view.AboutAppView
             android:id="@+id/view_app"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/height_app_bar" />
 
         <com.glebworx.pomodoro.ui.fragment.about.view.AboutTermsView
             android:id="@+id/view_terms"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/height_app_bar" />
 
         <com.glebworx.pomodoro.ui.fragment.about.view.AboutPrivacyView
             android:id="@+id/view_privacy"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:paddingVertical="@dimen/margin_content_half" />
+            android:paddingBottom="@dimen/height_app_bar" />
 
         <com.glebworx.pomodoro.ui.fragment.about.view.AboutLicensesView
             android:id="@+id/view_licenses"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:paddingVertical="@dimen/margin_content_half" />
+            android:paddingBottom="@dimen/height_app_bar" />
 
     </androidx.viewpager.widget.ViewPager>
 

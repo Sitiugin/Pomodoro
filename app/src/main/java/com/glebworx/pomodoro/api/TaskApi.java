@@ -192,8 +192,8 @@ public class TaskApi extends BaseApi {
     public static ListenerRegistration addTodayTasksEventListener(@NonNull EventListener<QuerySnapshot> eventListener) {
         ZonedDateTime todayDateTime = LocalDate.now().atStartOfDay(ZoneId.systemDefault());
         return getCollectionGroup(COLLECTION_TASKS)
-                //.whereEqualTo(FIELD_COMPLETED, completed)
                 .whereGreaterThanOrEqualTo(FIELD_DUE_DATE, Date.from(todayDateTime.toInstant()))
+                //.whereEqualTo(FIELD_COMPLETED, completed)
                 .whereLessThan(FIELD_DUE_DATE, Date.from(todayDateTime.plusDays(1).toInstant()))
                 .addSnapshotListener(eventListener);
     }
@@ -201,16 +201,16 @@ public class TaskApi extends BaseApi {
     public static ListenerRegistration addThisWeekTasksEventListener(@NonNull EventListener<QuerySnapshot> eventListener) {
         Date inAWeek = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).plusDays(7).toInstant());
         return getCollectionGroup(COLLECTION_TASKS)
-                //.whereEqualTo(FIELD_COMPLETED, completed)
                 .whereLessThanOrEqualTo(FIELD_DUE_DATE, inAWeek)
+                //.whereEqualTo(FIELD_COMPLETED, completed)
                 .addSnapshotListener(eventListener);
     }
 
     public static ListenerRegistration addOverdueTasksEventListener(@NonNull EventListener<QuerySnapshot> eventListener) {
         Date today = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
         return getCollectionGroup(COLLECTION_TASKS)
-                //.whereEqualTo(FIELD_COMPLETED, completed)
                 .whereLessThan(FIELD_DUE_DATE, today)
+                //.whereEqualTo(FIELD_COMPLETED, completed)
                 .addSnapshotListener(eventListener);
     }
 

@@ -222,7 +222,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
     @Override
     public void onTaskCompleted(TaskItem item, CompletedTaskItem completedItem) {
-        synchronized (object) {
+        synchronized (object) { // TODO need another observable for completed items
             /*int index = getTaskItemIndex(item.getTaskName());
             if (index != -1) {
                 taskAdapter.remove(index + 1);
