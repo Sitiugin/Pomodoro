@@ -21,9 +21,9 @@ public class HistoryApi extends BaseApi {
 
     //                                                                                     CONSTANTS
 
-    private static final int PAGE_SIZE = 25;
+    private static final int PAGE_SIZE = 100;
 
-    static final String FIELD_EVENT_TYPE = "eventType";
+    private static final String FIELD_EVENT_TYPE = "eventType";
 
 
     //                                                                       CONSTRUCTOR SUPPRESSION

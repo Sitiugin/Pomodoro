@@ -13,7 +13,7 @@ public interface IViewTasksFragment {
 
     void onTaskDeleted(TaskItem item);
 
-    void onTaskCompleted(TaskItem item, CompletedTaskItem completedItem);
+    void onTaskCompleted(CompletedTaskItem completedItem);
 
     void onProjectChanged(String projectName, String tagColor);
 

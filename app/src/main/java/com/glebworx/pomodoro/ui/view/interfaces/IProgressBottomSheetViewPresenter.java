@@ -20,8 +20,6 @@ public interface IProgressBottomSheetViewPresenter {
 
     void completeTask(Activity activity);
 
-    void showDailyTargetDialog(Context context);
-
     boolean isStatusIdle();
 
     void clearNotifications();

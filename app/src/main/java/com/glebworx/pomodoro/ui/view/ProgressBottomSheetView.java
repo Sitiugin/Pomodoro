@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -20,7 +19,6 @@ import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetView;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewInteractionListener;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewPresenter;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
-import com.glebworx.pomodoro.util.manager.SharedPrefsManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.triggertrap.seekarc.SeekArc;
@@ -46,10 +44,8 @@ public class ProgressBottomSheetView
     @BindView(R.id.text_view_status) AppCompatTextView statusTextView;
     @BindView(R.id.text_view_time_remaining) AppCompatTextView timeRemainingTextView;
     @BindView(R.id.button_start_stop) AppCompatImageButton startStopButton;
-    @BindView(R.id.button_daily_target)
-    AppCompatButton dailyTargetButton;
-    @BindView(R.id.text_view_daily_target)
-    AppCompatTextView dailyTargetTextView;
+    @BindView(R.id.text_view_sessions_remaining)
+    AppCompatTextView sessionsRemainingTextView;
     @BindView(R.id.text_view_time_remaining_large) AppCompatTextView timeRemainingLargeTextView;
     @BindView(R.id.seek_arc) SeekArc seekArc;
     @BindView(R.id.fab_start_stop_large) FloatingActionButton startStopFab;
@@ -105,14 +101,12 @@ public class ProgressBottomSheetView
             startStopFab.setOnClickListener(this);
             cancelButton.setOnClickListener(this);
             completeButton.setOnClickListener(this);
-            dailyTargetButton.setOnClickListener(this);
         } else {
             bottomSheetListener = null;
             startStopButton.setOnClickListener(null);
             startStopFab.setOnClickListener(null);
             cancelButton.setOnClickListener(null);
             completeButton.setOnClickListener(null);
-            dailyTargetButton.setOnClickListener(null);
         }
     }
 
@@ -139,8 +133,6 @@ public class ProgressBottomSheetView
             case R.id.button_complete:
                 presenter.completeTask((MainActivity) context);
                 break;
-            case R.id.button_daily_target:
-                presenter.showDailyTargetDialog(context);
         }
     }
 
@@ -215,27 +207,7 @@ public class ProgressBottomSheetView
 
     @Override
     public void onTodayCountUpdated(int newCount) {
-        SharedPrefsManager sharedPrefsManager = new SharedPrefsManager(context);
-        int target = sharedPrefsManager.getPomodoroTarget();
-        if (target == 0) {
-            dailyTargetButton.setText(R.string.core_empty);
-            dailyTargetButton.setTextColor(context.getColor(android.R.color.darker_gray));
-        } else {
-            dailyTargetButton.setText(context.getString(
-                    R.string.core_ratio,
-                    String.valueOf(newCount),
-                    String.valueOf(target)));
-            if (newCount >= target) {
-                dailyTargetButton.setTextColor(context.getColor(R.color.colorHighlight));
-            } else {
-                dailyTargetButton.setTextColor(context.getColor(android.R.color.black));
-            }
-        }
-    }
-
-    @Override
-    public void onPomodoroTargetUpdated(int completedToday, int newTarget) {
-
+        // TODO implement
     }
 
     @Override
@@ -320,6 +292,17 @@ public class ProgressBottomSheetView
                 ConstraintSet.PARENT_ID,
                 ConstraintSet.END);
 
+        // animate pomodoro number and remaining sessions
+        constraintSet.connect(R.id.text_view_pomodoro_number,
+                ConstraintSet.START,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.START);
+        constraintSet.connect(R.id.text_view_pomodoro_number,
+                ConstraintSet.END,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.END);
+        constraintSet.setVisibility(R.id.text_view_sessions_remaining, ConstraintSet.VISIBLE);
+
         // animate task
         constraintSet.connect(
                 R.id.text_view_task,
@@ -331,20 +314,6 @@ public class ProgressBottomSheetView
                 ConstraintSet.END,
                 ConstraintSet.PARENT_ID,
                 ConstraintSet.END);
-
-        // animate pomodoro number
-        constraintSet.connect(R.id.text_view_pomodoro_number,
-                ConstraintSet.START,
-                ConstraintSet.PARENT_ID,
-                ConstraintSet.START);
-        constraintSet.connect(R.id.text_view_pomodoro_number,
-                ConstraintSet.END,
-                ConstraintSet.PARENT_ID,
-                ConstraintSet.END);
-
-        // animate distractions
-        constraintSet.setVisibility(R.id.text_view_daily_target, ConstraintSet.VISIBLE);
-        constraintSet.setVisibility(R.id.button_daily_target, ConstraintSet.VISIBLE);
 
         // animate buttons
         constraintSet.setVisibility(R.id.button_start_stop, ConstraintSet.INVISIBLE);
@@ -385,12 +354,13 @@ public class ProgressBottomSheetView
                 ConstraintSet.START);
         constraintSet.clear(R.id.text_view_status, ConstraintSet.END);
 
-        // animate pomodoro number
+        // animate pomodoro number and remaining sessions
         constraintSet.connect(R.id.text_view_pomodoro_number,
                 ConstraintSet.START,
                 R.id.text_view_task,
                 ConstraintSet.END);
         constraintSet.clear(R.id.text_view_pomodoro_number, ConstraintSet.END);
+        constraintSet.setVisibility(R.id.text_view_sessions_remaining, ConstraintSet.INVISIBLE);
 
         // animate task
         constraintSet.connect(
@@ -399,10 +369,6 @@ public class ProgressBottomSheetView
                 ConstraintSet.PARENT_ID,
                 ConstraintSet.TOP);
         constraintSet.clear(R.id.text_view_task, ConstraintSet.END);
-
-        // animate distractions
-        constraintSet.setVisibility(R.id.text_view_daily_target, ConstraintSet.INVISIBLE);
-        constraintSet.setVisibility(R.id.button_daily_target, ConstraintSet.INVISIBLE);
 
         // animate buttons
         constraintSet.setVisibility(R.id.button_start_stop, ConstraintSet.VISIBLE);

@@ -222,21 +222,24 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
     }
 
     @Override
-    public void onTaskCompleted(TaskItem item, CompletedTaskItem completedItem) {
+    public void onTaskCompleted(CompletedTaskItem completedItem) {
 
-        synchronized (object) {
+        synchronized (object) { // TODO this block is not working properly
 
             /*String projectName = completedItem.getProjectName();
 
             if (adapterMap.containsKey(projectName)) {
-
                 ItemAdapter<AbstractItem> adapter = adapterMap.get(projectName);
-                String taskName = item.getTaskName();
-                Objects.requireNonNull(adapter).add(completedItem);
-                int index = getTaskItemIndex(taskName, Objects.requireNonNull(adapter));
+                int index = getTaskItemIndex(completedItem.getTaskName(), Objects.requireNonNull(adapter));
                 if (index != -1) {
                     adapter.remove(index);
                 }
+            }
+
+            if (completedAdapterMap.containsKey(projectName)) {
+
+                ItemAdapter<AbstractItem> adapter = completedAdapterMap.get(projectName);
+                Objects.requireNonNull(adapter).add(completedItem);
 
             } else {
 
@@ -245,10 +248,10 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
                 ItemAdapter<AbstractItem> completedAdapter = new ItemAdapter<>();
                 ItemAdapter<AbstractItem> footerAdapter = new ItemAdapter<>();
 
-                adapter.add(item);
-                adapterMap.put(projectName, adapter);
+                completedAdapter.add(completedItem);
+                completedAdapterMap.put(projectName, completedAdapter);
 
-                headerAdapter.add(new ViewTasksHeaderItem(item.getProjectName()));
+                headerAdapter.add(new ViewTasksHeaderItem(completedItem.getProjectName()));
                 headerAdapterMap.put(projectName, headerAdapter);
 
                 footerAdapter.add(new ViewTasksFooterItem());

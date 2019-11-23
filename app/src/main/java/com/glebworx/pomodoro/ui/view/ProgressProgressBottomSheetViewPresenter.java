@@ -3,7 +3,6 @@ package com.glebworx.pomodoro.ui.view;
 import android.app.Activity;
 import android.content.Context;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -19,10 +18,8 @@ import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetView;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewPresenter;
 import com.glebworx.pomodoro.util.PomodoroTimer;
 import com.glebworx.pomodoro.util.manager.DialogManager;
-import com.glebworx.pomodoro.util.manager.SharedPrefsManager;
 import com.glebworx.pomodoro.util.manager.TaskNotificationManager;
 import com.glebworx.pomodoro.util.manager.VibrationManager;
-import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.ListenerRegistration;
 
@@ -215,7 +212,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         showCompleteTaskDialog(activity);
     }
 
-    @Override
+    /*@Override
     public void showDailyTargetDialog(Context context) {
 
         if (!(context instanceof Activity)) {
@@ -259,7 +256,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
         alertDialog.show();
 
-    }
+    }*/
 
     @Override
     public boolean isStatusIdle() {

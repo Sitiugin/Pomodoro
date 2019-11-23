@@ -162,10 +162,11 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     }
 
     @Override
-    public void onTaskModified(TaskItem item) {
+    public void onTaskModified(TaskItem item) { // TODO this is a bug
         synchronized (object) {
             int index = getTaskItemIndex(item.getTaskName());
             if (index != -1) {
+                //taskAdapter.set(index + 1, item);
                 taskAdapter.set(index + 1, item);
             }
         }
@@ -175,7 +176,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     public void onTaskDeleted(TaskItem item) {
         synchronized (object) {
             int index = getTaskItemIndex(item.getTaskName());
-            if (index != -1) {
+            if (index != -1) { // TODO this is always false
                 taskAdapter.remove(index + 1); // TODO while + 1?
             }
         }

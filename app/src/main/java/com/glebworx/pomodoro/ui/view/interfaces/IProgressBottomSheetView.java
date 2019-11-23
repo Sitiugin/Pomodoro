@@ -16,8 +16,6 @@ public interface IProgressBottomSheetView {
 
     void onTodayCountUpdated(int newCount);
 
-    void onPomodoroTargetUpdated(int completedToday, int newTarget);
-
     void onTaskDataChanged(int pomodorosAllocated, int pomodorosCompleted);
 
     void onTick(long millisUntilFinished, int progress);

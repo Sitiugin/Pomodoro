@@ -65,30 +65,15 @@
         app:layout_constraintBottom_toBottomOf="@+id/text_view_task"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/button_daily_target"
-        style="@style/ButtonStyle.Borderless"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/height_app_bar"
-        android:visibility="invisible"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/text_view_daily_target"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="@+id/text_view_daily_target"
-        android:text="@string/core_empty" />
     <androidx.appcompat.widget.AppCompatTextView
-        style="@style/TextStyle"
-        android:id="@+id/text_view_daily_target"
+        android:id="@+id/text_view_sessions_remaining"
+        style="@style/ButtonStyle.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_content"
-        android:drawableStart="@drawable/ic_timer_gray_small"
-        android:drawablePadding="@dimen/margin_content_quarter"
         android:visibility="invisible"
-        android:text="@string/bottom_sheet_title_daily_target"
-        app:layout_constraintTop_toBottomOf="@+id/button_daily_target"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintBottom_toTopOf="@+id/text_view_time_remaining_large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         style="@style/TextStyle.Time"
