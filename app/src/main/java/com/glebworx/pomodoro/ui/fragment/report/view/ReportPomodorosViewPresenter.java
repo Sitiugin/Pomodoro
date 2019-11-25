@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
@@ -40,8 +41,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.glebworx.pomodoro.util.constants.Constants.FORMAT_DECIMAL_1PT;
 
 public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresenter {
 
@@ -145,13 +144,11 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
 
             @Override
             public void onNext(ReportPomodoroOverviewModel model) {
+                NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
                 presenterListener.onInitOverview(
-                        String.valueOf(model.getPomodorosCompleted()),
-                        String.format(
-                                Locale.getDefault(),
-                                FORMAT_DECIMAL_1PT,
-                                model.getAveragePerDay()),
-                        String.valueOf(model.getStreak()));
+                        numberFormat.format(model.getPomodorosCompleted()),
+                        numberFormat.format(model.getAveragePerDay()),
+                        numberFormat.format(model.getStreak()));
             }
 
             @Override
@@ -343,6 +340,8 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
             lineData.addDataSet(dataSet);
         }
 
+        lineData.setValueFormatter(new IChart.AxisEntryYFormatter());
+
         return lineData;
 
     }
@@ -384,7 +383,10 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
         BarDataSet dataSet = new BarDataSet(entries, null);
         IChart.initDataSet(dataSet, ColorConstants.rgb(ColorConstants.COLOR_HIGHLIGHT_HEX));
 
-        return new BarData(dataSet);
+        BarData barData = new BarData(dataSet);
+        barData.setValueFormatter(new IChart.AxisEntryYFormatter());
+
+        return barData;
 
     }
 

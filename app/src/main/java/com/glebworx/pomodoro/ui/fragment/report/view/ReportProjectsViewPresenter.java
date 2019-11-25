@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -153,6 +154,8 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
 
             @Override
             public void onNext(ReportProjectOverviewModel model) {
+                NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
+                //presenterListener.onInitOverview(numberFormat.format(model.get));
                 /*presenterListener.onInitOverview(
                         String.valueOf(model.getPomodorosCompleted()),
                         String.format(

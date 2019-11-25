@@ -23,7 +23,9 @@ import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
 
+import java.text.NumberFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import static com.glebworx.pomodoro.util.constants.Constants.ANIM_DURATION;
 import static com.glebworx.pomodoro.util.constants.Constants.TYPEFACE;
@@ -213,7 +215,7 @@ public interface IChart {
 
         private long currentDate;
 
-        public AxisEntryXFormatter() {
+        AxisEntryXFormatter() {
             this.currentDate = new Date().getTime();
         }
 
@@ -227,7 +229,7 @@ public interface IChart {
 
         private long currentDate;
 
-        public BarAxisEntryXFormatter() {
+        BarAxisEntryXFormatter() {
             this.currentDate = new Date().getTime();
         }
 
@@ -235,6 +237,17 @@ public interface IChart {
         public String getFormattedValue(float value) {
             return DateTimeManager.getBarAxisDateString((long) value * 604800000, currentDate);
         }
+    }
+
+    class AxisEntryYFormatter extends ValueFormatter {
+
+        private static NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
+
+        @Override
+        public String getFormattedValue(float value) {
+            return numberFormat.format(value);
+        }
+
     }
 
 }
