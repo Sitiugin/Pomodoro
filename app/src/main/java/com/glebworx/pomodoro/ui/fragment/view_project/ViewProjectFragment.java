@@ -75,7 +75,6 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     private IViewProjectFragmentInteractionListener fragmentListener;
     private Unbinder unbinder;
     private ViewProjectFragmentPresenter presenter;
-    private final Object object = new Object();
 
 
     //                                                                                  CONSTRUCTORS
@@ -155,14 +154,14 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
 
     @Override
     public void onTaskAdded(TaskItem item) {
-        synchronized (object) {
+        synchronized (this) {
             taskAdapter.add(item);
         }
     }
 
     @Override
     public void onTaskModified(TaskItem item) { // TODO this is a bug
-        synchronized (object) {
+        synchronized (this) {
             int index = getTaskItemIndex(item.getTaskName());
             if (index != -1) {
                 //taskAdapter.set(index + 1, item);
@@ -173,7 +172,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
 
     @Override
     public void onTaskDeleted(TaskItem item) {
-        synchronized (object) {
+        synchronized (this) {
             int index = getTaskItemIndex(item.getTaskName());
             if (index != -1) { // TODO this is always false
                 taskAdapter.remove(index + 1); // TODO while + 1?
@@ -183,7 +182,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
 
     @Override
     public void onTaskCompleted(CompletedTaskItem completedItem) {
-        synchronized (object) {
+        synchronized (this) {
             int index = getTaskItemIndex(completedItem.getTaskName());
             if (index != -1) {
                 taskAdapter.remove(index + 1);
@@ -207,7 +206,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         if (isSuccessful) {
             Toast.makeText(context, R.string.view_project_toast_task_delete_success, Toast.LENGTH_SHORT).show();
         } else {
-            synchronized (object) {
+            synchronized (this) {
                 fastAdapter.notifyAdapterItemChanged(position);
             }
             Toast.makeText(context, R.string.view_project_toast_task_delete_failed, Toast.LENGTH_LONG).show();
@@ -216,7 +215,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
 
     @Override
     public void onHeaderItemChanged(int estimatedTime, int elapsedTime, double progressRatio) {
-        synchronized (object) {
+        synchronized (this) {
             ViewProjectHeaderItem item = headerAdapter.getAdapterItem(0);
             item.setEstimatedTime(estimatedTime);
             item.setElapsedTime(elapsedTime);

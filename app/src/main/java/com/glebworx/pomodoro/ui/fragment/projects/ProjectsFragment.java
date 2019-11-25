@@ -69,7 +69,6 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
     private IProjectsFragmentInteractionListener fragmentListener;
     private Unbinder unbinder;
     private ProjectsFragmentPresenter presenter;
-    private final Object object = new Object();
 
 
     //                                                                                  CONSTRUCTORS
@@ -142,14 +141,14 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
 
     @Override
     public void onItemAdded(ProjectItem item) {
-        synchronized (object) {
+        synchronized (this) {
             projectAdapter.add(item);
         }
     }
 
     @Override
     public void onItemModified(ProjectItem item) {
-        synchronized (object) {
+        synchronized (this) {
             int index = getProjectItemIndex(item.getProjectName());
             if (index != -1) {
                 projectAdapter.set(index + 1, item); // add 1 because of header
@@ -159,7 +158,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
 
     @Override
     public void onItemDeleted(ProjectItem item) {
-        synchronized (object) {
+        synchronized (this) {
             int index = getProjectItemIndex(item.getProjectName());
             if (index != -1) {
                 projectAdapter.remove(index + 1); // add 1 because of header
@@ -169,7 +168,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
 
     @Override
     public void onTodayTaskCountChanged(int todayTaskCount) {
-        synchronized (object) {
+        synchronized (this) {
             ProjectHeaderItem item = headerAdapter.getAdapterItem(0);
             if (item != null) {
                 item.setTodayCount(todayTaskCount);
@@ -180,7 +179,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
 
     @Override
     public void onThisWeekTaskCountChanged(int thisWeekTaskCount) {
-        synchronized (object) {
+        synchronized (this) {
             ProjectHeaderItem item = headerAdapter.getAdapterItem(0);
             if (item != null) {
                 item.setThisWeekCount(thisWeekTaskCount);
@@ -191,7 +190,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
 
     @Override
     public void onOverdueTaskCountChanged(int overdueTaskCount) {
-        synchronized (object) {
+        synchronized (this) {
             ProjectHeaderItem item = headerAdapter.getAdapterItem(0);
             if (item != null) {
                 item.setOverdueCount(overdueTaskCount);
@@ -202,7 +201,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
 
     @Override
     public void onDeleteProjectFailed(int position) {
-        synchronized (object) {
+        synchronized (this) {
             fastAdapter.notifyAdapterItemChanged(position);
         }
         Toast.makeText(context, R.string.view_project_toast_project_delete_failed, LENGTH_LONG).show();

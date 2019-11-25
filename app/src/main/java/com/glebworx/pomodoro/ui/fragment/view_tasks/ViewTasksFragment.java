@@ -60,7 +60,6 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
     //                                                                                    ATTRIBUTES
 
     private Context context;
-    private final Object object = new Object();
     private Map<String, ItemAdapter<AbstractItem>> headerAdapterMap;
     private Map<String, ItemAdapter<AbstractItem>> adapterMap;
     private Map<String, ItemAdapter<AbstractItem>> completedAdapterMap;
@@ -157,7 +156,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
     @Override
     public void onTaskAdded(TaskItem item) {
 
-        synchronized (object) {
+        synchronized (this) {
 
             String projectName = item.getProjectName();
 
@@ -197,7 +196,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
     @Override
     public void onTaskModified(TaskItem item) {
-        synchronized (object) {
+        synchronized (this) {
             String projectName = item.getProjectName();
             if (adapterMap.containsKey(projectName)) {
                 ItemAdapter<AbstractItem> adapter = adapterMap.get(projectName);
@@ -211,7 +210,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
     @Override
     public void onTaskDeleted(TaskItem item) {
-        synchronized (object) {
+        synchronized (this) {
             String projectName = item.getProjectName();
             if (adapterMap.containsKey(projectName)) {
                 ItemAdapter<AbstractItem> adapter = adapterMap.get(projectName);
@@ -226,17 +225,17 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
     @Override
     public void onTaskCompleted(CompletedTaskItem completedItem) {
 
-        synchronized (object) { // TODO this block is not working properly - concurrency issues
+        synchronized (this) { // TODO this block is not working properly - concurrency issues
 
             String projectName = completedItem.getProjectName();
 
-            /*if (adapterMap.containsKey(projectName)) {
+            if (adapterMap.containsKey(projectName)) {
                 ItemAdapter<AbstractItem> adapter = adapterMap.get(projectName);
                 int index = getTaskItemIndex(completedItem.getTaskName(), Objects.requireNonNull(adapter));
                 if (index != -1) {
                     adapter.remove(index);
                 }
-            }*/
+            }
 
             if (completedAdapterMap.containsKey(projectName)) {
 
@@ -274,7 +273,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
     @Override
     public void onProjectChanged(String projectName, String tagColor) {
-        synchronized (object) {
+        synchronized (this) {
             ItemAdapter<AbstractItem> headerAdapter = headerAdapterMap.get(projectName);
             if (headerAdapter != null) {
                 AbstractItem headerItem = Objects.requireNonNull(headerAdapter).getAdapterItem(0);
