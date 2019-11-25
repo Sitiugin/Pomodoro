@@ -232,6 +232,7 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
                 CompletedTaskItem completedItem = new CompletedTaskItem(model);
                 if (documentChange.getType() == DocumentChange.Type.ADDED) {
                     presenterListener.onTaskCompleted(completedItem);
+                    observeProject(completedItem.getProjectName());
                 }
             }
 

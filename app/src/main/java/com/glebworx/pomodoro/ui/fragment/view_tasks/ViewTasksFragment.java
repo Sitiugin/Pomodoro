@@ -168,16 +168,18 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
             } else {
 
-                ItemAdapter<AbstractItem> adapter = new ItemAdapter<>();
                 ItemAdapter<AbstractItem> headerAdapter = new ItemAdapter<>();
+                ItemAdapter<AbstractItem> adapter = new ItemAdapter<>();
                 ItemAdapter<AbstractItem> completedAdapter = new ItemAdapter<>();
                 ItemAdapter<AbstractItem> footerAdapter = new ItemAdapter<>();
+
+                headerAdapter.add(new ViewTasksHeaderItem(item.getProjectName()));
+                headerAdapterMap.put(projectName, headerAdapter);
 
                 adapter.add(item);
                 adapterMap.put(projectName, adapter);
 
-                headerAdapter.add(new ViewTasksHeaderItem(item.getProjectName()));
-                headerAdapterMap.put(projectName, headerAdapter);
+                completedAdapterMap.put(projectName, completedAdapter);
 
                 footerAdapter.add(new ViewTasksFooterItem());
 
@@ -224,17 +226,17 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
     @Override
     public void onTaskCompleted(CompletedTaskItem completedItem) {
 
-        synchronized (object) { // TODO this block is not working properly
+        synchronized (object) { // TODO this block is not working properly - concurrency issues
 
-            /*String projectName = completedItem.getProjectName();
+            String projectName = completedItem.getProjectName();
 
-            if (adapterMap.containsKey(projectName)) {
+            /*if (adapterMap.containsKey(projectName)) {
                 ItemAdapter<AbstractItem> adapter = adapterMap.get(projectName);
                 int index = getTaskItemIndex(completedItem.getTaskName(), Objects.requireNonNull(adapter));
                 if (index != -1) {
                     adapter.remove(index);
                 }
-            }
+            }*/
 
             if (completedAdapterMap.containsKey(projectName)) {
 
@@ -243,16 +245,18 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
             } else {
 
-                ItemAdapter<AbstractItem> adapter = new ItemAdapter<>();
                 ItemAdapter<AbstractItem> headerAdapter = new ItemAdapter<>();
+                ItemAdapter<AbstractItem> adapter = new ItemAdapter<>();
                 ItemAdapter<AbstractItem> completedAdapter = new ItemAdapter<>();
                 ItemAdapter<AbstractItem> footerAdapter = new ItemAdapter<>();
 
-                completedAdapter.add(completedItem);
-                completedAdapterMap.put(projectName, completedAdapter);
-
                 headerAdapter.add(new ViewTasksHeaderItem(completedItem.getProjectName()));
                 headerAdapterMap.put(projectName, headerAdapter);
+
+                adapterMap.put(projectName, adapter);
+
+                completedAdapter.add(completedItem);
+                completedAdapterMap.put(projectName, completedAdapter);
 
                 footerAdapter.add(new ViewTasksFooterItem());
 
@@ -262,7 +266,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
                 fastAdapter.addAdapter(adapterCount++, footerAdapter);
                 fastAdapter.notifyAdapterItemRangeChanged(adapterCount, 4);
 
-            }*/
+            }
 
         }
 
