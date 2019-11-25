@@ -15,6 +15,7 @@ import java.time.ZoneId;
 import java.util.Date;
 
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_POMODORO_COMPLETED;
+import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_COMPLETED;
 
 public class HistoryApi extends BaseApi {
 
@@ -67,5 +68,12 @@ public class HistoryApi extends BaseApi {
                 .addOnCompleteListener(onCompleteListener);
     }
 
+    public static void getProjectCompletionHistory(@NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
+        getCollection(COLLECTION_HISTORY)
+                .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
+                .whereEqualTo(FIELD_EVENT_TYPE, EVENT_PROJECT_COMPLETED)
+                .get(Source.CACHE)
+                .addOnCompleteListener(onCompleteListener);
+    }
 
 }

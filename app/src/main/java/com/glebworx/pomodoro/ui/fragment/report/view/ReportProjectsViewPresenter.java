@@ -9,7 +9,6 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.utils.EntryXComparator;
 import com.glebworx.pomodoro.api.HistoryApi;
 import com.glebworx.pomodoro.model.HistoryModel;
-import com.glebworx.pomodoro.model.report.ReportPomodoroOverviewModel;
 import com.glebworx.pomodoro.model.report.ReportProjectOverviewModel;
 import com.glebworx.pomodoro.ui.fragment.report.interfaces.IChart;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportProjectsView;
@@ -20,13 +19,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -35,11 +30,16 @@ import java.util.Optional;
 import java.util.Set;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter {
 
     private @NonNull
     IReportProjectsView presenterListener;
+    private CompositeDisposable compositeDisposable;
 
     ReportProjectsViewPresenter(@NonNull IReportProjectsView presenterListener) {
         this.presenterListener = presenterListener;
@@ -49,7 +49,13 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
     @Override
     public void init() {
         presenterListener.onInitView();
+        compositeDisposable = new CompositeDisposable();
         HistoryApi.getPomodoroCompletionHistory(this::handleHistory);
+    }
+
+    @Override
+    public void destroy() {
+        compositeDisposable.clear();
     }
 
     private void handleHistory(Task<QuerySnapshot> task) {
@@ -59,9 +65,9 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
         if (task.isSuccessful() && result != null) {
 
             Observable<ReportProjectOverviewModel> overviewObservable = getOverviewObservable(result);
-            /*overviewObservable = overviewObservable
+            overviewObservable = overviewObservable
                     .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread());*/
+                    .observeOn(AndroidSchedulers.mainThread());
 
             /*Observable<PieData> projectsDistributionObservable = getProjectsDistributionObservable(result);
             projectsDistributionObservable = projectsDistributionObservable
@@ -78,6 +84,11 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());*/
 
+            overviewObservable.subscribe(getOverviewObserver());
+            /*projectsDistributionObservable.subscribe(getProjectsDistributionObserver());
+            overdueObservable.subscribe(getOverdueObserver());
+            elapsedTimeObservable.subscribe(getElapsedTimeObserver());*/
+
             if (result.isEmpty()) {
                 presenterListener.onChartDataEmpty();
             }
@@ -89,14 +100,13 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
     }
 
     private Observable<ReportProjectOverviewModel> getOverviewObservable(QuerySnapshot snapshot) {
-        /*return Observable.create(emitter -> {
-            ReportPomodoroOverviewModel model = new ReportPomodoroOverviewModel();
+        return Observable.create(emitter -> {
+            ReportProjectOverviewModel model = new ReportProjectOverviewModel();
             initOverview(model, snapshot.getDocuments());
             emitter.onNext(model);
             emitter.onComplete();
 
-        });*/
-        return null;
+        });
     }
 
     private Observable<PieData> getProjectsDistributionObservable(QuerySnapshot snapshot) {
@@ -135,10 +145,42 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
         return null;
     }
 
-    private void initOverview(ReportPomodoroOverviewModel overviewModel,
+    private io.reactivex.Observer<ReportProjectOverviewModel> getOverviewObserver() {
+        return new io.reactivex.Observer<ReportProjectOverviewModel>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                compositeDisposable.add(disposable);
+            }
+
+            @Override
+            public void onNext(ReportProjectOverviewModel model) {
+                /*presenterListener.onInitOverview(
+                        String.valueOf(model.getPomodorosCompleted()),
+                        String.format(
+                                Locale.getDefault(),
+                                FORMAT_DECIMAL_1PT,
+                                model.getAveragePerDay()),
+                        String.valueOf(model.getStreak()));*/
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+    }
+
+    private void initOverview(ReportProjectOverviewModel overviewModel,
                               List<DocumentSnapshot> documentSnapshots) {
 
-        overviewModel.setPomodorosCompleted(documentSnapshots.size());
+
+
+        /*overviewModel.setPomodorosCompleted(documentSnapshots.size());
 
         HistoryModel model;
         List<Date> dates = new ArrayList<>();
@@ -194,7 +236,7 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
             }
         }
 
-        overviewModel.setStreak(streak);
+        overviewModel.setStreak(streak);*/
 
     }
 

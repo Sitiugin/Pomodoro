@@ -46,6 +46,12 @@ public class ReportProjectsView extends NestedScrollView implements IReportProje
     }
 
     @Override
+    protected void onDetachedFromWindow() {
+        presenter.destroy();
+        super.onDetachedFromWindow();
+    }
+
+    @Override
     public void onInitView() {
         IChart.initChart(projectDistributionPieChart);
         IChart.initChart(projectOverduePieChart);
