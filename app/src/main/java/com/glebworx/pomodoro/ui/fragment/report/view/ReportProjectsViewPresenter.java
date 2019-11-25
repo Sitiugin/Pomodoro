@@ -10,8 +10,10 @@ import com.github.mikephil.charting.utils.EntryXComparator;
 import com.glebworx.pomodoro.api.HistoryApi;
 import com.glebworx.pomodoro.model.HistoryModel;
 import com.glebworx.pomodoro.model.report.ReportProjectOverviewModel;
+import com.glebworx.pomodoro.ui.fragment.report.interfaces.IChart;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportProjectsView;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportProjectsViewPresenter;
+import com.glebworx.pomodoro.util.constants.ColorConstants;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -350,7 +352,14 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
         }
 
         Collections.sort(entries, new EntryXComparator());
+
+        for (int i = 1; i < entries.size(); i++) {
+            entry = entries.get(i);
+            entry.setY(entry.getY() + entries.get(i - 1).getY());
+        }
+
         LineDataSet dataSet = new LineDataSet(entries, null);
+        IChart.initDataSet(dataSet, ColorConstants.rgb(ColorConstants.COLOR_HIGHLIGHT_HEX));
 
         return new LineData(dataSet);
 
