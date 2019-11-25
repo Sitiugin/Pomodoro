@@ -84,14 +84,18 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
 
     @Override
     public void onInitPomodorosCompletedChart(LineData lineData) {
-        pomodorosCompletedLineChart.setData(lineData);
-        pomodorosCompletedLineChart.animateY(ANIM_DURATION);
+        if (lineData.getEntryCount() > 0) {
+            pomodorosCompletedLineChart.setData(lineData);
+            pomodorosCompletedLineChart.animateY(ANIM_DURATION);
+        }
     }
 
     @Override
     public void onInitWeeklyTrendsChart(BarData barData) {
-        weeklyTrendsBarChart.setData(barData);
-        weeklyTrendsBarChart.animateY(ANIM_DURATION);
+        if (barData.getEntryCount() > 0) {
+            weeklyTrendsBarChart.setData(barData);
+            weeklyTrendsBarChart.animateY(ANIM_DURATION);
+        }
     }
 
     @Override

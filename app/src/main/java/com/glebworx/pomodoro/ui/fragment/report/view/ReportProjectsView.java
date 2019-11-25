@@ -17,6 +17,8 @@ import com.glebworx.pomodoro.ui.fragment.report.interfaces.IChart;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportProjectsView;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 
+import static com.glebworx.pomodoro.util.constants.Constants.ANIM_DURATION;
+
 public class ReportProjectsView extends NestedScrollView implements IReportProjectsView {
 
     private View rootView;
@@ -77,22 +79,31 @@ public class ReportProjectsView extends NestedScrollView implements IReportProje
 
     @Override
     public void onInitOverview(String projectsCompletedString, String averageCompletionTimeString, String elapsedTimeString) {
-        // TODO implement
+        projectsCompletedTextView.setText(projectsCompletedString);
+        averageCompletionTimeTextView.setText(averageCompletionTimeString);
+        elapsedTimeTextView.setText(elapsedTimeString);
     }
 
     @Override
     public void onInitProjectsDistributionChart(PieData pieData) {
-        // TODO implement
+        if (pieData.getEntryCount() > 0) {
+            projectDistributionPieChart.setData(pieData);
+            projectDistributionPieChart.animateY(ANIM_DURATION);
+        }
     }
 
     @Override
     public void onInitProjectsOverdueChart(PieData pieData) {
-        // TODO implement
+        if (pieData.getEntryCount() > 0) {
+            projectOverduePieChart.setData(pieData);
+            projectOverduePieChart.animateY(ANIM_DURATION);
+        }
     }
 
     @Override
     public void onInitElapsedTimeChart(LineData lineData) {
-        // TODO implement
+        elapsedTimeLineChart.setData(lineData);
+        elapsedTimeLineChart.animateY(ANIM_DURATION);
     }
 
     private void init(Context context, AttributeSet attrs, int defStyle) {
