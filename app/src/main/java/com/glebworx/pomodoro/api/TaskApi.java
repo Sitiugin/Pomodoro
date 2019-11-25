@@ -166,10 +166,13 @@ public class TaskApi extends BaseApi {
     }
 
     public static void getThisWeekTasks(@NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
-        Date inAWeek = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).plusDays(7).toInstant());
+        ZonedDateTime todayDateTime = LocalDate.now().atStartOfDay(ZoneId.systemDefault());
+        Date today = Date.from(todayDateTime.toInstant());
+        Date inAWeek = Date.from(todayDateTime.plusDays(7).toInstant());
         getCollectionGroup(COLLECTION_TASKS)
                 .whereEqualTo(FIELD_COMPLETED, false)
                 .whereLessThanOrEqualTo(FIELD_DUE_DATE, inAWeek)
+                .whereGreaterThanOrEqualTo(FIELD_DUE_DATE, today)
                 .get(Source.CACHE)
                 .addOnCompleteListener(onCompleteListener);
     }
@@ -198,9 +201,12 @@ public class TaskApi extends BaseApi {
     }
 
     public static ListenerRegistration addThisWeekTasksEventListener(@NonNull EventListener<QuerySnapshot> eventListener) {
-        Date inAWeek = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).plusDays(7).toInstant());
+        ZonedDateTime todayDateTime = LocalDate.now().atStartOfDay(ZoneId.systemDefault());
+        Date today = Date.from(todayDateTime.toInstant());
+        Date inAWeek = Date.from(todayDateTime.plusDays(7).toInstant());
         return getCollectionGroup(COLLECTION_TASKS)
                 .whereLessThanOrEqualTo(FIELD_DUE_DATE, inAWeek)
+                .whereGreaterThanOrEqualTo(FIELD_DUE_DATE, today)
                 .addSnapshotListener(eventListener);
     }
 
@@ -221,9 +227,12 @@ public class TaskApi extends BaseApi {
     }
 
     public static ListenerRegistration addThisWeekTasksEventListener(@NonNull EventListener<QuerySnapshot> eventListener, boolean completed) {
-        Date inAWeek = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).plusDays(7).toInstant());
+        ZonedDateTime todayDateTime = LocalDate.now().atStartOfDay(ZoneId.systemDefault());
+        Date today = Date.from(todayDateTime.toInstant());
+        Date inAWeek = Date.from(todayDateTime.plusDays(7).toInstant());
         return getCollectionGroup(COLLECTION_TASKS)
                 .whereLessThanOrEqualTo(FIELD_DUE_DATE, inAWeek)
+                .whereGreaterThanOrEqualTo(FIELD_DUE_DATE, today)
                 .whereEqualTo(FIELD_COMPLETED, completed)
                 .addSnapshotListener(eventListener);
     }

@@ -272,7 +272,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
     }
 
     @Override
-    public void onProjectChanged(String projectName, String tagColor) {
+    public synchronized void onProjectChanged(String projectName, String tagColor) {
         synchronized (this) {
             ItemAdapter<AbstractItem> headerAdapter = headerAdapterMap.get(projectName);
             if (headerAdapter != null) {
