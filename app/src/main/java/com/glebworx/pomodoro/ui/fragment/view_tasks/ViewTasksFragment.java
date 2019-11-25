@@ -25,7 +25,7 @@ import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
-import com.mikepenz.itemanimators.AlphaCrossFadeAnimator;
+import com.mikepenz.itemanimators.DefaultAnimator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -287,7 +287,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty));
-        recyclerView.setItemAnimator(new AlphaCrossFadeAnimator());
+        recyclerView.setItemAnimator(new DefaultAnimator<>());
 
         fastAdapter.setHasStableIds(true);
         fastAdapter.withSelectable(true);

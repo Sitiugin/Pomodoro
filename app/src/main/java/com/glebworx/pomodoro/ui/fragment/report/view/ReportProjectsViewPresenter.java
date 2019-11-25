@@ -356,6 +356,11 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
         for (int i = 1; i < entries.size(); i++) {
             entry = entries.get(i);
             entry.setY(entry.getY() + entries.get(i - 1).getY());
+
+        }
+        for (int i = 0; i < entries.size(); i++) {
+            entry = entries.get(i);
+            entry.setY(entry.getY() / 60);
         }
 
         LineDataSet dataSet = new LineDataSet(entries, null);

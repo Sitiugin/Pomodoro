@@ -25,7 +25,6 @@ import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragmentIn
 import com.glebworx.pomodoro.ui.fragment.projects.item.AddProjectItem;
 import com.glebworx.pomodoro.ui.fragment.projects.item.ProjectHeaderItem;
 import com.glebworx.pomodoro.ui.fragment.projects.item.ProjectItem;
-import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
 import com.mikepenz.fastadapter.FastAdapter;
@@ -35,7 +34,7 @@ import com.mikepenz.fastadapter.adapters.ItemFilter;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.fastadapter_extensions.UndoHelper;
 import com.mikepenz.fastadapter_extensions.swipe.SimpleSwipeCallback;
-import com.mikepenz.itemanimators.AlphaCrossFadeAnimator;
+import com.mikepenz.itemanimators.DefaultAnimator;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -215,8 +214,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
     private void initRecyclerView(FastAdapter fastAdapter) {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty));
-        recyclerView.setItemAnimator(new AlphaCrossFadeAnimator());
+        recyclerView.setItemAnimator(new DefaultAnimator<>());
         //OverScrollDecoratorHelper.setUpOverScroll(recyclerView, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
 
         headerAdapter = new ItemAdapter<>();

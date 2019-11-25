@@ -26,7 +26,6 @@ import com.glebworx.pomodoro.ui.fragment.view_project.item.AddTaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.CompletedTaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.TaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.ViewProjectHeaderItem;
-import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
 import com.mikepenz.fastadapter.FastAdapter;
@@ -34,7 +33,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.fastadapter_extensions.UndoHelper;
 import com.mikepenz.fastadapter_extensions.swipe.SimpleSwipeCallback;
-import com.mikepenz.itemanimators.AlphaCrossFadeAnimator;
+import com.mikepenz.itemanimators.DefaultAnimator;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -240,8 +239,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     private void initRecyclerView(FastAdapter fastAdapter, ViewProjectHeaderItem headerItem) {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty));
-        recyclerView.setItemAnimator(new AlphaCrossFadeAnimator());
+        recyclerView.setItemAnimator(new DefaultAnimator<>());
 
         headerAdapter.add(headerItem);
 
@@ -262,10 +260,8 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
 
     private View.OnClickListener getHeaderClickListener() {
         return view -> {
-            switch (view.getId()) {
-                case R.id.button_options:
-                    showOptionsPopup();
-                    break;
+            if (view.getId() == R.id.button_options) {
+                showOptionsPopup();
             }
         };
     }
