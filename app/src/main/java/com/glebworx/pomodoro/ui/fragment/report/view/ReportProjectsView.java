@@ -10,6 +10,8 @@ import androidx.core.widget.NestedScrollView;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.PieData;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.ui.fragment.report.interfaces.IChart;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportProjectsView;
@@ -71,6 +73,26 @@ public class ReportProjectsView extends NestedScrollView implements IReportProje
         projectOverduePieChart.invalidate();
         elapsedTimeLineChart.setNoDataText(emptyText);
         elapsedTimeLineChart.invalidate();
+    }
+
+    @Override
+    public void onInitOverview(String projectsCompletedString, String averageCompletionTimeString, String elapsedTimeString) {
+        // TODO implement
+    }
+
+    @Override
+    public void onInitProjectsDistributionChart(PieData pieData) {
+        // TODO implement
+    }
+
+    @Override
+    public void onInitProjectsOverdueChart(PieData pieData) {
+        // TODO implement
+    }
+
+    @Override
+    public void onInitElapsedTimeChart(LineData lineData) {
+        // TODO implement
     }
 
     private void init(Context context, AttributeSet attrs, int defStyle) {

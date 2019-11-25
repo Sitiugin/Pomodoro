@@ -69,12 +69,12 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
 
-            /*Observable<PieData> projectsDistributionObservable = getProjectsDistributionObservable(result);
+            Observable<PieData> projectsDistributionObservable = getProjectsDistributionObservable(result);
             projectsDistributionObservable = projectsDistributionObservable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
 
-            Observable<PieData> overdueObservable = getOverdueObservable(result);
+            Observable<PieData> overdueObservable = getProjectsOverdueObservable(result);
             overdueObservable = overdueObservable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
@@ -82,12 +82,12 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
             Observable<LineData> elapsedTimeObservable = getElapsedTimeObservable(result);
             elapsedTimeObservable = elapsedTimeObservable
                     .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread());*/
+                    .observeOn(AndroidSchedulers.mainThread());
 
             overviewObservable.subscribe(getOverviewObserver());
-            /*projectsDistributionObservable.subscribe(getProjectsDistributionObserver());
-            overdueObservable.subscribe(getOverdueObserver());
-            elapsedTimeObservable.subscribe(getElapsedTimeObserver());*/
+            projectsDistributionObservable.subscribe(getProjectsDistributionObserver());
+            overdueObservable.subscribe(getProjectsOverdueObserver());
+            elapsedTimeObservable.subscribe(getElapsedTimeObserver());
 
             if (result.isEmpty()) {
                 presenterListener.onChartDataEmpty();
@@ -101,6 +101,9 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
 
     private Observable<ReportProjectOverviewModel> getOverviewObservable(QuerySnapshot snapshot) {
         return Observable.create(emitter -> {
+            if (emitter.isDisposed()) {
+                return;
+            }
             ReportProjectOverviewModel model = new ReportProjectOverviewModel();
             initOverview(model, snapshot.getDocuments());
             emitter.onNext(model);
@@ -110,39 +113,36 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
     }
 
     private Observable<PieData> getProjectsDistributionObservable(QuerySnapshot snapshot) {
-        /*return Observable.create(emitter -> {
-            emitter.onNext(getPomodorosCompletedData(snapshot.getDocuments()));
+        return Observable.create(emitter -> {
+            if (emitter.isDisposed()) {
+                return;
+            }
+            emitter.onNext(getProjectsDistributionData(snapshot.getDocuments()));
             emitter.onComplete();
 
-        });*/
-        return null;
-    }
-
-    private Observable<PieData> getOverdueObservable(QuerySnapshot snapshot) {
-        /*return Observable.create(emitter -> {
-            emitter.onNext(getPomodorosCompletedData(snapshot.getDocuments()));
-            emitter.onComplete();
-
-        });*/
-        return null;
+        });
     }
 
     private Observable<PieData> getProjectsOverdueObservable(QuerySnapshot snapshot) {
-        /*return Observable.create(emitter -> {
-            emitter.onNext(getPomodorosCompletedData(snapshot.getDocuments()));
+        return Observable.create(emitter -> {
+            if (emitter.isDisposed()) {
+                return;
+            }
+            emitter.onNext(getProjectsOverdueData(snapshot.getDocuments()));
             emitter.onComplete();
 
-        });*/
-        return null;
+        });
     }
 
     private Observable<LineData> getElapsedTimeObservable(QuerySnapshot snapshot) {
-        /*return Observable.create(emitter -> {
-            emitter.onNext(getWeeklyTrendsData(snapshot.getDocuments()));
+        return Observable.create(emitter -> {
+            if (emitter.isDisposed()) {
+                return;
+            }
+            emitter.onNext(getElapsedTimeData(snapshot.getDocuments()));
             emitter.onComplete();
 
-        });*/
-        return null;
+        });
     }
 
     private io.reactivex.Observer<ReportProjectOverviewModel> getOverviewObserver() {
@@ -161,6 +161,78 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
                                 FORMAT_DECIMAL_1PT,
                                 model.getAveragePerDay()),
                         String.valueOf(model.getStreak()));*/
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+    }
+
+    private io.reactivex.Observer<PieData> getProjectsDistributionObserver() {
+        return new io.reactivex.Observer<PieData>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                compositeDisposable.add(disposable);
+            }
+
+            @Override
+            public void onNext(PieData pieData) {
+                presenterListener.onInitProjectsDistributionChart(pieData);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+    }
+
+    private io.reactivex.Observer<PieData> getProjectsOverdueObserver() {
+        return new io.reactivex.Observer<PieData>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                compositeDisposable.add(disposable);
+            }
+
+            @Override
+            public void onNext(PieData pieData) {
+                presenterListener.onInitProjectsOverdueChart(pieData);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+    }
+
+    private io.reactivex.Observer<LineData> getElapsedTimeObserver() {
+        return new io.reactivex.Observer<LineData>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                compositeDisposable.add(disposable);
+            }
+
+            @Override
+            public void onNext(LineData lineData) {
+                presenterListener.onInitElapsedTimeChart(lineData);
             }
 
             @Override
@@ -240,7 +312,15 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
 
     }
 
-    private LineData getPomodorosCompletedData(List<DocumentSnapshot> documentSnapshots) {
+    private PieData getProjectsDistributionData(List<DocumentSnapshot> documentSnapshots) {
+        return new PieData(); // TODO implement
+    }
+
+    private PieData getProjectsOverdueData(List<DocumentSnapshot> documentSnapshots) {
+        return new PieData(); // TODO implement
+    }
+
+    private LineData getElapsedTimeData(List<DocumentSnapshot> documentSnapshots) {
 
         HistoryModel model;
         String projectName;
