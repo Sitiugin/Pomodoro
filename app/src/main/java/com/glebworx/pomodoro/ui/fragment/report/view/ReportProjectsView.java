@@ -60,6 +60,12 @@ public class ReportProjectsView extends NestedScrollView implements IReportProje
         IChart.initChart(projectDistributionPieChart);
         IChart.initChart(projectOverduePieChart);
         IChart.initChart(elapsedTimeLineChart, false, false, null);
+        OnClickListener onClickListener = view -> {
+            if (view.getId() == R.id.layout_elapsed_time) {
+                IChart.expandChart(context, rootView, elapsedTimeLineChart);
+            }
+        };
+        elapsedTimeLayout.setOnClickListener(onClickListener);
     }
 
     @Override

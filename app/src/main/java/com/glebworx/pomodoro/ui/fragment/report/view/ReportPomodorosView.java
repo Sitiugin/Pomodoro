@@ -2,11 +2,8 @@ package com.glebworx.pomodoro.ui.fragment.report.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
-import android.widget.PopupWindow;
 
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.widget.NestedScrollView;
@@ -18,7 +15,6 @@ import com.github.mikephil.charting.data.LineData;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.ui.fragment.report.interfaces.IChart;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportPomodorosView;
-import com.glebworx.pomodoro.util.manager.PopupWindowManager;
 
 import static com.glebworx.pomodoro.util.constants.Constants.ANIM_DURATION;
 
@@ -64,10 +60,10 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
         OnClickListener onClickListener = view -> {
             switch (view.getId()) {
                 case R.id.layout_pomodoros_completed:
-                    expandChart(pomodorosCompletedLineChart);
+                    IChart.expandChart(context, rootView, pomodorosCompletedLineChart);
                     break;
                 case R.id.layout_trends:
-                    expandChart(weeklyTrendsBarChart);
+                    IChart.expandChart(context, rootView, weeklyTrendsBarChart);
                     break;
             }
         };
@@ -121,50 +117,6 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
         weeklyTrendsBarChart = rootView.findViewById(R.id.bar_chart_trends);
         this.context = context;
         this.presenter = new ReportPomodorosViewPresenter(this);
-    }
-
-    private void expandChart(LineChart chart) {
-        PopupWindowManager popupWindowManager = new PopupWindowManager(context);
-        PopupWindow popupWindow = popupWindowManager.getPopupWindow(R.layout.popup_line_chart_expanded, true);
-        View contentView = popupWindow.getContentView();
-        contentView.findViewById(R.id.button_collapse).setOnClickListener(v -> popupWindow.dismiss());
-        LineChart expandedChart = contentView.findViewById(R.id.chart_expanded);
-        expandedChart.getViewTreeObserver().addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        expandedChart.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        IChart.rotateChart(expandedChart);
-                        IChart.initChart(expandedChart, true, true, "");
-                        expandedChart.setData(chart.getData());
-                        if (chart.getData().getEntryCount() == 0) {
-                            expandedChart.setNoDataText(context.getString(R.string.core_text_no_data));
-                            expandedChart.invalidate();
-                        }
-                        expandedChart.animateY(ANIM_DURATION);
-                    }
-                });
-        popupWindow.showAsDropDown(rootView, 0, 0, Gravity.CENTER);
-    }
-
-    private void expandChart(BarChart chart) {
-        PopupWindowManager popupWindowManager = new PopupWindowManager(context);
-        PopupWindow popupWindow = popupWindowManager.getPopupWindow(R.layout.popup_bar_chart_expanded, true);
-        View contentView = popupWindow.getContentView();
-        contentView.findViewById(R.id.button_collapse).setOnClickListener(v -> popupWindow.dismiss());
-        BarChart expandedChart = contentView.findViewById(R.id.chart_expanded);
-        expandedChart.getViewTreeObserver().addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        expandedChart.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        IChart.rotateChart(expandedChart);
-                        IChart.initChart(expandedChart, true, true, "");
-                        expandedChart.setData(chart.getData());
-                        expandedChart.animateY(ANIM_DURATION);
-                    }
-                });
-        popupWindow.showAsDropDown(rootView, 0, 0, Gravity.CENTER);
     }
 
 }

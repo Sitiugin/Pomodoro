@@ -1,7 +1,12 @@
 package com.glebworx.pomodoro.ui.fragment.report.interfaces;
 
 import android.content.Context;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.BarLineChartBase;
@@ -14,10 +19,13 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
+import com.glebworx.pomodoro.util.manager.PopupWindowManager;
 
 import java.util.Date;
 
+import static com.glebworx.pomodoro.util.constants.Constants.ANIM_DURATION;
 import static com.glebworx.pomodoro.util.constants.Constants.TYPEFACE;
 
 public interface IChart {
@@ -151,6 +159,54 @@ public interface IChart {
         expandedChart.setLayoutParams(layoutParams);
         expandedChart.setTranslationX(-offset);
         expandedChart.setTranslationY(offset);
+    }
+
+    static void expandChart(Context context, View rootView, LineChart chart) {
+        PopupWindowManager popupWindowManager = new PopupWindowManager(context);
+        PopupWindow popupWindow = popupWindowManager.getPopupWindow(R.layout.popup_line_chart_expanded, true);
+        View contentView = popupWindow.getContentView();
+        contentView.findViewById(R.id.button_collapse).setOnClickListener(v -> popupWindow.dismiss());
+        LineChart expandedChart = contentView.findViewById(R.id.chart_expanded);
+        expandedChart.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        if (chart.getData().getEntryCount() > 0) {
+                            expandedChart.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            IChart.rotateChart(expandedChart);
+                            IChart.initChart(expandedChart, true, true, "");
+                            expandedChart.setData(chart.getData());
+                            expandedChart.animateY(ANIM_DURATION);
+                        } else {
+                            Toast.makeText(context, R.string.core_text_no_data, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+        popupWindow.showAsDropDown(rootView, 0, 0, Gravity.CENTER);
+    }
+
+    static void expandChart(Context context, View rootView, BarChart chart) {
+        PopupWindowManager popupWindowManager = new PopupWindowManager(context);
+        PopupWindow popupWindow = popupWindowManager.getPopupWindow(R.layout.popup_bar_chart_expanded, true);
+        View contentView = popupWindow.getContentView();
+        contentView.findViewById(R.id.button_collapse).setOnClickListener(v -> popupWindow.dismiss());
+        BarChart expandedChart = contentView.findViewById(R.id.chart_expanded);
+        expandedChart.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        if (chart.getData().getEntryCount() > 0) {
+                            expandedChart.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            IChart.rotateChart(expandedChart);
+                            IChart.initChart(expandedChart, true, true, "");
+                            expandedChart.setData(chart.getData());
+                            expandedChart.animateY(ANIM_DURATION);
+                        } else {
+                            Toast.makeText(context, R.string.core_text_no_data, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+        popupWindow.showAsDropDown(rootView, 0, 0, Gravity.CENTER);
     }
 
     class AxisEntryXFormatter extends ValueFormatter {
