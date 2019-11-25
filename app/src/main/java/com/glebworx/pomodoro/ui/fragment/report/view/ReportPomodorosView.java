@@ -96,12 +96,13 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
 
     @Override
     public void onChartDataEmpty() {
+        String emptyText = context.getString(R.string.core_text_no_data);
         pomodorosCompletedTextView.setText(String.valueOf(0));
         averagePerDayTextView.setText(String.valueOf(0));
         streakTextView.setText(String.valueOf(0));
-        pomodorosCompletedLineChart.setNoDataText(context.getString(R.string.core_text_no_data));
+        pomodorosCompletedLineChart.setNoDataText(emptyText);
         pomodorosCompletedLineChart.invalidate();
-        weeklyTrendsBarChart.setNoDataText(context.getString(R.string.core_text_no_data));
+        weeklyTrendsBarChart.setNoDataText(emptyText);
         weeklyTrendsBarChart.invalidate();
     }
 

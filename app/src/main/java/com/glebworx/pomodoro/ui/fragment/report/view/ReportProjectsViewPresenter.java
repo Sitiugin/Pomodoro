@@ -10,6 +10,7 @@ import com.github.mikephil.charting.utils.EntryXComparator;
 import com.glebworx.pomodoro.api.HistoryApi;
 import com.glebworx.pomodoro.model.HistoryModel;
 import com.glebworx.pomodoro.model.report.ReportPomodoroOverviewModel;
+import com.glebworx.pomodoro.model.report.ReportProjectOverviewModel;
 import com.glebworx.pomodoro.ui.fragment.report.interfaces.IChart;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportProjectsView;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportProjectsViewPresenter;
@@ -57,28 +58,37 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
 
         if (task.isSuccessful() && result != null) {
 
-            /*Observable<ReportPomodoroOverviewModel> overviewObservable = getOverviewObservable(result);
-            overviewObservable = overviewObservable
+            Observable<ReportProjectOverviewModel> overviewObservable = getOverviewObservable(result);
+            /*overviewObservable = overviewObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread());*/
+
+            /*Observable<PieData> projectsDistributionObservable = getProjectsDistributionObservable(result);
+            projectsDistributionObservable = projectsDistributionObservable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
 
-            Observable<LineData> pomodorosCompletedObservable = getPomodorosCompletedObservable(result);
-            pomodorosCompletedObservable = pomodorosCompletedObservable
+            Observable<PieData> overdueObservable = getOverdueObservable(result);
+            overdueObservable = overdueObservable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
 
-            Observable<BarData> weeklyTrendsObservable = getWeeklyTrendsObservable(result);
-            weeklyTrendsObservable = weeklyTrendsObservable
+            Observable<LineData> elapsedTimeObservable = getElapsedTimeObservable(result);
+            elapsedTimeObservable = elapsedTimeObservable
                     .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread());
+                    .observeOn(AndroidSchedulers.mainThread());*/
 
-            presenterListener.onObservablesReady(overviewObservable, pomodorosCompletedObservable, weeklyTrendsObservable);*/
+            if (result.isEmpty()) {
+                presenterListener.onChartDataEmpty();
+            }
 
+        } else {
+            presenterListener.onChartDataEmpty();
         }
 
     }
 
-    private Observable<ReportPomodoroOverviewModel> getOverviewObservable(QuerySnapshot snapshot) {
+    private Observable<ReportProjectOverviewModel> getOverviewObservable(QuerySnapshot snapshot) {
         /*return Observable.create(emitter -> {
             ReportPomodoroOverviewModel model = new ReportPomodoroOverviewModel();
             initOverview(model, snapshot.getDocuments());
@@ -90,6 +100,15 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
     }
 
     private Observable<PieData> getProjectsDistributionObservable(QuerySnapshot snapshot) {
+        /*return Observable.create(emitter -> {
+            emitter.onNext(getPomodorosCompletedData(snapshot.getDocuments()));
+            emitter.onComplete();
+
+        });*/
+        return null;
+    }
+
+    private Observable<PieData> getOverdueObservable(QuerySnapshot snapshot) {
         /*return Observable.create(emitter -> {
             emitter.onNext(getPomodorosCompletedData(snapshot.getDocuments()));
             emitter.onComplete();
