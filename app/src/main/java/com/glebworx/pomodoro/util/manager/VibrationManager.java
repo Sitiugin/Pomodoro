@@ -9,8 +9,8 @@ import java.util.Objects;
 public class VibrationManager {
 
     private static final int DURATION_SHORT = 20;
-    private static final int DURATION_MEDIUM = 400;
-    private static final int DURATION_LONG = 2000;
+    private static final int DURATION_MEDIUM = 200;
+    private static final int DURATION_LONG = 1000;
 
     private Vibrator vibrator;
 

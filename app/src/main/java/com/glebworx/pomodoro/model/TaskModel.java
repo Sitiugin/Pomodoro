@@ -44,11 +44,21 @@ public class TaskModel extends AbstractModel {
     public TaskModel() {
         super();
         this.projectName = null;
+        this.pomodorosAllocated = 0;
+        this.pomodorosCompleted = 0;
+        this.timeElapsed = 0;
+        this.dueDate = new Date();
+        this.completed = false;
     }
 
     public TaskModel(String projectName) {
         super();
         this.projectName = projectName;
+        this.pomodorosAllocated = 0;
+        this.pomodorosCompleted = 0;
+        this.timeElapsed = 0;
+        this.dueDate = new Date();
+        this.completed = false;
     }
 
     public TaskModel(@NonNull String name,

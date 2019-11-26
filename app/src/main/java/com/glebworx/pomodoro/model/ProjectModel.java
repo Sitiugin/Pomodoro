@@ -39,7 +39,7 @@ public class ProjectModel extends AbstractModel {
     private int estimatedTime;
     private int elapsedTime;
     private float progress;
-    private boolean isCompleted;
+    private boolean completed;
 
 
 
@@ -47,7 +47,12 @@ public class ProjectModel extends AbstractModel {
 
     public ProjectModel() {
         super();
+        this.dueDate = new Date();
+        this.colorTag = null;
         this.tasks = new ArrayList<>();
+        this.estimatedTime = 0;
+        this.elapsedTime = 0;
+        this.completed = false;
     }
 
     public ProjectModel(@NonNull String name,
@@ -61,7 +66,7 @@ public class ProjectModel extends AbstractModel {
         this.estimatedTime = 0;
         this.elapsedTime = 0;
         this.progress = 0;
-        this.isCompleted = false;
+        this.completed = false;
     }
 
     public ProjectModel(ProjectModel projectModel) {
@@ -72,7 +77,7 @@ public class ProjectModel extends AbstractModel {
         estimatedTime = projectModel.getEstimatedTime();
         elapsedTime = projectModel.getElapsedTime();
         progress = projectModel.getProgress();
-        isCompleted = projectModel.isCompleted();
+        completed = projectModel.isCompleted();
     }
 
     public ProjectModel(Parcel in) {
@@ -86,7 +91,7 @@ public class ProjectModel extends AbstractModel {
         this.estimatedTime = in.readInt();
         this.elapsedTime = in.readInt();
         this.progress = in.readFloat();
-        this.isCompleted = in.readInt() == 1;
+        this.completed = in.readInt() == 1;
     }
 
 
@@ -105,7 +110,7 @@ public class ProjectModel extends AbstractModel {
         parcel.writeInt(estimatedTime);
         parcel.writeInt(elapsedTime);
         parcel.writeFloat(progress);
-        parcel.writeInt(isCompleted ? 1 : 0);
+        parcel.writeInt(completed ? 1 : 0);
     }
 
     @Exclude
@@ -138,7 +143,7 @@ public class ProjectModel extends AbstractModel {
     }
 
     public boolean isCompleted() {
-        return isCompleted;
+        return completed;
     }
 
     public int getEstimatedTime() {

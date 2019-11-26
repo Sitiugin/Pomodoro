@@ -362,6 +362,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
             taskEventListenerRegistration = null;
         }
         progressStatus = PROGRESS_STATUS_IDLE;
+        int progressTemp = progress;
         progress = 0;
         timer.cancel();
         presenterListener.onClearViews();
@@ -374,7 +375,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         TaskApi.completeTask(
                 projectModel,
                 taskModel,
-                progress / 4,
+                progressTemp / 4,
                 task -> presenterListener.onTaskCompleted(task.isSuccessful()));
 
         notificationManager.cancelNotification();

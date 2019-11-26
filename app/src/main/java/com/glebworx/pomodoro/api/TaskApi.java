@@ -55,9 +55,8 @@ public class TaskApi extends BaseApi {
         //taskModel.addPomodoro(); // TODO handle failure
         //modifyTask(projectModel, taskModel, HistoryModel.EVENT_POMODORO_COMPLETED, onCompleteListener);
 
-        projectModel.updateTimestamp();
+        //projectModel.updateTimestamp();
         taskModel.updateTimestamp();
-
         taskModel.addPomodoro(timeElapsed);
 
         WriteBatch batch = getWriteBatch();
@@ -67,11 +66,6 @@ public class TaskApi extends BaseApi {
         batch.set(
                 projectDocument.collection(COLLECTION_TASKS).document(taskModel.getName()),
                 taskModel);
-
-        /*batch.update(projectDocument,
-                FIELD_TASKS, projectModel.getTasks(),
-                FIELD_POMODOROS_ALLOCATED, projectModel.getPomodorosAllocated(),
-                FIELD_POMODOROS_COMPLETED, projectModel.getPomodorosCompleted());*/
 
         batch.set(
                 getCollection(COLLECTION_HISTORY).document(),
@@ -93,9 +87,8 @@ public class TaskApi extends BaseApi {
         taskModel.complete();
         modifyTask(projectModel, taskModel, HistoryModel.EVENT_TASK_COMPLETED, onCompleteListener);*/
 
-        projectModel.updateTimestamp();
+        //projectModel.updateTimestamp();
         taskModel.updateTimestamp();
-
         taskModel.addPomodoro(timeElapsed);
         taskModel.complete();
 
@@ -106,11 +99,6 @@ public class TaskApi extends BaseApi {
         batch.set(
                 projectDocument.collection(COLLECTION_TASKS).document(taskModel.getName()),
                 taskModel);
-
-        /*batch.update(projectDocument,
-                FIELD_TASKS, projectModel.getTasks(),
-                FIELD_POMODOROS_ALLOCATED, projectModel.getPomodorosAllocated(),
-                FIELD_POMODOROS_COMPLETED, projectModel.getPomodorosCompleted());*/
 
         batch.set(
                 getCollection(COLLECTION_HISTORY).document(),
@@ -271,7 +259,7 @@ public class TaskApi extends BaseApi {
                                    @NonNull String eventType,
                                    @Nullable OnCompleteListener<Void> onCompleteListener) {
 
-        projectModel.updateTimestamp();
+        //projectModel.updateTimestamp();
         taskModel.updateTimestamp();
 
         WriteBatch batch = getWriteBatch();
@@ -281,11 +269,6 @@ public class TaskApi extends BaseApi {
         batch.set(
                 projectDocument.collection(COLLECTION_TASKS).document(taskModel.getName()),
                 taskModel);
-
-        /*batch.update(projectDocument,
-                FIELD_TASKS, projectModel.getTasks(),
-                FIELD_POMODOROS_ALLOCATED, projectModel.getPomodorosAllocated(),
-                FIELD_POMODOROS_COMPLETED, projectModel.getPomodorosCompleted());*/
 
         batch.set(
                 getCollection(COLLECTION_HISTORY).document(),
