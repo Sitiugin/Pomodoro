@@ -40,10 +40,6 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
     private @NonNull IProjectsFragment presenterListener;
     private @Nullable
     IProjectsFragmentInteractionListener interactionListener;
-    private Observable<DocumentChange> projectsObservable;
-    private Observable<Integer> todayTasksObservable;
-    private Observable<Integer> thisWeekTasksObservable;
-    private Observable<Integer> overdueTasksObservable;
     private CompositeDisposable compositeDisposable;
 
     public ProjectsFragmentPresenter(@NonNull IProjectsFragment presenterListener,
@@ -60,25 +56,25 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
 
         compositeDisposable = new CompositeDisposable();
 
-        projectsObservable = getProjectEventObservable();
+        Observable<DocumentChange> projectsObservable = getProjectEventObservable();
         projectsObservable = projectsObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());
 
-        todayTasksObservable = getTodayObservable();
+        Observable<Integer> todayTasksObservable = getTodayObservable();
         todayTasksObservable = todayTasksObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());
 
-        thisWeekTasksObservable = getThisWeekObservable();
+        Observable<Integer> thisWeekTasksObservable = getThisWeekObservable();
         thisWeekTasksObservable = thisWeekTasksObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());
 
-        overdueTasksObservable = getOverdueObservable();
+        Observable<Integer> overdueTasksObservable = getOverdueObservable();
         overdueTasksObservable = overdueTasksObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -242,21 +238,21 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
 
     private Observable<Integer> getTodayObservable() {
         return Observable.create(emitter -> {
-            ListenerRegistration listenerRegistration = TaskApi.addTodayTasksEventListener(getObservableEventListener(emitter));
+            ListenerRegistration listenerRegistration = TaskApi.addTodayTasksEventListener(getObservableEventListener(emitter), false);
             emitter.setCancellable(listenerRegistration::remove);
         });
     }
 
     private Observable<Integer> getThisWeekObservable() {
         return Observable.create(emitter -> {
-            ListenerRegistration listenerRegistration = TaskApi.addThisWeekTasksEventListener(getObservableEventListener(emitter));
+            ListenerRegistration listenerRegistration = TaskApi.addThisWeekTasksEventListener(getObservableEventListener(emitter), false);
             emitter.setCancellable(listenerRegistration::remove);
         });
     }
 
     private Observable<Integer> getOverdueObservable() {
         return Observable.create(emitter -> {
-            ListenerRegistration listenerRegistration = TaskApi.addOverdueTasksEventListener(getObservableEventListener(emitter));
+            ListenerRegistration listenerRegistration = TaskApi.addOverdueTasksEventListener(getObservableEventListener(emitter), false);
             emitter.setCancellable(listenerRegistration::remove);
         });
     }

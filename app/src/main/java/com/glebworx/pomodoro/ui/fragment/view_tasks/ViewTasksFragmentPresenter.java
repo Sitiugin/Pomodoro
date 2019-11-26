@@ -79,7 +79,7 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
                 break;
             case TYPE_OVERDUE:
                 observable = getOverdueObservable(false);
-                completedObservable = getOverdueObservable(true);
+                //completedObservable = getOverdueObservable(true);
                 break;
         }
         if (observable != null) {

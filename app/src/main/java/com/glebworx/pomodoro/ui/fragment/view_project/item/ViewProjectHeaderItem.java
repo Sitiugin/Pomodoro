@@ -146,9 +146,15 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
             optionsButton.setOnClickListener(item.getOnClickListener());
             colorTagDrawable.setTint(ColorManager.getColor(context, item.getColorTag()));
 
-            estimatedTimeTextView.setText(DateTimeManager.formatHHMMString(context, item.getEstimatedTime()));
-            elapsedTimeTextView.setText(DateTimeManager.formatHHMMString(context, item.getElapsedTime()));
-            progressTextView.setText(numberFormat.format(item.getProgress()));
+            int estimatedTime = item.getEstimatedTime();
+            int elapsedTime = item.getElapsedTime();
+            float progress = item.getProgress();
+
+            estimatedTimeTextView.setText(DateTimeManager.formatHHMMString(context, estimatedTime));
+            elapsedTimeTextView.setText(DateTimeManager.formatHHMMString(context, elapsedTime));
+            progressTextView.setText(numberFormat.format(progress > 1 ? 1 : progress));
+
+            elapsedTimeTextView.setTextColor(context.getColor(elapsedTime > estimatedTime ? R.color.colorError : R.color.colorHighlight));
 
         }
 
@@ -161,6 +167,8 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
             estimatedTimeTextView.setText(null);
             elapsedTimeTextView.setText(null);
             progressTextView.setText(null);
+
+            elapsedTimeTextView.setTextColor(context.getColor(R.color.colorHighlight));
 
         }
 
