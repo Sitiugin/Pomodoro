@@ -295,6 +295,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         TaskApi.completePomodoro(
                 projectModel,
                 taskModel,
+                25,
                 task -> presenterListener.onPomodoroCompleted(task.isSuccessful()));
 
         vibrationManager.vibrateLong();
@@ -373,6 +374,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         TaskApi.completeTask(
                 projectModel,
                 taskModel,
+                progress / 4,
                 task -> presenterListener.onTaskCompleted(task.isSuccessful()));
 
         notificationManager.cancelNotification();

@@ -28,26 +28,14 @@ public class TaskModel extends AbstractModel {
         }
     };
 
-    public static final String RECURRENCE_EVERY_DAY = "EVERY_DAY";
-    public static final String RECURRENCE_EVERY_TWO_DAYS = "EVERY_TWO_DAYS";
-    public static final String RECURRENCE_EVERY_THREE_DAYS = "EVERY_THREE_DAYS";
-    public static final String RECURRENCE_EVERY_FOUR_DAYS = "FOUR_DAYS";
-    public static final String RECURRENCE_EVERY_FIVE_DAYS = "FIVE_DAYS";
-    public static final String RECURRENCE_EVERY_SIX_DAYS = "SIX_DAYS";
-    public static final String RECURRENCE_EVERY_WEEKLY = "EVERY_WEEK";
-    public static final String RECURRENCE_WEEKDAY = "EVERY_WEEKDAY";
-    public static final String RECURRENCE_WEEKEND = "EVERY_WEEKEND";
-    public static final String RECURRENCE_MONTHLY = "EVERY_MONTH";
-
 
     //                                                                                    ATTRIBUTES
 
     private final String projectName;
     private int pomodorosAllocated;
     private int pomodorosCompleted;
+    private int timeElapsed;
     private Date dueDate;
-    private String section;
-    private String recurrence;
     private boolean completed;
 
 
@@ -67,16 +55,13 @@ public class TaskModel extends AbstractModel {
                      @NonNull String projectName,
                      int pomodorosAllocated,
                      @Nullable Date dueDate,
-                     @Nullable String section,
-                     @Nullable String recurrence,
                      boolean completed) {
         super(name);
         this.projectName = projectName;
         this.pomodorosAllocated = pomodorosAllocated;
         this.pomodorosCompleted = 0;
+        this.timeElapsed = 0;
         this.dueDate = dueDate;
-        this.section = section;
-        this.recurrence = recurrence;
         this.completed = completed;
     }
 
@@ -85,12 +70,11 @@ public class TaskModel extends AbstractModel {
         this.projectName = in.readString();
         this.pomodorosAllocated = in.readInt();
         this.pomodorosCompleted = in.readInt();
+        this.timeElapsed = in.readInt();
         long dueDate = in.readLong();
         if (dueDate != -1) {
             this.dueDate = new Date(dueDate);
         }
-        this.section = in.readString();
-        this.recurrence = in.readString();
         this.completed = in.readInt() == 1;
     }
 
@@ -100,10 +84,9 @@ public class TaskModel extends AbstractModel {
                 taskModel.getProjectName(),
                 taskModel.getPomodorosAllocated(),
                 taskModel.getDueDate(),
-                taskModel.getSection(),
-                taskModel.getRecurrence(),
                 taskModel.isCompleted());
         this.pomodorosCompleted = taskModel.getPomodorosCompleted();
+        this.timeElapsed = taskModel.getTimeElapsed();
         this.completed = taskModel.completed;
     }
 
@@ -116,13 +99,12 @@ public class TaskModel extends AbstractModel {
         parcel.writeString(this.projectName);
         parcel.writeInt(this.pomodorosAllocated);
         parcel.writeInt(this.pomodorosCompleted);
+        parcel.writeInt(this.timeElapsed);
         if (this.dueDate != null) {
             parcel.writeLong(this.dueDate.getTime());
         } else {
             parcel.writeLong(-1);
         }
-        parcel.writeString(section);
-        parcel.writeString(recurrence);
         parcel.writeInt(completed ? 1 : 0);
     }
 
@@ -151,18 +133,8 @@ public class TaskModel extends AbstractModel {
         return pomodorosCompleted;
     }
 
-    public void setPomodorosCompleted(int pomodorosCompleted) {
-        this.pomodorosCompleted = pomodorosCompleted;
-    }
-
-    @Exclude
-    public void addPomodoro() {
-        pomodorosCompleted++;
-    }
-
-    @Exclude
-    public boolean isOverLimit() {
-        return pomodorosCompleted >= pomodorosAllocated && !completed;
+    public int getTimeElapsed() {
+        return timeElapsed;
     }
 
     public Date getDueDate() {
@@ -173,28 +145,23 @@ public class TaskModel extends AbstractModel {
         this.dueDate = dueDate;
     }
 
-    public String getSection() {
-        return section;
-    }
-
-    public void setSection(String section) {
-        this.section = section;
-    }
-
-    public String getRecurrence() {
-        return recurrence;
-    }
-
-    public void setRecurrence(String recurrence) {
-        this.recurrence = recurrence;
-    }
-
     public boolean isCompleted() {
         return completed;
     }
 
     public void complete() {
         this.completed = true;
+    }
+
+    @Exclude
+    public void addPomodoro(int timeElapsed) {
+        pomodorosCompleted++;
+        this.timeElapsed += timeElapsed;
+    }
+
+    @Exclude
+    public boolean isOverLimit() {
+        return pomodorosCompleted >= pomodorosAllocated && !completed;
     }
 
 }
