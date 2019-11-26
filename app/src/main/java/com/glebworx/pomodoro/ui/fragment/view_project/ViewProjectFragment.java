@@ -24,8 +24,8 @@ import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFra
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.AddTaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.CompletedTaskItem;
-import com.glebworx.pomodoro.ui.fragment.view_project.item.TaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.ViewProjectHeaderItem;
+import com.glebworx.pomodoro.ui.item.TaskItem;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

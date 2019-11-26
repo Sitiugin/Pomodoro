@@ -72,7 +72,7 @@ public abstract class BaseApi {
 
     protected static ListenerRegistration addModelEventListener(@NonNull EventListener<QuerySnapshot> eventListener,
                                                                 @NonNull CollectionReference collectionReference) {
-        return collectionReference.orderBy("timestamp", Query.Direction.DESCENDING).addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
+        return collectionReference.orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING).addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
     }
 
     protected static ListenerRegistration addDocumentModelEventListener(@NonNull String documentName,

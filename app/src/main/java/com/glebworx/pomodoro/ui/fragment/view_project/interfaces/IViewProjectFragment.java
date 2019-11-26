@@ -1,8 +1,8 @@
 package com.glebworx.pomodoro.ui.fragment.view_project.interfaces;
 
 import com.glebworx.pomodoro.ui.fragment.view_project.item.CompletedTaskItem;
-import com.glebworx.pomodoro.ui.fragment.view_project.item.TaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.ViewProjectHeaderItem;
+import com.glebworx.pomodoro.ui.item.TaskItem;
 
 import java.util.Date;
 

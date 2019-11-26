@@ -14,8 +14,8 @@ import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFra
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentPresenter;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.CompletedTaskItem;
-import com.glebworx.pomodoro.ui.fragment.view_project.item.TaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.ViewProjectHeaderItem;
+import com.glebworx.pomodoro.ui.item.TaskItem;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;

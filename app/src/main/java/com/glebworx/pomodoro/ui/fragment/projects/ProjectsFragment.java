@@ -24,7 +24,7 @@ import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragment;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.projects.item.AddProjectItem;
 import com.glebworx.pomodoro.ui.fragment.projects.item.ProjectHeaderItem;
-import com.glebworx.pomodoro.ui.fragment.projects.item.ProjectItem;
+import com.glebworx.pomodoro.ui.item.ProjectItem;
 import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
 import com.mikepenz.fastadapter.FastAdapter;
@@ -347,6 +347,10 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
                     popupWindow.dismiss();
                     fragmentListener.onViewAboutInfo();
                     break;
+                case R.id.button_archive:
+                    popupWindow.dismiss();
+                    fragmentListener.onViewProjectArchive();
+                    break;
                 case R.id.button_send_feedback:
                     popupWindow.dismiss();
                     presenter.sendFeedback(context);
@@ -359,6 +363,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
         };
         View contentView = popupWindow.getContentView();
         contentView.findViewById(R.id.button_about).setOnClickListener(onClickListener);
+        contentView.findViewById(R.id.button_archive).setOnClickListener(onClickListener);
         contentView.findViewById(R.id.button_send_feedback).setOnClickListener(onClickListener);
         contentView.findViewById(R.id.button_sign_out).setOnClickListener(onClickListener);
     }

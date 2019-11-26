@@ -16,11 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.CompletedTaskItem;
-import com.glebworx.pomodoro.ui.fragment.view_project.item.TaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragment;
 import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.view_tasks.item.ViewTasksFooterItem;
 import com.glebworx.pomodoro.ui.fragment.view_tasks.item.ViewTasksHeaderItem;
+import com.glebworx.pomodoro.ui.item.TaskItem;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;

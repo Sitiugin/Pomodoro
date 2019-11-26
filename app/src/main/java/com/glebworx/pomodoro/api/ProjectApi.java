@@ -11,6 +11,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.MetadataChanges;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
@@ -41,16 +43,6 @@ public class ProjectApi extends BaseApi {
                                      @Nullable OnCompleteListener<Void> onCompleteListener) {
         modifyProject(model, EVENT_PROJECT_UPDATED, onCompleteListener);
     }
-
-    /*public static void updateTasks(@NonNull ProjectModel projectModel,
-                                   @Nullable OnCompleteListener<Void> onCompleteListener) {
-        Task<Void> task = getCollection(COLLECTION)
-                .document(projectModel.getName())
-                .update("tasks", projectModel.getTasksAsMap());
-        if (onCompleteListener != null) {
-            task.addOnCompleteListener(onCompleteListener);
-        }
-    }*/
 
     public static void getProject(@NonNull String projectName,
                                   @NonNull OnCompleteListener<DocumentSnapshot> onCompleteListener) {
@@ -114,8 +106,11 @@ public class ProjectApi extends BaseApi {
 
     }
 
-    public static ListenerRegistration addProjectsEventListener(@NonNull EventListener<QuerySnapshot> eventListener) {
-        return addModelEventListener(eventListener, getCollection(COLLECTION_PROJECTS));
+    public static ListenerRegistration addProjectsEventListener(@NonNull EventListener<QuerySnapshot> eventListener, boolean completed) {
+        return getCollection(COLLECTION_PROJECTS)
+                .whereEqualTo(FIELD_COMPLETED, completed)
+                .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
+                .addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
     }
 
     public static ListenerRegistration addProjectEventListener(@NonNull String projectName, @NonNull EventListener<DocumentSnapshot> eventListener) {

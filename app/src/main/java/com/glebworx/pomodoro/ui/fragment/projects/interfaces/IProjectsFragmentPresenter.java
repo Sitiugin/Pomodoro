@@ -2,7 +2,7 @@ package com.glebworx.pomodoro.ui.fragment.projects.interfaces;
 
 import android.content.Context;
 
-import com.glebworx.pomodoro.ui.fragment.projects.item.ProjectItem;
+import com.glebworx.pomodoro.ui.item.ProjectItem;
 
 public interface IProjectsFragmentPresenter {
 

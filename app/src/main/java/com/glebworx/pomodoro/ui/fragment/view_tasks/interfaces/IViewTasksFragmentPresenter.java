@@ -2,7 +2,7 @@ package com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces;
 
 import android.os.Bundle;
 
-import com.glebworx.pomodoro.ui.fragment.view_project.item.TaskItem;
+import com.glebworx.pomodoro.ui.item.TaskItem;
 
 public interface IViewTasksFragmentPresenter {
 

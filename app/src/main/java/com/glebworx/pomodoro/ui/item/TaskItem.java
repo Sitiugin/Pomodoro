@@ -1,4 +1,4 @@
-package com.glebworx.pomodoro.ui.fragment.view_project.item;
+package com.glebworx.pomodoro.ui.item;
 
 import android.content.Context;
 import android.graphics.PorterDuff;

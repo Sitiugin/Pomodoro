@@ -18,7 +18,7 @@ import com.glebworx.pomodoro.ui.activity.SplashActivity;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragment;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragmentPresenter;
-import com.glebworx.pomodoro.ui.fragment.projects.item.ProjectItem;
+import com.glebworx.pomodoro.ui.item.ProjectItem;
 import com.glebworx.pomodoro.util.manager.AuthManager;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -196,7 +196,7 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
                 for (DocumentChange change : documentChanges) {
                     emitter.onNext(change);
                 }
-            });
+            }, false);
             emitter.setCancellable(listenerRegistration::remove);
         });
     }

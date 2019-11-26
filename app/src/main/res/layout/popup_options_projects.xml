@@ -21,6 +21,16 @@
         android:text="@string/projects_title_about" />
     <androidx.appcompat.widget.AppCompatButton
         style="@style/ButtonStyle.Borderless"
+        android:id="@+id/button_archive"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/ic_archive_black"
+        android:drawablePadding="@dimen/margin_content"
+        android:gravity="start"
+        android:text="@string/projects_title_archive" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/ButtonStyle.Borderless"
         android:id="@+id/button_send_feedback"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
