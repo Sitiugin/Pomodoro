@@ -214,9 +214,10 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     }
 
     @Override
-    public void onHeaderItemChanged(int estimatedTime, int elapsedTime, float progress) {
+    public void onHeaderItemChanged(String colorTag, int estimatedTime, int elapsedTime, float progress) {
         synchronized (this) {
             ViewProjectHeaderItem item = headerAdapter.getAdapterItem(0);
+            item.setColorTag(colorTag);
             item.setEstimatedTime(estimatedTime);
             item.setElapsedTime(elapsedTime);
             item.setProgress(progress);

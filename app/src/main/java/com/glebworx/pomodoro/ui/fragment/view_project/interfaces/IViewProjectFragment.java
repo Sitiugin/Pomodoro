@@ -23,7 +23,7 @@ public interface IViewProjectFragment {
 
     void onTaskDeleted(boolean isSuccessful, int position);
 
-    void onHeaderItemChanged(int estimatedTime, int elapsedTime, float progress);
+    void onHeaderItemChanged(String colorTag, int estimatedTime, int elapsedTime, float progress);
 
     void onSubtitleChanged(Date dueDate, Date today);
 

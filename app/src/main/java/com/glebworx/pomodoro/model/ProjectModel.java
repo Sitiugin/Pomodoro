@@ -57,8 +57,7 @@ public class ProjectModel extends AbstractModel {
 
     public ProjectModel(@NonNull String name,
                         @Nullable Date dueDate,
-                        @Nullable String colorTag,
-                        @Nullable String layout) {
+                        @Nullable String colorTag) {
         super(name);
         this.dueDate = dueDate;
         this.colorTag = colorTag;
@@ -150,12 +149,24 @@ public class ProjectModel extends AbstractModel {
         return estimatedTime;
     }
 
+    public void setEstimatedTime(int estimatedTime) {
+        this.estimatedTime = estimatedTime;
+    }
+
     public int getElapsedTime() {
         return elapsedTime;
     }
 
+    public void setElapsedTime(int elapsedTime) {
+        this.elapsedTime = elapsedTime;
+    }
+
     public float getProgress() {
         return progress;
+    }
+
+    public void setProgress(float progress) {
+        this.progress = progress;
     }
 
 }

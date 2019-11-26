@@ -257,6 +257,7 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
                     return;
                 }
                 presenterListener.onHeaderItemChanged(
+                        projectModel.getColorTag(),
                         projectModel.getEstimatedTime(),
                         projectModel.getElapsedTime(),
                         projectModel.getProgress());

@@ -31,9 +31,6 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
 
     private ProjectModel model;
     private View.OnClickListener onClickListener;
-    private int estimatedTime;
-    private int elapsedTime;
-    private float progress;
 
 
     //                                                                                  CONSTRUCTORS
@@ -41,9 +38,6 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
     public ViewProjectHeaderItem(ProjectModel model, View.OnClickListener onClickListener) {
         this.model = model;
         this.onClickListener = onClickListener;
-        this.estimatedTime = 0;
-        this.elapsedTime = 0;
-        this.progress = 0;
     }
 
 
@@ -91,28 +85,32 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
         return this.model.getColorTag();
     }
 
+    public void setColorTag(String colorTag) {
+        model.setColorTag(colorTag);
+    }
+
     public int getEstimatedTime() {
-        return estimatedTime;
+        return model.getEstimatedTime();
     }
 
     public void setEstimatedTime(int estimatedTime) {
-        this.estimatedTime = estimatedTime;
+        model.setEstimatedTime(estimatedTime);
     }
 
     public int getElapsedTime() {
-        return elapsedTime;
+        return model.getElapsedTime();
     }
 
     public void setElapsedTime(int elapsedTime) {
-        this.elapsedTime = elapsedTime;
+        model.setElapsedTime(elapsedTime);
     }
 
     public float getProgress() {
-        return progress;
+        return model.getProgress();
     }
 
     public void setProgress(float progress) {
-        this.progress = progress;
+        this.model.setProgress(progress);
     }
 
     //                                                                                   VIEW HOLDER
