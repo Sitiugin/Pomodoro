@@ -52,6 +52,20 @@
                     app:layout_constraintTop_toBottomOf="@+id/text_view_title"
                     app:layout_constraintStart_toStartOf="@+id/text_view_title"/>
 
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fab_complete"
+                    style="@style/FloatingActionButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:outlineAmbientShadowColor="@color/colorHighlight"
+                    android:outlineSpotShadowColor="@color/colorHighlight"
+                    android:src="@drawable/ic_check_black"
+                    app:fabSize="mini"
+                    app:layout_constraintBottom_toBottomOf="@+id/button_close"
+                    app:layout_constraintEnd_toStartOf="@+id/button_close"
+                    app:layout_constraintTop_toTopOf="@+id/button_close"
+                    tools:targetApi="p" />
+
                 <androidx.appcompat.widget.AppCompatImageButton
                     style="@style/ImageButtonStyle.Borderless"
                     android:id="@+id/button_close"

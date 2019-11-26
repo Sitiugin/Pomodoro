@@ -28,6 +28,7 @@ import com.glebworx.pomodoro.ui.fragment.view_project.item.TaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.ViewProjectHeaderItem;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
@@ -56,6 +57,8 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     @BindView(R.id.text_view_title) AppCompatTextView titleTextView;
     @BindView(R.id.text_view_subtitle) AppCompatTextView subtitleTextView;
     @BindView(R.id.button_close) AppCompatImageButton closeButton;
+    @BindView(R.id.fab_complete)
+    FloatingActionButton completeButton;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
 
@@ -137,6 +140,8 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
 
     @Override
     public void onInitView(String projectName,
+                           boolean allTasksCompleted,
+                           boolean isCompleted,
                            ViewProjectHeaderItem headerItem) {
         headerAdapter = new ItemAdapter<>();
         taskAdapter = new ItemAdapter<>();
@@ -148,6 +153,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
             }
         });
         titleTextView.setText(projectName);
+        completeButton.setVisibility(allTasksCompleted && !isCompleted ? View.VISIBLE : View.INVISIBLE);
         initRecyclerView(fastAdapter, headerItem);
         initClickEvents(fastAdapter);
     }
@@ -214,7 +220,12 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     }
 
     @Override
-    public void onHeaderItemChanged(String colorTag, int estimatedTime, int elapsedTime, float progress) {
+    public void onHeaderItemChanged(String colorTag,
+                                    int estimatedTime,
+                                    int elapsedTime,
+                                    float progress,
+                                    boolean allTasksCompleted,
+                                    boolean isCompleted) {
         synchronized (this) {
             ViewProjectHeaderItem item = headerAdapter.getAdapterItem(0);
             item.setColorTag(colorTag);
@@ -222,6 +233,13 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
             item.setElapsedTime(elapsedTime);
             item.setProgress(progress);
             fastAdapter.notifyAdapterItemChanged(0);
+            if (allTasksCompleted && !isCompleted) {
+                if (!completeButton.isShown()) {
+                    completeButton.show();
+                }
+            } else if (completeButton.isShown()) {
+                completeButton.hide();
+            }
         }
     }
 
@@ -295,11 +313,15 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
 
     private void initClickEvents(FastAdapter<AbstractItem> fastAdapter) {
         View.OnClickListener onClickListener = view -> {
-            if (view.getId() == R.id.button_close) {
+            int id = view.getId();
+            if (id == R.id.button_close) {
                 fragmentListener.onCloseFragment();
+            } else if (id == R.id.button_complete) {
+                // TODO implement
             }
         };
         closeButton.setOnClickListener(onClickListener);
+        completeButton.setOnClickListener(onClickListener);
         fastAdapter.withOnClickListener((view, adapter, item, position) -> {
             if (view == null || !item.isEnabled()) {
                 return false;

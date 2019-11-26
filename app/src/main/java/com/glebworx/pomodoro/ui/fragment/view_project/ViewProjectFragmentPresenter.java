@@ -85,6 +85,8 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
 
         presenterListener.onInitView(
                 projectModel.getName(),
+                projectModel.getAllTasksCompleted(),
+                projectModel.isCompleted(),
                 new ViewProjectHeaderItem(projectModel, onClickListener));
 
         observable.subscribe(getObserver());
@@ -260,7 +262,9 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
                         projectModel.getColorTag(),
                         projectModel.getEstimatedTime(),
                         projectModel.getElapsedTime(),
-                        projectModel.getProgress());
+                        projectModel.getProgress(),
+                        projectModel.getAllTasksCompleted(),
+                        projectModel.isCompleted());
                 presenterListener.onSubtitleChanged(projectModel.getDueDate(), new Date());
             }
 

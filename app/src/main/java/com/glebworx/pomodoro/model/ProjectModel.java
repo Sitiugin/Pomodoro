@@ -39,6 +39,7 @@ public class ProjectModel extends AbstractModel {
     private int estimatedTime;
     private int elapsedTime;
     private float progress;
+    private boolean allTasksCompleted;
     private boolean completed;
 
 
@@ -52,6 +53,7 @@ public class ProjectModel extends AbstractModel {
         this.tasks = new ArrayList<>();
         this.estimatedTime = 0;
         this.elapsedTime = 0;
+        this.allTasksCompleted = true;
         this.completed = false;
     }
 
@@ -65,6 +67,7 @@ public class ProjectModel extends AbstractModel {
         this.estimatedTime = 0;
         this.elapsedTime = 0;
         this.progress = 0;
+        this.allTasksCompleted = true;
         this.completed = false;
     }
 
@@ -76,6 +79,7 @@ public class ProjectModel extends AbstractModel {
         estimatedTime = projectModel.getEstimatedTime();
         elapsedTime = projectModel.getElapsedTime();
         progress = projectModel.getProgress();
+        allTasksCompleted = projectModel.getAllTasksCompleted();
         completed = projectModel.isCompleted();
     }
 
@@ -90,6 +94,7 @@ public class ProjectModel extends AbstractModel {
         this.estimatedTime = in.readInt();
         this.elapsedTime = in.readInt();
         this.progress = in.readFloat();
+        this.allTasksCompleted = in.readInt() == 1;
         this.completed = in.readInt() == 1;
     }
 
@@ -109,6 +114,7 @@ public class ProjectModel extends AbstractModel {
         parcel.writeInt(estimatedTime);
         parcel.writeInt(elapsedTime);
         parcel.writeFloat(progress);
+        parcel.writeInt(allTasksCompleted ? 1 : 0);
         parcel.writeInt(completed ? 1 : 0);
     }
 
@@ -141,10 +147,6 @@ public class ProjectModel extends AbstractModel {
         return tasks;
     }
 
-    public boolean isCompleted() {
-        return completed;
-    }
-
     public int getEstimatedTime() {
         return estimatedTime;
     }
@@ -167,6 +169,14 @@ public class ProjectModel extends AbstractModel {
 
     public void setProgress(float progress) {
         this.progress = progress;
+    }
+
+    public boolean getAllTasksCompleted() {
+        return allTasksCompleted;
+    }
+
+    public boolean isCompleted() {
+        return completed;
     }
 
 }

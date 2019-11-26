@@ -9,6 +9,8 @@ import java.util.Date;
 public interface IViewProjectFragment {
 
     void onInitView(String projectName,
+                    boolean allTasksCompleted,
+                    boolean isCompleted,
                     ViewProjectHeaderItem headerItem);
 
     void onTaskAdded(TaskItem item);
@@ -23,7 +25,12 @@ public interface IViewProjectFragment {
 
     void onTaskDeleted(boolean isSuccessful, int position);
 
-    void onHeaderItemChanged(String colorTag, int estimatedTime, int elapsedTime, float progress);
+    void onHeaderItemChanged(String colorTag,
+                             int estimatedTime,
+                             int elapsedTime,
+                             float progress,
+                             boolean allTasksCompleted,
+                             boolean isCompleted);
 
     void onSubtitleChanged(Date dueDate, Date today);
 
