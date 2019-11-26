@@ -33,7 +33,7 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
     private View.OnClickListener onClickListener;
     private int estimatedTime;
     private int elapsedTime;
-    private double progress;
+    private float progress;
 
 
     //                                                                                  CONSTRUCTORS
@@ -107,11 +107,11 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
         this.elapsedTime = elapsedTime;
     }
 
-    public double getProgress() {
+    public float getProgress() {
         return progress;
     }
 
-    public void setProgress(double progress) {
+    public void setProgress(float progress) {
         this.progress = progress;
     }
 

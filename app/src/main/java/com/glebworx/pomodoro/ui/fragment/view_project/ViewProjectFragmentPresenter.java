@@ -259,7 +259,7 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
                 presenterListener.onHeaderItemChanged(
                         projectModel.getEstimatedTime(),
                         projectModel.getElapsedTime(),
-                        projectModel.getProgressRatio());
+                        projectModel.getProgress());
                 presenterListener.onSubtitleChanged(projectModel.getDueDate(), new Date());
             }
 

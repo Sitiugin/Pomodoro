@@ -11,19 +11,12 @@ import com.google.firebase.firestore.Exclude;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.IntStream;
-
-import static com.glebworx.pomodoro.util.manager.DateTimeManager.POMODORO_LENGTH;
 
 
 public class ProjectModel extends AbstractModel {
 
 
     //                                                                                     CONSTANTS
-
-    public static final String LAYOUT_LIST = "list";
-    public static final String LAYOUT_BOARD = "board";
-    public static final String LAYOUT_CALENDAR = "calendar";
 
     public static final Parcelable.Creator<ProjectModel> CREATOR = new Parcelable.Creator<ProjectModel>() {
         @Override
@@ -42,13 +35,10 @@ public class ProjectModel extends AbstractModel {
 
     private Date dueDate;
     private String colorTag;
-    private List<String> sections;
     private List<String> tasks;
-    private int pomodorosAllocated;
-    private int pomodorosCompleted;
-    private int completedTasksPomodorosAllocated;
+    private int estimatedTime;
     private int elapsedTime;
-    private String layout;
+    private float progress;
     private boolean isCompleted;
 
 
@@ -58,8 +48,6 @@ public class ProjectModel extends AbstractModel {
     public ProjectModel() {
         super();
         this.tasks = new ArrayList<>();
-        this.sections = new ArrayList<>();
-        this.layout = LAYOUT_LIST;
     }
 
     public ProjectModel(@NonNull String name,
@@ -70,16 +58,9 @@ public class ProjectModel extends AbstractModel {
         this.dueDate = dueDate;
         this.colorTag = colorTag;
         this.tasks = new ArrayList<>();
-        this.sections = new ArrayList<>();
-        this.pomodorosAllocated = 0;
-        this.pomodorosCompleted = 0;
-        this.completedTasksPomodorosAllocated = 0;
+        this.estimatedTime = 0;
         this.elapsedTime = 0;
-        if (this.layout != null) {
-            this.layout = layout;
-        } else {
-            this.layout = LAYOUT_LIST;
-        }
+        this.progress = 0;
         this.isCompleted = false;
     }
 
@@ -88,10 +69,9 @@ public class ProjectModel extends AbstractModel {
         dueDate = projectModel.getDueDate();
         colorTag = projectModel.getColorTag();
         tasks = projectModel.getTasks();
-        sections = projectModel.getSections();
-        pomodorosAllocated = projectModel.getPomodorosAllocated();
-        pomodorosCompleted = projectModel.getPomodorosCompleted();
-        layout = projectModel.getLayout();
+        estimatedTime = projectModel.getEstimatedTime();
+        elapsedTime = projectModel.getElapsedTime();
+        progress = projectModel.getProgress();
         isCompleted = projectModel.isCompleted();
     }
 
@@ -103,11 +83,9 @@ public class ProjectModel extends AbstractModel {
         }
         this.colorTag = in.readString();
         in.readStringList(this.tasks);
-        in.readStringList(this.sections);
-        this.pomodorosAllocated = in.readInt();
-        this.pomodorosCompleted = in.readInt();
+        this.estimatedTime = in.readInt();
         this.elapsedTime = in.readInt();
-        this.layout = in.readString();
+        this.progress = in.readFloat();
         this.isCompleted = in.readInt() == 1;
     }
 
@@ -124,11 +102,9 @@ public class ProjectModel extends AbstractModel {
         }
         parcel.writeString(colorTag);
         parcel.writeStringList(tasks);
-        parcel.writeStringList(sections);
-        parcel.writeInt(pomodorosAllocated);
-        parcel.writeInt(pomodorosCompleted);
+        parcel.writeInt(estimatedTime);
         parcel.writeInt(elapsedTime);
-        parcel.writeString(layout);
+        parcel.writeFloat(progress);
         parcel.writeInt(isCompleted ? 1 : 0);
     }
 
@@ -161,107 +137,20 @@ public class ProjectModel extends AbstractModel {
         return tasks;
     }
 
-    @Exclude
-    public void addTask(TaskModel taskModel) {
-        if (!sections.contains(taskModel.getSection())) {
-            sections.add(taskModel.getSection());
-        }
-        tasks.add(taskModel.getName());
-        pomodorosAllocated += taskModel.getPomodorosAllocated();
-        pomodorosCompleted += taskModel.getPomodorosCompleted();
+    public boolean isCompleted() {
+        return isCompleted;
     }
 
-    @Exclude
-    public void setTask(TaskModel oldTaskModel, TaskModel taskModel) {
-        this.pomodorosAllocated -= oldTaskModel.getPomodorosAllocated();
-        this.pomodorosCompleted -= oldTaskModel.getPomodorosCompleted();
-        this.pomodorosAllocated += taskModel.getPomodorosAllocated();
-        this.pomodorosCompleted += taskModel.getPomodorosCompleted();
-    }
-
-    @Exclude
-    private int getTaskItemIndex(@NonNull String name) {
-        return IntStream.range(0, tasks.size())
-                .filter(i -> name.equals(tasks.get(i)))
-                .findFirst().orElse(-1);
-    }
-
-    @Exclude
-    public void removeTask(TaskModel taskModel) {
-        tasks.remove(taskModel.getName());
-        pomodorosAllocated -= taskModel.getPomodorosAllocated();
-        pomodorosCompleted -= taskModel.getPomodorosCompleted();
-    }
-
-    public List<String> getSections() {
-        return sections;
-    }
-
-    @Exclude
-    public void addPomodoro() {
-        pomodorosCompleted++;
-    }
-
-    public int getPomodorosAllocated() {
-        return pomodorosAllocated;
-    }
-
-    public void setPomodorosAllocated(int pomodorosAllocated) {
-        this.pomodorosAllocated = pomodorosAllocated;
-    }
-
-    public int getPomodorosCompleted() {
-        return pomodorosCompleted;
-    }
-
-    public void setPomodorosCompleted(int pomodorosCompleted) {
-        this.pomodorosCompleted = pomodorosCompleted;
-    }
-
-    public int getCompletedTasksPomodorosAllocated() {
-        return completedTasksPomodorosAllocated;
-    }
-
-    public void setCompletedTasksPomodorosAllocated(int completedTasksPomodorosAllocated) {
-        this.completedTasksPomodorosAllocated = completedTasksPomodorosAllocated;
-    }
-
-    @Exclude
     public int getEstimatedTime() {
-        return pomodorosAllocated * POMODORO_LENGTH;
+        return estimatedTime;
     }
 
     public int getElapsedTime() {
         return elapsedTime;
     }
 
-    public String getLayout() {
-        return layout;
-    }
-
-    public void setLayout(String layout) {
-        this.layout = layout;
-    }
-
-    @Exclude
-    public void addElapsedTime(int elapsedTime) {
-        this.elapsedTime += elapsedTime;
-    }
-
-    public boolean isCompleted() {
-        return isCompleted;
-    }
-
-    public void setCompleted(boolean completed) {
-        isCompleted = completed;
-    }
-
-    @Exclude
-    public double getProgressRatio() {
-        if (pomodorosAllocated == 0) {
-            return 0.0;
-        }
-        return (double) completedTasksPomodorosAllocated / pomodorosAllocated;
+    public float getProgress() {
+        return progress;
     }
 
 }

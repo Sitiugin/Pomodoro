@@ -77,6 +77,9 @@ public class DateTimeManager {
     }
 
     public static String getDueDateString(Context context, Date date, Date currentDate) {
+        if (date == null || currentDate == null) {
+            return null;
+        }
         return context.getString(R.string.core_due, DateUtils.getRelativeTimeSpanString(
                 date.getTime(),
                 currentDate.getTime(),
@@ -85,6 +88,9 @@ public class DateTimeManager {
     }
 
     public static String getHistoryDateString(Date date, Date currentDate) {
+        if (date == null || currentDate == null) {
+            return null;
+        }
         return String.valueOf(DateUtils.getRelativeTimeSpanString(
                 date.getTime(),
                 currentDate.getTime(),
@@ -93,6 +99,9 @@ public class DateTimeManager {
     }
 
     public static String getDateString(Date date, Date currentDate) {
+        if (date == null || currentDate == null) {
+            return null;
+        }
         return String.valueOf(DateUtils.getRelativeTimeSpanString(
                 date.getTime(),
                 currentDate.getTime(),
@@ -117,6 +126,9 @@ public class DateTimeManager {
     }
 
     public static String getMMYYString(Date date) {
+        if (date == null) {
+            return null;
+        }
         return calendarFormat.format(date);
     }
 

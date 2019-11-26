@@ -58,7 +58,6 @@ public class TaskApi extends BaseApi {
         taskModel.updateTimestamp();
 
         taskModel.addPomodoro();
-        projectModel.addPomodoro();
 
         WriteBatch batch = getWriteBatch();
 
@@ -68,10 +67,10 @@ public class TaskApi extends BaseApi {
                 projectDocument.collection(COLLECTION_TASKS).document(taskModel.getName()),
                 taskModel);
 
-        batch.update(projectDocument,
+        /*batch.update(projectDocument,
                 FIELD_TASKS, projectModel.getTasks(),
                 FIELD_POMODOROS_ALLOCATED, projectModel.getPomodorosAllocated(),
-                FIELD_POMODOROS_COMPLETED, projectModel.getPomodorosCompleted());
+                FIELD_POMODOROS_COMPLETED, projectModel.getPomodorosCompleted());*/
 
         batch.set(
                 getCollection(COLLECTION_HISTORY).document(),
@@ -96,7 +95,6 @@ public class TaskApi extends BaseApi {
         taskModel.updateTimestamp();
 
         taskModel.addPomodoro();
-        projectModel.addPomodoro();
         taskModel.complete();
 
         WriteBatch batch = getWriteBatch();
@@ -107,10 +105,10 @@ public class TaskApi extends BaseApi {
                 projectDocument.collection(COLLECTION_TASKS).document(taskModel.getName()),
                 taskModel);
 
-        batch.update(projectDocument,
+        /*batch.update(projectDocument,
                 FIELD_TASKS, projectModel.getTasks(),
                 FIELD_POMODOROS_ALLOCATED, projectModel.getPomodorosAllocated(),
-                FIELD_POMODOROS_COMPLETED, projectModel.getPomodorosCompleted());
+                FIELD_POMODOROS_COMPLETED, projectModel.getPomodorosCompleted());*/
 
         batch.set(
                 getCollection(COLLECTION_HISTORY).document(),
@@ -138,10 +136,10 @@ public class TaskApi extends BaseApi {
 
         batch.delete(projectDocument.collection(COLLECTION_TASKS).document(taskModel.getName()));
 
-        batch.update(projectDocument,
+        /*batch.update(projectDocument,
                 FIELD_TASKS, projectModel.getTasks(),
                 FIELD_POMODOROS_ALLOCATED, projectModel.getPomodorosAllocated(),
-                FIELD_POMODOROS_COMPLETED, projectModel.getPomodorosCompleted());
+                FIELD_POMODOROS_COMPLETED, projectModel.getPomodorosCompleted());*/
 
         batch.set(
                 getCollection(COLLECTION_HISTORY).document(),
@@ -282,10 +280,10 @@ public class TaskApi extends BaseApi {
                 projectDocument.collection(COLLECTION_TASKS).document(taskModel.getName()),
                 taskModel);
 
-        batch.update(projectDocument,
+        /*batch.update(projectDocument,
                 FIELD_TASKS, projectModel.getTasks(),
                 FIELD_POMODOROS_ALLOCATED, projectModel.getPomodorosAllocated(),
-                FIELD_POMODOROS_COMPLETED, projectModel.getPomodorosCompleted());
+                FIELD_POMODOROS_COMPLETED, projectModel.getPomodorosCompleted());*/
 
         batch.set(
                 getCollection(COLLECTION_HISTORY).document(),

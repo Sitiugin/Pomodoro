@@ -109,8 +109,8 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
         return DateTimeManager.getDueDateString(context, model.getDueDate(), currentDate);
     }
 
-    public double getProgressRatio() {
-        return model.getProgressRatio();
+    public float getProgress() {
+        return model.getProgress();
     }
 
     public @NonNull String getProgressString(double progress) {
@@ -154,10 +154,13 @@ public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolde
             } else {
                 dueDateTextView.setTextColor(context.getColor(android.R.color.darker_gray));
             }
-            double progressRatio = item.getProgressRatio();
-            int progress = (int) Math.round(progressRatio * 100);
-            progressSeekArc.setProgress(progress > 100 ? 100 : progress);
-            progressTextView.setText(item.getProgressString(progressRatio));
+            float progress = item.getProgress();
+            if (progress > 1) {
+                progress = 1;
+            }
+            int arcProgress = Math.round(progress * 100);
+            progressSeekArc.setProgress(arcProgress);
+            progressTextView.setText(item.getProgressString(progress));
         }
 
         @Override

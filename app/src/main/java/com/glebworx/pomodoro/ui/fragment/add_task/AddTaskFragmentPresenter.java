@@ -106,11 +106,9 @@ public class AddTaskFragmentPresenter implements IAddTaskFragmentPresenter {
         if (taskModel.isValid()) {
 
             if (isEditing) {
-                projectModel.setTask(oldTaskModel, taskModel);
-                updateTask();
+                TaskApi.updateTask(projectModel, taskModel, null);
             } else {
-                projectModel.addTask(taskModel);
-                addTask();
+                TaskApi.addTask(projectModel, taskModel, null);
             }
 
             presenterListener.onAddTask(isEditing);
@@ -123,17 +121,6 @@ public class AddTaskFragmentPresenter implements IAddTaskFragmentPresenter {
 
         }
 
-    }
-
-
-    //                                                                                       HELPERS
-
-    private void addTask() {
-        TaskApi.addTask(projectModel, taskModel, null);
-    }
-
-    private void updateTask() {
-        TaskApi.updateTask(projectModel, taskModel, null);
     }
 
 }
