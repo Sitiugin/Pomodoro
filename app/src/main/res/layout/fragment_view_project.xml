@@ -57,6 +57,7 @@
                     style="@style/FloatingActionButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_content_half"
                     android:outlineAmbientShadowColor="@color/colorHighlight"
                     android:outlineSpotShadowColor="@color/colorHighlight"
                     android:src="@drawable/ic_check_black"

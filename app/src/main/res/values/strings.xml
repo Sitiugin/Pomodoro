@@ -133,7 +133,9 @@
     <string name="projects_text_this_week">This week</string>
     <string name="projects_text_overdue">Overdue</string>
     <string name="projects_text_sign_out">Are you sure you want to sign out from this account and return to the sign in screen?</string>
+    <string name="projects_hint_search_projects">Search Projects</string>
     <string name="projects_toast_project_delete_success">Project deleted</string>
+    <string name="projects_toast_project_delete_failed">Failed to delete project. Please try again later.</string>
 
 
     <!--                                                                             ADD PROJECT -->
@@ -178,6 +180,7 @@
     <string name="add_task_toast_add_failed_connection">Failed to add task. Please check your internet connection.</string>
     <string name="add_task_err_name_empty">Task name cannot be empty!</string>\
     <string name="add_task_err_name_invalid">Task name cannot contain symbols . $ [ ] # /</string>
+
 
     <!--                                                                            VIEW PROJECT -->
 
@@ -231,6 +234,12 @@
     <string name="about_title_terms">Terms</string>
     <string name="about_title_privacy">Privacy</string>
     <string name="about_title_licenses">Licenses</string>
+
+
+    <!--                                                                                 ARCHIVE -->
+
+    <string name="archive_hint_search_projects">Search Projects</string>
+    <string name="archive_toast_project_delete_failed">Failed to delete project. Please try again later.</string>
 
 
     <!--                                                                               ABOUT APP -->

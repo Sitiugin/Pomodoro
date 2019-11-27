@@ -59,6 +59,20 @@ class ArchiveFragmentPresenter implements IArchiveFragmentPresenter {
         compositeDisposable.clear();
     }
 
+    @Override
+    public void restoreProject(ProjectItem projectItem) {
+        // TODO implement
+    }
+
+    @Override
+    public void deleteProject(ProjectItem projectItem, int position) {
+        ProjectApi.deleteProject(projectItem.getModel(), task -> {
+            if (!task.isSuccessful()) {
+                presenterListener.onDeleteProjectFailed(position);
+            }
+        });
+    }
+
     private IItemAdapter.Predicate<ProjectItem> getFilterPredicate() {
         return (item, constraint) -> {
             if (constraint == null) {

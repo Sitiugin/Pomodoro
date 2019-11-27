@@ -204,6 +204,12 @@
         <item name="android:background">@drawable/drawable_foreground_rounded_large</item>
         <item name="android:elevation">@dimen/elevation_view</item>
         <item name="android:stateListAnimator">@animator/lift_on_touch</item>
+        <item name="dividerPadding">0dp</item>
+        <item name="iconifiedByDefault">false</item>
+        <item name="queryBackground">@android:color/transparent</item>
+        <item name="android:showDividers">none</item>
+        <item name="searchIcon">@drawable/ic_search_gray</item>
+        <item name="closeIcon">@drawable/ic_cross_black</item>
     </style>
 
 

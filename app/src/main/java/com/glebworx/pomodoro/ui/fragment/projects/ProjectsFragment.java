@@ -197,7 +197,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
         synchronized (this) {
             fastAdapter.notifyAdapterItemChanged(position);
         }
-        Toast.makeText(context, R.string.view_project_toast_project_delete_failed, LENGTH_LONG).show();
+        Toast.makeText(context, R.string.projects_toast_project_delete_failed, LENGTH_LONG).show();
     }
 
 
