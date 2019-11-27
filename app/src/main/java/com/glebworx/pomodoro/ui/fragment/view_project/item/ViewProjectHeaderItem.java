@@ -21,6 +21,7 @@ import com.mikepenz.fastadapter_extensions.swipe.ISwipeable;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, ViewProjectHeaderItem.ViewHolder> implements ISwipeable<ViewProjectHeaderItem, ViewProjectHeaderItem> {
 
@@ -74,6 +75,19 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
         return false;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ViewProjectHeaderItem)) return false;
+        if (!super.equals(o)) return false;
+        ViewProjectHeaderItem that = (ViewProjectHeaderItem) o;
+        return model.equals(that.model);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), model);
+    }
 
     //                                                                                       HELPERS
 

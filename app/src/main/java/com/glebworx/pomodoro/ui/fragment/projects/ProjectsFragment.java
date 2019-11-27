@@ -34,7 +34,7 @@ import com.mikepenz.fastadapter.adapters.ItemFilter;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.fastadapter_extensions.UndoHelper;
 import com.mikepenz.fastadapter_extensions.swipe.SimpleSwipeCallback;
-import com.mikepenz.itemanimators.DefaultAnimator;
+import com.mikepenz.itemanimators.SlideInOutLeftAnimator;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -206,7 +206,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
     private void initRecyclerView(FastAdapter fastAdapter) {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setItemAnimator(new DefaultAnimator<>());
+        recyclerView.setItemAnimator(new SlideInOutLeftAnimator(recyclerView));
         //OverScrollDecoratorHelper.setUpOverScroll(recyclerView, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
 
         headerAdapter = new ItemAdapter<>();

@@ -25,13 +25,8 @@ public interface IViewProjectFragment {
 
     void onTaskDeleted(boolean isSuccessful, int position);
 
-    void onHeaderItemChanged(String colorTag,
-                             int estimatedTime,
-                             int elapsedTime,
-                             float progress,
-                             boolean allTasksCompleted,
-                             boolean isCompleted);
+    void onHeaderItemChanged(ViewProjectHeaderItem headerItem);
 
-    void onSubtitleChanged(Date dueDate, Date today);
+    void onAppBarChanged(Date dueDate, Date today, boolean allTasksCompleted, boolean isCompleted);
 
 }

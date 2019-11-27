@@ -91,7 +91,7 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
 
         observable.subscribe(getObserver());
         completedObservable.subscribe(getCompletedObserver());
-        headerObservable.subscribe(getHeaderObserver());
+        headerObservable.subscribe(getHeaderObserver(onClickListener));
 
     }
 
@@ -245,7 +245,7 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
         };
     }
 
-    private io.reactivex.Observer<DocumentSnapshot> getHeaderObserver() {
+    private io.reactivex.Observer<DocumentSnapshot> getHeaderObserver(View.OnClickListener onClickListener) {
         return new io.reactivex.Observer<DocumentSnapshot>() {
             @Override
             public void onSubscribe(Disposable disposable) {
@@ -259,13 +259,12 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
                     return;
                 }
                 presenterListener.onHeaderItemChanged(
-                        projectModel.getColorTag(),
-                        projectModel.getEstimatedTime(),
-                        projectModel.getElapsedTime(),
-                        projectModel.getProgress(),
+                        new ViewProjectHeaderItem(projectModel, onClickListener));
+                presenterListener.onAppBarChanged(
+                        projectModel.getDueDate(),
+                        new Date(),
                         projectModel.getAllTasksCompleted(),
                         projectModel.isCompleted());
-                presenterListener.onSubtitleChanged(projectModel.getDueDate(), new Date());
             }
 
             @Override

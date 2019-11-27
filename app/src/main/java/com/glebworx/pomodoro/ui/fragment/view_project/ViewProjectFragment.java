@@ -34,7 +34,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.fastadapter_extensions.UndoHelper;
 import com.mikepenz.fastadapter_extensions.swipe.SimpleSwipeCallback;
-import com.mikepenz.itemanimators.DefaultAnimator;
+import com.mikepenz.itemanimators.SlideInOutLeftAnimator;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -220,35 +220,29 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     }
 
     @Override
-    public void onHeaderItemChanged(String colorTag,
-                                    int estimatedTime,
-                                    int elapsedTime,
-                                    float progress,
-                                    boolean allTasksCompleted,
-                                    boolean isCompleted) {
+    public void onHeaderItemChanged(ViewProjectHeaderItem headerItem) {
         synchronized (this) {
-            ViewProjectHeaderItem item = headerAdapter.getAdapterItem(0);
-            item.setColorTag(colorTag);
-            item.setEstimatedTime(estimatedTime);
-            item.setElapsedTime(elapsedTime);
-            item.setProgress(progress);
-            fastAdapter.notifyAdapterItemChanged(0);
-            if (allTasksCompleted && !isCompleted) {
-                if (!completeButton.isShown()) {
-                    completeButton.show();
-                }
-            } else if (completeButton.isShown()) {
-                completeButton.hide();
+            if (headerAdapter.getAdapterItemCount() == 0) {
+                headerAdapter.add(headerItem);
+            } else if (!headerAdapter.getAdapterItem(0).equals(headerItem)) {
+                headerAdapter.set(0, headerItem);
             }
         }
     }
 
     @Override
-    public void onSubtitleChanged(Date dueDate, Date today) {
+    public void onAppBarChanged(Date dueDate, Date today, boolean allTasksCompleted, boolean isCompleted) {
         subtitleTextView.setText(DateTimeManager.getDueDateString(context, dueDate, today));
         subtitleTextView.setTextColor(context.getColor(dueDate.compareTo(today) < 0
                 ? R.color.colorError
                 : android.R.color.darker_gray));
+        if (allTasksCompleted && !isCompleted) {
+            if (!completeButton.isShown()) {
+                completeButton.show();
+            }
+        } else if (completeButton.isShown()) {
+            completeButton.hide();
+        }
     }
 
 
@@ -257,7 +251,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     private void initRecyclerView(FastAdapter fastAdapter, ViewProjectHeaderItem headerItem) {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setItemAnimator(new DefaultAnimator<>());
+        recyclerView.setItemAnimator(new SlideInOutLeftAnimator(recyclerView));
 
         headerAdapter.add(headerItem);
 
