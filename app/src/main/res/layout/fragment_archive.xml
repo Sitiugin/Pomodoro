@@ -44,11 +44,22 @@
                     android:clipChildren="false"
                     android:clipToPadding="false"
                     android:paddingHorizontal="@dimen/margin_content_half"
-                    app:layout_constraintEnd_toStartOf="@+id/button_close"
+                    app:layout_constraintEnd_toStartOf="@+id/button_delete_all"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:queryHint="@string/archive_hint_search_projects" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/button_delete_all"
+                    style="@style/ImageButtonStyle.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_content"
+                    android:src="@drawable/ic_delete_red"
+                    app:layout_constraintBottom_toBottomOf="@+id/search_view"
+                    app:layout_constraintEnd_toStartOf="@+id/button_close"
+                    app:layout_constraintTop_toTopOf="@+id/search_view" />
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/button_close"
