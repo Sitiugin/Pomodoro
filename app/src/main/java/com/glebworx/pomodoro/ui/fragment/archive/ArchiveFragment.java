@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.ui.fragment.archive.interfaces.IArchiveFragment;
 import com.glebworx.pomodoro.ui.fragment.archive.interfaces.IArchiveFragmentInteractionListener;
+import com.glebworx.pomodoro.ui.fragment.archive.item.ArchiveHeaderItem;
 import com.glebworx.pomodoro.ui.item.ProjectItem;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.mikepenz.fastadapter.FastAdapter;
@@ -32,6 +33,7 @@ import com.mikepenz.itemanimators.SlideInOutLeftAnimator;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -131,17 +133,29 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
 
     @Override
     public void onItemAdded(ProjectItem item) {
-
+        synchronized (this) {
+            projectAdapter.add(item);
+        }
     }
 
     @Override
     public void onItemModified(ProjectItem item) {
-
+        synchronized (this) {
+            int index = getProjectItemIndex(item.getProjectName());
+            if (index != -1) {
+                projectAdapter.set(index + 1, item); // add 1 because of header
+            }
+        }
     }
 
     @Override
     public void onItemDeleted(ProjectItem item) {
-
+        synchronized (this) {
+            int index = getProjectItemIndex(item.getProjectName());
+            if (index != -1) {
+                projectAdapter.remove(index + 1); // add 1 because of header
+            }
+        }
     }
 
     @Override
@@ -162,7 +176,10 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
         recyclerView.setItemAnimator(new SlideInOutLeftAnimator(recyclerView));
         //OverScrollDecoratorHelper.setUpOverScroll(recyclerView, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
 
-        fastAdapter.addAdapter(0, projectAdapter);
+        ItemAdapter<ArchiveHeaderItem> headerAdapter = new ItemAdapter<>();
+        headerAdapter.add(new ArchiveHeaderItem());
+        fastAdapter.addAdapter(0, headerAdapter);
+        fastAdapter.addAdapter(1, projectAdapter);
 
         fastAdapter.setHasStableIds(true);
         attachSwipeHelper(recyclerView);
@@ -250,6 +267,12 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
             }
             return false;
         });*/
+    }
+
+    private int getProjectItemIndex(@NonNull String name) {
+        return IntStream.range(0, projectAdapter.getAdapterItems().size())
+                .filter(i -> name.equals(projectAdapter.getAdapterItems().get(i).getProjectName()))
+                .findFirst().orElse(-1);
     }
 
 }

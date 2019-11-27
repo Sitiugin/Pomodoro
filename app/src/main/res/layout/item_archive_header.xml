@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.AppCompatTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_archive_header"
+    style="@style/TextStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:drawableStart="@drawable/ic_project_gray_small"
+    android:drawablePadding="@dimen/margin_content_quarter"
+    android:paddingHorizontal="@dimen/margin_content"
+    android:paddingVertical="@dimen/margin_content_half"
+    android:text="@string/archive_title_projects" />

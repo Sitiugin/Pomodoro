@@ -28,7 +28,9 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 
-public class ProjectItem extends AbstractItem<ProjectItem, ProjectItem.ViewHolder> implements ISwipeable<ProjectItem, ProjectItem> {
+public class ProjectItem
+        extends AbstractItem<ProjectItem, ProjectItem.ViewHolder>
+        implements ISwipeable<ProjectItem, ProjectItem> {
 
 
     //                                                                                    ATTRIBUTES

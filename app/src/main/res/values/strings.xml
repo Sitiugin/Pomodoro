@@ -238,6 +238,7 @@
 
     <!--                                                                                 ARCHIVE -->
 
+    <string name="archive_title_projects">Archived Projects</string>
     <string name="archive_hint_search_projects">Search Archived</string>
     <string name="archive_toast_project_delete_failed">Failed to delete project. Please try again later.</string>
 

@@ -22,7 +22,9 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-public class TaskItem extends AbstractItem<TaskItem, TaskItem.ViewHolder> implements ISwipeable<TaskItem, TaskItem> {
+public class TaskItem
+        extends AbstractItem<TaskItem, TaskItem.ViewHolder>
+        implements ISwipeable<TaskItem, TaskItem> {
 
 
     //                                                                                    ATTRIBUTES

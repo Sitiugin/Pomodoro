@@ -268,12 +268,6 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
         touchHelper.attachToRecyclerView(recyclerView);
     }
 
-    private int getProjectItemIndex(@NonNull String name) {
-        return IntStream.range(0, projectAdapter.getAdapterItems().size())
-                .filter(i -> name.equals(projectAdapter.getAdapterItems().get(i).getProjectName()))
-                .findFirst().orElse(-1);
-    }
-
     private void initSearchView(IItemAdapter.Predicate<ProjectItem> predicate) {
 
         ItemFilter<ProjectItem, ProjectItem> itemFilter =
@@ -373,6 +367,12 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
                 R.string.projects_text_sign_out,
                 R.string.projects_title_sign_out,
                 () -> presenter.signOut(context));
+    }
+
+    private int getProjectItemIndex(@NonNull String name) {
+        return IntStream.range(0, projectAdapter.getAdapterItems().size())
+                .filter(i -> name.equals(projectAdapter.getAdapterItems().get(i).getProjectName()))
+                .findFirst().orElse(-1);
     }
 
 }

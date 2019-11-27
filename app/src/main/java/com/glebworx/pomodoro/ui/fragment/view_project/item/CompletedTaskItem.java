@@ -19,7 +19,9 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-public class CompletedTaskItem extends AbstractItem<CompletedTaskItem, CompletedTaskItem.ViewHolder> implements ISwipeable<CompletedTaskItem, CompletedTaskItem> {
+public class CompletedTaskItem
+        extends AbstractItem<CompletedTaskItem, CompletedTaskItem.ViewHolder>
+        implements ISwipeable<CompletedTaskItem, CompletedTaskItem> {
 
 
     //                                                                                    ATTRIBUTES

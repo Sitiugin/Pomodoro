@@ -17,7 +17,9 @@ import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
-public class ProjectHeaderItem extends AbstractItem<ProjectHeaderItem, ProjectHeaderItem.ViewHolder> implements ISwipeable<ProjectHeaderItem, ProjectHeaderItem> {
+public class ProjectHeaderItem
+        extends AbstractItem<ProjectHeaderItem, ProjectHeaderItem.ViewHolder>
+        implements ISwipeable<ProjectHeaderItem, ProjectHeaderItem> {
 
 
     //                                                                                    ATTRIBUTES
