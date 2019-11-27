@@ -12,7 +12,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.MetadataChanges;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
@@ -109,7 +108,7 @@ public class ProjectApi extends BaseApi {
     public static ListenerRegistration addProjectsEventListener(@NonNull EventListener<QuerySnapshot> eventListener, boolean completed) {
         return getCollection(COLLECTION_PROJECTS)
                 .whereEqualTo(FIELD_COMPLETED, completed)
-                .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
+                //.orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
                 .addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
     }
 

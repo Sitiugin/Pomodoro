@@ -4,4 +4,6 @@ public interface IArchiveFragmentPresenter {
 
     void init();
 
+    void destroy();
+
 }

@@ -42,8 +42,8 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
     IProjectsFragmentInteractionListener interactionListener;
     private CompositeDisposable compositeDisposable;
 
-    public ProjectsFragmentPresenter(@NonNull IProjectsFragment presenterListener,
-                                     @Nullable IProjectsFragmentInteractionListener interactionListener) {
+    ProjectsFragmentPresenter(@NonNull IProjectsFragment presenterListener,
+                              @Nullable IProjectsFragmentInteractionListener interactionListener) {
         this.presenterListener = presenterListener;
         this.interactionListener = interactionListener;
         init();
@@ -87,42 +87,12 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
         thisWeekTasksObservable.subscribe(getThisWeekTasksObserver());
         overdueTasksObservable.subscribe(getOverdueTasksObserver());
 
-        //refreshTasksHeader();
-
     }
 
     @Override
     public void destroy() {
         compositeDisposable.clear();
     }
-
-    /*@Override
-    public void refreshTasksHeader() {
-        TaskApi.getTodayTasks(task -> {
-            todayTasksObservable = getObservable(task.getResult());
-            todayTasksObservable = todayTasksObservable
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .unsubscribeOn(Schedulers.io());
-            todayTasksObservable.subscribe(getTodayTasksObserver());
-        });
-        TaskApi.getThisWeekTasks(task -> {
-            thisWeekTasksObservable = getObservable(task.getResult());
-            thisWeekTasksObservable = thisWeekTasksObservable
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .unsubscribeOn(Schedulers.io());
-            thisWeekTasksObservable.subscribe(getThisWeekTasksObserver());
-        });
-        TaskApi.getOverdueTasks(task -> {
-            overdueTasksObservable = getObservable(task.getResult());
-            overdueTasksObservable = overdueTasksObservable
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .unsubscribeOn(Schedulers.io());
-            overdueTasksObservable.subscribe(getOverdueTasksObserver());
-        });
-    }*/
 
     @Override
     public void viewProject(ProjectItem projectItem) {

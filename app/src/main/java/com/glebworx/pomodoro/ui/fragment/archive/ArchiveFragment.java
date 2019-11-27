@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.ui.fragment.archive.interfaces.IArchiveFragment;
 import com.glebworx.pomodoro.ui.fragment.archive.interfaces.IArchiveFragmentInteractionListener;
+import com.glebworx.pomodoro.ui.item.ProjectItem;
+import com.mikepenz.fastadapter.IItemAdapter;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -20,10 +22,16 @@ import butterknife.Unbinder;
 
 public class ArchiveFragment extends Fragment implements IArchiveFragment {
 
+
+    //                                                                                    ATTRIBUTES
+
     private Context context;
     private IArchiveFragmentInteractionListener fragmentListener;
     private Unbinder unbinder;
     private ArchiveFragmentPresenter presenter;
+
+
+    //                                                                                  CONSTRUCTORS
 
     public ArchiveFragment() {
     }
@@ -32,6 +40,8 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
         return new ArchiveFragment();
     }
 
+
+    //                                                                                     LIFECYCLE
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,4 +74,26 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
         super.onDetach();
     }
 
+
+    //                                                                                     INTERFACE
+
+    @Override
+    public void onInitView(IItemAdapter.Predicate<ProjectItem> predicate) {
+
+    }
+
+    @Override
+    public void onItemAdded(ProjectItem item) {
+
+    }
+
+    @Override
+    public void onItemModified(ProjectItem item) {
+
+    }
+
+    @Override
+    public void onItemDeleted(ProjectItem item) {
+
+    }
 }
