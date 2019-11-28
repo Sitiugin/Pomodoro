@@ -189,7 +189,7 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
     private void initRecyclerView(FastAdapter fastAdapter) {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty));
+        recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty_projects));
         recyclerView.setItemAnimator(new SlideInOutLeftAnimator(recyclerView));
         //OverScrollDecoratorHelper.setUpOverScroll(recyclerView, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
 

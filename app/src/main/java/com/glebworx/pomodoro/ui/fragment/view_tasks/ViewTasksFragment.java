@@ -289,7 +289,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
     private void initRecyclerView(FastAdapter fastAdapter) {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty));
+        recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty_tasks));
         recyclerView.setItemAnimator(new SlideInOutLeftAnimator(recyclerView));
 
         fastAdapter.setHasStableIds(true);

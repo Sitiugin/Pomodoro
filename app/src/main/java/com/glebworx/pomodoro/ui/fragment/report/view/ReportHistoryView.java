@@ -19,6 +19,7 @@ import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportHistoryView;
 import com.glebworx.pomodoro.ui.fragment.report.view.item.ReportHistoryItem;
+import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.glebworx.pomodoro.util.manager.ColorManager;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.DialogManager;
@@ -163,6 +164,7 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
 
     private void initRecyclerView() {
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty_history));
         recyclerView.setItemAnimator(new AlphaCrossFadeAnimator());
         fastAdapter.addAdapter(0, historyAdapter);
         fastAdapter.setHasStableIds(true);
