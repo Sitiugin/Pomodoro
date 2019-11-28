@@ -87,6 +87,17 @@ public class DateTimeManager {
                 DateUtils.FORMAT_ABBREV_ALL));
     }
 
+    public static String getCompletedOnString(Context context, Date date, Date currentDate) {
+        if (date == null || currentDate == null) {
+            return null;
+        }
+        return context.getString(R.string.core_completed_on, DateUtils.getRelativeTimeSpanString(
+                date.getTime(),
+                currentDate.getTime(),
+                DateUtils.DAY_IN_MILLIS,
+                DateUtils.FORMAT_ABBREV_ALL));
+    }
+
     public static String getHistoryDateString(Date date, Date currentDate) {
         if (date == null || currentDate == null) {
             return null;

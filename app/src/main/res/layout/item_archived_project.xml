@@ -15,8 +15,8 @@
         android:id="@+id/view_color_tag"
         android:layout_width="@dimen/radius_small"
         android:layout_height="0dp"
-        android:background="@drawable/drawable_color_tag"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/drawable_color_tag_view_partial"
+        app:layout_constraintBottom_toBottomOf="@+id/text_view_completed_on"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_weight="1" />
@@ -38,8 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_content"
-        android:layout_marginBottom="@dimen/margin_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingBottom="@dimen/margin_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_view_title" />
 
@@ -62,9 +61,10 @@
         style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_content"
-        app:layout_constraintBottom_toBottomOf="@+id/text_view_completed_on"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/text_view_completed_on" />
+        android:layout_marginStart="@dimen/margin_content"
+        android:layout_marginBottom="@dimen/margin_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_completed_on" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

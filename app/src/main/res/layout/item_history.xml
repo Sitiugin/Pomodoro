@@ -11,7 +11,7 @@
         android:id="@+id/view_color_tag"
         android:layout_width="@dimen/radius_small"
         android:layout_height="0dp"
-        android:background="@drawable/drawable_color_tag_report_history"
+        android:background="@drawable/drawable_color_tag_report_full"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

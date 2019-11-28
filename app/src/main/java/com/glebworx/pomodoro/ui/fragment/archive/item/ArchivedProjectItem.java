@@ -110,7 +110,7 @@ public class ArchivedProjectItem
         if (model.getDueDate() == null) {
             return null;
         }
-        return DateTimeManager.getDueDateString(context, model.getCompletedOn(), currentDate);
+        return DateTimeManager.getCompletedOnString(context, model.getCompletedOn(), currentDate);
     }
 
     public @Nullable

@@ -37,6 +37,7 @@
     <string name="core_completed">Completed</string>
     <string name="core_archived">Archived</string>
     <string name="core_due" formatted="true">Due: %1$s</string>
+    <string name="core_completed_on" formatted="true">Completed: %1$s</string>
     <string name="core_ratio" formatted="true">%1$s/%2$s</string>
     <string name="core_empty">-</string>
     <string-array name="core_layout">
@@ -241,7 +242,7 @@
 
     <string name="archive_title_projects">Archived Projects</string>
     <string name="archive_title_delete_all">Delete All</string>
-    <string name="archive_text_item_extra_info">Estimated: %1$s, Elapsed: %2$s, Tasks: %3$s</string>
+    <string name="archive_text_item_extra_info">&#8226; Estimated time: %1$s\n&#8226; Elapsed time: %2$s\n&#8226; Tasks: %3$s</string>
     <string name="archive_text_delete_all">Are you sure you want to delete all archived projects? Warning: This cannot be undone.</string>
     <string name="archive_text_delete">Delete</string>
     <string name="archive_hint_search_projects">Search Archived</string>
