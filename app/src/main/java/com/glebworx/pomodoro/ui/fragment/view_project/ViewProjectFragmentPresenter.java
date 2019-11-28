@@ -113,6 +113,13 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
     }
 
     @Override
+    public void completeProject() {
+        if (projectModel.getAllTasksCompleted()) {
+            ProjectApi.completeProject(projectModel, null);
+        }
+    }
+
+    @Override
     public void addTask() {
         interactionListener.onAddTask(projectModel);
     }

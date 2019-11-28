@@ -1,6 +1,7 @@
 package com.glebworx.pomodoro.ui.fragment.view_project;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -27,6 +28,7 @@ import com.glebworx.pomodoro.ui.fragment.view_project.item.CompletedTaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.ViewProjectHeaderItem;
 import com.glebworx.pomodoro.ui.item.TaskItem;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
+import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mikepenz.fastadapter.FastAdapter;
@@ -310,8 +312,8 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
             int id = view.getId();
             if (id == R.id.button_close) {
                 fragmentListener.onCloseFragment();
-            } else if (id == R.id.button_complete) {
-                // TODO implement
+            } else if (id == R.id.fab_complete) {
+                showCompleteProjectDialog();
             }
         };
         closeButton.setOnClickListener(onClickListener);
@@ -331,6 +333,23 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
 
             return false;
         });
+    }
+
+    private void showCompleteProjectDialog() {
+        Activity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
+        DialogManager.showGenericDialog(
+                activity,
+                R.id.container_main,
+                R.string.view_project_title_complete_project,
+                R.string.view_project_text_complete_project,
+                R.string.view_project_title_complete_project,
+                () -> {
+                    presenter.completeProject();
+                    fragmentListener.onCloseFragment();
+                });
     }
 
     private void showOptionsPopup() {

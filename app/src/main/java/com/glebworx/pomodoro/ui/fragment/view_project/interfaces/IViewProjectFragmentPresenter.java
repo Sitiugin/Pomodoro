@@ -15,6 +15,8 @@ public interface IViewProjectFragmentPresenter {
 
     void deleteProject();
 
+    void completeProject();
+
     void addTask();
 
     void editTask(TaskItem taskItem);
