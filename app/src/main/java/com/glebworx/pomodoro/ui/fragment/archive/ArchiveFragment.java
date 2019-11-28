@@ -174,6 +174,15 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
         Toast.makeText(context, R.string.archive_toast_project_delete_failed, LENGTH_LONG).show();
     }
 
+    @Override
+    public void onDeleteAllFinished(boolean isSuccessful) {
+        Toast.makeText(
+                context,
+                isSuccessful
+                        ? R.string.archive_toast_delete_all_success
+                        : R.string.archive_toast_delete_all_failed,
+                LENGTH_LONG).show();
+    }
 
     //                                                                                       HELPERS
 

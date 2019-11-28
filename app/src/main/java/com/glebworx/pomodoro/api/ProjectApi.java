@@ -63,7 +63,7 @@ public class ProjectApi extends BaseApi {
 
         List<String> tasks = projectModel.getTasks();
         for (String taskName: tasks) {
-            batch.delete(tasksCollection.document(taskName));
+            batch.delete(tasksCollection.document(taskName)); // TODO do this with a cloud function
         }
         batch.delete(projectDocument);
 
@@ -77,6 +77,28 @@ public class ProjectApi extends BaseApi {
         } else {
             batch.commit().addOnCompleteListener(onCompleteListener);
         }
+
+    }
+
+    public static void deleteAllArchived(@Nullable OnCompleteListener<Void> onCompleteListener) {
+
+        //TODO implement
+        /*WriteBatch batch = getWriteBatch();
+
+        DocumentReference projectDocument = getCollection(COLLECTION_PROJECTS).document(projectModel.getName());
+
+        batch.delete(projectDocument);
+
+        batch.set(
+                getCollection(COLLECTION_HISTORY).document(),
+                new HistoryModel(projectModel.getName(), projectModel.getColorTag(), null, EVENT_PROJECT_DELETED)
+        );
+
+        if (onCompleteListener == null) {
+            batch.commit();
+        } else {
+            batch.commit().addOnCompleteListener(onCompleteListener);
+        }*/
 
     }
 

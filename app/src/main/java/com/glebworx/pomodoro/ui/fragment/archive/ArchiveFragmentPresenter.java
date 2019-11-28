@@ -75,7 +75,7 @@ class ArchiveFragmentPresenter implements IArchiveFragmentPresenter {
 
     @Override
     public void deleteAll() {
-
+        ProjectApi.deleteAllArchived(task -> presenterListener.onDeleteAllFinished(task.isSuccessful()));
     }
 
     private IItemAdapter.Predicate<ArchivedProjectItem> getFilterPredicate() {

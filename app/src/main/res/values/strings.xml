@@ -248,6 +248,8 @@
     <string name="archive_hint_confirm_delete" formatted="true"><![CDATA[Type <b>Delete</b> to confirm]]></string>
     <string name="archive_toast_project_delete_success">Project deleted</string>
     <string name="archive_toast_project_delete_failed">Failed to delete project. Please try again later.</string>
+    <string name="archive_toast_delete_all_success">All archive projects deleted</string>
+    <string name="archive_toast_delete_all_failed">Failed to delete archived projects. Please try again later.</string>
 
 
     <!--                                                                               ABOUT APP -->
