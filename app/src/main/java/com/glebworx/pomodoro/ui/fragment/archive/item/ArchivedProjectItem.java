@@ -17,8 +17,10 @@ import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.fastadapter_extensions.swipe.ISwipeable;
 
+import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -29,6 +31,8 @@ public class ArchivedProjectItem
 
 
     //                                                                                    ATTRIBUTES
+
+    private static NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
 
     private ProjectModel model;
     private static Date currentDate = new Date();
@@ -109,6 +113,19 @@ public class ArchivedProjectItem
         return DateTimeManager.getDueDateString(context, model.getCompletedOn(), currentDate);
     }
 
+    public @Nullable
+    String getExtraInfoString(Context context) {
+        String estimatedTimeString = DateTimeManager.formatHHMMString(context, model.getEstimatedTime());
+        String elapsedTimeString = DateTimeManager.formatHHMMString(context, model.getElapsedTime());
+        String tasksString = numberFormat.format(model.getTasks().size());
+        return context.getString(
+                R.string.archive_text_item_extra_info,
+                estimatedTimeString,
+                elapsedTimeString,
+                tasksString);
+
+    }
+
 
     //                                                                                   VIEW HOLDER
 
@@ -118,6 +135,7 @@ public class ArchivedProjectItem
         private Drawable colorTagDrawable;
         private AppCompatTextView titleTextView;
         private AppCompatTextView completedOnTextView;
+        private AppCompatTextView extraInfoTextView;
 
         public ViewHolder(View view) {
             super(view);
@@ -126,6 +144,7 @@ public class ArchivedProjectItem
                     .findDrawableByLayerId(R.id.shape_color_tag);
             titleTextView = view.findViewById(R.id.text_view_title);
             completedOnTextView = view.findViewById(R.id.text_view_completed_on);
+            extraInfoTextView = view.findViewById(R.id.text_view_extra_info);
         }
 
         @Override
@@ -133,6 +152,7 @@ public class ArchivedProjectItem
             colorTagDrawable.setTint(ColorManager.getColor(context, item.getColorTag()));
             titleTextView.setText(item.getProjectName());
             completedOnTextView.setText(item.getCompletedOnString(context));
+            extraInfoTextView.setText(item.getExtraInfoString(context));
         }
 
         @Override
@@ -140,6 +160,7 @@ public class ArchivedProjectItem
             colorTagDrawable.setTint(ColorManager.getColor(context, null));
             titleTextView.setText(null);
             completedOnTextView.setText(null);
+            extraInfoTextView.setText(null);
         }
     }
 

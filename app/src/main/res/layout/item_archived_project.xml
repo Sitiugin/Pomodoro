@@ -2,9 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item_archived_project"
-    style="@style/ViewStyle.Rounded.Clickable"
+    style="@style/ViewStyle.Rounded"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:stateListAnimator="@animator/lift_on_touch"
     android:layout_marginHorizontal="@dimen/margin_content"
     android:layout_marginVertical="@dimen/margin_content_half"
     android:clipChildren="false"
@@ -22,7 +23,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_view_title"
-        style="@style/TextStyle.Title"
+        style="@style/TextStyle.Title.Disabled"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_content"
@@ -55,5 +56,15 @@
         app:layout_constraintBottom_toBottomOf="@+id/text_view_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/text_view_title" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_view_extra_info"
+        style="@style/TextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_content"
+        app:layout_constraintBottom_toBottomOf="@+id/text_view_completed_on"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/text_view_completed_on" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

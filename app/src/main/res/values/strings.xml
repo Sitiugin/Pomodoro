@@ -240,6 +240,7 @@
     <!--                                                                                 ARCHIVE -->
 
     <string name="archive_title_projects">Archived Projects</string>
+    <string name="archive_text_item_extra_info">Estimated: %1$s, Elapsed: %2$s, Tasks: %3$s</string>
     <string name="archive_hint_search_projects">Search Archived</string>
     <string name="archive_toast_project_delete_success">Project deleted</string>
     <string name="archive_toast_project_delete_failed">Failed to delete project. Please try again later.</string>
