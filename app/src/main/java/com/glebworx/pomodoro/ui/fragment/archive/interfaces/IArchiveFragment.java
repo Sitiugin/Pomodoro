@@ -15,6 +15,8 @@ public interface IArchiveFragment {
 
     void onDeleteProjectFailed(int position);
 
+    void onRestoreProjectFailed(int position);
+
     void onDeleteAllFinished(boolean isSuccessful);
 
 }

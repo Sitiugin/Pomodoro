@@ -60,8 +60,12 @@ class ArchiveFragmentPresenter implements IArchiveFragmentPresenter {
     }
 
     @Override
-    public void restoreProject(ArchivedProjectItem projectItem) {
-        // TODO implement
+    public void restoreProject(ArchivedProjectItem projectItem, int position) {
+        ProjectApi.restoreProject(projectItem.getModel(), task -> {
+            if (!task.isSuccessful()) {
+                presenterListener.onRestoreProjectFailed(position);
+            }
+        });
     }
 
     @Override

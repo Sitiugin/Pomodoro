@@ -8,9 +8,9 @@ public interface IArchiveFragmentPresenter {
 
     void destroy();
 
-    void restoreProject(ArchivedProjectItem projectItem);
-
     void deleteProject(ArchivedProjectItem projectItem, int position);
+
+    void restoreProject(ArchivedProjectItem projectItem, int position);
 
     void deleteAll();
 

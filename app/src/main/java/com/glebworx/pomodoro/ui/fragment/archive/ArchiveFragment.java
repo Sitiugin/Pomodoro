@@ -70,7 +70,8 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
     private Context context;
     private ItemAdapter<ArchivedProjectItem> projectAdapter;
     private FastAdapter<AbstractItem> fastAdapter;
-    private UndoHelper<AbstractItem> undoHelper;
+    private UndoHelper<AbstractItem> undoDeleteHelper;
+    private UndoHelper<AbstractItem> undoRestoreHelper;
     private IArchiveFragmentInteractionListener fragmentListener;
     private Unbinder unbinder;
     private ArchiveFragmentPresenter presenter;
@@ -127,9 +128,14 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
 
         projectAdapter = new ItemAdapter<>();
         fastAdapter = new FastAdapter<>();
-        undoHelper = new UndoHelper<>(fastAdapter, (positions, removed) -> {
+        undoDeleteHelper = new UndoHelper<>(fastAdapter, (positions, removed) -> {
             for (FastAdapter.RelativeInfo<AbstractItem> relativeInfo : removed) {
                 presenter.deleteProject((ArchivedProjectItem) relativeInfo.item, relativeInfo.position);
+            }
+        });
+        undoRestoreHelper = new UndoHelper<>(fastAdapter, (positions, removed) -> {
+            for (FastAdapter.RelativeInfo<AbstractItem> relativeInfo : removed) {
+                presenter.restoreProject((ArchivedProjectItem) relativeInfo.item, relativeInfo.position);
             }
         });
 
@@ -175,6 +181,14 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
     }
 
     @Override
+    public void onRestoreProjectFailed(int position) {
+        synchronized (this) {
+            fastAdapter.notifyAdapterItemChanged(position);
+        }
+        Toast.makeText(context, R.string.archive_toast_project_restore_failed, LENGTH_LONG).show();
+    }
+
+    @Override
     public void onDeleteAllFinished(boolean isSuccessful) {
         Toast.makeText(
                 context,
@@ -210,17 +224,21 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
 
                     searchView.clearFocus();
 
-                    ArchivedProjectItem item = projectAdapter.getAdapterItem(position - 1);
-
                     if (direction == ItemTouchHelper.RIGHT) {
-                        presenter.restoreProject(item);
-                        // TODO implement
-                        //fastAdapter.notifyAdapterItemChanged(position);
+                        Set<Integer> positionSet = new HashSet<>();
+                        positionSet.add(position);
+                        searchView.setEnabled(false);
+                        undoRestoreHelper.remove(
+                                recyclerView,
+                                getString(R.string.archive_toast_project_restore_success),
+                                getString(R.string.core_undo),
+                                LENGTH_SNACK_BAR,
+                                positionSet);
                     } else if (direction == ItemTouchHelper.LEFT) {
                         Set<Integer> positionSet = new HashSet<>();
                         positionSet.add(position);
                         searchView.setEnabled(false);
-                        undoHelper.remove(
+                        undoDeleteHelper.remove(
                                 recyclerView,
                                 getString(R.string.archive_toast_project_delete_success),
                                 getString(R.string.core_undo),
@@ -251,8 +269,11 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (undoHelper.getSnackBar() != null && undoHelper.getSnackBar().isShown()) {
-                    undoHelper.getSnackBar().dismiss();
+                if (undoDeleteHelper.getSnackBar() != null && undoDeleteHelper.getSnackBar().isShown()) {
+                    undoDeleteHelper.getSnackBar().dismiss();
+                }
+                if (undoRestoreHelper.getSnackBar() != null && undoRestoreHelper.getSnackBar().isShown()) {
+                    undoRestoreHelper.getSnackBar().dismiss();
                 }
                 projectAdapter.filter(newText);
                 return true;
