@@ -16,6 +16,7 @@ import com.mikepenz.fastadapter_extensions.swipe.ISwipeable;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
@@ -93,6 +94,11 @@ public class CompletedTaskItem
     @Override
     public CompletedTaskItem withIsSwipeable(boolean swipeable) {
         return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), model);
     }
 
     @Override

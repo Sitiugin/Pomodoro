@@ -19,6 +19,7 @@ import com.mikepenz.fastadapter_extensions.swipe.ISwipeable;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
@@ -107,6 +108,10 @@ public class TaskItem
         return model.isOverLimit();
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), model);
+    }
 
     //                                                                                   VIEW HOLDER
 

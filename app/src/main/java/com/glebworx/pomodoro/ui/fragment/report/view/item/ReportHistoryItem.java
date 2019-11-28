@@ -18,6 +18,7 @@ import com.mikepenz.fastadapter.items.AbstractItem;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_POMODORO_COMPLETED;
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_CREATED;
@@ -59,6 +60,11 @@ public class ReportHistoryItem extends AbstractItem<ReportHistoryItem, ReportHis
     @Override
     public int getLayoutRes() {
         return R.layout.item_history;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), model);
     }
 
     public HistoryModel getModel() {

@@ -205,7 +205,7 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
                         searchView.setEnabled(false);
                         undoHelper.remove(
                                 recyclerView,
-                                getString(R.string.projects_toast_project_delete_success),
+                                getString(R.string.archive_toast_project_delete_success),
                                 getString(R.string.core_undo),
                                 LENGTH_SNACK_BAR,
                                 positionSet);

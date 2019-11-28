@@ -41,6 +41,7 @@ public class ProjectModel extends AbstractModel {
     private float progress;
     private boolean allTasksCompleted;
     private boolean completed;
+    private Date completedOn;
 
 
 
@@ -55,6 +56,7 @@ public class ProjectModel extends AbstractModel {
         this.elapsedTime = 0;
         this.allTasksCompleted = true;
         this.completed = false;
+        this.completedOn = null;
     }
 
     public ProjectModel(@NonNull String name,
@@ -69,6 +71,7 @@ public class ProjectModel extends AbstractModel {
         this.progress = 0;
         this.allTasksCompleted = true;
         this.completed = false;
+        this.completedOn = null;
     }
 
     public ProjectModel(ProjectModel projectModel) {
@@ -81,6 +84,7 @@ public class ProjectModel extends AbstractModel {
         progress = projectModel.getProgress();
         allTasksCompleted = projectModel.getAllTasksCompleted();
         completed = projectModel.isCompleted();
+        completedOn = projectModel.getCompletedOn();
     }
 
     public ProjectModel(Parcel in) {
@@ -96,6 +100,10 @@ public class ProjectModel extends AbstractModel {
         this.progress = in.readFloat();
         this.allTasksCompleted = in.readInt() == 1;
         this.completed = in.readInt() == 1;
+        long completedOn = in.readLong();
+        if (completedOn != -1) {
+            this.completedOn = new Date(completedOn);
+        }
     }
 
 
@@ -116,6 +124,11 @@ public class ProjectModel extends AbstractModel {
         parcel.writeFloat(progress);
         parcel.writeInt(allTasksCompleted ? 1 : 0);
         parcel.writeInt(completed ? 1 : 0);
+        if (completedOn != null) {
+            parcel.writeLong(completedOn.getTime());
+        } else {
+            parcel.writeLong(-1);
+        }
     }
 
     @Exclude
@@ -179,4 +192,11 @@ public class ProjectModel extends AbstractModel {
         return completed;
     }
 
+    public Date getCompletedOn() {
+        return completedOn;
+    }
+
+    public void setCompletedOn(Date completedOn) {
+        this.completedOn = completedOn;
+    }
 }

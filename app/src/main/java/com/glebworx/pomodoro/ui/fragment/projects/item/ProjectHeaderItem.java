@@ -56,7 +56,7 @@ public class ProjectHeaderItem
 
     @Override
     public int getLayoutRes() {
-        return R.layout.item_project_header;
+        return R.layout.item_projects_header;
     }
 
     @Override
