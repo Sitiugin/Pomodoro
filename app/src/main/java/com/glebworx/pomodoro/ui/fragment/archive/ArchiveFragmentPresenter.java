@@ -73,6 +73,11 @@ class ArchiveFragmentPresenter implements IArchiveFragmentPresenter {
         });
     }
 
+    @Override
+    public void deleteAll() {
+
+    }
+
     private IItemAdapter.Predicate<ArchivedProjectItem> getFilterPredicate() {
         return (item, constraint) -> {
             if (constraint == null) {

@@ -12,4 +12,6 @@ public interface IArchiveFragmentPresenter {
 
     void deleteProject(ArchivedProjectItem projectItem, int position);
 
+    void deleteAll();
+
 }
