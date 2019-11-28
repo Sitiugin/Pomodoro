@@ -20,7 +20,7 @@ import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.ui.fragment.archive.interfaces.IArchiveFragment;
 import com.glebworx.pomodoro.ui.fragment.archive.interfaces.IArchiveFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.archive.item.ArchiveHeaderItem;
-import com.glebworx.pomodoro.ui.item.ProjectItem;
+import com.glebworx.pomodoro.ui.fragment.archive.item.ArchivedProjectItem;
 import com.glebworx.pomodoro.util.ZeroStateDecoration;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IItemAdapter;
@@ -60,7 +60,7 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
     //                                                                                    ATTRIBUTES
 
     private Context context;
-    private ItemAdapter<ProjectItem> projectAdapter;
+    private ItemAdapter<ArchivedProjectItem> projectAdapter;
     private FastAdapter<AbstractItem> fastAdapter;
     private UndoHelper<AbstractItem> undoHelper;
     private IArchiveFragmentInteractionListener fragmentListener;
@@ -115,13 +115,13 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
     //                                                                                     INTERFACE
 
     @Override
-    public void onInitView(IItemAdapter.Predicate<ProjectItem> predicate) {
+    public void onInitView(IItemAdapter.Predicate<ArchivedProjectItem> predicate) {
 
         projectAdapter = new ItemAdapter<>();
         fastAdapter = new FastAdapter<>();
         undoHelper = new UndoHelper<>(fastAdapter, (positions, removed) -> {
             for (FastAdapter.RelativeInfo<AbstractItem> relativeInfo : removed) {
-                presenter.deleteProject((ProjectItem) relativeInfo.item, relativeInfo.position);
+                presenter.deleteProject((ArchivedProjectItem) relativeInfo.item, relativeInfo.position);
             }
         });
 
@@ -132,14 +132,14 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
     }
 
     @Override
-    public void onItemAdded(ProjectItem item) {
+    public void onItemAdded(ArchivedProjectItem item) {
         synchronized (this) {
             projectAdapter.add(item);
         }
     }
 
     @Override
-    public void onItemModified(ProjectItem item) {
+    public void onItemModified(ArchivedProjectItem item) {
         synchronized (this) {
             int index = getProjectItemIndex(item.getProjectName());
             if (index != -1) {
@@ -149,7 +149,7 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
     }
 
     @Override
-    public void onItemDeleted(ProjectItem item) {
+    public void onItemDeleted(ArchivedProjectItem item) {
         synchronized (this) {
             int index = getProjectItemIndex(item.getProjectName());
             if (index != -1) {
@@ -193,7 +193,7 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
 
                     searchView.clearFocus();
 
-                    ProjectItem item = projectAdapter.getAdapterItem(position - 1);
+                    ArchivedProjectItem item = projectAdapter.getAdapterItem(position - 1);
 
                     if (direction == ItemTouchHelper.RIGHT) {
                         presenter.restoreProject(item);
@@ -220,10 +220,10 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
         touchHelper.attachToRecyclerView(recyclerView);
     }
 
-    private void initSearchView(IItemAdapter.Predicate<ProjectItem> predicate) {
+    private void initSearchView(IItemAdapter.Predicate<ArchivedProjectItem> predicate) {
 
-        ItemFilter<ProjectItem, ProjectItem> itemFilter =
-                new ItemFilter<ProjectItem, ProjectItem>(projectAdapter).withFilterPredicate(predicate);
+        ItemFilter<ArchivedProjectItem, ArchivedProjectItem> itemFilter =
+                new ItemFilter<ArchivedProjectItem, ArchivedProjectItem>(projectAdapter).withFilterPredicate(predicate);
         projectAdapter.withItemFilter(itemFilter);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

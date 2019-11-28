@@ -1,6 +1,6 @@
 package com.glebworx.pomodoro.ui.fragment.archive.interfaces;
 
-import com.glebworx.pomodoro.ui.item.ProjectItem;
+import com.glebworx.pomodoro.ui.fragment.archive.item.ArchivedProjectItem;
 
 public interface IArchiveFragmentPresenter {
 
@@ -8,8 +8,8 @@ public interface IArchiveFragmentPresenter {
 
     void destroy();
 
-    void restoreProject(ProjectItem projectItem);
+    void restoreProject(ArchivedProjectItem projectItem);
 
-    void deleteProject(ProjectItem projectItem, int position);
+    void deleteProject(ArchivedProjectItem projectItem, int position);
 
 }

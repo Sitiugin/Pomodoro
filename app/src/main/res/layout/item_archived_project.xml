@@ -22,7 +22,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_view_title"
-        style="@style/TextStyle.Title.Disabled"
+        style="@style/TextStyle.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_content"
@@ -32,7 +32,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/text_view_due_date"
+        android:id="@+id/text_view_completed_on"
         style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,6 +47,7 @@
         style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_content"
         android:drawableStart="@drawable/ic_archive_gray_small"
         android:drawablePadding="@dimen/margin_content_quarter"
         android:duplicateParentState="true"

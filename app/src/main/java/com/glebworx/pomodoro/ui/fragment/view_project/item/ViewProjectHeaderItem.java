@@ -91,6 +91,7 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
         return Objects.hash(super.hashCode(), model);
     }
 
+
     //                                                                                       HELPERS
 
     public View.OnClickListener getOnClickListener() {
@@ -128,6 +129,7 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
     public void setProgress(float progress) {
         this.model.setProgress(progress);
     }
+
 
     //                                                                                   VIEW HOLDER
 

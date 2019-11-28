@@ -1,17 +1,17 @@
 package com.glebworx.pomodoro.ui.fragment.archive.interfaces;
 
-import com.glebworx.pomodoro.ui.item.ProjectItem;
+import com.glebworx.pomodoro.ui.fragment.archive.item.ArchivedProjectItem;
 import com.mikepenz.fastadapter.IItemAdapter;
 
 public interface IArchiveFragment {
 
-    void onInitView(IItemAdapter.Predicate<ProjectItem> predicate);
+    void onInitView(IItemAdapter.Predicate<ArchivedProjectItem> predicate);
 
-    void onItemAdded(ProjectItem item);
+    void onItemAdded(ArchivedProjectItem item);
 
-    void onItemModified(ProjectItem item);
+    void onItemModified(ArchivedProjectItem item);
 
-    void onItemDeleted(ProjectItem item);
+    void onItemDeleted(ArchivedProjectItem item);
 
     void onDeleteProjectFailed(int position);
 

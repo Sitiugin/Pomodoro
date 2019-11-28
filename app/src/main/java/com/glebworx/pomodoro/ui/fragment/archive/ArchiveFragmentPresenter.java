@@ -7,7 +7,7 @@ import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.ui.fragment.archive.interfaces.IArchiveFragment;
 import com.glebworx.pomodoro.ui.fragment.archive.interfaces.IArchiveFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.archive.interfaces.IArchiveFragmentPresenter;
-import com.glebworx.pomodoro.ui.item.ProjectItem;
+import com.glebworx.pomodoro.ui.fragment.archive.item.ArchivedProjectItem;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.mikepenz.fastadapter.IItemAdapter;
@@ -38,7 +38,7 @@ class ArchiveFragmentPresenter implements IArchiveFragmentPresenter {
     @Override
     public void init() {
 
-        IItemAdapter.Predicate<ProjectItem> predicate = getFilterPredicate();
+        IItemAdapter.Predicate<ArchivedProjectItem> predicate = getFilterPredicate();
 
         compositeDisposable = new CompositeDisposable();
 
@@ -60,12 +60,12 @@ class ArchiveFragmentPresenter implements IArchiveFragmentPresenter {
     }
 
     @Override
-    public void restoreProject(ProjectItem projectItem) {
+    public void restoreProject(ArchivedProjectItem projectItem) {
         // TODO implement
     }
 
     @Override
-    public void deleteProject(ProjectItem projectItem, int position) {
+    public void deleteProject(ArchivedProjectItem projectItem, int position) {
         ProjectApi.deleteProject(projectItem.getModel(), task -> {
             if (!task.isSuccessful()) {
                 presenterListener.onDeleteProjectFailed(position);
@@ -73,7 +73,7 @@ class ArchiveFragmentPresenter implements IArchiveFragmentPresenter {
         });
     }
 
-    private IItemAdapter.Predicate<ProjectItem> getFilterPredicate() {
+    private IItemAdapter.Predicate<ArchivedProjectItem> getFilterPredicate() {
         return (item, constraint) -> {
             if (constraint == null) {
                 return true;
@@ -114,7 +114,7 @@ class ArchiveFragmentPresenter implements IArchiveFragmentPresenter {
 
             @Override
             public void onNext(DocumentChange documentChange) {
-                ProjectItem item = new ProjectItem(documentChange.getDocument().toObject(ProjectModel.class));
+                ArchivedProjectItem item = new ArchivedProjectItem(documentChange.getDocument().toObject(ProjectModel.class));
                 switch (documentChange.getType()) {
                     case ADDED:
                         presenterListener.onItemAdded(item);

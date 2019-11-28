@@ -90,6 +90,7 @@ public class ProjectItem
         return Objects.hash(super.hashCode(), model);
     }
 
+
     //                                                                                       HELPERS
 
     public @Nonnull ProjectModel getModel() {

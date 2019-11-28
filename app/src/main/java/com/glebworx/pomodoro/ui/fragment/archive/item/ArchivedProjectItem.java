@@ -1,27 +1,47 @@
 package com.glebworx.pomodoro.ui.fragment.archive.item;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.ProjectModel;
+import com.glebworx.pomodoro.util.manager.ColorManager;
+import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.fastadapter_extensions.swipe.ISwipeable;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+
+import javax.annotation.Nonnull;
 
 public class ArchivedProjectItem
         extends AbstractItem<ArchivedProjectItem, ArchivedProjectItem.ViewHolder>
         implements ISwipeable<ArchivedProjectItem, ArchivedProjectItem> {
 
+
+    //                                                                                    ATTRIBUTES
+
     private ProjectModel model;
+    private static Date currentDate = new Date();
+
+
+    //                                                                                  CONSTRUCTORS
 
     public ArchivedProjectItem(@NonNull ProjectModel model) {
         this.model = model;
     }
+
+
+    //                                                                                    OVERRIDDEN
 
     @NonNull
     @Override
@@ -50,24 +70,76 @@ public class ArchivedProjectItem
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ArchivedProjectItem)) return false;
+        if (!super.equals(o)) return false;
+        ArchivedProjectItem that = (ArchivedProjectItem) o;
+        return model.equals(that.model);
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), model);
     }
 
+
+    //                                                                                       HELPERS
+
+    public @Nonnull
+    ProjectModel getModel() {
+        return this.model;
+    }
+
+    public @NonNull
+    String getProjectName() {
+        return model.getName();
+    }
+
+    public @Nullable
+    String getColorTag() {
+        return model.getColorTag();
+    }
+
+    public @Nullable
+    String getCompletedOnString(Context context) {
+        if (model.getDueDate() == null) {
+            return null;
+        }
+        return DateTimeManager.getDueDateString(context, model.getCompletedOn(), currentDate);
+    }
+
+
+    //                                                                                   VIEW HOLDER
+
     protected static class ViewHolder extends FastAdapter.ViewHolder<ArchivedProjectItem> {
 
-        public ViewHolder(View itemView) {
-            super(itemView);
+        private Context context;
+        private Drawable colorTagDrawable;
+        private AppCompatTextView titleTextView;
+        private AppCompatTextView completedOnTextView;
+
+        public ViewHolder(View view) {
+            super(view);
+            this.context = view.getContext();
+            colorTagDrawable = ((LayerDrawable) view.findViewById(R.id.view_color_tag).getBackground())
+                    .findDrawableByLayerId(R.id.shape_color_tag);
+            titleTextView = view.findViewById(R.id.text_view_title);
+            completedOnTextView = view.findViewById(R.id.text_view_completed_on);
         }
 
         @Override
         public void bindView(@NonNull ArchivedProjectItem item, @NonNull List<Object> payloads) {
-
+            colorTagDrawable.setTint(ColorManager.getColor(context, item.getColorTag()));
+            titleTextView.setText(item.getProjectName());
+            completedOnTextView.setText(item.getCompletedOnString(context));
         }
 
         @Override
         public void unbindView(@NonNull ArchivedProjectItem item) {
-
+            colorTagDrawable.setTint(ColorManager.getColor(context, null));
+            titleTextView.setText(null);
+            completedOnTextView.setText(null);
         }
     }
 
