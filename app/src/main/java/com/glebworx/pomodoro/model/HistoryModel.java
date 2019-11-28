@@ -31,6 +31,7 @@ public class HistoryModel extends AbstractModel {
     public static final String EVENT_PROJECT_UPDATED = "project_updated";
     public static final String EVENT_PROJECT_DELETED = "project_deleted";
     public static final String EVENT_PROJECT_COMPLETED = "project_completed";
+    public static final String EVENT_PROJECT_RESTORED = "project_restored";
 
     public static final String EVENT_TASK_CREATED = "task_created";
     public static final String EVENT_TASK_UPDATED = "task_updated";

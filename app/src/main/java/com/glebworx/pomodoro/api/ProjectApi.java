@@ -17,8 +17,10 @@ import com.google.firebase.firestore.WriteBatch;
 
 import java.util.List;
 
+import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_COMPLETED;
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_CREATED;
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_DELETED;
+import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_RESTORED;
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_UPDATED;
 
 public class ProjectApi extends BaseApi {
@@ -70,6 +72,54 @@ public class ProjectApi extends BaseApi {
         batch.set(
                 getCollection(COLLECTION_HISTORY).document(),
                 new HistoryModel(projectModel.getName(), projectModel.getColorTag(), null, EVENT_PROJECT_DELETED)
+        );
+
+        if (onCompleteListener == null) {
+            batch.commit();
+        } else {
+            batch.commit().addOnCompleteListener(onCompleteListener);
+        }
+
+    }
+
+    public static void completeProject(@NonNull ProjectModel projectModel,
+                                       @Nullable OnCompleteListener<Void> onCompleteListener) {
+
+        projectModel.updateTimestamp();
+
+        WriteBatch batch = getWriteBatch();
+
+        DocumentReference projectDocument = getCollection(COLLECTION_PROJECTS).document(projectModel.getName());
+
+        batch.update(projectDocument, FIELD_COMPLETED, true);
+
+        batch.set(
+                getCollection(COLLECTION_HISTORY).document(),
+                new HistoryModel(projectModel.getName(), projectModel.getColorTag(), null, EVENT_PROJECT_COMPLETED)
+        );
+
+        if (onCompleteListener == null) {
+            batch.commit();
+        } else {
+            batch.commit().addOnCompleteListener(onCompleteListener);
+        }
+
+    }
+
+    public static void restoreProject(@NonNull ProjectModel projectModel,
+                                      @Nullable OnCompleteListener<Void> onCompleteListener) {
+
+        projectModel.updateTimestamp();
+
+        WriteBatch batch = getWriteBatch();
+
+        DocumentReference projectDocument = getCollection(COLLECTION_PROJECTS).document(projectModel.getName());
+
+        batch.update(projectDocument, FIELD_COMPLETED, false);
+
+        batch.set(
+                getCollection(COLLECTION_HISTORY).document(),
+                new HistoryModel(projectModel.getName(), projectModel.getColorTag(), null, EVENT_PROJECT_RESTORED)
         );
 
         if (onCompleteListener == null) {
