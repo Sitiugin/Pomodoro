@@ -232,11 +232,15 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     }
 
     @Override
-    public void onAppBarChanged(Date dueDate, Date today, boolean allTasksCompleted, boolean isCompleted) {
+    public void onAppBarChanged(Date dueDate, Date today) {
         subtitleTextView.setText(DateTimeManager.getDueDateString(context, dueDate, today));
         subtitleTextView.setTextColor(context.getColor(dueDate.compareTo(today) < 0
                 ? R.color.colorError
                 : android.R.color.darker_gray));
+    }
+
+    @Override
+    public void onCompleteChanged(boolean allTasksCompleted, boolean isCompleted) {
         if (allTasksCompleted && !isCompleted) {
             if (!completeButton.isShown()) {
                 completeButton.show();

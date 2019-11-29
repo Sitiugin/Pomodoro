@@ -27,6 +27,8 @@ public interface IViewProjectFragment {
 
     void onHeaderItemChanged(ViewProjectHeaderItem headerItem);
 
-    void onAppBarChanged(Date dueDate, Date today, boolean allTasksCompleted, boolean isCompleted);
+    void onAppBarChanged(Date dueDate, Date today);
+
+    void onCompleteChanged(boolean allTasksCompleted, boolean isCompleted);
 
 }
