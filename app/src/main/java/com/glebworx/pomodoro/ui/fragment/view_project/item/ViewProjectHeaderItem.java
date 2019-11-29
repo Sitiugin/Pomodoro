@@ -7,7 +7,6 @@ import android.graphics.drawable.LayerDrawable;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.glebworx.pomodoro.R;
@@ -31,14 +30,12 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
     private static NumberFormat numberFormat = NumberFormat.getPercentInstance(Locale.getDefault());
 
     private ProjectModel model;
-    private View.OnClickListener onClickListener;
 
 
     //                                                                                  CONSTRUCTORS
 
-    public ViewProjectHeaderItem(ProjectModel model, View.OnClickListener onClickListener) {
+    public ViewProjectHeaderItem(ProjectModel model) {
         this.model = model;
-        this.onClickListener = onClickListener;
     }
 
 
@@ -93,10 +90,6 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
 
     //                                                                                       HELPERS
 
-    public View.OnClickListener getOnClickListener() {
-        return onClickListener;
-    }
-
     public String getColorTag() {
         return this.model.getColorTag();
     }
@@ -135,7 +128,7 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
     protected static class ViewHolder extends FastAdapter.ViewHolder<ViewProjectHeaderItem> {
 
         private Context context;
-        private AppCompatImageButton optionsButton;
+        //private AppCompatImageButton optionsButton;
         private Drawable colorTagDrawable;
         private AppCompatTextView estimatedTimeTextView;
         private AppCompatTextView elapsedTimeTextView;
@@ -147,7 +140,7 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
 
             context = view.getContext();
 
-            optionsButton = view.findViewById(R.id.button_options);
+            //optionsButton = view.findViewById(R.id.button_options);
             colorTagDrawable = ((LayerDrawable) view.findViewById(R.id.view_color_tag).getBackground())
                     .findDrawableByLayerId(R.id.shape_color_tag);
 
@@ -160,7 +153,7 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
         @Override
         public void bindView(@NonNull ViewProjectHeaderItem item, @NonNull List<Object> payloads) {
 
-            optionsButton.setOnClickListener(item.getOnClickListener());
+            //optionsButton.setOnClickListener(item.getOnClickListener());
             colorTagDrawable.setTint(ColorManager.getColor(context, item.getColorTag()));
 
             int estimatedTime = item.getEstimatedTime();
@@ -179,7 +172,7 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
         public void unbindView(@NonNull ViewProjectHeaderItem item) {
 
             colorTagDrawable.setTint(ColorManager.getColor(context, null));
-            optionsButton.setOnClickListener(null);
+            //optionsButton.setOnClickListener(null);
 
             estimatedTimeTextView.setText(null);
             elapsedTimeTextView.setText(null);

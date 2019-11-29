@@ -1,7 +1,6 @@
 package com.glebworx.pomodoro.ui.fragment.view_project;
 
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -49,15 +48,14 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
 
     ViewProjectFragmentPresenter(@NonNull IViewProjectFragment presenterListener,
                                  @NonNull IViewProjectFragmentInteractionListener interactionListener,
-                                 @Nullable Bundle arguments,
-                                 View.OnClickListener headerClickListener) {
+                                 @Nullable Bundle arguments) {
         this.presenterListener = presenterListener;
         this.interactionListener = interactionListener;
-        init(Objects.requireNonNull(arguments), headerClickListener);
+        init(Objects.requireNonNull(arguments));
     }
 
     @Override
-    public void init(Bundle arguments, View.OnClickListener onClickListener) {
+    public void init(Bundle arguments) {
 
         projectModel = Objects.requireNonNull(arguments.getParcelable(ARG_PROJECT_MODEL));
 
@@ -87,11 +85,11 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
                 projectModel.getName(),
                 projectModel.getAllTasksCompleted(),
                 projectModel.isCompleted(),
-                new ViewProjectHeaderItem(projectModel, onClickListener));
+                new ViewProjectHeaderItem(projectModel));
 
         observable.subscribe(getObserver());
         completedObservable.subscribe(getCompletedObserver());
-        headerObservable.subscribe(getHeaderObserver(onClickListener));
+        headerObservable.subscribe(getHeaderObserver());
 
     }
 
@@ -252,7 +250,7 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
         };
     }
 
-    private io.reactivex.Observer<DocumentSnapshot> getHeaderObserver(View.OnClickListener onClickListener) {
+    private io.reactivex.Observer<DocumentSnapshot> getHeaderObserver() {
         return new io.reactivex.Observer<DocumentSnapshot>() {
             @Override
             public void onSubscribe(Disposable disposable) {
@@ -266,7 +264,7 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
                     return;
                 }
                 presenterListener.onHeaderItemChanged(
-                        new ViewProjectHeaderItem(projectModel, onClickListener));
+                        new ViewProjectHeaderItem(projectModel));
                 presenterListener.onAppBarChanged(
                         projectModel.getDueDate(),
                         new Date(),

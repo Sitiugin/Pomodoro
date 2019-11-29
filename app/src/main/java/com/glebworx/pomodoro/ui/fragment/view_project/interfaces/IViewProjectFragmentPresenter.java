@@ -1,13 +1,12 @@
 package com.glebworx.pomodoro.ui.fragment.view_project.interfaces;
 
 import android.os.Bundle;
-import android.view.View;
 
 import com.glebworx.pomodoro.ui.item.TaskItem;
 
 public interface IViewProjectFragmentPresenter {
 
-    void init(Bundle arguments, View.OnClickListener headerClickListener);
+    void init(Bundle arguments);
 
     void destroy();
 

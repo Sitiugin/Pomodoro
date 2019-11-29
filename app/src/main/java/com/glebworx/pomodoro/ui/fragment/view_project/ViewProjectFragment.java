@@ -113,8 +113,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         presenter = new ViewProjectFragmentPresenter(
                 this,
                 fragmentListener,
-                getArguments(),
-                getHeaderClickListener());
+                getArguments());
         return rootView;
     }
 
@@ -272,14 +271,6 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
 
     }
 
-    private View.OnClickListener getHeaderClickListener() {
-        return view -> {
-            if (view.getId() == R.id.button_options) {
-                showOptionsPopup();
-            }
-        };
-    }
-
     private void attachSwipeHelper(RecyclerView recyclerView) {
         SimpleSwipeCallback swipeCallback = new SimpleSwipeCallback(
                 this::executeSwipeAction,
@@ -322,11 +313,14 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
             if (view == null || !item.isEnabled()) {
                 return false;
             }
-            if (view.getId() == R.id.item_task) {
+            int id = view.getId();
+            if (id == R.id.item_task) {
                 presenter.selectTask(((TaskItem) item));
                 return true;
-            }
-            if (view.getId() == R.id.item_add) {
+            } else if (id == R.id.item_view_project_header) {
+                showOptionsPopup();
+                return true;
+            } else if (id == R.id.item_add) {
                 presenter.addTask();
                 return true;
             }

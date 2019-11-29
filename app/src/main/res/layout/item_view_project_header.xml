@@ -36,17 +36,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        style="@style/ImageButtonStyle.Borderless"
-        android:id="@+id/button_options"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_content_half"
-        android:layout_marginEnd="@dimen/margin_content_half"
-        android:src="@drawable/ic_options_black"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/TextStyle.Count.Small"
         android:id="@+id/text_view_estimated_time"
