@@ -80,7 +80,6 @@ public class ProjectItem
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ProjectItem)) return false;
-        if (!super.equals(o)) return false;
         ProjectItem that = (ProjectItem) o;
         return model.equals(that.model);
     }

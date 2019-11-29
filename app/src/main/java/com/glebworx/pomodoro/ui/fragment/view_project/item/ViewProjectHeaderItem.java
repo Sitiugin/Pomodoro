@@ -79,7 +79,6 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ViewProjectHeaderItem)) return false;
-        if (!super.equals(o)) return false;
         ViewProjectHeaderItem that = (ViewProjectHeaderItem) o;
         return model.getEstimatedTime() == that.model.getEstimatedTime()
                 && model.getElapsedTime() == that.model.getElapsedTime()
