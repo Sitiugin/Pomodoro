@@ -234,6 +234,16 @@
     </string-array>
 
 
+    <!--                                                                        REPORT POMODOROS -->
+
+    <string name="report_pomodoros_title_overview">Pomodoro Overview</string>
+    <string name="report_pomodoros_title_completed">Completed</string>
+    <string name="report_pomodoros_title_avg_per_day">Avg per day</string>
+    <string name="report_pomodoros_title_days_streak">Days streak</string>
+    <string name="report_pomodoros_title_pomodoros_completed">Pomodoros Completed</string>
+    <string name="report_pomodoros_title_weekly_trends">Weekly Trends</string>
+
+
     <!--                                                                                   ABOUT -->
 
     <string name="about_title_about">About This Software</string>

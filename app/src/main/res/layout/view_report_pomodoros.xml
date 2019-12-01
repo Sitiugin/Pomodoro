@@ -17,18 +17,9 @@
             style="@style/TextStyle.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pomodoro Overview"
+            android:text="@string/report_pomodoros_title_overview"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/text_view_overview_subtitle"
-            style="@style/TextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Daily target: 10 pomodoros"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_overview_title" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_overview"
@@ -39,7 +30,7 @@
             android:padding="@dimen/margin_content"
             android:clipToPadding="false"
             android:animateLayoutChanges="true"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_overview_subtitle">
+            app:layout_constraintTop_toBottomOf="@+id/text_view_overview_title">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/text_view_pomodoros_completed"
@@ -58,7 +49,7 @@
                 style="@style/TextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Completed"
+                android:text="@string/report_pomodoros_title_completed"
                 app:layout_constraintEnd_toEndOf="@+id/text_view_pomodoros_completed"
                 app:layout_constraintStart_toStartOf="@+id/text_view_pomodoros_completed"
                 app:layout_constraintTop_toBottomOf="@+id/text_view_pomodoros_completed" />
@@ -79,7 +70,7 @@
                 style="@style/TextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Avg per day"
+                android:text="@string/report_pomodoros_title_avg_per_day"
                 app:layout_constraintEnd_toEndOf="@+id/text_view_average_per_day"
                 app:layout_constraintStart_toStartOf="@+id/text_view_average_per_day"
                 app:layout_constraintTop_toBottomOf="@+id/text_view_average_per_day" />
@@ -97,11 +88,11 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/text_view_average_per_week_description"
+                android:id="@+id/text_view_streak_description"
                 style="@style/TextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Days streak"
+                android:text="@string/report_pomodoros_title_days_streak"
                 app:layout_constraintEnd_toEndOf="@+id/text_view_streak"
                 app:layout_constraintStart_toStartOf="@+id/text_view_streak"
                 app:layout_constraintTop_toBottomOf="@+id/text_view_streak" />
@@ -114,7 +105,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_content"
-            android:text="Pomodoros completed"
+            android:text="@string/report_pomodoros_title_pomodoros_completed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_overview" />
 
@@ -139,18 +130,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_content"
-            android:text="Weekly Trends"
+            android:text="@string/report_pomodoros_title_weekly_trends"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_pomodoros_completed" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/text_view_trends_subtitle"
-            style="@style/TextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Top: 13.2 pomodoros, Avg: 2.4 pomodoros"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_trends_title" />
 
         <FrameLayout
             style="@style/ViewStyle.Rounded.Clickable"
@@ -158,7 +140,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_content"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_trends_subtitle">
+            app:layout_constraintTop_toBottomOf="@+id/text_view_trends_title">
 
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/bar_chart_trends"
