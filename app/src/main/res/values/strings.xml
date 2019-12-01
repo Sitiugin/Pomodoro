@@ -244,6 +244,29 @@
     <string name="report_pomodoros_title_weekly_trends">Weekly Trends</string>
 
 
+    <!--                                                                         REPORT PROJECTS -->
+
+    <string name="report_projects_title_overview">Projects Overview</string>
+    <string name="report_projects_title_completed">Completed</string>
+    <string name="report_projects_title_avg_completion_time">Avg completion time</string>
+    <string name="report_projects_title_elapsed_time">Elapsed time</string>
+    <string name="report_projects_title_distribution">Projects Distribution</string>
+
+
+    <!--                                                                          REPORT HISTORY -->
+
+    <string name="report_history_title_project_added" formatted="true"><![CDATA[Project <b>%1$s</b> added]]></string>
+    <string name="report_history_title_project_updated" formatted="true"><![CDATA[Project <b>%1$s</b> updated]]></string>
+    <string name="report_history_title_project_deleted" formatted="true"><![CDATA[Project <b>%1$s</b> deleted]]></string>
+    <string name="report_history_title_task_added" formatted="true"><![CDATA[Task <b>%1$s</b> added to project <b>%2$s</b>]]></string>
+    <string name="report_history_title_task_updated" formatted="true"><![CDATA[Task <b>%1$s</b> in project <b>%2$s</b> updated]]></string>
+    <string name="report_history_title_task_completed" formatted="true"><![CDATA[Task <b>%1$s</b> in project <b>%2$s</b> completed]]></string>
+    <string name="report_history_title_task_deleted" formatted="true"><![CDATA[Task <b>%1$s</b> from project <b>%2$s</b> deleted]]></string>
+    <string name="report_history_title_pomodoro_completed" formatted="true"><![CDATA[Pomodoro completed for task <b>%1$s</b> in project <b>%2$s</b>]]></string>
+    <string name="report_history_toast_connection_failed">Connection failed. Please try again later</string>
+    <string name="report_history_toast_no_entries_to_scroll_to">No entries to scroll to</string>
+
+
     <!--                                                                                   ABOUT -->
 
     <string name="about_title_about">About This Software</string>
@@ -349,20 +372,6 @@
     <string name="about_licenses_text_firebase_uri">https://firebase.google.com/terms</string>
     <string name="about_licenses_text_linear_icons_uri">http://linearicons.com/license</string>
     <string name="about_licenses_text_open_in_browser" formatted="true"><![CDATA[Open the following link in browser?<br><b>%1$s</b>]]></string>
-
-
-    <!--                                                                          REPORT HISTORY -->
-
-    <string name="report_history_title_project_added" formatted="true"><![CDATA[Project <b>%1$s</b> added]]></string>
-    <string name="report_history_title_project_updated" formatted="true"><![CDATA[Project <b>%1$s</b> updated]]></string>
-    <string name="report_history_title_project_deleted" formatted="true"><![CDATA[Project <b>%1$s</b> deleted]]></string>
-    <string name="report_history_title_task_added" formatted="true"><![CDATA[Task <b>%1$s</b> added to project <b>%2$s</b>]]></string>
-    <string name="report_history_title_task_updated" formatted="true"><![CDATA[Task <b>%1$s</b> in project <b>%2$s</b> updated]]></string>
-    <string name="report_history_title_task_completed" formatted="true"><![CDATA[Task <b>%1$s</b> in project <b>%2$s</b> completed]]></string>
-    <string name="report_history_title_task_deleted" formatted="true"><![CDATA[Task <b>%1$s</b> from project <b>%2$s</b> deleted]]></string>
-    <string name="report_history_title_pomodoro_completed" formatted="true"><![CDATA[Pomodoro completed for task <b>%1$s</b> in project <b>%2$s</b>]]></string>
-    <string name="report_history_toast_connection_failed">Connection failed. Please try again later</string>
-    <string name="report_history_toast_no_entries_to_scroll_to">No entries to scroll to</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
