@@ -11,6 +11,7 @@
     <string name="notification_title_ready">Ready</string>
     <string name="notification_title_working">Working</string>
     <string name="notification_title_paused">Paused</string>
+    <string name="notification_title_resting">Resting</string>
 
     <string name="email_title_send_feedback">Send Feedback</string>
     <string name="email_title_open_email">Open Email</string>

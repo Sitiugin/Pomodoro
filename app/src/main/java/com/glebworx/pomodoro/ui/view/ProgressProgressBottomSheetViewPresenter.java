@@ -40,6 +40,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     private static final int PROGRESS_STATUS_IDLE = 0;
     private static final int PROGRESS_STATUS_PAUSED = 1;
     private static final int PROGRESS_STATUS_ACTIVE = 2;
+    private static final int PROGRESS_STATUS_RESTING = 3;
 
     private static final int DURATION_PERCENT = POMODORO_LENGTH * 600;
 
@@ -51,6 +52,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     private int progress;
     private int totalSessions;
     private int completedSessions;
+    private boolean isResting;
     private VibrationManager vibrationManager;
     private TaskNotificationManager notificationManager;
     private Observable<DocumentSnapshot> taskEventObservable;
@@ -90,19 +92,19 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
     @Override
     public synchronized void setTask(ProjectModel projectModel, TaskModel taskModel, int numberOfSessions) {
+
         if (taskEventListenerRegistration != null) {
             taskEventListenerRegistration.remove();
             taskEventListenerRegistration = null;
         }
-        progressStatus = PROGRESS_STATUS_IDLE;
-        progress = 0;
-        timer.cancel();
-        presenterListener.onClearViews();
+
+        clearState();
 
         this.projectModel = projectModel;
         this.taskModel = taskModel;
         this.totalSessions = numberOfSessions;
         this.completedSessions = 0;
+        isResting = false;
 
         presenterListener.onTaskSet(taskModel.getName(), numberOfSessions);
 
@@ -145,7 +147,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     @Override
     public void cancelSession(Activity activity) {
         if (isStatusIdle()) {
-            cancelSession();
+            closeSession();
         } else {
             showCancelSessionDialog(activity);
         }
@@ -168,52 +170,87 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     }
 
     private void initTimer() {
-        timer = new PomodoroTimer(POMODORO_LENGTH * 60000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                progress = 100 - (int) (millisUntilFinished / DURATION_PERCENT);
-                presenterListener.onTick(millisUntilFinished, progress);
-                notificationManager.updateNotification(taskModel.getName(), progress);
-            }
 
-            @Override
-            public void onFinish() {
-                completePomodoro();
-            }
-        };
+        if (isResting) {
+
+            timer = new PomodoroTimer(POMODORO_LENGTH * 60000, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    progress = 100 - (int) (millisUntilFinished / DURATION_PERCENT);
+                    presenterListener.onTick(millisUntilFinished, progress);
+                    notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_RESTING, progress);
+                }
+
+                @Override
+                public void onFinish() {
+                    clearState();
+                    initTimer();
+                }
+            };
+
+        } else {
+
+            timer = new PomodoroTimer(POMODORO_LENGTH * 60000, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    progress = 100 - (int) (millisUntilFinished / DURATION_PERCENT);
+                    presenterListener.onTick(millisUntilFinished, progress);
+                    notificationManager.updateNotification(taskModel.getName(), progress);
+                }
+
+                @Override
+                public void onFinish() {
+                    completePomodoro();
+                }
+            };
+
+        }
+
     }
 
     private synchronized void completePomodoro() { // TODO need more logic here
-        progressStatus = PROGRESS_STATUS_IDLE;
-        progress = 0;
+
         completedSessions++;
-        timer.cancel();
-        presenterListener.onClearViews();
-        if (taskModel == null) {
-            return;
+
+        if (completedSessions >= totalSessions) {
+            clearState();
+            closeSession();
+        } else {
+            clearState();
+            startRestingPeriod();
         }
-        TaskApi.completePomodoro(
-                projectModel,
-                taskModel,
-                25,
-                task -> presenterListener.onPomodoroCompleted(task.isSuccessful(), totalSessions, completedSessions));
+
+        if (taskModel != null) {
+            TaskApi.completePomodoro(
+                    projectModel,
+                    taskModel,
+                    25,
+                    task -> presenterListener.onPomodoroCompleted(task.isSuccessful(), totalSessions, completedSessions));
+        }
 
         vibrationManager.vibrateLong();
-        notificationManager.cancelNotification();
+
     }
 
-    private synchronized void cancelSession() {
+    private synchronized void closeSession() {
+
         if (taskEventListenerRegistration != null) {
             taskEventListenerRegistration.remove();
             taskEventListenerRegistration = null;
         }
-        progressStatus = PROGRESS_STATUS_IDLE;
-        progress = 0;
+
         totalSessions = 0;
         completedSessions = 0;
-        timer.cancel();
-        presenterListener.onClearViews();
+        isResting = false;
+
         presenterListener.onHideBottomSheet();
+
+    }
+
+    private void startRestingPeriod() {
+        isResting = true;
+        progressStatus = PROGRESS_STATUS_RESTING; // TODO implement
+        initTimer();
     }
 
     private void showCancelSessionDialog(Activity activity) {
@@ -227,7 +264,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         Objects.requireNonNull(positiveButton).setText(R.string.bottom_sheet_title_cancel_session);
         View.OnClickListener onClickListener = view -> {
             if (view.getId() == R.id.button_positive) {
-                cancelSession();
+                closeSession();
                 alertDialog.dismiss();
             } else if (view.getId() == R.id.button_negative) {
                 alertDialog.dismiss();
@@ -259,30 +296,19 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     }
 
     private synchronized void completeTask() {
-        if (taskEventListenerRegistration != null) {
-            taskEventListenerRegistration.remove();
-            taskEventListenerRegistration = null;
-        }
-        progressStatus = PROGRESS_STATUS_IDLE;
+
         int progressTemp = progress;
-        progress = 0;
-        totalSessions = 0;
-        completedSessions = 0;
-        timer.cancel();
-        presenterListener.onClearViews();
-        presenterListener.onHideBottomSheet();
 
-        if (taskModel == null) {
-            return;
+        closeSession();
+
+        if (taskModel != null) {
+            TaskApi.completeTask(
+                    projectModel,
+                    taskModel,
+                    progressTemp / 4,
+                    task -> presenterListener.onTaskCompleted(task.isSuccessful()));
         }
 
-        TaskApi.completeTask(
-                projectModel,
-                taskModel,
-                progressTemp / 4,
-                task -> presenterListener.onTaskCompleted(task.isSuccessful()));
-
-        notificationManager.cancelNotification();
         vibrationManager.vibrateLong();
 
     }
@@ -320,7 +346,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
             public void onNext(DocumentSnapshot documentSnapshot) {
                 TaskModel model = documentSnapshot.toObject(TaskModel.class);
                 if (model == null) {
-                    cancelSession();
+                    closeSession();
                 } else {
                     presenterListener.onTaskDataChanged(
                             model.getPomodorosAllocated(),
@@ -338,6 +364,14 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
             }
         };
+    }
+
+    private void clearState() {
+        timer.cancel();
+        progressStatus = PROGRESS_STATUS_IDLE;
+        progress = 0;
+        presenterListener.onClearViews();
+        notificationManager.cancelNotification();
     }
 
 }

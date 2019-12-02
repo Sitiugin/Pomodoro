@@ -27,6 +27,7 @@ public class TaskNotificationManager {
     public static final String STATUS_READY = "status_ready";
     public static final String STATUS_WORKING = "status_working";
     public static final String STATUS_PAUSED = "status_paused";
+    public static final String STATUS_RESTING = "status_resting";
 
     private static final String CHANNEL_ID = "notification_channel_pomodoro";
 
@@ -131,6 +132,9 @@ public class TaskNotificationManager {
                 break;
             case STATUS_PAUSED:
                 builder.setContentText(context.getString(R.string.notification_title_paused));
+                break;
+            case STATUS_RESTING:
+                builder.setContentText(context.getString(R.string.notification_title_resting));
                 break;
         }
     }
