@@ -150,7 +150,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     }
 
     @Override
-    public void setTask(ProjectModel projectModel, TaskModel taskModel) {
+    public void setTask(ProjectModel projectModel, TaskModel taskModel, int numberOfSessions) { // TODO implement number of sessions
         if (taskEventListenerRegistration != null) {
             taskEventListenerRegistration.remove();
             taskEventListenerRegistration = null;

@@ -2,6 +2,7 @@ package com.glebworx.pomodoro.ui.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.NumberPicker;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -173,11 +174,7 @@ public class MainActivity
         if (taskModel.isCompleted()) {
             return;
         }
-        if (bottomSheetView.getPresenter().isStatusIdle()) {
-            setTask(projectModel, taskModel);
-        } else {
-            showReplaceTaskDialog(projectModel, taskModel);
-        }
+        showSetTaskDialog(projectModel, taskModel);
     }
 
     @Override
@@ -223,31 +220,53 @@ public class MainActivity
 
     }
 
-    private void setTask(ProjectModel projectModel, TaskModel taskModel) {
+    private void setTask(ProjectModel projectModel, TaskModel taskModel, int numberOfSessions) {
         bottomSheetView.setVisibility(View.VISIBLE);
-        bottomSheetView.getPresenter().setTask(projectModel, taskModel);
+        bottomSheetView.getPresenter().setTask(projectModel, taskModel, numberOfSessions);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
-    private void showReplaceTaskDialog(ProjectModel projectModel, TaskModel taskModel) {
+    private void showSetTaskDialog(ProjectModel projectModel, TaskModel taskModel) {
+
         AlertDialog alertDialog = DialogManager.showDialog(
                 MainActivity.this,
                 R.id.container_main,
-                R.layout.dialog_generic);
-        ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_title))).setText(R.string.main_title_replace_task);
-        ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_description))).setText(getString(R.string.main_text_replace_task, taskModel.getName()));
+                R.layout.dialog_set_task);
+
+        NumberPicker picker = alertDialog.findViewById(R.id.number_picker);
+        picker.setMinValue(1);
+        picker.setMaxValue(10);
+        picker.setWrapSelectorWheel(true);
+        picker.setFormatter(value -> {
+            if (value == 1) {
+                return getString(R.string.core_pomodoro, String.valueOf(value));
+            }
+            return getString(R.string.core_pomodoros, String.valueOf(value));
+        });
+        picker.setValue(1);
+
         AppCompatButton positiveButton = alertDialog.findViewById(R.id.button_positive);
-        Objects.requireNonNull(positiveButton).setText(R.string.main_title_replace);
+
+        if (bottomSheetView.getPresenter().isStatusIdle()) {
+            ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_description))).setText(getString(R.string.main_text_set_task, taskModel.getName()));
+        } else {
+            ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_title))).setText(R.string.main_title_replace_task);
+            ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_description))).setText(getString(R.string.main_text_replace_task, taskModel.getName()));
+            positiveButton.setText(R.string.main_title_replace_task);
+        }
+
         View.OnClickListener onClickListener = view -> {
             if (view.getId() == R.id.button_positive) {
-                setTask(projectModel, taskModel);
+                setTask(projectModel, taskModel, picker.getValue());
                 alertDialog.dismiss();
             } else if (view.getId() == R.id.button_negative) {
                 alertDialog.dismiss();
             }
         };
+
         ((AppCompatButton) Objects.requireNonNull(alertDialog.findViewById(R.id.button_negative))).setOnClickListener(onClickListener);
         positiveButton.setOnClickListener(onClickListener);
+
     }
 
 }

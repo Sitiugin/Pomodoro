@@ -12,7 +12,7 @@ public interface IProgressBottomSheetViewPresenter {
 
     void destroy();
 
-    void setTask(ProjectModel projectModel, TaskModel taskModel);
+    void setTask(ProjectModel projectModel, TaskModel taskModel, int numberOfSessions);
 
     void handleStartStopClick();
 

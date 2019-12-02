@@ -97,9 +97,10 @@
 
     <!--                                                                                    MAIN -->
 
+    <string name="main_title_set_task">Set task</string>
     <string name="main_title_replace_task">Replace task</string>
-    <string name="main_title_replace">Replace</string>
-    <string name="main_text_replace_task" formatted="true">Cancel current task and replace it with "%1$s"?</string>
+    <string name="main_text_set_task" formatted="true">Pick the number of pomodoros you would like to complete while working on \"%1$s\"</string>
+    <string name="main_text_replace_task" formatted="true">Cancel current task and replace it with \"%1$s\"?</string>
 
 
     <!--                                                                            BOTTOM SHEET -->

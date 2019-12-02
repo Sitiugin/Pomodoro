@@ -13,7 +13,6 @@
         android:layout_marginTop="@dimen/margin_content"
         android:background="@drawable/drawable_foreground_rounded_small_top"
         android:gravity="start"
-        android:text="March 2019"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.github.sundeepk.compactcalendarview.CompactCalendarView
