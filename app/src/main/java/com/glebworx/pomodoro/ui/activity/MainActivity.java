@@ -34,12 +34,11 @@ import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragmen
 import com.glebworx.pomodoro.ui.view.ProgressBottomSheetView;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewInteractionListener;
 import com.glebworx.pomodoro.util.manager.DialogManager;
+import com.glebworx.pomodoro.util.manager.NumberPickerManager;
 import com.glebworx.pomodoro.util.manager.TaskNotificationManager;
 import com.glebworx.pomodoro.util.manager.TransitionFragmentManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -232,23 +231,7 @@ public class MainActivity
                 R.layout.dialog_set_task);
 
         NumberPicker picker = alertDialog.findViewById(R.id.number_picker);
-        picker.setMinValue(1);
-        picker.setMaxValue(10);
-        picker.setWrapSelectorWheel(true);
-        picker.setFormatter(value -> {
-            if (value == 1) {
-                return getString(R.string.core_pomodoro, String.valueOf(value));
-            }
-            return getString(R.string.core_pomodoros, String.valueOf(value));
-        });
-        picker.setValue(1);
-        try {
-            Method method = picker.getClass().getDeclaredMethod("changeValueByOne", boolean.class);
-            method.setAccessible(true);
-            method.invoke(picker, true);
-        } catch (NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
+        NumberPickerManager.initPicker(MainActivity.this, Objects.requireNonNull(picker), 1, 10);
 
         AppCompatButton positiveButton = alertDialog.findViewById(R.id.button_positive);
 

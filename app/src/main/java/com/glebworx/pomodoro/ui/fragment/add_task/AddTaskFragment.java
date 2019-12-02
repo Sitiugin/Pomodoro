@@ -31,6 +31,7 @@ import com.glebworx.pomodoro.ui.fragment.add_task.interfaces.IAddTaskFragment;
 import com.glebworx.pomodoro.ui.fragment.add_task.interfaces.IAddTaskFragmentInteractionListener;
 import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.KeyboardManager;
+import com.glebworx.pomodoro.util.manager.NumberPickerManager;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.lang.reflect.InvocationTargetException;
@@ -185,15 +186,7 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
                 R.id.container_main,
                 R.layout.dialog_pomodoro_picker);
         NumberPicker picker = alertDialog.findViewById(R.id.number_picker);
-        picker.setMinValue(1);
-        picker.setMaxValue(25);
-        picker.setWrapSelectorWheel(true);
-        picker.setFormatter(value -> {
-            if (value == 1) {
-                return getString(R.string.core_pomodoro, String.valueOf(value));
-            }
-            return getString(R.string.core_pomodoros, String.valueOf(value));
-        });
+        NumberPickerManager.initPicker(context, Objects.requireNonNull(picker), 1, 25);
         picker.setValue(pomodorosAllocated);
         try {
             Method method = picker.getClass().getDeclaredMethod("changeValueByOne", boolean.class);
