@@ -196,7 +196,8 @@ public class ProgressBottomSheetView
     }
 
     @Override
-    public void onPomodoroCompleted(boolean isSuccessful) {
+    public void onPomodoroCompleted(boolean isSuccessful, int totalSessions, int completedSessions) {
+        updateSessionsRemainingText(completedSessions, totalSessions);
         Toast.makeText(
                 context,
                 isSuccessful
@@ -396,11 +397,11 @@ public class ProgressBottomSheetView
         this.constraintSet = new ConstraintSet();
     }
 
-    private void updateSessionsRemainingText(int remainingSessions, int totalSessions) {
+    private void updateSessionsRemainingText(int completedSessions, int totalSessions) {
         NumberFormat numberFormat = NumberFormat.getInstance(Locale.getDefault());
         sessionsRemainingButton.setText(
                 context.getString(R.string.bottom_sheet_title_session_count,
-                        numberFormat.format(remainingSessions),
+                        numberFormat.format(completedSessions),
                         numberFormat.format(totalSessions)));
     }
 

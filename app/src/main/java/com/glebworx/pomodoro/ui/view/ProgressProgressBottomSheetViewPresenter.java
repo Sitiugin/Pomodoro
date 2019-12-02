@@ -49,8 +49,8 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     private PomodoroTimer timer;
     private int progressStatus;
     private int progress;
-    private int totalSessionCount;
-    private int sessionRemainingCount;
+    private int totalSessions;
+    private int completedSessions;
     private VibrationManager vibrationManager;
     private TaskNotificationManager notificationManager;
     private Observable<DocumentSnapshot> taskEventObservable;
@@ -101,8 +101,8 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
         this.projectModel = projectModel;
         this.taskModel = taskModel;
-        this.totalSessionCount = numberOfSessions;
-        this.sessionRemainingCount = numberOfSessions;
+        this.totalSessions = numberOfSessions;
+        this.completedSessions = 0;
 
         presenterListener.onTaskSet(taskModel.getName(), numberOfSessions);
 
@@ -186,7 +186,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     private synchronized void completePomodoro() { // TODO need more logic here
         progressStatus = PROGRESS_STATUS_IDLE;
         progress = 0;
-        sessionRemainingCount--;
+        completedSessions++;
         timer.cancel();
         presenterListener.onClearViews();
         if (taskModel == null) {
@@ -196,7 +196,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
                 projectModel,
                 taskModel,
                 25,
-                task -> presenterListener.onPomodoroCompleted(task.isSuccessful()));
+                task -> presenterListener.onPomodoroCompleted(task.isSuccessful(), totalSessions, completedSessions));
 
         vibrationManager.vibrateLong();
         notificationManager.cancelNotification();
@@ -209,8 +209,8 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         }
         progressStatus = PROGRESS_STATUS_IDLE;
         progress = 0;
-        totalSessionCount = 0;
-        sessionRemainingCount = 0;
+        totalSessions = 0;
+        completedSessions = 0;
         timer.cancel();
         presenterListener.onClearViews();
         presenterListener.onHideBottomSheet();
@@ -266,8 +266,8 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         progressStatus = PROGRESS_STATUS_IDLE;
         int progressTemp = progress;
         progress = 0;
-        totalSessionCount = 0;
-        sessionRemainingCount = 0;
+        totalSessions = 0;
+        completedSessions = 0;
         timer.cancel();
         presenterListener.onClearViews();
         presenterListener.onHideBottomSheet();
