@@ -10,7 +10,6 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.glebworx.pomodoro.R;
-import com.glebworx.pomodoro.api.HistoryApi;
 import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
@@ -23,9 +22,6 @@ import com.glebworx.pomodoro.util.manager.VibrationManager;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.ListenerRegistration;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import io.reactivex.Observable;
@@ -47,65 +43,16 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
     private static final int DURATION_PERCENT = POMODORO_LENGTH * 600;
 
-    private static final Map<Integer, Integer> CHIP_ID_TO_TARGET_MAP;
-    private static final Map<Integer, Integer> TARGET_TO_CHIP_ID_MAP;
-
-    static {
-        Map<Integer, Integer> map = new HashMap<>();
-        map.put(View.NO_ID, 0);
-        map.put(R.id.chip_four, 4);
-        map.put(R.id.chip_five, 5);
-        map.put(R.id.chip_six, 6);
-        map.put(R.id.chip_seven, 7);
-        map.put(R.id.chip_eight, 8);
-        map.put(R.id.chip_nine, 9);
-        map.put(R.id.chip_ten, 10);
-        map.put(R.id.chip_eleven, 11);
-        map.put(R.id.chip_twelve, 12);
-        map.put(R.id.chip_thirteen, 13);
-        map.put(R.id.chip_fourteen, 14);
-        map.put(R.id.chip_fifteen, 15);
-        map.put(R.id.chip_sixteen, 16);
-        map.put(R.id.chip_seventeen, 17);
-        map.put(R.id.chip_eighteen, 18);
-        map.put(R.id.chip_nineteen, 19);
-        map.put(R.id.chip_twenty, 20);
-        CHIP_ID_TO_TARGET_MAP = Collections.unmodifiableMap(map);
-    }
-
-    static {
-        Map<Integer, Integer> map = new HashMap<>();
-        map.put(0, View.NO_ID);
-        map.put(4, R.id.chip_four);
-        map.put(5, R.id.chip_five);
-        map.put(6, R.id.chip_six);
-        map.put(7, R.id.chip_seven);
-        map.put(8, R.id.chip_eight);
-        map.put(9, R.id.chip_nine);
-        map.put(10, R.id.chip_ten);
-        map.put(11, R.id.chip_eleven);
-        map.put(12, R.id.chip_twelve);
-        map.put(13, R.id.chip_thirteen);
-        map.put(14, R.id.chip_fourteen);
-        map.put(15, R.id.chip_fifteen);
-        map.put(16, R.id.chip_sixteen);
-        map.put(17, R.id.chip_seventeen);
-        map.put(18, R.id.chip_eighteen);
-        map.put(19, R.id.chip_nineteen);
-        map.put(20, R.id.chip_twenty);
-        TARGET_TO_CHIP_ID_MAP = Collections.unmodifiableMap(map);
-    }
-
-    private Context context;
     private IProgressBottomSheetView presenterListener;
     private ProjectModel projectModel;
     private TaskModel taskModel;
     private PomodoroTimer timer;
     private int progressStatus;
     private int progress;
+    private int totalSessionCount;
+    private int sessionRemainingCount;
     private VibrationManager vibrationManager;
     private TaskNotificationManager notificationManager;
-    private Observable<Integer> todayCountObservable;
     private Observable<DocumentSnapshot> taskEventObservable;
     private ListenerRegistration taskEventListenerRegistration;
     private CompositeDisposable compositeDisposable;
@@ -128,19 +75,11 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
         compositeDisposable = new CompositeDisposable();
 
-        todayCountObservable = getCompletedTodayObservable();
-        todayCountObservable = todayCountObservable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io());
-
         taskEventObservable = getTaskEventObservable();
         taskEventObservable = taskEventObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());
-
-        todayCountObservable.subscribe(getTodayCountObserver());
 
     }
 
@@ -150,7 +89,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     }
 
     @Override
-    public void setTask(ProjectModel projectModel, TaskModel taskModel, int numberOfSessions) { // TODO implement number of sessions
+    public synchronized void setTask(ProjectModel projectModel, TaskModel taskModel, int numberOfSessions) {
         if (taskEventListenerRegistration != null) {
             taskEventListenerRegistration.remove();
             taskEventListenerRegistration = null;
@@ -159,13 +98,19 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         progress = 0;
         timer.cancel();
         presenterListener.onClearViews();
+
         this.projectModel = projectModel;
         this.taskModel = taskModel;
-        presenterListener.onTaskSet(taskModel.getName());
+        this.totalSessionCount = numberOfSessions;
+        this.sessionRemainingCount = numberOfSessions;
+
+        presenterListener.onTaskSet(taskModel.getName(), numberOfSessions);
+
         if (taskEventListenerRegistration != null) {
             taskEventListenerRegistration.remove();
             taskEventListenerRegistration = null;
         }
+
         taskEventObservable.subscribe(getTaskEventObserver());
 
         vibrationManager.vibrateMedium();
@@ -173,7 +118,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     }
 
     @Override
-    public void handleStartStopClick() {
+    public synchronized void handleStartStopClick() {
         if (progressStatus == PROGRESS_STATUS_ACTIVE) {
             progressStatus = PROGRESS_STATUS_PAUSED;
             timer.pause();
@@ -212,52 +157,6 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         showCompleteTaskDialog(activity);
     }
 
-    /*@Override
-    public void showDailyTargetDialog(Context context) {
-
-        if (!(context instanceof Activity)) {
-            return;
-        }
-
-        AlertDialog alertDialog = DialogManager.showDialog(
-                (Activity) context,
-                R.id.container_main,
-                R.layout.dialog_daily_target);
-
-        ChipGroup chipGroup = alertDialog.findViewById(R.id.chip_group_daily_target);
-        AppCompatButton cancelButton = alertDialog.findViewById(R.id.button_negative);
-        AppCompatButton setTargetButton = alertDialog.findViewById(R.id.button_positive);
-
-        SharedPrefsManager sharedPrefsManager = new SharedPrefsManager(context);
-
-        int defaultCheckedId = TARGET_TO_CHIP_ID_MAP.get(sharedPrefsManager.getPomodoroTarget());
-        if (defaultCheckedId != View.NO_ID) {
-            Objects.requireNonNull(chipGroup).check(defaultCheckedId);
-        }
-
-        View.OnClickListener onClickListener = view -> {
-            if (view.getId() == R.id.button_negative) {
-                alertDialog.dismiss();
-            } else if (view.getId() == R.id.button_positive) {
-                int pomodoroTarget = CHIP_ID_TO_TARGET_MAP.get(Objects.requireNonNull(chipGroup).getCheckedChipId());
-                sharedPrefsManager.setPomodoroTarget(pomodoroTarget);
-                alertDialog.dismiss();
-                int messageId = pomodoroTarget == 0
-                        ? R.string.bottom_sheet_toast_pomodoro_target_removed
-                        : defaultCheckedId == View.NO_ID
-                        ? R.string.bottom_sheet_toast_pomodoro_target_set
-                        : R.string.bottom_sheet_toast_pomodoro_target_changed;
-                Toast.makeText(context, messageId, Toast.LENGTH_SHORT).show();
-            }
-        };
-
-        Objects.requireNonNull(cancelButton).setOnClickListener(onClickListener);
-        Objects.requireNonNull(setTargetButton).setOnClickListener(onClickListener);
-
-        alertDialog.show();
-
-    }*/
-
     @Override
     public boolean isStatusIdle() {
         return progressStatus == PROGRESS_STATUS_IDLE;
@@ -284,9 +183,10 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         };
     }
 
-    private void completePomodoro() { // TODO need more logic here
+    private synchronized void completePomodoro() { // TODO need more logic here
         progressStatus = PROGRESS_STATUS_IDLE;
         progress = 0;
+        sessionRemainingCount--;
         timer.cancel();
         presenterListener.onClearViews();
         if (taskModel == null) {
@@ -302,13 +202,15 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         notificationManager.cancelNotification();
     }
 
-    private void cancelSession() {
+    private synchronized void cancelSession() {
         if (taskEventListenerRegistration != null) {
             taskEventListenerRegistration.remove();
             taskEventListenerRegistration = null;
         }
         progressStatus = PROGRESS_STATUS_IDLE;
         progress = 0;
+        totalSessionCount = 0;
+        sessionRemainingCount = 0;
         timer.cancel();
         presenterListener.onClearViews();
         presenterListener.onHideBottomSheet();
@@ -356,7 +258,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         positiveButton.setOnClickListener(onClickListener);
     }
 
-    private void completeTask() {
+    private synchronized void completeTask() {
         if (taskEventListenerRegistration != null) {
             taskEventListenerRegistration.remove();
             taskEventListenerRegistration = null;
@@ -364,6 +266,8 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         progressStatus = PROGRESS_STATUS_IDLE;
         int progressTemp = progress;
         progress = 0;
+        totalSessionCount = 0;
+        sessionRemainingCount = 0;
         timer.cancel();
         presenterListener.onClearViews();
         presenterListener.onHideBottomSheet();
@@ -405,25 +309,6 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         });
     }
 
-    private Observable<Integer> getCompletedTodayObservable() {
-        return Observable.create(emitter -> {
-            ListenerRegistration listenerRegistration = HistoryApi.addTodayEventListener((querySnapshot, e) -> {
-                if (emitter.isDisposed()) {
-                    return;
-                }
-                if (e != null) {
-                    emitter.onError(e);
-                    return;
-                }
-                if (querySnapshot == null) {
-                    return;
-                }
-                emitter.onNext(querySnapshot.getDocuments().size());
-            });
-            emitter.setCancellable(listenerRegistration::remove);
-        });
-    }
-
     private io.reactivex.Observer<DocumentSnapshot> getTaskEventObserver() {
         return new io.reactivex.Observer<DocumentSnapshot>() {
             @Override
@@ -441,30 +326,6 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
                             model.getPomodorosAllocated(),
                             model.getPomodorosCompleted());
                 }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
-    }
-
-    private io.reactivex.Observer<Integer> getTodayCountObserver() {
-        return new io.reactivex.Observer<Integer>() {
-            @Override
-            public void onSubscribe(Disposable disposable) {
-                compositeDisposable.add(disposable);
-            }
-
-            @Override
-            public void onNext(Integer todayCount) {
-                presenterListener.onTodayCountUpdated(todayCount);
             }
 
             @Override

@@ -1,6 +1,8 @@
 package com.glebworx.pomodoro.ui.activity;
 
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.View;
 import android.widget.NumberPicker;
 
@@ -36,6 +38,8 @@ import com.glebworx.pomodoro.util.manager.TaskNotificationManager;
 import com.glebworx.pomodoro.util.manager.TransitionFragmentManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -220,12 +224,6 @@ public class MainActivity
 
     }
 
-    private void setTask(ProjectModel projectModel, TaskModel taskModel, int numberOfSessions) {
-        bottomSheetView.setVisibility(View.VISIBLE);
-        bottomSheetView.getPresenter().setTask(projectModel, taskModel, numberOfSessions);
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-    }
-
     private void showSetTaskDialog(ProjectModel projectModel, TaskModel taskModel) {
 
         AlertDialog alertDialog = DialogManager.showDialog(
@@ -244,14 +242,28 @@ public class MainActivity
             return getString(R.string.core_pomodoros, String.valueOf(value));
         });
         picker.setValue(1);
+        try {
+            Method method = picker.getClass().getDeclaredMethod("changeValueByOne", boolean.class);
+            method.setAccessible(true);
+            method.invoke(picker, true);
+        } catch (NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
 
         AppCompatButton positiveButton = alertDialog.findViewById(R.id.button_positive);
 
         if (bottomSheetView.getPresenter().isStatusIdle()) {
-            ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_description))).setText(getString(R.string.main_text_set_task, taskModel.getName()));
+            Spanned description = Html.fromHtml(
+                    getString(R.string.main_text_set_task, taskModel.getName()), 0);
+            ((AppCompatTextView) Objects.requireNonNull(
+                    alertDialog.findViewById(R.id.text_view_description))).setText(description);
         } else {
-            ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_title))).setText(R.string.main_title_replace_task);
-            ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_description))).setText(getString(R.string.main_text_replace_task, taskModel.getName()));
+            ((AppCompatTextView) Objects.requireNonNull(
+                    alertDialog.findViewById(R.id.text_view_title))).setText(R.string.main_title_replace_task);
+            Spanned description = Html.fromHtml(
+                    getString(R.string.main_text_replace_task, taskModel.getName()), 0);
+            ((AppCompatTextView) Objects.requireNonNull(
+                    alertDialog.findViewById(R.id.text_view_description))).setText(description);
             positiveButton.setText(R.string.main_title_replace_task);
         }
 
@@ -267,6 +279,12 @@ public class MainActivity
         ((AppCompatButton) Objects.requireNonNull(alertDialog.findViewById(R.id.button_negative))).setOnClickListener(onClickListener);
         positiveButton.setOnClickListener(onClickListener);
 
+    }
+
+    private void setTask(ProjectModel projectModel, TaskModel taskModel, int numberOfSessions) {
+        bottomSheetView.getPresenter().setTask(projectModel, taskModel, numberOfSessions);
+        bottomSheetView.setVisibility(View.VISIBLE);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
 }

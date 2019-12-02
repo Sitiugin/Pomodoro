@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -22,6 +23,9 @@ import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.triggertrap.seekarc.SeekArc;
+
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,8 +48,8 @@ public class ProgressBottomSheetView
     @BindView(R.id.text_view_status) AppCompatTextView statusTextView;
     @BindView(R.id.text_view_time_remaining) AppCompatTextView timeRemainingTextView;
     @BindView(R.id.button_start_stop) AppCompatImageButton startStopButton;
-    @BindView(R.id.text_view_sessions_remaining)
-    AppCompatTextView sessionsRemainingTextView;
+    @BindView(R.id.button_sessions_remaining)
+    AppCompatButton sessionsRemainingButton;
     @BindView(R.id.text_view_time_remaining_large) AppCompatTextView timeRemainingLargeTextView;
     @BindView(R.id.seek_arc) SeekArc seekArc;
     @BindView(R.id.fab_start_stop_large) FloatingActionButton startStopFab;
@@ -101,12 +105,14 @@ public class ProgressBottomSheetView
             startStopFab.setOnClickListener(this);
             cancelButton.setOnClickListener(this);
             completeButton.setOnClickListener(this);
+            sessionsRemainingButton.setOnClickListener(this);
         } else {
             bottomSheetListener = null;
             startStopButton.setOnClickListener(null);
             startStopFab.setOnClickListener(null);
             cancelButton.setOnClickListener(null);
             completeButton.setOnClickListener(null);
+            sessionsRemainingButton.setOnClickListener(null);
         }
     }
 
@@ -133,17 +139,21 @@ public class ProgressBottomSheetView
             case R.id.button_complete:
                 presenter.completeTask((MainActivity) context);
                 break;
+            case R.id.button_sessions_remaining:
+                showSessionCountDialog();
+                break;
         }
     }
 
     @Override
-    public void onTaskSet(String name) {
+    public void onTaskSet(String name, int numberOfSessions) {
         synchronized (object) {
             taskTextView.setText(name);
             statusTextView.setText(R.string.bottom_sheet_text_status_idle);
             String timeRemainingString = DateTimeManager.formatMMSSString(context, POMODORO_LENGTH * 60);
             timeRemainingLargeTextView.setText(timeRemainingString);
             timeRemainingTextView.setText(timeRemainingString);
+            updateSessionsRemainingText(0, numberOfSessions);
             spinKitView.setVisibility(INVISIBLE);
         }
     }
@@ -203,11 +213,6 @@ public class ProgressBottomSheetView
                         ? R.string.bottom_sheet_toast_task_completed_success
                         : R.string.bottom_sheet_toast_task_completed_failed,
                 Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onTodayCountUpdated(int newCount) {
-        // TODO implement
     }
 
     @Override
@@ -301,7 +306,7 @@ public class ProgressBottomSheetView
                 ConstraintSet.END,
                 ConstraintSet.PARENT_ID,
                 ConstraintSet.END);
-        constraintSet.setVisibility(R.id.text_view_sessions_remaining, ConstraintSet.VISIBLE);
+        constraintSet.setVisibility(R.id.button_sessions_remaining, ConstraintSet.VISIBLE);
 
         // animate task
         constraintSet.connect(
@@ -360,7 +365,7 @@ public class ProgressBottomSheetView
                 R.id.text_view_task,
                 ConstraintSet.END);
         constraintSet.clear(R.id.text_view_pomodoro_number, ConstraintSet.END);
-        constraintSet.setVisibility(R.id.text_view_sessions_remaining, ConstraintSet.INVISIBLE);
+        constraintSet.setVisibility(R.id.button_sessions_remaining, ConstraintSet.INVISIBLE);
 
         // animate task
         constraintSet.connect(
@@ -389,6 +394,18 @@ public class ProgressBottomSheetView
         this.bottomSheetState = BottomSheetBehavior.STATE_COLLAPSED;
         this.presenter = new ProgressProgressBottomSheetViewPresenter(this, context);
         this.constraintSet = new ConstraintSet();
+    }
+
+    private void updateSessionsRemainingText(int remainingSessions, int totalSessions) {
+        NumberFormat numberFormat = NumberFormat.getInstance(Locale.getDefault());
+        sessionsRemainingButton.setText(
+                context.getString(R.string.bottom_sheet_title_session_count,
+                        numberFormat.format(remainingSessions),
+                        numberFormat.format(totalSessions)));
+    }
+
+    private void showSessionCountDialog() {
+        // TODO implement
     }
 
     public IProgressBottomSheetViewPresenter getPresenter() {

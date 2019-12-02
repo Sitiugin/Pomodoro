@@ -33,6 +33,8 @@ import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.KeyboardManager;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -193,6 +195,13 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
             return getString(R.string.core_pomodoros, String.valueOf(value));
         });
         picker.setValue(pomodorosAllocated);
+        try {
+            Method method = picker.getClass().getDeclaredMethod("changeValueByOne", boolean.class);
+            method.setAccessible(true);
+            method.invoke(picker, true);
+        } catch (NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
 
         View.OnClickListener onClickListener = view -> {
             if (view.getId() == R.id.button_positive) {

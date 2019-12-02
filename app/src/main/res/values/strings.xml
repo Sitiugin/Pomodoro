@@ -99,16 +99,15 @@
 
     <string name="main_title_set_task">Set task</string>
     <string name="main_title_replace_task">Replace task</string>
-    <string name="main_text_set_task" formatted="true">Pick the number of pomodoros you would like to complete while working on \"%1$s\"</string>
-    <string name="main_text_replace_task" formatted="true">Cancel current task and replace it with \"%1$s\"?</string>
+    <string name="main_text_set_task" formatted="true"><![CDATA[Pick the number of pomodoros you would like to complete while working on <b>%1$s</b>]]></string>
+    <string name="main_text_replace_task" formatted="true"><![CDATA[Cancel current task and replace it with <b>%1$s</b>?]]></string>
 
 
     <!--                                                                            BOTTOM SHEET -->
 
     <string name="bottom_sheet_title_cancel_session">Cancel Session</string>
     <string name="bottom_sheet_title_complete_task">Complete Task</string>
-    <string name="bottom_sheet_title_daily_target">Daily target</string>
-    <string name="bottom_sheet_title_set_target">Set target</string>
+    <string name="bottom_sheet_title_session_count">Session %1$s/%2$s</string>
     <string name="bottom_sheet_text_cancel_session" formatted="true">Are you sure you want to cancel this work session?</string>
     <string name="bottom_sheet_text_complete_task" formatted="true">Are you sure you want to complete this task?</string>
     <string name="bottom_sheet_text_status_idle">Ready</string>
@@ -119,9 +118,6 @@
     <string name="bottom_sheet_toast_pomodoro_completed_failed">Could not save progress. Check your connection and try again</string>
     <string name="bottom_sheet_toast_task_completed_success">Task completed</string>
     <string name="bottom_sheet_toast_task_completed_failed">Could not complete this task. Check your connection and try again</string>
-    <string name="bottom_sheet_toast_pomodoro_target_set">Daily pomodoro target set</string>
-    <string name="bottom_sheet_toast_pomodoro_target_changed">Daily pomodoro target changed</string>
-    <string name="bottom_sheet_toast_pomodoro_target_removed">Daily pomodoro target removed</string>
 
 
     <!--                                                                                PROJECTS -->

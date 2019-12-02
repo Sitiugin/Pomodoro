@@ -260,6 +260,10 @@
         <item name="android:fontFamily">@string/font_sans_serif_normal</item>
     </style>
 
+    <style name="TextStyle.Title.Colored" parent="TextStyle.Title">
+        <item name="android:textColor">@color/colorHighlight</item>
+    </style>
+
     <style name="TextStyle.Title.Disabled" parent="TextStyle.Title">
         <item name="android:textColor">@android:color/darker_gray</item>
     </style>

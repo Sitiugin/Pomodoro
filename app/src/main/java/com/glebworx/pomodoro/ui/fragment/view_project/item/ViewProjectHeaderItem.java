@@ -80,7 +80,7 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
         return model.getEstimatedTime() == that.model.getEstimatedTime()
                 && model.getElapsedTime() == that.model.getElapsedTime()
                 && model.getProgress() == that.model.getProgress()
-                && model.getColorTag().equals(that.model.getColorTag());
+                && (model.getColorTag() == null || model.getColorTag().equals(that.model.getColorTag()));
     }
 
     @Override

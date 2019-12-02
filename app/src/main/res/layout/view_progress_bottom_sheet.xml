@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-        style="@style/TextStyle.Title"
+        style="@style/TextStyle.Title.Colored"
         android:id="@+id/text_view_task"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -65,8 +65,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/text_view_task"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/text_view_sessions_remaining"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_sessions_remaining"
         style="@style/ButtonStyle.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
