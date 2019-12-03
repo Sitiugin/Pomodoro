@@ -50,8 +50,8 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     private PomodoroTimer timer;
     private int progressStatus;
     private int progress;
-    private int totalSessions;
-    private int completedSessions;
+    private int totalPomodoroCount;
+    private int completedPomodoroCount;
     private boolean isResting;
     private VibrationManager vibrationManager;
     private TaskNotificationManager notificationManager;
@@ -102,8 +102,8 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
         this.projectModel = projectModel;
         this.taskModel = taskModel;
-        this.totalSessions = numberOfSessions;
-        this.completedSessions = 0;
+        this.totalPomodoroCount = numberOfSessions;
+        this.completedPomodoroCount = 0;
         isResting = false;
 
         presenterListener.onTaskSet(taskModel.getName(), numberOfSessions);
@@ -170,6 +170,11 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     }
 
     @Override
+    public int getRemainingPomodoroCount() {
+        return totalPomodoroCount - completedPomodoroCount;
+    }
+
+    @Override
     public void clearNotifications() {
         notificationManager.cancelAllNotifications();
     }
@@ -215,9 +220,9 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
     private synchronized void completePomodoro() { // TODO need more logic here
 
-        completedSessions++;
+        completedPomodoroCount++;
 
-        if (completedSessions >= totalSessions) {
+        if (completedPomodoroCount >= totalPomodoroCount) {
             clearState();
             closeSession();
         } else {
@@ -230,7 +235,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
                     projectModel,
                     taskModel,
                     25,
-                    task -> presenterListener.onPomodoroCompleted(task.isSuccessful(), totalSessions, completedSessions));
+                    task -> presenterListener.onPomodoroCompleted(task.isSuccessful(), totalPomodoroCount, completedPomodoroCount));
         }
 
         vibrationManager.vibrateLong();
@@ -244,8 +249,8 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
             taskEventListenerRegistration = null;
         }
 
-        totalSessions = 0;
-        completedSessions = 0;
+        totalPomodoroCount = 0;
+        completedPomodoroCount = 0;
         isResting = false;
 
         projectModel = null;

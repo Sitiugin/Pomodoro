@@ -100,8 +100,8 @@
 
     <string name="main_title_set_task">Set task</string>
     <string name="main_title_replace_task">Replace task</string>
-    <string name="main_text_set_task" formatted="true"><![CDATA[Pick the number of pomodoros you would like to complete while working on <b>%1$s</b>]]></string>
-    <string name="main_text_replace_task" formatted="true"><![CDATA[Cancel current task and replace it with <b>%1$s</b>?]]></string>
+    <string name="main_text_set_task" formatted="true"><![CDATA[Pick the number of pomodoros you would like to complete while working on <b>%1$s</b>:]]></string>
+    <string name="main_text_replace_task" formatted="true"><![CDATA[Cancel current task and replace it with <b>%1$s</b>?<br><br>Pick the number of pomodoros you would like to complete while working on <b>%1$s</b>:]]></string>
 
 
     <!--                                                                            BOTTOM SHEET -->

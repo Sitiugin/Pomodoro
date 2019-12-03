@@ -235,7 +235,9 @@ public class MainActivity
 
         AppCompatButton positiveButton = alertDialog.findViewById(R.id.button_positive);
 
-        if (bottomSheetView.getPresenter().hasTask()) {
+        boolean isReplace = bottomSheetView.getPresenter().hasTask();
+
+        if (isReplace) {
 
             ((AppCompatTextView) Objects.requireNonNull(
                     alertDialog.findViewById(R.id.text_view_title))).setText(R.string.main_title_replace_task);
@@ -244,6 +246,13 @@ public class MainActivity
             ((AppCompatTextView) Objects.requireNonNull(
                     alertDialog.findViewById(R.id.text_view_description))).setText(description);
             Objects.requireNonNull(positiveButton).setText(R.string.main_title_replace_task);
+            int pomodoroCount = bottomSheetView.getPresenter().getRemainingPomodoroCount();
+            if (pomodoroCount < 1) {
+                pomodoroCount = 1;
+            } else if (pomodoroCount > 10) {
+                pomodoroCount = 10;
+            }
+            picker.setValue(pomodoroCount);
 
         } else {
 
@@ -268,7 +277,9 @@ public class MainActivity
 
     }
 
-    private void setTask(ProjectModel projectModel, TaskModel taskModel, int numberOfSessions) {
+    private void setTask(ProjectModel projectModel,
+                         TaskModel taskModel,
+                         int numberOfSessions) {
         bottomSheetView.getPresenter().setTask(projectModel, taskModel, numberOfSessions);
         bottomSheetView.setVisibility(View.VISIBLE);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
