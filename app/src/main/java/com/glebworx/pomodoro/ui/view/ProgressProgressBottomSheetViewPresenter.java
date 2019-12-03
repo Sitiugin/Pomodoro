@@ -238,7 +238,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_WORKING, progress);
     }
 
-    private synchronized void completePomodoro() { // TODO need more logic here
+    private synchronized void completePomodoro() {
 
         completedPomodoroCount++;
 
@@ -282,7 +282,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
     private void startRestingPeriod() {
         isResting = true;
-        progressStatus = PROGRESS_STATUS_RESTING; // TODO implement
+        progressStatus = PROGRESS_STATUS_RESTING;
         initTimer();
     }
 
