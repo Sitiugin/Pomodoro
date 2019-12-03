@@ -165,6 +165,11 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     }
 
     @Override
+    public boolean hasTask() {
+        return taskModel != null;
+    }
+
+    @Override
     public void clearNotifications() {
         notificationManager.cancelAllNotifications();
     }
@@ -242,6 +247,9 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         totalSessions = 0;
         completedSessions = 0;
         isResting = false;
+
+        projectModel = null;
+        taskModel = null;
 
         presenterListener.onHideBottomSheet();
 

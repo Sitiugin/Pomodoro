@@ -252,6 +252,10 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
     private void initOverview(ReportProjectOverviewModel overviewModel,
                               List<DocumentSnapshot> documentSnapshots) {
 
+        HistoryModel model;
+        for (DocumentSnapshot snapshot : documentSnapshots) {
+
+        }
 
 
         /*overviewModel.setPomodorosCompleted(documentSnapshots.size());

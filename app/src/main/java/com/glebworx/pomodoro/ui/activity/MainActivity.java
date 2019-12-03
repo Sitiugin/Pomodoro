@@ -235,19 +235,23 @@ public class MainActivity
 
         AppCompatButton positiveButton = alertDialog.findViewById(R.id.button_positive);
 
-        if (bottomSheetView.getPresenter().isStatusIdle()) {
-            Spanned description = Html.fromHtml(
-                    getString(R.string.main_text_set_task, taskModel.getName()), 0);
-            ((AppCompatTextView) Objects.requireNonNull(
-                    alertDialog.findViewById(R.id.text_view_description))).setText(description);
-        } else {
+        if (bottomSheetView.getPresenter().hasTask()) {
+
             ((AppCompatTextView) Objects.requireNonNull(
                     alertDialog.findViewById(R.id.text_view_title))).setText(R.string.main_title_replace_task);
             Spanned description = Html.fromHtml(
                     getString(R.string.main_text_replace_task, taskModel.getName()), 0);
             ((AppCompatTextView) Objects.requireNonNull(
                     alertDialog.findViewById(R.id.text_view_description))).setText(description);
-            positiveButton.setText(R.string.main_title_replace_task);
+            Objects.requireNonNull(positiveButton).setText(R.string.main_title_replace_task);
+
+        } else {
+
+            Spanned description = Html.fromHtml(
+                    getString(R.string.main_text_set_task, taskModel.getName()), 0);
+            ((AppCompatTextView) Objects.requireNonNull(
+                    alertDialog.findViewById(R.id.text_view_description))).setText(description);
+
         }
 
         View.OnClickListener onClickListener = view -> {
@@ -260,7 +264,7 @@ public class MainActivity
         };
 
         ((AppCompatButton) Objects.requireNonNull(alertDialog.findViewById(R.id.button_negative))).setOnClickListener(onClickListener);
-        positiveButton.setOnClickListener(onClickListener);
+        Objects.requireNonNull(positiveButton).setOnClickListener(onClickListener);
 
     }
 

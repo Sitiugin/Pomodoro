@@ -400,7 +400,7 @@ public class ProgressBottomSheetView
     private void updateSessionsRemainingText(int completedSessions, int totalSessions) {
         NumberFormat numberFormat = NumberFormat.getInstance(Locale.getDefault());
         sessionsRemainingButton.setText(
-                context.getString(R.string.bottom_sheet_title_session_count,
+                context.getString(R.string.bottom_sheet_title_pomodoro_count,
                         numberFormat.format(completedSessions),
                         numberFormat.format(totalSessions)));
     }

@@ -22,5 +22,7 @@ public interface IProgressBottomSheetViewPresenter {
 
     boolean isStatusIdle();
 
+    boolean hasTask();
+
     void clearNotifications();
 }
