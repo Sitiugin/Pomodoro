@@ -80,7 +80,7 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
         return model.getEstimatedTime() == that.model.getEstimatedTime()
                 && model.getElapsedTime() == that.model.getElapsedTime()
                 && model.getProgress() == that.model.getProgress()
-                && (model.getColorTag() == null || model.getColorTag().equals(that.model.getColorTag()));
+                && isSameColorTag(model, that.model);
     }
 
     @Override
@@ -123,6 +123,14 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
         this.model.setProgress(progress);
     }
 
+    private boolean isSameColorTag(ProjectModel model, ProjectModel anotherModel) {
+        String colorTag = model.getColorTag();
+        String anotherColorTag = anotherModel.getColorTag();
+        if (colorTag == null) {
+            return anotherColorTag == null;
+        }
+        return colorTag.equals(anotherColorTag);
+    }
 
     //                                                                                   VIEW HOLDER
 

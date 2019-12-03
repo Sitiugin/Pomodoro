@@ -104,16 +104,16 @@ public class ArchivedProjectItem
         return model.getColorTag();
     }
 
-    public @Nullable
-    String getCompletedOnString(Context context) {
+    @Nullable
+    private String getCompletedOnString(Context context) {
         if (model.getDueDate() == null) {
             return null;
         }
         return DateTimeManager.getCompletedOnString(context, model.getCompletedOn(), currentDate);
     }
 
-    public @Nullable
-    String getExtraInfoString(Context context) {
+    @Nullable
+    private String getExtraInfoString(Context context) {
         String estimatedTimeString = DateTimeManager.formatHHMMString(context, model.getEstimatedTime());
         String elapsedTimeString = DateTimeManager.formatHHMMString(context, model.getElapsedTime());
         String tasksString = numberFormat.format(model.getTasks().size());
