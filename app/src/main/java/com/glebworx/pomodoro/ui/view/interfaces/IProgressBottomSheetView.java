@@ -10,6 +10,8 @@ public interface IProgressBottomSheetView {
 
     void onTaskPaused();
 
+    void onRestingPeriodStarted();
+
     void onPomodoroCompleted(boolean isSuccessful, int totalSessions, int completedSessions);
 
     void onTaskCompleted(boolean isSuccessful);

@@ -69,7 +69,6 @@ public class ProgressBottomSheetView
     private int bottomSheetState;
     private Unbinder unbinder;
     private ProgressProgressBottomSheetViewPresenter presenter;
-    private final Object object = new Object();
 
 
     //                                                                                  CONSTRUCTORS
@@ -148,53 +147,57 @@ public class ProgressBottomSheetView
     }
 
     @Override
-    public void onTaskSet(String name, int numberOfSessions) {
-        synchronized (object) {
-            taskTextView.setText(name);
-            statusTextView.setText(R.string.bottom_sheet_text_status_idle);
-            String timeRemainingString = DateTimeManager.formatMMSSString(context, POMODORO_LENGTH * 60);
-            timeRemainingLargeTextView.setText(timeRemainingString);
-            timeRemainingTextView.setText(timeRemainingString);
-            updateSessionsRemainingText(0, numberOfSessions);
-            spinKitView.setVisibility(INVISIBLE);
-        }
+    public synchronized void onTaskSet(String name, int numberOfSessions) {
+        taskTextView.setText(name);
+        statusTextView.setText(R.string.bottom_sheet_text_status_idle);
+        String timeRemainingString = DateTimeManager.formatMMSSString(context, POMODORO_LENGTH * 60);
+        timeRemainingLargeTextView.setText(timeRemainingString);
+        timeRemainingTextView.setText(timeRemainingString);
+        updateSessionsRemainingText(0, numberOfSessions);
+        spinKitView.setVisibility(INVISIBLE);
     }
 
     @Override
     public void onTaskStarted() {
-        synchronized (object) {
-            startStopSkipButton.setImageResource(R.drawable.ic_pause_highlight);
-            startStopSkipFab.setImageResource(R.drawable.ic_pause_black);
-            statusTextView.setText(R.string.bottom_sheet_text_status_active);
-            spinKitView.setVisibility(VISIBLE);
-        }
+        startStopSkipButton.setImageResource(R.drawable.ic_pause_highlight);
+        startStopSkipFab.setImageResource(R.drawable.ic_pause_black);
+        statusTextView.setText(R.string.bottom_sheet_text_status_active);
+        cancelButton.setVisibility(VISIBLE);
+        completeButton.setVisibility(VISIBLE);
+        spinKitView.setVisibility(VISIBLE);
     }
 
     @Override
     public void onTaskResumed() {
-        synchronized (object) {
-            startStopSkipButton.setImageResource(R.drawable.ic_pause_highlight);
-            startStopSkipFab.setImageResource(R.drawable.ic_pause_black);
-            statusTextView.setText(R.string.bottom_sheet_text_status_active);
-            spinKitView.setVisibility(VISIBLE);
-        }
+        startStopSkipButton.setImageResource(R.drawable.ic_pause_highlight);
+        startStopSkipFab.setImageResource(R.drawable.ic_pause_black);
+        statusTextView.setText(R.string.bottom_sheet_text_status_active);
+        spinKitView.setVisibility(VISIBLE);
     }
 
     @Override
     public void onTaskPaused() {
-        synchronized (object) {
-            startStopSkipButton.setImageResource(R.drawable.ic_play_highlight);
-            startStopSkipFab.setImageResource(R.drawable.ic_play_black);
-            statusTextView.setText(R.string.bottom_sheet_text_status_paused);
-            if (bottomSheetState == BottomSheetBehavior.STATE_EXPANDED) {
-                timeRemainingTextView.setText(timeRemainingLargeTextView.getText());
-                progressBar.setProgress(seekArc.getProgress());
-            } else if (bottomSheetState == BottomSheetBehavior.STATE_COLLAPSED) {
-                timeRemainingLargeTextView.setText(timeRemainingTextView.getText());
-                seekArc.setProgress(progressBar.getProgress());
-            }
-            spinKitView.setVisibility(INVISIBLE);
+        startStopSkipButton.setImageResource(R.drawable.ic_play_highlight);
+        startStopSkipFab.setImageResource(R.drawable.ic_play_black);
+        statusTextView.setText(R.string.bottom_sheet_text_status_paused);
+        if (bottomSheetState == BottomSheetBehavior.STATE_EXPANDED) {
+            timeRemainingTextView.setText(timeRemainingLargeTextView.getText());
+            progressBar.setProgress(seekArc.getProgress());
+        } else if (bottomSheetState == BottomSheetBehavior.STATE_COLLAPSED) {
+            timeRemainingLargeTextView.setText(timeRemainingTextView.getText());
+            seekArc.setProgress(progressBar.getProgress());
         }
+        spinKitView.setVisibility(INVISIBLE);
+    }
+
+    @Override
+    public void onRestingPeriodStarted() {
+        startStopSkipButton.setImageResource(R.drawable.ic_next_highlight);
+        startStopSkipFab.setImageResource(R.drawable.ic_next_black);
+        statusTextView.setText(R.string.bottom_sheet_text_status_resting);
+        cancelButton.setVisibility(INVISIBLE);
+        completeButton.setVisibility(VISIBLE);
+        spinKitView.setVisibility(VISIBLE);
     }
 
     @Override
@@ -227,39 +230,33 @@ public class ProgressBottomSheetView
     }
 
     @Override
-    public void onTick(long millisUntilFinished, int progress) {
+    public synchronized void onTick(long millisUntilFinished, int progress) {
 
         String minutesUntilFinished = DateTimeManager.formatMMSSString(context, (int) (millisUntilFinished / 1000));
 
         if (bottomSheetState == BottomSheetBehavior.STATE_EXPANDED) {
-            synchronized (object) {
-                timeRemainingLargeTextView.setText(minutesUntilFinished);
-                if (seekArc.getProgress() != progress) {
-                    seekArc.setProgress(progress);
-                }
+            timeRemainingLargeTextView.setText(minutesUntilFinished);
+            if (seekArc.getProgress() != progress) {
+                seekArc.setProgress(progress);
             }
         } else if (bottomSheetState == BottomSheetBehavior.STATE_COLLAPSED) {
-            synchronized (object) {
-                timeRemainingTextView.setText(minutesUntilFinished);
-                if (progressBar.getProgress() != progress) {
-                    progressBar.setProgress(progress);
-                }
+            timeRemainingTextView.setText(minutesUntilFinished);
+            if (progressBar.getProgress() != progress) {
+                progressBar.setProgress(progress);
             }
         }
 
     }
 
     @Override
-    public void onClearViews() {
-        synchronized (object) {
-            startStopSkipButton.setImageResource(R.drawable.ic_play_highlight);
-            startStopSkipFab.setImageResource(R.drawable.ic_play_black);
-            statusTextView.setText(R.string.bottom_sheet_text_status_idle);
-            timeRemainingLargeTextView.setText(null);
-            timeRemainingTextView.setText(null);
-            seekArc.setProgress(0);
-            progressBar.setProgress(0);
-        }
+    public synchronized void onClearViews() {
+        startStopSkipButton.setImageResource(R.drawable.ic_play_highlight);
+        startStopSkipFab.setImageResource(R.drawable.ic_play_black);
+        statusTextView.setText(R.string.bottom_sheet_text_status_idle);
+        timeRemainingLargeTextView.setText(null);
+        timeRemainingTextView.setText(null);
+        seekArc.setProgress(0);
+        progressBar.setProgress(0);
     }
 
     @Override
@@ -326,8 +323,13 @@ public class ProgressBottomSheetView
         // animate buttons
         constraintSet.setVisibility(R.id.button_start_stop_skip, ConstraintSet.INVISIBLE);
         constraintSet.setVisibility(R.id.fab_start_stop_skip_large, ConstraintSet.VISIBLE);
-        constraintSet.setVisibility(R.id.button_cancel, ConstraintSet.VISIBLE);
-        constraintSet.setVisibility(R.id.button_complete, ConstraintSet.VISIBLE);
+        if (presenter.isStatusResting()) {
+            constraintSet.setVisibility(R.id.button_cancel, ConstraintSet.INVISIBLE);
+            constraintSet.setVisibility(R.id.button_complete, ConstraintSet.INVISIBLE);
+        } else {
+            constraintSet.setVisibility(R.id.button_cancel, ConstraintSet.VISIBLE);
+            constraintSet.setVisibility(R.id.button_complete, ConstraintSet.VISIBLE);
+        }
 
         constraintSet.applyTo(this);
 

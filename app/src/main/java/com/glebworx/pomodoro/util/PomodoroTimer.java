@@ -17,8 +17,8 @@ package com.glebworx.pomodoro.util;
  */
 
 import android.os.Handler;
-import android.os.SystemClock;
 import android.os.Message;
+import android.os.SystemClock;
 
 
 public abstract class PomodoroTimer {
@@ -26,20 +26,54 @@ public abstract class PomodoroTimer {
     /**
      * Millis since epoch when alarm should stop.
      */
-    private final long mMillisInFuture;
+    private final long millisInFuture;
 
     /**
      * The interval in millis that the user receives callbacks
      */
-    private final long mCountdownInterval;
+    private final long countdownInterval;
 
-    private long mStopTimeInFuture;
+    private long stopTimeInFuture;
 
-    private long mPauseTime;
+    private long pauseTime;
 
-    private boolean mCancelled = false;
+    private boolean cancelled = false;
 
-    private boolean mPaused = false;
+    private boolean paused = false;
+    // handles counting down
+    private Handler mHandler = new Handler() { // TODO this should be a static class
+
+        @Override
+        public void handleMessage(Message msg) {
+
+            synchronized (PomodoroTimer.this) {
+                if (!paused) {
+                    final long millisLeft = stopTimeInFuture - SystemClock.elapsedRealtime();
+
+                    if (millisLeft <= 0) {
+                        onFinish();
+                    } else if (millisLeft < countdownInterval) {
+                        // no tick, just delay until done
+                        sendMessageDelayed(obtainMessage(MSG), millisLeft);
+                    } else {
+                        long lastTickStart = SystemClock.elapsedRealtime();
+                        onTick(millisLeft);
+
+                        // take into account user's onTick taking time to execute
+                        long delay = lastTickStart + countdownInterval - SystemClock.elapsedRealtime();
+
+                        // special case: user's onTick took more than interval to
+                        // complete, skip to next interval
+                        while (delay < 0) delay += countdownInterval;
+
+                        if (!cancelled) {
+                            sendMessageDelayed(obtainMessage(MSG), delay);
+                        }
+                    }
+                }
+            }
+        }
+    };
 
     /**
      * @param millisInFuture The number of millis in the future from the call
@@ -48,9 +82,9 @@ public abstract class PomodoroTimer {
      * @param countDownInterval The interval along the way to receive
      *   {@link #onTick(long)} callbacks.
      */
-    public PomodoroTimer(long millisInFuture, long countDownInterval) {
-        mMillisInFuture = millisInFuture;
-        mCountdownInterval = countDownInterval;
+    protected PomodoroTimer(long millisInFuture, long countDownInterval) {
+        this.millisInFuture = millisInFuture;
+        countdownInterval = countDownInterval;
     }
 
     /**
@@ -60,21 +94,21 @@ public abstract class PomodoroTimer {
      */
     public final void cancel() {
         mHandler.removeMessages(MSG);
-        mCancelled = true;
+        cancelled = true;
     }
 
     /**
      * Start the countdown.
      */
     public synchronized final PomodoroTimer start() {
-        if (mMillisInFuture <= 0) {
+        if (millisInFuture <= 0) {
             onFinish();
             return this;
         }
-        mStopTimeInFuture = SystemClock.elapsedRealtime() + mMillisInFuture;
+        stopTimeInFuture = SystemClock.elapsedRealtime() + millisInFuture;
         mHandler.sendMessage(mHandler.obtainMessage(MSG));
-        mCancelled = false;
-        mPaused = false;
+        cancelled = false;
+        paused = false;
         return this;
     }
 
@@ -82,19 +116,9 @@ public abstract class PomodoroTimer {
      * Pause the countdown.
      */
     public long pause() {
-        mPauseTime = mStopTimeInFuture - SystemClock.elapsedRealtime();
-        mPaused = true;
-        return mPauseTime;
-    }
-
-    /**
-     * Resume the countdown.
-     */
-    public long resume() {
-        mStopTimeInFuture = mPauseTime + SystemClock.elapsedRealtime();
-        mPaused = false;
-        mHandler.sendMessage(mHandler.obtainMessage(MSG));
-        return mPauseTime;
+        pauseTime = stopTimeInFuture - SystemClock.elapsedRealtime();
+        paused = true;
+        return pauseTime;
     }
 
     /**
@@ -111,40 +135,14 @@ public abstract class PomodoroTimer {
 
     private static final int MSG = 1;
 
-
-    // handles counting down
-    private Handler mHandler = new Handler() { // TODO this should be a static class
-
-        @Override
-        public void handleMessage(Message msg) {
-
-            synchronized (PomodoroTimer.this) {
-                if (!mPaused) {
-                    final long millisLeft = mStopTimeInFuture - SystemClock.elapsedRealtime();
-
-                    if (millisLeft <= 0) {
-                        onFinish();
-                    } else if (millisLeft < mCountdownInterval) {
-                        // no tick, just delay until done
-                        sendMessageDelayed(obtainMessage(MSG), millisLeft);
-                    } else {
-                        long lastTickStart = SystemClock.elapsedRealtime();
-                        onTick(millisLeft);
-
-                        // take into account user's onTick taking time to execute
-                        long delay = lastTickStart + mCountdownInterval - SystemClock.elapsedRealtime();
-
-                        // special case: user's onTick took more than interval to
-                        // complete, skip to next interval
-                        while (delay < 0) delay += mCountdownInterval;
-
-                        if (!mCancelled) {
-                            sendMessageDelayed(obtainMessage(MSG), delay);
-                        }
-                    }
-                }
-            }
-        }
-    };
+    /**
+     * Resume the countdown.
+     */
+    public long resume() {
+        stopTimeInFuture = pauseTime + SystemClock.elapsedRealtime();
+        paused = false;
+        mHandler.sendMessage(mHandler.obtainMessage(MSG));
+        return pauseTime;
+    }
 
 }

@@ -22,6 +22,8 @@ public interface IProgressBottomSheetViewPresenter {
 
     boolean isStatusIdle();
 
+    boolean isStatusResting();
+
     boolean hasTask();
 
     int getRemainingPomodoroCount();

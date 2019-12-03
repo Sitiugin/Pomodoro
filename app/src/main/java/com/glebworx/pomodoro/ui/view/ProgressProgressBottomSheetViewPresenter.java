@@ -158,6 +158,11 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     }
 
     @Override
+    public boolean isStatusResting() {
+        return progressStatus == PROGRESS_STATUS_RESTING;
+    }
+
+    @Override
     public boolean hasTask() {
         return taskModel != null;
     }
