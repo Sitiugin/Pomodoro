@@ -61,12 +61,7 @@ public class ProjectApi extends BaseApi {
         WriteBatch batch = getWriteBatch();
 
         DocumentReference projectDocument = getCollection(COLLECTION_PROJECTS).document(projectModel.getName());
-        CollectionReference tasksCollection = projectDocument.collection(COLLECTION_TASKS);
 
-        List<String> tasks = projectModel.getTasks();
-        for (String taskName: tasks) {
-            batch.delete(tasksCollection.document(taskName)); // TODO do this with a cloud function
-        }
         batch.delete(projectDocument);
 
         batch.set(
@@ -130,25 +125,30 @@ public class ProjectApi extends BaseApi {
 
     }
 
-    public static void deleteAllArchived(@Nullable OnCompleteListener<Void> onCompleteListener) {
+    public static void deleteProjects(List<ProjectModel> projectModels, @Nullable OnCompleteListener<Void> onCompleteListener) {
 
-        //TODO implement
-        /*WriteBatch batch = getWriteBatch();
+        WriteBatch batch = getWriteBatch();
 
-        DocumentReference projectDocument = getCollection(COLLECTION_PROJECTS).document(projectModel.getName());
+        CollectionReference projectsCollection = getCollection(COLLECTION_PROJECTS);
 
-        batch.delete(projectDocument);
+        for (ProjectModel projectModel : projectModels) {
 
-        batch.set(
-                getCollection(COLLECTION_HISTORY).document(),
-                new HistoryModel(projectModel.getName(), projectModel.getColorTag(), null, EVENT_PROJECT_DELETED)
-        );
+            DocumentReference projectDocument = projectsCollection.document(projectModel.getName());
+
+            batch.delete(projectDocument);
+
+            batch.set(
+                    getCollection(COLLECTION_HISTORY).document(),
+                    new HistoryModel(projectModel.getName(), projectModel.getColorTag(), null, EVENT_PROJECT_DELETED)
+            );
+
+        }
 
         if (onCompleteListener == null) {
             batch.commit();
         } else {
             batch.commit().addOnCompleteListener(onCompleteListener);
-        }*/
+        }
 
     }
 

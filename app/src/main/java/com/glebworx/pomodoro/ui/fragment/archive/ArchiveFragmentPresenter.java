@@ -12,6 +12,7 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.mikepenz.fastadapter.IItemAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -78,8 +79,12 @@ class ArchiveFragmentPresenter implements IArchiveFragmentPresenter {
     }
 
     @Override
-    public void deleteAll() {
-        ProjectApi.deleteAllArchived(task -> presenterListener.onDeleteAllFinished(task.isSuccessful()));
+    public void deleteProjects(List<ArchivedProjectItem> projectItemList) {
+        List<ProjectModel> projectModels = new ArrayList<>();
+        for (ArchivedProjectItem item : projectItemList) {
+            projectModels.add(item.getModel());
+        }
+        ProjectApi.deleteProjects(projectModels, task -> presenterListener.onDeleteAllFinished(task.isSuccessful()));
     }
 
     private IItemAdapter.Predicate<ArchivedProjectItem> getFilterPredicate() {

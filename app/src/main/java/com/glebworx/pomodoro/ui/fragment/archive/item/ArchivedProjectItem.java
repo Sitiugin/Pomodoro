@@ -27,7 +27,7 @@ import javax.annotation.Nonnull;
 
 public class ArchivedProjectItem
         extends AbstractItem<ArchivedProjectItem, ArchivedProjectItem.ViewHolder>
-        implements ISwipeable<ArchivedProjectItem, ArchivedProjectItem> {
+        implements ISwipeable<ArchivedProjectItem, ArchivedProjectItem> { // TODO must implement IModelItem<ProjectModel, ArchivedProjectItem>
 
 
     //                                                                                    ATTRIBUTES
@@ -87,13 +87,12 @@ public class ArchivedProjectItem
         return Objects.hash(super.hashCode(), model);
     }
 
-
-    //                                                                                       HELPERS
-
     public @Nonnull
     ProjectModel getModel() {
         return this.model;
     }
+
+    //                                                                                       HELPERS
 
     public @NonNull
     String getProjectName() {

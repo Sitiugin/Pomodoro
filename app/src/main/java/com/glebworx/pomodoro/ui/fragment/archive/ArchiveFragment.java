@@ -40,6 +40,7 @@ import com.mikepenz.fastadapter_extensions.swipe.SimpleSwipeCallback;
 import com.mikepenz.itemanimators.SlideInOutLeftAnimator;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.IntStream;
 
@@ -309,14 +310,14 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
         View.OnClickListener onClickListener = view -> {
             if (view.getId() == R.id.button_positive) {
                 dialog.dismiss();
-                presenter.deleteAll();
+                presenter.deleteProjects(projectAdapter.getModels());
             } else if (view.getId() == R.id.button_negative) {
                 dialog.dismiss();
             }
         };
         TextInputEditText editText = dialog.findViewById(R.id.edit_text_delete_confirmation);
         AppCompatButton positiveButton = dialog.findViewById(R.id.button_positive);
-        editText.setHint(Html.fromHtml(getString(R.string.archive_hint_confirm_delete), 0));
+        Objects.requireNonNull(editText).setHint(Html.fromHtml(getString(R.string.archive_hint_confirm_delete), 0));
         String deleteString = getString(R.string.archive_text_delete).toLowerCase();
         editText.addTextChangedListener(new TextWatcher() {
             @Override
