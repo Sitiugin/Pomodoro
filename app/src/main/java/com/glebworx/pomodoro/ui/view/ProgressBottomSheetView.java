@@ -47,12 +47,14 @@ public class ProgressBottomSheetView
     @BindView(R.id.text_view_pomodoro_number) AppCompatTextView pomodoroNumberTextView;
     @BindView(R.id.text_view_status) AppCompatTextView statusTextView;
     @BindView(R.id.text_view_time_remaining) AppCompatTextView timeRemainingTextView;
-    @BindView(R.id.button_start_stop) AppCompatImageButton startStopButton;
+    @BindView(R.id.button_start_stop_skip)
+    AppCompatImageButton startStopSkipButton;
     @BindView(R.id.button_sessions_remaining)
     AppCompatButton sessionsRemainingButton;
     @BindView(R.id.text_view_time_remaining_large) AppCompatTextView timeRemainingLargeTextView;
     @BindView(R.id.seek_arc) SeekArc seekArc;
-    @BindView(R.id.fab_start_stop_large) FloatingActionButton startStopFab;
+    @BindView(R.id.fab_start_stop_skip_large)
+    FloatingActionButton startStopSkipFab;
     @BindView(R.id.button_cancel) AppCompatImageButton cancelButton;
     @BindView(R.id.button_complete) AppCompatImageButton completeButton;
     @BindView(R.id.spin_kit_view_large)
@@ -101,15 +103,15 @@ public class ProgressBottomSheetView
         super.onVisibilityChanged(changedView, visibility);
         if (visibility == VISIBLE) {
             bottomSheetListener = (IProgressBottomSheetViewInteractionListener) context;
-            startStopButton.setOnClickListener(this);
-            startStopFab.setOnClickListener(this);
+            startStopSkipButton.setOnClickListener(this);
+            startStopSkipFab.setOnClickListener(this);
             cancelButton.setOnClickListener(this);
             completeButton.setOnClickListener(this);
             sessionsRemainingButton.setOnClickListener(this);
         } else {
             bottomSheetListener = null;
-            startStopButton.setOnClickListener(null);
-            startStopFab.setOnClickListener(null);
+            startStopSkipButton.setOnClickListener(null);
+            startStopSkipFab.setOnClickListener(null);
             cancelButton.setOnClickListener(null);
             completeButton.setOnClickListener(null);
             sessionsRemainingButton.setOnClickListener(null);
@@ -129,9 +131,9 @@ public class ProgressBottomSheetView
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.button_start_stop:
-            case R.id.fab_start_stop_large:
-                presenter.handleStartStopClick();
+            case R.id.button_start_stop_skip:
+            case R.id.fab_start_stop_skip_large:
+                presenter.handleStartStopSkipClick();
                 break;
             case R.id.button_cancel:
                 presenter.cancelSession((MainActivity) context);
@@ -161,8 +163,8 @@ public class ProgressBottomSheetView
     @Override
     public void onTaskStarted() {
         synchronized (object) {
-            startStopButton.setImageResource(R.drawable.ic_pause_highlight);
-            startStopFab.setImageResource(R.drawable.ic_pause_black);
+            startStopSkipButton.setImageResource(R.drawable.ic_pause_highlight);
+            startStopSkipFab.setImageResource(R.drawable.ic_pause_black);
             statusTextView.setText(R.string.bottom_sheet_text_status_active);
             spinKitView.setVisibility(VISIBLE);
         }
@@ -171,8 +173,8 @@ public class ProgressBottomSheetView
     @Override
     public void onTaskResumed() {
         synchronized (object) {
-            startStopButton.setImageResource(R.drawable.ic_pause_highlight);
-            startStopFab.setImageResource(R.drawable.ic_pause_black);
+            startStopSkipButton.setImageResource(R.drawable.ic_pause_highlight);
+            startStopSkipFab.setImageResource(R.drawable.ic_pause_black);
             statusTextView.setText(R.string.bottom_sheet_text_status_active);
             spinKitView.setVisibility(VISIBLE);
         }
@@ -181,8 +183,8 @@ public class ProgressBottomSheetView
     @Override
     public void onTaskPaused() {
         synchronized (object) {
-            startStopButton.setImageResource(R.drawable.ic_play_highlight);
-            startStopFab.setImageResource(R.drawable.ic_play_black);
+            startStopSkipButton.setImageResource(R.drawable.ic_play_highlight);
+            startStopSkipFab.setImageResource(R.drawable.ic_play_black);
             statusTextView.setText(R.string.bottom_sheet_text_status_paused);
             if (bottomSheetState == BottomSheetBehavior.STATE_EXPANDED) {
                 timeRemainingTextView.setText(timeRemainingLargeTextView.getText());
@@ -250,8 +252,8 @@ public class ProgressBottomSheetView
     @Override
     public void onClearViews() {
         synchronized (object) {
-            startStopButton.setImageResource(R.drawable.ic_play_highlight);
-            startStopFab.setImageResource(R.drawable.ic_play_black);
+            startStopSkipButton.setImageResource(R.drawable.ic_play_highlight);
+            startStopSkipFab.setImageResource(R.drawable.ic_play_black);
             statusTextView.setText(R.string.bottom_sheet_text_status_idle);
             timeRemainingLargeTextView.setText(null);
             timeRemainingTextView.setText(null);
@@ -322,8 +324,8 @@ public class ProgressBottomSheetView
                 ConstraintSet.END);
 
         // animate buttons
-        constraintSet.setVisibility(R.id.button_start_stop, ConstraintSet.INVISIBLE);
-        constraintSet.setVisibility(R.id.fab_start_stop_large, ConstraintSet.VISIBLE);
+        constraintSet.setVisibility(R.id.button_start_stop_skip, ConstraintSet.INVISIBLE);
+        constraintSet.setVisibility(R.id.fab_start_stop_skip_large, ConstraintSet.VISIBLE);
         constraintSet.setVisibility(R.id.button_cancel, ConstraintSet.VISIBLE);
         constraintSet.setVisibility(R.id.button_complete, ConstraintSet.VISIBLE);
 
@@ -377,8 +379,8 @@ public class ProgressBottomSheetView
         constraintSet.clear(R.id.text_view_task, ConstraintSet.END);
 
         // animate buttons
-        constraintSet.setVisibility(R.id.button_start_stop, ConstraintSet.VISIBLE);
-        constraintSet.setVisibility(R.id.fab_start_stop_large, ConstraintSet.INVISIBLE);
+        constraintSet.setVisibility(R.id.button_start_stop_skip, ConstraintSet.VISIBLE);
+        constraintSet.setVisibility(R.id.fab_start_stop_skip_large, ConstraintSet.INVISIBLE);
         constraintSet.setVisibility(R.id.button_cancel, ConstraintSet.INVISIBLE);
         constraintSet.setVisibility(R.id.button_complete, ConstraintSet.INVISIBLE);
 

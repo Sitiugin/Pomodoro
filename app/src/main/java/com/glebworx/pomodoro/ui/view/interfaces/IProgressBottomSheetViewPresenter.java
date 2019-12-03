@@ -14,7 +14,7 @@ public interface IProgressBottomSheetViewPresenter {
 
     void setTask(ProjectModel projectModel, TaskModel taskModel, int numberOfSessions);
 
-    void handleStartStopClick();
+    void handleStartStopSkipClick();
 
     void cancelSession(Activity activity);
 

@@ -120,27 +120,20 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     }
 
     @Override
-    public synchronized void handleStartStopClick() {
-        if (progressStatus == PROGRESS_STATUS_ACTIVE) {
-            progressStatus = PROGRESS_STATUS_PAUSED;
-            timer.pause();
-            presenterListener.onTaskPaused();
-            vibrationManager.vibrateShort();
-            notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_PAUSED, progress);
-        } else if (progressStatus == PROGRESS_STATUS_IDLE){
-            progressStatus = PROGRESS_STATUS_ACTIVE;
-            timer.cancel();
-            initTimer();
-            timer.start();
-            presenterListener.onTaskStarted();
-            vibrationManager.vibrateShort();
-            notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_WORKING, progress);
-        } else {
-            progressStatus = PROGRESS_STATUS_ACTIVE;
-            timer.resume();
-            presenterListener.onTaskResumed();
-            vibrationManager.vibrateShort();
-            notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_WORKING, progress);
+    public void handleStartStopSkipClick() {
+        switch (progressStatus) {
+            case PROGRESS_STATUS_ACTIVE:
+                pauseTimer();
+                break;
+            case PROGRESS_STATUS_IDLE:
+                startTimer();
+                break;
+            case PROGRESS_STATUS_PAUSED:
+                resumeTimer();
+                break;
+            case PROGRESS_STATUS_RESTING:
+                timer.onFinish();
+                break;
         }
     }
 
@@ -193,8 +186,9 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
                 @Override
                 public void onFinish() {
+                    isResting = false;
                     clearState();
-                    initTimer();
+                    startTimer();
                 }
             };
 
@@ -216,6 +210,32 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
         }
 
+    }
+
+    private synchronized void pauseTimer() {
+        progressStatus = PROGRESS_STATUS_PAUSED;
+        timer.pause();
+        presenterListener.onTaskPaused();
+        vibrationManager.vibrateShort();
+        notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_PAUSED, progress);
+    }
+
+    private synchronized void startTimer() {
+        progressStatus = PROGRESS_STATUS_ACTIVE;
+        timer.cancel();
+        initTimer();
+        timer.start();
+        presenterListener.onTaskStarted();
+        vibrationManager.vibrateShort();
+        notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_WORKING, progress);
+    }
+
+    private synchronized void resumeTimer() {
+        progressStatus = PROGRESS_STATUS_ACTIVE;
+        timer.resume();
+        presenterListener.onTaskResumed();
+        vibrationManager.vibrateShort();
+        notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_WORKING, progress);
     }
 
     private synchronized void completePomodoro() { // TODO need more logic here
