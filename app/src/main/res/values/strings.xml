@@ -122,6 +122,7 @@
     <string name="bottom_sheet_toast_pomodoro_completed_failed">Could not save progress. Check your connection and try again</string>
     <string name="bottom_sheet_toast_task_completed_success">Task completed</string>
     <string name="bottom_sheet_toast_task_completed_failed">Could not complete this task. Check your connection and try again</string>
+    <string name="bottom_sheet_toast_pomodoro_count_changed">Pomodoro count changed to %1$s</string>
 
 
     <!--                                                                                PROJECTS -->

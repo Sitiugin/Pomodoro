@@ -73,6 +73,7 @@ public class ProgressBottomSheetView
     //                                                                                    ATTRIBUTES
 
     private Context context;
+    private NumberFormat numberFormat = NumberFormat.getInstance(Locale.getDefault());
     private ConstraintSet constraintSet;
     private IProgressBottomSheetViewInteractionListener bottomSheetListener;
     private int bottomSheetState;
@@ -169,6 +170,8 @@ public class ProgressBottomSheetView
     @Override
     public synchronized void onPomodoroCountChanged(int completedPomodoroCount, int totalPomodoroCount) {
         updatePomodoroCountText(completedPomodoroCount, totalPomodoroCount);
+        String pomodoroCountText = context.getString(R.string.bottom_sheet_toast_pomodoro_count_changed, numberFormat.format(totalPomodoroCount));
+        Toast.makeText(context, pomodoroCountText, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -421,7 +424,6 @@ public class ProgressBottomSheetView
     }
 
     private void updatePomodoroCountText(int completedPomodoroCount, int totalPomodoroCount) {
-        NumberFormat numberFormat = NumberFormat.getInstance(Locale.getDefault());
         sessionsRemainingButton.setText(
                 context.getString(R.string.bottom_sheet_title_pomodoro_count,
                         numberFormat.format(completedPomodoroCount),
