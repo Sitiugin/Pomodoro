@@ -173,6 +173,9 @@ public interface IChart {
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
+                        if (chart.getData() == null) {
+                            return;
+                        }
                         if (chart.getData().getEntryCount() > 0) {
                             expandedChart.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                             IChart.rotateChart(expandedChart);
@@ -197,6 +200,9 @@ public interface IChart {
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
+                        if (chart.getData() == null) {
+                            return;
+                        }
                         if (chart.getData().getEntryCount() > 0) {
                             expandedChart.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                             IChart.rotateChart(expandedChart);
