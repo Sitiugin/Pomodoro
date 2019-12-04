@@ -21,8 +21,10 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_POMODORO_COMPLETED;
+import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_COMPLETED;
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_CREATED;
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_DELETED;
+import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_RESTORED;
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_UPDATED;
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_TASK_COMPLETED;
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_TASK_CREATED;
@@ -71,10 +73,6 @@ public class ReportHistoryItem extends AbstractItem<ReportHistoryItem, ReportHis
         return model;
     }
 
-    public String getId() {
-        return model.getId();
-    }
-
     public Date getTimestamp() {
         return model.getTimestamp();
     }
@@ -101,6 +99,14 @@ public class ReportHistoryItem extends AbstractItem<ReportHistoryItem, ReportHis
                 return context.getString(
                         R.string.report_history_title_project_deleted,
                         model.getName());
+            case EVENT_PROJECT_COMPLETED:
+                return context.getString(
+                        R.string.report_history_title_project_completed,
+                        model.getName());
+            case EVENT_PROJECT_RESTORED:
+                return context.getString(
+                        R.string.report_history_title_project_restored,
+                        model.getName());
             case EVENT_TASK_CREATED:
                 return context.getString(
                         R.string.report_history_title_task_added,
@@ -111,11 +117,6 @@ public class ReportHistoryItem extends AbstractItem<ReportHistoryItem, ReportHis
                         R.string.report_history_title_task_updated,
                         model.getTaskName(),
                         model.getName());
-            case EVENT_TASK_COMPLETED:
-                return context.getString(
-                        R.string.report_history_title_task_completed,
-                        model.getTaskName(),
-                        model.getName());
             case EVENT_TASK_DELETED:
                 return context.getString(
                         R.string.report_history_title_task_deleted,
@@ -124,6 +125,11 @@ public class ReportHistoryItem extends AbstractItem<ReportHistoryItem, ReportHis
             case EVENT_POMODORO_COMPLETED:
                 return context.getString(
                         R.string.report_history_title_pomodoro_completed,
+                        model.getTaskName(),
+                        model.getName());
+            case EVENT_TASK_COMPLETED:
+                return context.getString(
+                        R.string.report_history_title_task_completed,
                         model.getTaskName(),
                         model.getName());
             default:

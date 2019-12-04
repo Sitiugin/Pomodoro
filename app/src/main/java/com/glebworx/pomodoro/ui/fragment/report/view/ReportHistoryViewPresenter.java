@@ -30,7 +30,7 @@ public class ReportHistoryViewPresenter implements IReportHistoryViewPresenter {
     private DocumentSnapshot startAfterSnapshot;
     private CompositeDisposable compositeDisposable;
 
-    public ReportHistoryViewPresenter(@NonNull IReportHistoryView presenterListener) {
+    ReportHistoryViewPresenter(@NonNull IReportHistoryView presenterListener) {
         this.presenterListener = presenterListener;
         init();
     }

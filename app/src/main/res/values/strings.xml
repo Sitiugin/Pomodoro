@@ -261,6 +261,8 @@
     <string name="report_history_title_project_added" formatted="true"><![CDATA[Project <b>%1$s</b> added]]></string>
     <string name="report_history_title_project_updated" formatted="true"><![CDATA[Project <b>%1$s</b> updated]]></string>
     <string name="report_history_title_project_deleted" formatted="true"><![CDATA[Project <b>%1$s</b> deleted]]></string>
+    <string name="report_history_title_project_completed" formatted="true"><![CDATA[Project <b>%1$s</b> completed]]></string>
+    <string name="report_history_title_project_restored" formatted="true"><![CDATA[Project <b>%1$s</b> restored]]></string>
     <string name="report_history_title_task_added" formatted="true"><![CDATA[Task <b>%1$s</b> added to project <b>%2$s</b>]]></string>
     <string name="report_history_title_task_updated" formatted="true"><![CDATA[Task <b>%1$s</b> in project <b>%2$s</b> updated]]></string>
     <string name="report_history_title_task_completed" formatted="true"><![CDATA[Task <b>%1$s</b> in project <b>%2$s</b> completed]]></string>

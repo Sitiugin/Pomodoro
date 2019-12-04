@@ -42,7 +42,7 @@ public class HistoryModel extends AbstractModel {
 
     //                                                                                    ATTRIBUTES
 
-    private final String id;
+    private final String id; // TODO why do we need id?
     private String colorTag;
     private String taskName;
     private String eventType;
