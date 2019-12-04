@@ -57,6 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/margin_content"
                     android:src="@drawable/ic_delete_red"
+                    android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="@+id/search_view"
                     app:layout_constraintEnd_toStartOf="@+id/button_close"
                     app:layout_constraintTop_toTopOf="@+id/search_view" />

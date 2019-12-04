@@ -140,6 +140,7 @@ class ArchiveFragmentPresenter implements IArchiveFragmentPresenter {
                         presenterListener.onItemDeleted(item);
                         break;
                 }
+                presenterListener.onUpdateDeleteAllButtonState();
             }
 
             @Override

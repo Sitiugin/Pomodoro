@@ -169,6 +169,17 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
     }
 
     @Override
+    public void onUpdateDeleteAllButtonState() {
+        if (projectAdapter.getAdapterItemCount() > 0) {
+            if (deleteAllButton.getVisibility() == View.INVISIBLE) {
+                deleteAllButton.setVisibility(View.VISIBLE);
+            }
+        } else if (deleteAllButton.getVisibility() == View.VISIBLE) {
+            deleteAllButton.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
     public synchronized void onDeleteProjectFailed(int position) {
         fastAdapter.notifyAdapterItemChanged(position);
         Toast.makeText(context, R.string.archive_toast_project_delete_failed, LENGTH_LONG).show();

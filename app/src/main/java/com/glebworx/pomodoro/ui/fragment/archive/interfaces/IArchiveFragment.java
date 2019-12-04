@@ -13,6 +13,8 @@ public interface IArchiveFragment {
 
     void onItemDeleted(ArchivedProjectItem item);
 
+    void onUpdateDeleteAllButtonState();
+
     void onDeleteProjectFailed(int position);
 
     void onRestoreProjectFailed(int position);
