@@ -176,6 +176,16 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     }
 
     @Override
+    public int getCompletedPomodoroCount() {
+        return completedPomodoroCount;
+    }
+
+    @Override
+    public String getTaskName() {
+        return taskModel.getName();
+    }
+
+    @Override
     public int getRemainingPomodoroCount() {
         return totalPomodoroCount - completedPomodoroCount;
     }

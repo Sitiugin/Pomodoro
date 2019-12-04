@@ -33,7 +33,7 @@ public abstract class PomodoroTimer {
     /**
      * The interval in millis that the user receives callbacks
      */
-    private final long countdownInterval;
+    private final long countDownInterval;
 
     private long stopTimeInFuture;
 
@@ -54,7 +54,7 @@ public abstract class PomodoroTimer {
      */
     protected PomodoroTimer(long millisInFuture, long countDownInterval) {
         this.millisInFuture = millisInFuture;
-        countdownInterval = countDownInterval;
+        this.countDownInterval = countDownInterval;
     }
 
     /**
@@ -127,8 +127,8 @@ public abstract class PomodoroTimer {
         return stopTimeInFuture;
     }
 
-    private long getCountdownInterval() {
-        return countdownInterval;
+    private long getCountDownInterval() {
+        return countDownInterval;
     }
 
     private static class PomodoroHandler extends Handler {
@@ -154,7 +154,7 @@ public abstract class PomodoroTimer {
         private void handleMessage() {
 
             final long millisLeft = timer.getStopTimeInFuture() - SystemClock.elapsedRealtime();
-            final long countdownInterval = timer.getCountdownInterval();
+            final long countdownInterval = timer.getCountDownInterval();
 
             if (millisLeft <= 0) {
 

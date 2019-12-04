@@ -1,11 +1,16 @@
 package com.glebworx.pomodoro.ui.view;
 
+import android.app.Activity;
 import android.content.Context;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.NumberPicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -20,18 +25,22 @@ import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetView;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewInteractionListener;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewPresenter;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
+import com.glebworx.pomodoro.util.manager.DialogManager;
+import com.glebworx.pomodoro.util.manager.NumberPickerManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.triggertrap.seekarc.SeekArc;
 
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
+import static com.glebworx.pomodoro.util.constants.Constants.MAX_POMODOROS_SESSION;
 import static com.glebworx.pomodoro.util.manager.DateTimeManager.POMODORO_LENGTH;
 
 
@@ -410,7 +419,49 @@ public class ProgressBottomSheetView
     }
 
     private void showSessionCountDialog() {
-        // TODO implement
+
+        if (!(context instanceof Activity)) {
+            return;
+        }
+
+        AlertDialog alertDialog = DialogManager.showDialog(
+                (Activity) context,
+                R.id.container_main,
+                R.layout.dialog_set_task);
+
+        int initialPomodoroCount = presenter.getCompletedPomodoroCount();
+        if (initialPomodoroCount < 1) {
+            initialPomodoroCount = 1;
+        } else if (initialPomodoroCount > MAX_POMODOROS_SESSION) {
+            initialPomodoroCount = MAX_POMODOROS_SESSION;
+        }
+        NumberPicker picker = alertDialog.findViewById(R.id.number_picker);
+        NumberPickerManager.initPicker(context, Objects.requireNonNull(picker), initialPomodoroCount, MAX_POMODOROS_SESSION);
+
+        AppCompatButton positiveButton = alertDialog.findViewById(R.id.button_positive);
+
+        ((AppCompatTextView) Objects.requireNonNull(
+                alertDialog.findViewById(R.id.text_view_title))).setText(R.string.bottom_sheet_title_change_pomodoro_count);
+        Spanned description = Html.fromHtml(
+                context.getString(R.string.bottom_sheet_text_change_pomodoro_count, presenter.getTaskName()), 0);
+        ((AppCompatTextView) Objects.requireNonNull(
+                alertDialog.findViewById(R.id.text_view_description))).setText(description);
+        Objects.requireNonNull(positiveButton).setText(R.string.main_title_replace_task);
+
+        picker.setValue(initialPomodoroCount);
+
+        View.OnClickListener onClickListener = view -> {
+            if (view.getId() == R.id.button_positive) {
+                //setTask(projectModel, taskModel, picker.getValue()); // TODO
+                alertDialog.dismiss();
+            } else if (view.getId() == R.id.button_negative) {
+                alertDialog.dismiss();
+            }
+        };
+
+        ((AppCompatButton) Objects.requireNonNull(alertDialog.findViewById(R.id.button_negative))).setOnClickListener(onClickListener);
+        Objects.requireNonNull(positiveButton).setOnClickListener(onClickListener);
+
     }
 
     public IProgressBottomSheetViewPresenter getPresenter() {

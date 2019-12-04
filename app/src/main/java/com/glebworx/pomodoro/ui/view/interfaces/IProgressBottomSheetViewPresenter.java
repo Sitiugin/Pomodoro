@@ -26,6 +26,10 @@ public interface IProgressBottomSheetViewPresenter {
 
     boolean hasTask();
 
+    String getTaskName();
+
+    int getCompletedPomodoroCount();
+
     int getRemainingPomodoroCount();
 
     void clearNotifications();

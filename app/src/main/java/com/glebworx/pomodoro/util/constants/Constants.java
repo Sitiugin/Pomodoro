@@ -10,8 +10,7 @@ public class Constants {
     public static final String PATTERN_DATE = "EEEE MMM d, y";
     public static final String PATTERN_CALENDAR = "MMM y";
 
-    public static final String FORMAT_DECIMAL_1PT = "%.1f";
-    public static final String FORMAT_DECIMAL_2PT = "%.2f";
+    public static final int MAX_POMODOROS_SESSION = 10;
 
     public static final int ANIM_DURATION = 400;
 

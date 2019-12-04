@@ -45,6 +45,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static com.glebworx.pomodoro.util.constants.Constants.MAX_POMODOROS_SESSION;
+
 
 // TODO observable error - log
 public class MainActivity
@@ -231,7 +233,7 @@ public class MainActivity
                 R.layout.dialog_set_task);
 
         NumberPicker picker = alertDialog.findViewById(R.id.number_picker);
-        NumberPickerManager.initPicker(MainActivity.this, Objects.requireNonNull(picker), 1, 10);
+        NumberPickerManager.initPicker(MainActivity.this, Objects.requireNonNull(picker), 1, MAX_POMODOROS_SESSION);
 
         AppCompatButton positiveButton = alertDialog.findViewById(R.id.button_positive);
 
@@ -249,8 +251,8 @@ public class MainActivity
             int pomodoroCount = bottomSheetView.getPresenter().getRemainingPomodoroCount();
             if (pomodoroCount < 1) {
                 pomodoroCount = 1;
-            } else if (pomodoroCount > 10) {
-                pomodoroCount = 10;
+            } else if (pomodoroCount > MAX_POMODOROS_SESSION) {
+                pomodoroCount = MAX_POMODOROS_SESSION;
             }
             picker.setValue(pomodoroCount);
 
