@@ -168,10 +168,16 @@ public class ProgressBottomSheetView
     }
 
     @Override
-    public synchronized void onPomodoroCountChanged(int completedPomodoroCount, int totalPomodoroCount) {
-        updatePomodoroCountText(completedPomodoroCount, totalPomodoroCount);
-        String pomodoroCountText = context.getString(R.string.bottom_sheet_toast_pomodoro_count_changed, numberFormat.format(totalPomodoroCount));
-        Toast.makeText(context, pomodoroCountText, Toast.LENGTH_SHORT).show();
+    public synchronized void onPomodoroCountChanged(int completedPomodoroCount,
+                                                    int totalPomodoroCount,
+                                                    boolean isSuccessful) {
+        if (isSuccessful) {
+            updatePomodoroCountText(completedPomodoroCount, totalPomodoroCount);
+            String pomodoroCountText = context.getString(R.string.bottom_sheet_toast_pomodoro_count_change_success, numberFormat.format(totalPomodoroCount));
+            Toast.makeText(context, pomodoroCountText, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, R.string.bottom_sheet_toast_pomodoro_count_change_failed, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

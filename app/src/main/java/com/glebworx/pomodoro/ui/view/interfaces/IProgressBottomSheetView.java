@@ -4,7 +4,7 @@ public interface IProgressBottomSheetView {
 
     void onTaskSet(String name, int totalPomodoroCount);
 
-    void onPomodoroCountChanged(int completedPomodoroCount, int totalPomodoroCount);
+    void onPomodoroCountChanged(int completedPomodoroCount, int totalPomodoroCount, boolean isSuccessful);
 
     void onTaskStarted();
 
