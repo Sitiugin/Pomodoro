@@ -218,10 +218,10 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
                 @Override
                 public void onFinish() {
                     completePomodoro();
-                    clearState();
                     if (completedPomodoroCount >= totalPomodoroCount) {
                         closeSession();
                     } else {
+                        clearState();
                         isResting = true;
                         progressStatus = PROGRESS_STATUS_RESTING;
                         initTimer();
@@ -280,6 +280,8 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     }
 
     private synchronized void closeSession() {
+
+        clearState();
 
         if (taskEventListenerRegistration != null) {
             taskEventListenerRegistration.remove();
