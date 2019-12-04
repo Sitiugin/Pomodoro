@@ -20,6 +20,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 
+import androidx.annotation.NonNull;
+
 
 public abstract class PomodoroTimer {
 
@@ -40,40 +42,8 @@ public abstract class PomodoroTimer {
     private boolean cancelled = false;
 
     private boolean paused = false;
-    // handles counting down
-    private Handler mHandler = new Handler() { // TODO this should be a static class
 
-        @Override
-        public void handleMessage(Message msg) {
-
-            synchronized (PomodoroTimer.this) {
-                if (!paused) {
-                    final long millisLeft = stopTimeInFuture - SystemClock.elapsedRealtime();
-
-                    if (millisLeft <= 0) {
-                        onFinish();
-                    } else if (millisLeft < countdownInterval) {
-                        // no tick, just delay until done
-                        sendMessageDelayed(obtainMessage(MSG), millisLeft);
-                    } else {
-                        long lastTickStart = SystemClock.elapsedRealtime();
-                        onTick(millisLeft);
-
-                        // take into account user's onTick taking time to execute
-                        long delay = lastTickStart + countdownInterval - SystemClock.elapsedRealtime();
-
-                        // special case: user's onTick took more than interval to
-                        // complete, skip to next interval
-                        while (delay < 0) delay += countdownInterval;
-
-                        if (!cancelled) {
-                            sendMessageDelayed(obtainMessage(MSG), delay);
-                        }
-                    }
-                }
-            }
-        }
-    };
+    private Handler handler = new PomodoroHandler(this); // handles counting down
 
     /**
      * @param millisInFuture The number of millis in the future from the call
@@ -93,7 +63,7 @@ public abstract class PomodoroTimer {
      * Do not call it from inside CountDownTimer threads
      */
     public final void cancel() {
-        mHandler.removeMessages(MSG);
+        handler.removeMessages(MSG);
         cancelled = true;
     }
 
@@ -106,7 +76,7 @@ public abstract class PomodoroTimer {
             return this;
         }
         stopTimeInFuture = SystemClock.elapsedRealtime() + millisInFuture;
-        mHandler.sendMessage(mHandler.obtainMessage(MSG));
+        handler.sendMessage(handler.obtainMessage(MSG));
         cancelled = false;
         paused = false;
         return this;
@@ -141,8 +111,79 @@ public abstract class PomodoroTimer {
     public long resume() {
         stopTimeInFuture = pauseTime + SystemClock.elapsedRealtime();
         paused = false;
-        mHandler.sendMessage(mHandler.obtainMessage(MSG));
+        handler.sendMessage(handler.obtainMessage(MSG));
         return pauseTime;
+    }
+
+    private boolean isPaused() {
+        return paused;
+    }
+
+    private boolean isCancelled() {
+        return cancelled;
+    }
+
+    private long getStopTimeInFuture() {
+        return stopTimeInFuture;
+    }
+
+    private long getCountdownInterval() {
+        return countdownInterval;
+    }
+
+    private static class PomodoroHandler extends Handler {
+
+        private final PomodoroTimer timer;
+
+        PomodoroHandler(PomodoroTimer timer) {
+            this.timer = timer;
+        }
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+
+            synchronized (timer) {
+                if (timer.isPaused()) {
+                    return;
+                }
+                handleMessage();
+            }
+
+        }
+
+        private void handleMessage() {
+
+            final long millisLeft = timer.getStopTimeInFuture() - SystemClock.elapsedRealtime();
+            final long countdownInterval = timer.getCountdownInterval();
+
+            if (millisLeft <= 0) {
+
+                timer.onFinish();
+
+            } else if (millisLeft < countdownInterval) {
+
+                // no tick, just delay until done
+                sendMessageDelayed(obtainMessage(MSG), millisLeft);
+
+            } else {
+
+                long lastTickStart = SystemClock.elapsedRealtime();
+                timer.onTick(millisLeft);
+
+                // take into account user's onTick taking time to execute
+                long delay = lastTickStart + countdownInterval - SystemClock.elapsedRealtime();
+
+                // special case: user's onTick took more than interval to
+                // complete, skip to next interval
+                while (delay < 0) delay += countdownInterval;
+
+                if (!timer.isCancelled()) {
+                    sendMessageDelayed(obtainMessage(MSG), delay);
+                }
+
+            }
+
+        }
     }
 
 }
