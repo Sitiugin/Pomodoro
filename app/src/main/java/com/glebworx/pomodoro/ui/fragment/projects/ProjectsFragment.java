@@ -207,7 +207,6 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setItemAnimator(new SlideInOutLeftAnimator(recyclerView));
-        //OverScrollDecoratorHelper.setUpOverScroll(recyclerView, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
 
         headerAdapter = new ItemAdapter<>();
         headerAdapter.add(new ProjectHeaderItem(view -> {

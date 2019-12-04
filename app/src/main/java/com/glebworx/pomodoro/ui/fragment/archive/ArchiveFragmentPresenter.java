@@ -122,8 +122,8 @@ class ArchiveFragmentPresenter implements IArchiveFragmentPresenter {
     private io.reactivex.Observer<DocumentChange> getProjectEventObserver() {
         return new io.reactivex.Observer<DocumentChange>() {
             @Override
-            public void onSubscribe(Disposable d) {
-
+            public void onSubscribe(Disposable disposable) {
+                compositeDisposable.add(disposable);
             }
 
             @Override

@@ -169,7 +169,10 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
     }
 
     @Override
-    public void onUpdateDeleteAllButtonState() {
+    public synchronized void onUpdateDeleteAllButtonState() {
+        if (deleteAllButton == null) {
+            return;
+        }
         if (projectAdapter.getAdapterItemCount() > 0) {
             if (deleteAllButton.getVisibility() == View.INVISIBLE) {
                 deleteAllButton.setVisibility(View.VISIBLE);
@@ -209,7 +212,6 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.addItemDecoration(new ZeroStateDecoration(R.layout.view_empty_projects));
         recyclerView.setItemAnimator(new SlideInOutLeftAnimator(recyclerView));
-        //OverScrollDecoratorHelper.setUpOverScroll(recyclerView, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
 
         ItemAdapter<ArchiveHeaderItem> headerAdapter = new ItemAdapter<>();
         headerAdapter.add(new ArchiveHeaderItem());

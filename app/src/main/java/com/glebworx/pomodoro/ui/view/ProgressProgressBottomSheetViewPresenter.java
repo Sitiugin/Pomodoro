@@ -218,6 +218,15 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
                 @Override
                 public void onFinish() {
                     completePomodoro();
+                    clearState();
+                    if (completedPomodoroCount >= totalPomodoroCount) {
+                        closeSession();
+                    } else {
+                        isResting = true;
+                        progressStatus = PROGRESS_STATUS_RESTING;
+                        initTimer();
+                        startTimer();
+                    }
                 }
             };
 
@@ -258,14 +267,6 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
         completedPomodoroCount++;
 
-        if (completedPomodoroCount >= totalPomodoroCount) {
-            clearState();
-            closeSession();
-        } else {
-            clearState();
-            startRestingPeriod();
-        }
-
         if (taskModel != null) {
             TaskApi.completePomodoro(
                     projectModel,
@@ -294,12 +295,6 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
         presenterListener.onHideBottomSheet();
 
-    }
-
-    private void startRestingPeriod() {
-        isResting = true;
-        progressStatus = PROGRESS_STATUS_RESTING;
-        initTimer();
     }
 
     private void showCancelSessionDialog(Activity activity) {

@@ -174,8 +174,8 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
     private io.reactivex.Observer<DocumentChange> getProjectEventObserver() {
         return new io.reactivex.Observer<DocumentChange>() {
             @Override
-            public void onSubscribe(Disposable d) {
-
+            public void onSubscribe(Disposable disposable) {
+                compositeDisposable.add(disposable);
             }
 
             @Override
@@ -208,6 +208,9 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
 
     private Observable<Integer> getTodayObservable() {
         return Observable.create(emitter -> {
+            if (emitter.isDisposed()) {
+                return;
+            }
             ListenerRegistration listenerRegistration = TaskApi.addTodayTasksEventListener(getObservableEventListener(emitter), false);
             emitter.setCancellable(listenerRegistration::remove);
         });
@@ -215,6 +218,9 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
 
     private Observable<Integer> getThisWeekObservable() {
         return Observable.create(emitter -> {
+            if (emitter.isDisposed()) {
+                return;
+            }
             ListenerRegistration listenerRegistration = TaskApi.addThisWeekTasksEventListener(getObservableEventListener(emitter), false);
             emitter.setCancellable(listenerRegistration::remove);
         });
@@ -222,6 +228,9 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
 
     private Observable<Integer> getOverdueObservable() {
         return Observable.create(emitter -> {
+            if (emitter.isDisposed()) {
+                return;
+            }
             ListenerRegistration listenerRegistration = TaskApi.addOverdueTasksEventListener(getObservableEventListener(emitter), false);
             emitter.setCancellable(listenerRegistration::remove);
         });
@@ -241,16 +250,6 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
             }
             emitter.onNext(querySnapshot.size());
         };
-    }
-
-    private Observable<Integer> getObservable(QuerySnapshot snapshot) {
-        return Observable.create(emitter -> {
-            if (emitter.isDisposed()) {
-                return;
-            }
-            emitter.onNext(snapshot.getDocuments().size());
-            emitter.onComplete();
-        });
     }
 
     private io.reactivex.Observer<Integer> getTodayTasksObserver() {
