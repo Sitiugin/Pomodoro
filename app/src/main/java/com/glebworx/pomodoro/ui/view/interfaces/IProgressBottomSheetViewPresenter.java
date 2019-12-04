@@ -14,6 +14,8 @@ public interface IProgressBottomSheetViewPresenter {
 
     void setTask(ProjectModel projectModel, TaskModel taskModel, int numberOfSessions);
 
+    void changePomodoroCount(int newPomodoroCount);
+
     void handleStartStopSkipClick();
 
     void cancelSession(Activity activity);

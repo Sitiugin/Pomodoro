@@ -128,6 +128,12 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     }
 
     @Override
+    public void changePomodoroCount(int newPomodoroCount) {
+        this.totalPomodoroCount = newPomodoroCount;
+        presenterListener.onPomodoroCountChanged(this.completedPomodoroCount, this.totalPomodoroCount);
+    }
+
+    @Override
     public void handleStartStopSkipClick() {
         switch (progressStatus) {
             case PROGRESS_STATUS_ACTIVE:

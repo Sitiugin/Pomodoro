@@ -2,7 +2,9 @@ package com.glebworx.pomodoro.ui.view.interfaces;
 
 public interface IProgressBottomSheetView {
 
-    void onTaskSet(String name, int numberOfSessions);
+    void onTaskSet(String name, int totalPomodoroCount);
+
+    void onPomodoroCountChanged(int completedPomodoroCount, int totalPomodoroCount);
 
     void onTaskStarted();
 
@@ -27,5 +29,7 @@ public interface IProgressBottomSheetView {
     void expandBottomSheetViews();
 
     void collapseBottomSheetViews();
+
+    IProgressBottomSheetViewPresenter getPresenter();
 
 }

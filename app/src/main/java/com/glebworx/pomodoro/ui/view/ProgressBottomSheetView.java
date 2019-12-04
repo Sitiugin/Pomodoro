@@ -156,14 +156,19 @@ public class ProgressBottomSheetView
     }
 
     @Override
-    public synchronized void onTaskSet(String name, int numberOfSessions) {
+    public synchronized void onTaskSet(String name, int totalPomodoroCount) {
         taskTextView.setText(name);
         statusTextView.setText(R.string.bottom_sheet_text_status_idle);
         String timeRemainingString = DateTimeManager.formatMMSSString(context, POMODORO_LENGTH * 60);
         timeRemainingLargeTextView.setText(timeRemainingString);
         timeRemainingTextView.setText(timeRemainingString);
-        updateSessionsRemainingText(0, numberOfSessions);
+        updatePomodoroCountText(0, totalPomodoroCount);
         spinKitView.setVisibility(INVISIBLE);
+    }
+
+    @Override
+    public synchronized void onPomodoroCountChanged(int completedPomodoroCount, int totalPomodoroCount) {
+        updatePomodoroCountText(completedPomodoroCount, totalPomodoroCount);
     }
 
     @Override
@@ -211,7 +216,7 @@ public class ProgressBottomSheetView
 
     @Override
     public void onPomodoroCompleted(boolean isSuccessful, int totalSessions, int completedSessions) {
-        updateSessionsRemainingText(completedSessions, totalSessions);
+        updatePomodoroCountText(completedSessions, totalSessions);
         Toast.makeText(
                 context,
                 isSuccessful
@@ -399,6 +404,11 @@ public class ProgressBottomSheetView
 
     }
 
+    @Override
+    public IProgressBottomSheetViewPresenter getPresenter() {
+        return presenter;
+    }
+
 
     //                                                                                       HELPERS
 
@@ -410,12 +420,12 @@ public class ProgressBottomSheetView
         this.constraintSet = new ConstraintSet();
     }
 
-    private void updateSessionsRemainingText(int completedSessions, int totalSessions) {
+    private void updatePomodoroCountText(int completedPomodoroCount, int totalPomodoroCount) {
         NumberFormat numberFormat = NumberFormat.getInstance(Locale.getDefault());
         sessionsRemainingButton.setText(
                 context.getString(R.string.bottom_sheet_title_pomodoro_count,
-                        numberFormat.format(completedSessions),
-                        numberFormat.format(totalSessions)));
+                        numberFormat.format(completedPomodoroCount),
+                        numberFormat.format(totalPomodoroCount)));
     }
 
     private void showSessionCountDialog() {
@@ -452,7 +462,7 @@ public class ProgressBottomSheetView
 
         View.OnClickListener onClickListener = view -> {
             if (view.getId() == R.id.button_positive) {
-                //setTask(projectModel, taskModel, picker.getValue()); // TODO
+                presenter.changePomodoroCount(picker.getValue());
                 alertDialog.dismiss();
             } else if (view.getId() == R.id.button_negative) {
                 alertDialog.dismiss();
@@ -462,10 +472,6 @@ public class ProgressBottomSheetView
         ((AppCompatButton) Objects.requireNonNull(alertDialog.findViewById(R.id.button_negative))).setOnClickListener(onClickListener);
         Objects.requireNonNull(positiveButton).setOnClickListener(onClickListener);
 
-    }
-
-    public IProgressBottomSheetViewPresenter getPresenter() {
-        return presenter;
     }
 
 }
