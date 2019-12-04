@@ -310,7 +310,7 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
         View.OnClickListener onClickListener = view -> {
             if (view.getId() == R.id.button_positive) {
                 dialog.dismiss();
-                presenter.deleteProjects(projectAdapter.getModels());
+                presenter.deleteProjects(projectAdapter.getAdapterItems());
             } else if (view.getId() == R.id.button_negative) {
                 dialog.dismiss();
             }

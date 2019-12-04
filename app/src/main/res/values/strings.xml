@@ -288,7 +288,7 @@
     <string name="archive_toast_project_delete_failed">Failed to delete project. Please try again later.</string>
     <string name="archive_toast_project_restore_success">Project restored</string>
     <string name="archive_toast_project_restore_failed">Failed to restore project. Please try again later.</string>
-    <string name="archive_toast_delete_all_success">All archive projects deleted</string>
+    <string name="archive_toast_delete_all_success">All archived projects deleted</string>
     <string name="archive_toast_delete_all_failed">Failed to delete archived projects. Please try again later.</string>
 
 
