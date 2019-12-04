@@ -42,6 +42,8 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_HIGHLIGHT_HEX;
+
 public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresenter {
 
     private @NonNull
@@ -300,7 +302,12 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
             if (dataSet == null) {
                 entries = new ArrayList<>();
                 dataSet = new LineDataSet(entries, projectName);
-                IChart.initDataSet(dataSet, ColorConstants.rgb(model.getColorTag()));
+                String colorTag = model.getColorTag();
+                if (colorTag == null) {
+                    IChart.initDataSet(dataSet, ColorConstants.rgb(COLOR_HIGHLIGHT_HEX));
+                } else {
+                    IChart.initDataSet(dataSet, ColorConstants.rgb(model.getColorTag()));
+                }
                 dataSetMap.put(projectName, dataSet);
             } else {
                 entries = dataSet.getValues();
@@ -381,7 +388,7 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
         }
 
         BarDataSet dataSet = new BarDataSet(entries, null);
-        IChart.initDataSet(dataSet, ColorConstants.rgb(ColorConstants.COLOR_HIGHLIGHT_HEX));
+        IChart.initDataSet(dataSet, ColorConstants.rgb(COLOR_HIGHLIGHT_HEX));
 
         BarData barData = new BarData(dataSet);
         barData.setValueFormatter(new IChart.AxisEntryYFormatter());
