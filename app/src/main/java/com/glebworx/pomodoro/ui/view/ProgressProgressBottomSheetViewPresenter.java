@@ -44,6 +44,9 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
     private static final int DURATION_PERCENT = POMODORO_LENGTH * 600;
 
+
+    //                                                                                    ATTRIBUTES
+
     private IProgressBottomSheetView presenterListener;
     private ProjectModel projectModel;
     private TaskModel taskModel;
@@ -59,12 +62,17 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     private ListenerRegistration taskEventListenerRegistration;
     private CompositeDisposable compositeDisposable;
 
+
+    //                                                                                  CONSTRUCTORS
+
     ProgressProgressBottomSheetViewPresenter(@NonNull IProgressBottomSheetView presenterListener, Context context) {
         this.presenterListener = presenterListener;
         init(context);
         initTimer();
     }
 
+
+    //                                                                                    OVERRIDDEN
 
     @Override
     public void init(Context context) {
@@ -217,6 +225,9 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
     }
 
+
+    //                                                                                       HELPERS
+
     private synchronized void pauseTimer() {
         progressStatus = PROGRESS_STATUS_PAUSED;
         timer.pause();
@@ -337,8 +348,6 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
         int progressTemp = progress;
 
-        closeSession();
-
         if (taskModel != null) {
             TaskApi.completeTask(
                     projectModel,
@@ -346,6 +355,8 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
                     progressTemp / 4,
                     task -> presenterListener.onTaskCompleted(task.isSuccessful()));
         }
+
+        closeSession();
 
         vibrationManager.vibrateLong();
 

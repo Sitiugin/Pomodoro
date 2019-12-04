@@ -66,6 +66,7 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
+
     //                                                                                    ATTRIBUTES
 
     private Context context;
@@ -147,45 +148,35 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
     }
 
     @Override
-    public void onItemAdded(ArchivedProjectItem item) {
-        synchronized (this) {
-            projectAdapter.add(item);
+    public synchronized void onItemAdded(ArchivedProjectItem item) {
+        projectAdapter.add(item);
+    }
+
+    @Override
+    public synchronized void onItemModified(ArchivedProjectItem item) {
+        int index = getProjectItemIndex(item.getProjectName());
+        if (index != -1) {
+            projectAdapter.set(index + 1, item); // add 1 because of header
         }
     }
 
     @Override
-    public void onItemModified(ArchivedProjectItem item) {
-        synchronized (this) {
-            int index = getProjectItemIndex(item.getProjectName());
-            if (index != -1) {
-                projectAdapter.set(index + 1, item); // add 1 because of header
-            }
+    public synchronized void onItemDeleted(ArchivedProjectItem item) {
+        int index = getProjectItemIndex(item.getProjectName());
+        if (index != -1) {
+            projectAdapter.remove(index + 1); // add 1 because of header
         }
     }
 
     @Override
-    public void onItemDeleted(ArchivedProjectItem item) {
-        synchronized (this) {
-            int index = getProjectItemIndex(item.getProjectName());
-            if (index != -1) {
-                projectAdapter.remove(index + 1); // add 1 because of header
-            }
-        }
-    }
-
-    @Override
-    public void onDeleteProjectFailed(int position) {
-        synchronized (this) {
-            fastAdapter.notifyAdapterItemChanged(position);
-        }
+    public synchronized void onDeleteProjectFailed(int position) {
+        fastAdapter.notifyAdapterItemChanged(position);
         Toast.makeText(context, R.string.archive_toast_project_delete_failed, LENGTH_LONG).show();
     }
 
     @Override
-    public void onRestoreProjectFailed(int position) {
-        synchronized (this) {
-            fastAdapter.notifyAdapterItemChanged(position);
-        }
+    public synchronized void onRestoreProjectFailed(int position) {
+        fastAdapter.notifyAdapterItemChanged(position);
         Toast.makeText(context, R.string.archive_toast_project_restore_failed, LENGTH_LONG).show();
     }
 
@@ -198,6 +189,7 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
                         : R.string.archive_toast_delete_all_failed,
                 LENGTH_LONG).show();
     }
+
 
     //                                                                                       HELPERS
 
@@ -327,7 +319,7 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                positiveButton.setEnabled(s.toString().toLowerCase().equals(deleteString));
+                Objects.requireNonNull(positiveButton).setEnabled(s.toString().toLowerCase().equals(deleteString));
             }
 
             @Override
@@ -335,8 +327,8 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
 
             }
         });
-        positiveButton.setOnClickListener(onClickListener);
-        dialog.findViewById(R.id.button_negative).setOnClickListener(onClickListener);
+        Objects.requireNonNull(positiveButton).setOnClickListener(onClickListener);
+        Objects.requireNonNull((AppCompatButton) dialog.findViewById(R.id.button_negative)).setOnClickListener(onClickListener);
     }
 
     private int getProjectItemIndex(@NonNull String name) {
