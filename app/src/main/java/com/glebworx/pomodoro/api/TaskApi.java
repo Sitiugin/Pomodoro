@@ -14,7 +14,6 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.Source;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.time.LocalDate;
@@ -149,7 +148,7 @@ public class TaskApi extends BaseApi {
                 .whereEqualTo(FIELD_COMPLETED, false)
                 .whereGreaterThanOrEqualTo(FIELD_DUE_DATE, Date.from(todayDateTime.toInstant()))
                 .whereLessThan(FIELD_DUE_DATE, Date.from(todayDateTime.plusDays(1).toInstant()))
-                .get(Source.CACHE)
+                .get()
                 .addOnCompleteListener(onCompleteListener);
     }
 
@@ -161,7 +160,7 @@ public class TaskApi extends BaseApi {
                 .whereEqualTo(FIELD_COMPLETED, false)
                 .whereLessThanOrEqualTo(FIELD_DUE_DATE, inAWeek)
                 .whereGreaterThanOrEqualTo(FIELD_DUE_DATE, today)
-                .get(Source.CACHE)
+                .get()
                 .addOnCompleteListener(onCompleteListener);
     }
 
@@ -170,7 +169,7 @@ public class TaskApi extends BaseApi {
         getCollectionGroup(COLLECTION_TASKS)
                 .whereEqualTo(FIELD_COMPLETED, false)
                 .whereLessThan(FIELD_DUE_DATE, today)
-                .get(Source.CACHE)
+                .get()
                 .addOnCompleteListener(onCompleteListener);
     }
 

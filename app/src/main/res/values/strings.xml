@@ -71,6 +71,7 @@
     <string name="font_sans_serif_normal">sans-serif-normal</string>
     <string name="font_sans_serif_light">sans-serif-light</string>
     <string name="font_sans_serif_thin">sans-serif-thin</string>
+    <string name="font_sans_serif_medium">sans-serif-medium</string>
 
 
     <!--                                                                                  SPLASH -->

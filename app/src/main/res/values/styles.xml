@@ -247,10 +247,10 @@
     <style name="TextStyle.Count" parent="TextStyle">
         <item name="android:textColor">@color/colorHighlight</item>
         <item name="android:textSize">@dimen/text_size_count</item>
+        <item name="android:fontFamily">@string/font_sans_serif_normal</item>
     </style>
 
-    <style name="TextStyle.Count.Small" parent="TextStyle">
-        <item name="android:textColor">@color/colorHighlight</item>
+    <style name="TextStyle.Count.Small" parent="TextStyle.Count">
         <item name="android:textSize">@dimen/text_size_count_small</item>
     </style>
 

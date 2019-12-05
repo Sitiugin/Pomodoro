@@ -42,7 +42,8 @@
     <dimen name="width_button_large">256dp</dimen>
     <dimen name="width_button_medium">192dp</dimen>
     <dimen name="width_button_small">128dp</dimen>
-    <dimen name="radius_small">4dp</dimen>
+    <dimen name="width_color_tag">8dp</dimen>
+    <dimen name="radius_small">8dp</dimen>
     <dimen name="radius_medium">16dp</dimen>
     <dimen name="radius_large">24dp</dimen>
 
@@ -52,7 +53,7 @@
     <dimen name="text_size_body">12sp</dimen>
     <dimen name="text_size_title">14sp</dimen>
     <dimen name="text_size_app_bar">24sp</dimen>
-    <dimen name="text_size_count_small">18sp</dimen>
+    <dimen name="text_size_count_small">20sp</dimen>
     <dimen name="text_size_count">24sp</dimen>
     <dimen name="text_size_giant">64sp</dimen>
 

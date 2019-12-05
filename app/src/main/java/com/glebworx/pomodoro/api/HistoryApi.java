@@ -8,7 +8,6 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.Source;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -48,7 +47,7 @@ public class HistoryApi extends BaseApi {
         getCollection(COLLECTION_HISTORY)
                 .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
                 .limit(PAGE_SIZE)
-                .get(Source.CACHE)
+                .get()
                 .addOnCompleteListener(onCompleteListener);
     }
 
@@ -57,14 +56,15 @@ public class HistoryApi extends BaseApi {
         getCollection(COLLECTION_HISTORY)
                 .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
                 .startAfter(startAfterSnapshot)
-                .limit(PAGE_SIZE).get(Source.CACHE).addOnCompleteListener(onCompleteListener);
+                .limit(PAGE_SIZE).get().addOnCompleteListener(onCompleteListener);
     }
 
     public static void getPomodoroCompletionHistory(@NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
         getCollection(COLLECTION_HISTORY)
-                .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
                 .whereEqualTo(FIELD_EVENT_TYPE, EVENT_POMODORO_COMPLETED)
-                .get(Source.CACHE)
+                .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
+                //.get(Source.CACHE)
+                .get()
                 .addOnCompleteListener(onCompleteListener);
     }
 
@@ -72,7 +72,8 @@ public class HistoryApi extends BaseApi {
         getCollection(COLLECTION_HISTORY)
                 .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
                 .whereEqualTo(FIELD_EVENT_TYPE, EVENT_PROJECT_COMPLETED)
-                .get(Source.CACHE)
+                //.get(Source.CACHE)
+                .get()
                 .addOnCompleteListener(onCompleteListener);
     }
 
