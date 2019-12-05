@@ -466,7 +466,7 @@ public class ProgressBottomSheetView
                 alertDialog.findViewById(R.id.text_view_description))).setText(description);
         Objects.requireNonNull(positiveButton).setText(R.string.main_title_replace_task);
 
-        picker.setValue(initialPomodoroCount);
+        picker.setValue(presenter.getTotalPomodoroCount());
 
         View.OnClickListener onClickListener = view -> {
             if (view.getId() == R.id.button_positive) {

@@ -186,6 +186,11 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     }
 
     @Override
+    public int getTotalPomodoroCount() {
+        return totalPomodoroCount;
+    }
+
+    @Override
     public int getCompletedPomodoroCount() {
         return completedPomodoroCount;
     }
@@ -209,7 +214,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
         if (isResting) {
 
-            timer = new PomodoroTimer(POMODORO_LENGTH * 60000, 1000) {
+            timer = new PomodoroTimer(POMODORO_LENGTH * 12000, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
                     progress = 100 - (int) (millisUntilFinished / DURATION_PERCENT);
@@ -218,7 +223,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
                 }
 
                 @Override
-                public void onFinish() {
+                public synchronized void onFinish() {
                     isResting = false;
                     clearState();
                     startTimer();
@@ -236,7 +241,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
                 }
 
                 @Override
-                public void onFinish() {
+                public synchronized void onFinish() {
                     completePomodoro();
                     if (completedPomodoroCount >= totalPomodoroCount) {
                         closeSession();
@@ -244,6 +249,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
                         clearState();
                         isResting = true;
                         progressStatus = PROGRESS_STATUS_RESTING;
+                        presenterListener.onRestingPeriodStarted();
                         initTimer();
                         startTimer();
                     }

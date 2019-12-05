@@ -30,6 +30,8 @@ public interface IProgressBottomSheetViewPresenter {
 
     String getTaskName();
 
+    int getTotalPomodoroCount();
+
     int getCompletedPomodoroCount();
 
     int getRemainingPomodoroCount();
