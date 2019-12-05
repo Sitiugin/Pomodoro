@@ -248,8 +248,6 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
                     } else {
                         clearState();
                         isResting = true;
-                        progressStatus = PROGRESS_STATUS_RESTING;
-                        presenterListener.onRestingPeriodStarted();
                         initTimer();
                         startTimer();
                     }
@@ -272,13 +270,18 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     }
 
     private synchronized void startTimer() {
-        progressStatus = PROGRESS_STATUS_ACTIVE;
+        progressStatus = this.isResting ? PROGRESS_STATUS_RESTING : PROGRESS_STATUS_ACTIVE;
         timer.cancel();
         initTimer();
         timer.start();
-        presenterListener.onTaskStarted();
+        if (isResting) {
+            presenterListener.onRestingPeriodStarted();
+            notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_RESTING, progress);
+        } else {
+            presenterListener.onTaskStarted();
+            notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_WORKING, progress);
+        }
         vibrationManager.vibrateShort();
-        notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_WORKING, progress);
     }
 
     private synchronized void resumeTimer() {
@@ -289,7 +292,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_WORKING, progress);
     }
 
-    private synchronized void completePomodoro() {
+    private void completePomodoro() {
 
         completedPomodoroCount++;
 

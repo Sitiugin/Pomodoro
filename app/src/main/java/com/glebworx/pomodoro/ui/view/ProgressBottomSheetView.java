@@ -219,7 +219,7 @@ public class ProgressBottomSheetView
         startStopSkipFab.setImageResource(R.drawable.ic_next_black);
         statusTextView.setText(R.string.bottom_sheet_text_status_resting);
         cancelButton.setVisibility(INVISIBLE);
-        completeButton.setVisibility(VISIBLE);
+        completeButton.setVisibility(INVISIBLE);
         spinKitView.setVisibility(VISIBLE);
     }
 
@@ -447,7 +447,7 @@ public class ProgressBottomSheetView
                 R.id.container_main,
                 R.layout.dialog_set_task);
 
-        int initialPomodoroCount = presenter.getCompletedPomodoroCount();
+        int initialPomodoroCount = presenter.getCompletedPomodoroCount() + 1;
         if (initialPomodoroCount < 1) {
             initialPomodoroCount = 1;
         } else if (initialPomodoroCount > MAX_POMODOROS_SESSION) {
