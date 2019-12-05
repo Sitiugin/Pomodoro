@@ -164,6 +164,9 @@ public interface IChart {
     }
 
     static void expandChart(Context context, View rootView, LineChart chart) {
+        if (chart.getData() == null || chart.getData().getEntryCount() == 0) {
+            return;
+        }
         PopupWindowManager popupWindowManager = new PopupWindowManager(context);
         PopupWindow popupWindow = popupWindowManager.getPopupWindow(R.layout.popup_line_chart_expanded, true);
         View contentView = popupWindow.getContentView();
@@ -173,9 +176,6 @@ public interface IChart {
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
-                        if (chart.getData() == null) {
-                            return;
-                        }
                         if (chart.getData().getEntryCount() > 0) {
                             expandedChart.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                             IChart.rotateChart(expandedChart);
@@ -191,6 +191,9 @@ public interface IChart {
     }
 
     static void expandChart(Context context, View rootView, BarChart chart) {
+        if (chart.getData() == null || chart.getData().getEntryCount() == 0) {
+            return;
+        }
         PopupWindowManager popupWindowManager = new PopupWindowManager(context);
         PopupWindow popupWindow = popupWindowManager.getPopupWindow(R.layout.popup_bar_chart_expanded, true);
         View contentView = popupWindow.getContentView();
@@ -200,9 +203,6 @@ public interface IChart {
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
-                        if (chart.getData() == null) {
-                            return;
-                        }
                         if (chart.getData().getEntryCount() > 0) {
                             expandedChart.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                             IChart.rotateChart(expandedChart);

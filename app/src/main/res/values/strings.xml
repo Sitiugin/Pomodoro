@@ -5,6 +5,8 @@
 
     <string name="notification_channel_name">Pomodoro Notifications</string>
     <string name="notification_channel_description">Pomodoro notifications</string>
+    <string name="notification_update_channel_name">Pomodoro Update Notifications</string>
+    <string name="notification_update_channel_description">Pomodoro update notifications</string>
     <string name="notification_title_start">Start</string>
     <string name="notification_title_pause">Pause</string>
     <string name="notification_title_resume">Resume</string>

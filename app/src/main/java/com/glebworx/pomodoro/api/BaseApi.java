@@ -41,7 +41,8 @@ public abstract class BaseApi {
 
     //                                                                                   CONSTRUCTOR
 
-    protected BaseApi() { }
+    BaseApi() {
+    }
 
 
     //                                                                                           API

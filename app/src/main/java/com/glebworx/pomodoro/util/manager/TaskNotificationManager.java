@@ -40,7 +40,7 @@ public class TaskNotificationManager {
         this.notificationManager = NotificationManagerCompat.from(context);
     }
 
-    public static void createNotificationChannel(Context context) {
+    public static void createNotificationChannel(Context context) { // TODO use another channel for update notifications
         CharSequence name = context.getString(R.string.notification_channel_name);
         String description = context.getString(R.string.notification_channel_description);
         int importance = NotificationManager.IMPORTANCE_DEFAULT;
@@ -70,6 +70,7 @@ public class TaskNotificationManager {
             NotificationCompat.Builder builder = getNotificationBuilder();
             setContent(builder, taskName, status);
             setProgress(builder, progress);
+            //builder.setSound(null);
             //addAction(builder, status);
             notify(builder, notificationId);
         }
@@ -81,6 +82,7 @@ public class TaskNotificationManager {
             NotificationCompat.Builder builder = getNotificationBuilder();
             setContent(builder, taskName, STATUS_WORKING);
             setProgress(builder, progress);
+            //builder.setSound(null);
             //addAction(builder, STATUS_WORKING);
             notify(builder, notificationId);
         }

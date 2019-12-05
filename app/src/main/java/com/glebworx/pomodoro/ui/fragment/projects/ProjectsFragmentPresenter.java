@@ -211,7 +211,7 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
             if (emitter.isDisposed()) {
                 return;
             }
-            ListenerRegistration listenerRegistration = TaskApi.addTodayTasksEventListener(getObservableEventListener(emitter), false);
+            ListenerRegistration listenerRegistration = TaskApi.addTodayTasksEventNoChangesListener(getObservableEventListener(emitter), false);
             emitter.setCancellable(listenerRegistration::remove);
         });
     }
@@ -221,7 +221,7 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
             if (emitter.isDisposed()) {
                 return;
             }
-            ListenerRegistration listenerRegistration = TaskApi.addThisWeekTasksEventListener(getObservableEventListener(emitter), false);
+            ListenerRegistration listenerRegistration = TaskApi.addThisWeekTasksNoChangesEventListener(getObservableEventListener(emitter), false);
             emitter.setCancellable(listenerRegistration::remove);
         });
     }
@@ -231,7 +231,7 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
             if (emitter.isDisposed()) {
                 return;
             }
-            ListenerRegistration listenerRegistration = TaskApi.addOverdueTasksEventListener(getObservableEventListener(emitter), false);
+            ListenerRegistration listenerRegistration = TaskApi.addOverdueTasksNoChangesEventListener(getObservableEventListener(emitter), false);
             emitter.setCancellable(listenerRegistration::remove);
         });
     }
@@ -248,7 +248,7 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
             if (querySnapshot == null) {
                 return;
             }
-            emitter.onNext(querySnapshot.size());
+            emitter.onNext(querySnapshot.getDocuments().size());
         };
     }
 

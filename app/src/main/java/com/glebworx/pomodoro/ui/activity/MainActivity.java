@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.NumberPicker;
 
 import androidx.annotation.NonNull;
@@ -84,6 +85,7 @@ public class MainActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         unbinder = ButterKnife.bind(this);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         fragmentManager =
                 new TransitionFragmentManager(getSupportFragmentManager(), R.id.container_main);
