@@ -12,6 +12,8 @@ import androidx.appcompat.widget.AppCompatTextView;
 
 import com.glebworx.pomodoro.R;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 
 public class DialogManager {
@@ -24,6 +26,7 @@ public class DialogManager {
         View dialogView = inflater.inflate(layoutId, activity.findViewById(rootViewId), false);
         dialogBuilder.setView(dialogView);
         AlertDialog alertDialog = dialogBuilder.create();
+        Objects.requireNonNull(alertDialog.getWindow()).setBackgroundDrawable(activity.getDrawable(R.drawable.drawable_foreground_rounded_small));
         alertDialog.show();
         return alertDialog;
     }
@@ -40,6 +43,8 @@ public class DialogManager {
         View dialogView = inflater.inflate(R.layout.dialog_generic, activity.findViewById(rootViewId), false);
         dialogBuilder.setView(dialogView);
         AlertDialog alertDialog = dialogBuilder.create();
+
+        Objects.requireNonNull(alertDialog.getWindow()).setBackgroundDrawable(activity.getDrawable(R.drawable.drawable_foreground_rounded_small));
 
         ((AppCompatTextView) dialogView.findViewById(R.id.text_view_title)).setText(titleId);
         ((AppCompatTextView) dialogView.findViewById(R.id.text_view_description)).setText(descriptionId);
@@ -69,6 +74,8 @@ public class DialogManager {
         View dialogView = inflater.inflate(R.layout.dialog_generic, activity.findViewById(rootViewId), false);
         dialogBuilder.setView(dialogView);
         AlertDialog alertDialog = dialogBuilder.create();
+
+        Objects.requireNonNull(alertDialog.getWindow()).setBackgroundDrawable(activity.getDrawable(R.drawable.drawable_foreground_rounded_small));
 
         ((AppCompatTextView) dialogView.findViewById(R.id.text_view_title)).setText(titleId);
         ((AppCompatTextView) dialogView.findViewById(R.id.text_view_description)).setText(description);
