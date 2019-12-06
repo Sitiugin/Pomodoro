@@ -2,6 +2,7 @@ package com.glebworx.pomodoro.ui.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.PowerManager;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -30,6 +31,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static android.content.Context.POWER_SERVICE;
 import static com.glebworx.pomodoro.util.manager.DateTimeManager.POMODORO_LENGTH;
 
 public class ProgressProgressBottomSheetViewPresenter implements IProgressBottomSheetViewPresenter {
@@ -37,6 +39,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
     //                                                                                     CONSTANTS
 
+    private static final String WAKE_LOCK_TAG = "Pomodoro::WakeLockTag";
     private static final int PROGRESS_STATUS_IDLE = 0;
     private static final int PROGRESS_STATUS_PAUSED = 1;
     private static final int PROGRESS_STATUS_ACTIVE = 2;
@@ -47,6 +50,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
     //                                                                                    ATTRIBUTES
 
+    private PowerManager.WakeLock wakeLock;
     private IProgressBottomSheetView presenterListener;
     private ProjectModel projectModel;
     private TaskModel taskModel;
@@ -77,6 +81,10 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     @Override
     public void init(Context context) {
 
+        PowerManager powerManager = (PowerManager) context.getSystemService(POWER_SERVICE);
+        wakeLock =
+                Objects.requireNonNull(powerManager).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKE_LOCK_TAG);
+
         progressStatus = PROGRESS_STATUS_IDLE;
         progress = 0;
 
@@ -95,6 +103,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
     @Override
     public void destroy() {
+        wakeLock.release();
         compositeDisposable.clear();
     }
 
@@ -162,7 +171,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         } else {
             showCancelSessionDialog(activity);
         }
-        notificationManager.cancelNotification();
+        notificationManager.cancelAllNotifications();
     }
 
     @Override
@@ -270,6 +279,8 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     }
 
     private synchronized void startTimer() {
+        long timeout = POMODORO_LENGTH * 60000 * (totalPomodoroCount + 1) + POMODORO_LENGTH * 12000 * (totalPomodoroCount);
+        wakeLock.acquire(timeout); // give extra time to accomodate for breaks
         progressStatus = this.isResting ? PROGRESS_STATUS_RESTING : PROGRESS_STATUS_ACTIVE;
         timer.cancel();
         initTimer();
@@ -309,6 +320,8 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     }
 
     private synchronized void closeSession() {
+
+        wakeLock.release();
 
         clearState();
 
