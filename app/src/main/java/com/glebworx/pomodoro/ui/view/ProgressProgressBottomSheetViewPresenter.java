@@ -46,7 +46,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     private static final int PROGRESS_STATUS_RESTING = 3;
 
     private static final int DURATION_PERCENT = POMODORO_LENGTH * 600;
-    private static final int DURATION_PERCENT_RESTING = POMODORO_LENGTH * 12;
+    private static final int DURATION_PERCENT_RESTING = POMODORO_LENGTH * 120;
 
 
     //                                                                                    ATTRIBUTES

@@ -113,6 +113,7 @@
     <string name="bottom_sheet_title_complete_task">Complete Task</string>
     <string name="bottom_sheet_title_pomodoro_count">Pomodoro %1$s/%2$s</string>
     <string name="bottom_sheet_title_change_pomodoro_count">Change Pomodoro Count</string>
+    <string name="bottom_sheet_title_change_count">Change Count</string>
     <string name="bottom_sheet_text_cancel_session" formatted="true">Are you sure you want to cancel this session?</string>
     <string name="bottom_sheet_text_complete_task" formatted="true">Are you sure you want to complete this task?</string>
     <string name="bottom_sheet_text_status_idle">Ready</string>

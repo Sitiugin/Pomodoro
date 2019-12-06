@@ -248,7 +248,7 @@ public class ProgressBottomSheetView
     public void onTaskDataChanged(int pomodorosAllocated, int pomodorosCompleted) {
         pomodoroNumberTextView.setText(context.getString(
                 R.string.core_ratio,
-                String.valueOf(pomodorosCompleted),
+                String.valueOf(pomodorosCompleted + 1),
                 String.valueOf(pomodorosAllocated)));
     }
 
@@ -464,7 +464,7 @@ public class ProgressBottomSheetView
                 context.getString(R.string.bottom_sheet_text_change_pomodoro_count, presenter.getTaskName()), 0);
         ((AppCompatTextView) Objects.requireNonNull(
                 alertDialog.findViewById(R.id.text_view_description))).setText(description);
-        Objects.requireNonNull(positiveButton).setText(R.string.main_title_replace_task);
+        Objects.requireNonNull(positiveButton).setText(R.string.bottom_sheet_title_change_count);
 
         picker.setValue(presenter.getTotalPomodoroCount());
 
