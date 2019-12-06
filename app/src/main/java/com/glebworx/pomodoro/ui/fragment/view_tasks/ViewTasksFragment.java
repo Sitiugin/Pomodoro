@@ -293,7 +293,6 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
         recyclerView.setItemAnimator(new SlideInOutLeftAnimator(recyclerView));
 
         fastAdapter.setHasStableIds(true);
-        fastAdapter.withSelectable(true);
         recyclerView.setAdapter(fastAdapter);
 
     }

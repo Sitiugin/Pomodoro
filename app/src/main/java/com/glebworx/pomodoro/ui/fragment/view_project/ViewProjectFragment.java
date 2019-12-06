@@ -269,7 +269,6 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         fastAdapter.addAdapter(3, addAdapter);
 
         fastAdapter.setHasStableIds(true);
-        fastAdapter.withSelectable(true);
         attachSwipeHelper(recyclerView);
         recyclerView.setAdapter(fastAdapter);
 

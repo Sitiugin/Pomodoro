@@ -46,6 +46,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     private static final int PROGRESS_STATUS_RESTING = 3;
 
     private static final int DURATION_PERCENT = POMODORO_LENGTH * 600;
+    private static final int DURATION_PERCENT_RESTING = POMODORO_LENGTH * 12;
 
 
     //                                                                                    ATTRIBUTES
@@ -226,7 +227,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
             timer = new PomodoroTimer(POMODORO_LENGTH * 12000, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
-                    progress = 100 - (int) (millisUntilFinished / DURATION_PERCENT);
+                    progress = 100 - (int) (millisUntilFinished / DURATION_PERCENT_RESTING);
                     presenterListener.onTick(millisUntilFinished, progress);
                     notificationManager.updateNotification(taskModel.getName(), TaskNotificationManager.STATUS_RESTING, progress);
                 }
@@ -280,7 +281,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
     private synchronized void startTimer() {
         long timeout = POMODORO_LENGTH * 60000 * (totalPomodoroCount + 1) + POMODORO_LENGTH * 12000 * (totalPomodoroCount);
-        wakeLock.acquire(timeout); // give extra time to accomodate for breaks
+        wakeLock.acquire(timeout); // give extra time to accommodate for breaks
         progressStatus = this.isResting ? PROGRESS_STATUS_RESTING : PROGRESS_STATUS_ACTIVE;
         timer.cancel();
         initTimer();
