@@ -105,7 +105,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
     @Override
     public void destroy() {
-        releaseLock();
+        releaseWakeLock();
         compositeDisposable.clear();
     }
 
@@ -281,7 +281,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     }
 
     private synchronized void startTimer() {
-        acquireLock();
+        acquireWakeLock();
         progressStatus = this.isResting ? PROGRESS_STATUS_RESTING : PROGRESS_STATUS_ACTIVE;
         timer.cancel();
         initTimer();
@@ -322,7 +322,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
     private synchronized void closeSession() {
 
-        releaseLock();
+        releaseWakeLock();
 
         clearState();
 
@@ -463,7 +463,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         notificationManager.cancelNotification();
     }
 
-    private void acquireLock() {
+    private void acquireWakeLock() {
         synchronized (WAKE_LOCK) {
             if (wakeLock != null && !wakeLock.isHeld()) {
                 long timeout = POMODORO_LENGTH * 60000 * (totalPomodoroCount + 1) + POMODORO_LENGTH * 12000 * (totalPomodoroCount);
@@ -475,7 +475,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         }
     }
 
-    private void releaseLock() {
+    private void releaseWakeLock() {
         synchronized (WAKE_LOCK) {
             if (wakeLock != null && wakeLock.isHeld()) {
                 try {
