@@ -39,6 +39,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
     //                                                                                     CONSTANTS
 
+    private static final Object WAKE_LOCK = new Object();
     private static final String WAKE_LOCK_TAG = "Pomodoro::WakeLockTag";
     private static final int PROGRESS_STATUS_IDLE = 0;
     private static final int PROGRESS_STATUS_PAUSED = 1;
@@ -104,7 +105,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
     @Override
     public void destroy() {
-        wakeLock.release();
+        releaseLock();
         compositeDisposable.clear();
     }
 
@@ -280,8 +281,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     }
 
     private synchronized void startTimer() {
-        long timeout = POMODORO_LENGTH * 60000 * (totalPomodoroCount + 1) + POMODORO_LENGTH * 12000 * (totalPomodoroCount);
-        wakeLock.acquire(timeout); // give extra time to accommodate for breaks
+        acquireLock();
         progressStatus = this.isResting ? PROGRESS_STATUS_RESTING : PROGRESS_STATUS_ACTIVE;
         timer.cancel();
         initTimer();
@@ -322,7 +322,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
     private synchronized void closeSession() {
 
-        wakeLock.release();
+        releaseLock();
 
         clearState();
 
@@ -461,6 +461,29 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         progress = 0;
         presenterListener.onClearViews();
         notificationManager.cancelNotification();
+    }
+
+    private void acquireLock() {
+        synchronized (WAKE_LOCK) {
+            if (wakeLock != null && !wakeLock.isHeld()) {
+                long timeout = POMODORO_LENGTH * 60000 * (totalPomodoroCount + 1) + POMODORO_LENGTH * 12000 * (totalPomodoroCount);
+                try {
+                    wakeLock.acquire(timeout); // give extra time to accommodate for breaks
+                } catch (Exception ignored) {
+                }
+            }
+        }
+    }
+
+    private void releaseLock() {
+        synchronized (WAKE_LOCK) {
+            if (wakeLock != null && wakeLock.isHeld()) {
+                try {
+                    wakeLock.release();
+                } catch (Exception ignored) {
+                }
+            }
+        }
     }
 
 }
