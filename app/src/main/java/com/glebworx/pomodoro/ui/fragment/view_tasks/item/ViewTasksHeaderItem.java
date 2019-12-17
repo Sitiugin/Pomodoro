@@ -6,6 +6,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.glebworx.pomodoro.R;
@@ -76,7 +77,8 @@ public class ViewTasksHeaderItem extends AbstractItem<ViewTasksHeaderItem, ViewT
         ViewHolder(View view) {
             super(view);
             context = view.getContext();
-            colorTagDrawable = ((LayerDrawable) view.findViewById(R.id.view_color_tag).getBackground())
+            colorTagDrawable = ((LayerDrawable) ((AppCompatImageView) view.findViewById(R.id.view_color_tag))
+                    .getDrawable())
                     .findDrawableByLayerId(R.id.shape_color_tag);
             titleTextView = view.findViewById(R.id.text_view_title);
 

@@ -7,6 +7,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.glebworx.pomodoro.R;
@@ -137,7 +138,6 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
     protected static class ViewHolder extends FastAdapter.ViewHolder<ViewProjectHeaderItem> {
 
         private Context context;
-        //private AppCompatImageButton optionsButton;
         private Drawable colorTagDrawable;
         private AppCompatTextView estimatedTimeTextView;
         private AppCompatTextView elapsedTimeTextView;
@@ -149,8 +149,8 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
 
             context = view.getContext();
 
-            //optionsButton = view.findViewById(R.id.button_options);
-            colorTagDrawable = ((LayerDrawable) view.findViewById(R.id.view_color_tag).getBackground())
+            colorTagDrawable = ((LayerDrawable) ((AppCompatImageView) view.findViewById(R.id.view_color_tag))
+                    .getDrawable())
                     .findDrawableByLayerId(R.id.shape_color_tag);
 
             estimatedTimeTextView = view.findViewById(R.id.text_view_estimated_time);
@@ -162,7 +162,6 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
         @Override
         public void bindView(@NonNull ViewProjectHeaderItem item, @NonNull List<Object> payloads) {
 
-            //optionsButton.setOnClickListener(item.getOnClickListener());
             colorTagDrawable.setTint(ColorManager.getColor(context, item.getColorTag()));
 
             int estimatedTime = item.getEstimatedTime();
@@ -181,7 +180,6 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
         public void unbindView(@NonNull ViewProjectHeaderItem item) {
 
             colorTagDrawable.setTint(ColorManager.getColor(context, null));
-            //optionsButton.setOnClickListener(null);
 
             estimatedTimeTextView.setText(null);
             elapsedTimeTextView.setText(null);

@@ -141,7 +141,8 @@ public class ProjectItem
         ViewHolder(View view) {
             super(view);
             this.context = view.getContext();
-            colorTagDrawable = ((LayerDrawable) ((AppCompatImageView) view.findViewById(R.id.view_color_tag)).getDrawable())
+            colorTagDrawable = ((LayerDrawable) ((AppCompatImageView) view.findViewById(R.id.view_color_tag))
+                    .getDrawable())
                     .findDrawableByLayerId(R.id.shape_color_tag);
             titleTextView = view.findViewById(R.id.text_view_title);
             dueDateTextView = view.findViewById(R.id.text_view_due_date);

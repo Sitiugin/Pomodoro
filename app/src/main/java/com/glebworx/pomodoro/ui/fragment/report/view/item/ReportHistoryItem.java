@@ -7,6 +7,7 @@ import android.text.Html;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.glebworx.pomodoro.R;
@@ -150,7 +151,8 @@ public class ReportHistoryItem extends AbstractItem<ReportHistoryItem, ReportHis
         ViewHolder(View view) {
             super(view);
             this.context = view.getContext();
-            colorTagDrawable = ((LayerDrawable) view.findViewById(R.id.view_color_tag).getBackground())
+            colorTagDrawable = ((LayerDrawable) ((AppCompatImageView) view.findViewById(R.id.view_color_tag))
+                    .getDrawable())
                     .findDrawableByLayerId(R.id.shape_color_tag);
             this.dateTextView = view.findViewById(R.id.text_view_date);
             this.eventTypeTextView = view.findViewById(R.id.text_view_event_type);
