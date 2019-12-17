@@ -24,13 +24,13 @@ import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragment;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.AddTaskItem;
+import com.glebworx.pomodoro.ui.fragment.view_project.item.CompleteProjectItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.CompletedTaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.ViewProjectHeaderItem;
 import com.glebworx.pomodoro.ui.item.TaskItem;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
@@ -59,8 +59,6 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     @BindView(R.id.text_view_title) AppCompatTextView titleTextView;
     @BindView(R.id.text_view_subtitle) AppCompatTextView subtitleTextView;
     @BindView(R.id.button_close) AppCompatImageButton closeButton;
-    @BindView(R.id.fab_complete)
-    FloatingActionButton completeButton;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
 
@@ -154,7 +152,6 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
             }
         });
         titleTextView.setText(projectName);
-        completeButton.setVisibility(allTasksCompleted && !isCompleted ? View.VISIBLE : View.INVISIBLE);
         initRecyclerView(fastAdapter, headerItem);
         initClickEvents(fastAdapter);
     }
@@ -239,17 +236,6 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
                 : android.R.color.darker_gray));
     }
 
-    @Override
-    public void onCompleteChanged(boolean allTasksCompleted, boolean isCompleted) {
-        if (allTasksCompleted && !isCompleted) {
-            if (!completeButton.isShown()) {
-                completeButton.show();
-            }
-        } else if (completeButton.isShown()) {
-            completeButton.hide();
-        }
-    }
-
 
     //                                                                                       HELPERS
 
@@ -260,13 +246,17 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
 
         headerAdapter.add(headerItem);
 
-        ItemAdapter<AddTaskItem> addAdapter = new ItemAdapter<>();
-        addAdapter.add(new AddTaskItem(getString(R.string.view_project_title_add_task), true));
+        ItemAdapter<AddTaskItem> addTaskAdapter = new ItemAdapter<>();
+        addTaskAdapter.add(new AddTaskItem(getString(R.string.view_project_title_add_task), true));
+
+        ItemAdapter<CompleteProjectItem> completeProjectAdapter = new ItemAdapter<>();
+        completeProjectAdapter.add(new CompleteProjectItem(getString(R.string.view_project_title_complete_project)));
 
         fastAdapter.addAdapter(0, headerAdapter);
         fastAdapter.addAdapter(1, taskAdapter);
         fastAdapter.addAdapter(2, completedTaskAdapter);
-        fastAdapter.addAdapter(3, addAdapter);
+        fastAdapter.addAdapter(3, addTaskAdapter);
+        fastAdapter.addAdapter(4, completeProjectAdapter);
 
         fastAdapter.setHasStableIds(true);
         attachSwipeHelper(recyclerView);
@@ -303,15 +293,11 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
 
     private void initClickEvents(FastAdapter<AbstractItem> fastAdapter) {
         View.OnClickListener onClickListener = view -> {
-            int id = view.getId();
-            if (id == R.id.button_close) {
+            if (view.getId() == R.id.button_close) {
                 fragmentListener.onCloseFragment();
-            } else if (id == R.id.fab_complete) {
-                showCompleteProjectDialog();
             }
         };
         closeButton.setOnClickListener(onClickListener);
-        completeButton.setOnClickListener(onClickListener);
         fastAdapter.withOnClickListener((view, adapter, item, position) -> {
             if (view == null || !item.isEnabled()) {
                 return false;
@@ -323,9 +309,11 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
             } else if (id == R.id.item_view_project_header) {
                 showOptionsPopup();
                 return true;
-            } else if (id == R.id.item_add) {
+            } else if (id == R.id.item_add_task) {
                 presenter.addTask();
                 return true;
+            } else if (id == R.id.item_complete_project) {
+                showCompleteProjectDialog();
             }
 
             return false;

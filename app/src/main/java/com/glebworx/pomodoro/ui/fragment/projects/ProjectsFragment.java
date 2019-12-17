@@ -312,7 +312,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
                 presenter.viewProject((ProjectItem) item);
                 return true;
             }
-            if (view.getId() == R.id.item_add) {
+            if (view.getId() == R.id.item_add_project) {
                 searchView.setQuery(null, true);
                 fragmentListener.onAddProject();
                 return true;

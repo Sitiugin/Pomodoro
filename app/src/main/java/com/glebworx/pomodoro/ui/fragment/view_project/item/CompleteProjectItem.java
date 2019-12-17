@@ -1,4 +1,4 @@
-package com.glebworx.pomodoro.ui.fragment.projects.item;
+package com.glebworx.pomodoro.ui.fragment.view_project.item;
 
 import android.view.View;
 
@@ -12,9 +12,9 @@ import com.mikepenz.fastadapter_extensions.swipe.ISwipeable;
 
 import java.util.List;
 
-public class AddProjectItem
-        extends AbstractItem<AddProjectItem, AddProjectItem.ViewHolder>
-        implements ISwipeable<AddProjectItem, AddProjectItem> {
+public class CompleteProjectItem
+        extends AbstractItem<CompleteProjectItem, CompleteProjectItem.ViewHolder>
+        implements ISwipeable<CompleteProjectItem, CompleteProjectItem> {
 
 
     //                                                                                    ATTRIBUTES
@@ -24,11 +24,11 @@ public class AddProjectItem
 
     //                                                                                  CONSTRUCTORS
 
-    public AddProjectItem(String buttonText) {
+    public CompleteProjectItem(String buttonText) {
         this.buttonText = buttonText;
     }
 
-    public AddProjectItem(String buttonText, boolean showRoundedBg) {
+    public CompleteProjectItem(String buttonText, boolean showRoundedBg) {
         this.buttonText = buttonText;
     }
 
@@ -37,18 +37,18 @@ public class AddProjectItem
 
     @NonNull
     @Override
-    public AddProjectItem.ViewHolder getViewHolder(@NonNull View view) {
-        return new AddProjectItem.ViewHolder(view);
+    public CompleteProjectItem.ViewHolder getViewHolder(@NonNull View view) {
+        return new CompleteProjectItem.ViewHolder(view);
     }
 
     @Override
     public int getType() {
-        return R.id.item_add_project;
+        return R.id.item_complete_project;
     }
 
     @Override
     public int getLayoutRes() {
-        return R.layout.item_add_project;
+        return R.layout.item_complete_project;
     }
 
     @Override
@@ -69,30 +69,30 @@ public class AddProjectItem
     }
 
     @Override
-    public AddProjectItem withIsSwipeable(boolean swipeable) {
+    public CompleteProjectItem withIsSwipeable(boolean swipeable) {
         return this;
     }
 
 
     //                                                                                   VIEW HOLDER
 
-    protected static class ViewHolder extends FastAdapter.ViewHolder<AddProjectItem> {
+    protected static class ViewHolder extends FastAdapter.ViewHolder<CompleteProjectItem> {
 
         private AppCompatButton addButton;
 
         ViewHolder(View view) {
             super(view);
-            addButton = view.findViewById(R.id.item_add_project);
+            addButton = view.findViewById(R.id.item_complete_project);
         }
 
         @Override
-        public void bindView(@NonNull AddProjectItem item, @NonNull List<Object> payloads) {
+        public void bindView(@NonNull CompleteProjectItem item, @NonNull List<Object> payloads) {
 
             addButton.setText(item.getButtonText());
         }
 
         @Override
-        public void unbindView(@NonNull AddProjectItem item) {
+        public void unbindView(@NonNull CompleteProjectItem item) {
             addButton.setText(null);
         }
 

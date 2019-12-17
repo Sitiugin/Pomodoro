@@ -65,8 +65,6 @@
         <item>Every month</item>
     </string-array>
 
-    <string name="shared_element_add_btn">Add Project</string>
-
 
     <!--                                                                                   FONTS -->
 
@@ -141,6 +139,7 @@
     <string name="projects_title_send_feedback">Send Feedback</string>
     <string name="projects_title_send_premium">Premium</string>
     <string name="projects_title_sign_out">Sign Out</string>
+    <string name="projects_title_add_project">Add Project</string>
     <string name="projects_text_today">Today</string>
     <string name="projects_text_this_week">This week</string>
     <string name="projects_text_overdue">Overdue</string>

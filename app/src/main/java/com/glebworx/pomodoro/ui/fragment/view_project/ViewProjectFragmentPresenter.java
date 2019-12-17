@@ -268,9 +268,6 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
                 presenterListener.onAppBarChanged(
                         projectModel.getDueDate(),
                         new Date());
-                presenterListener.onCompleteChanged(
-                        projectModel.getAllTasksCompleted(),
-                        projectModel.isCompleted());
             }
 
             @Override

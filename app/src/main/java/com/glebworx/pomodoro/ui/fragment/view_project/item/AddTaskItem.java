@@ -43,7 +43,7 @@ public class AddTaskItem
 
     @Override
     public int getType() {
-        return R.id.item_add;
+        return R.id.item_add_task;
     }
 
     @Override
@@ -82,7 +82,7 @@ public class AddTaskItem
 
         ViewHolder(View view) {
             super(view);
-            addButton = view.findViewById(R.id.item_add);
+            addButton = view.findViewById(R.id.item_add_task);
         }
 
         @Override

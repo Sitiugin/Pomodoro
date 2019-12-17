@@ -78,16 +78,4 @@
         android:paddingBottom="64dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_complete"
-        style="@style/FloatingActionButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:outlineAmbientShadowColor="@color/colorHighlight"
-        android:outlineSpotShadowColor="@color/colorHighlight"
-        android:src="@drawable/ic_check_black"
-        app:layout_anchor="@+id/layout_app_bar"
-        app:layout_anchorGravity="bottom|center_horizontal"
-        tools:targetApi="p" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
