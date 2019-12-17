@@ -11,11 +11,12 @@
     android:layout_marginVertical="@dimen/margin_content_half"
     android:layout_marginHorizontal="@dimen/margin_content">
 
-    <View
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/view_color_tag"
         android:layout_width="@dimen/width_color_tag"
         android:layout_height="0dp"
-        android:background="@drawable/drawable_color_tag"
+        android:scaleType="center"
+        app:srcCompat="@drawable/drawable_color_tag"
         app:layout_constraintVertical_weight="1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

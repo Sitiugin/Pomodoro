@@ -8,6 +8,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.glebworx.pomodoro.R;
@@ -104,22 +105,24 @@ public class ProjectItem
         return model.getColorTag();
     }
 
-    public @Nullable String getDueDateString(Context context) {
+    private @Nullable
+    String getDueDateString(Context context) {
         if (model.getDueDate() == null) {
             return null;
         }
         return DateTimeManager.getDueDateString(context, model.getDueDate(), currentDate);
     }
 
-    public float getProgress() {
+    private float getProgress() {
         return model.getProgress();
     }
 
-    public @NonNull String getProgressString(double progress) {
+    private @NonNull
+    String getProgressString(double progress) {
         return numberFormat.format(progress);
     }
 
-    public boolean isOverdue() {
+    private boolean isOverdue() {
         return model.getDueDate().compareTo(new Date()) < 0;
     }
 
@@ -138,7 +141,7 @@ public class ProjectItem
         ViewHolder(View view) {
             super(view);
             this.context = view.getContext();
-            colorTagDrawable = ((LayerDrawable) view.findViewById(R.id.view_color_tag).getBackground())
+            colorTagDrawable = ((LayerDrawable) ((AppCompatImageView) view.findViewById(R.id.view_color_tag)).getDrawable())
                     .findDrawableByLayerId(R.id.shape_color_tag);
             titleTextView = view.findViewById(R.id.text_view_title);
             dueDateTextView = view.findViewById(R.id.text_view_due_date);
