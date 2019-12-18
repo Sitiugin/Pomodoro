@@ -138,6 +138,23 @@ public class ProjectModel extends AbstractModel {
     }
 
 
+    //                                                                                     INTERFACE
+
+    public void updateFromModel(ProjectModel projectModel) {
+        setName(projectModel.getName());
+        updateTimestamp();
+        dueDate = projectModel.getDueDate();
+        colorTag = projectModel.getColorTag();
+        tasks = projectModel.getTasks();
+        estimatedTime = projectModel.getEstimatedTime();
+        elapsedTime = projectModel.getElapsedTime();
+        progress = projectModel.getProgress();
+        allTasksCompleted = projectModel.getAllTasksCompleted();
+        completed = projectModel.isCompleted();
+        completedOn = projectModel.getCompletedOn();
+    }
+
+
     //                                                                           GETTERS AND SETTERS
 
     public Date getDueDate() {

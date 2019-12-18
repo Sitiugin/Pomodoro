@@ -6,14 +6,25 @@
     android:id="@+id/item_task"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/margin_content"
-    android:padding="@dimen/margin_content">
+    android:layout_marginHorizontal="@dimen/margin_content">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/view_color_tag"
+        android:layout_width="@dimen/radius_medium"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="1"
+        app:srcCompat="@drawable/drawable_color_tag" />
 
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/TextStyle.Title.Selectable"
         android:id="@+id/text_view_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_content"
+        android:layout_marginTop="@dimen/margin_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -22,14 +33,16 @@
         android:id="@+id/text_view_due_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_content"
         app:layout_constraintTop_toBottomOf="@+id/text_view_title"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/text_view_title" />
 
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/TextStyle"
         android:id="@+id/text_view_pomodoros"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_content"
         android:textColor="@color/colorHighlight"
         android:drawableStart="@drawable/ic_timer_gray_small"
         android:drawablePadding="@dimen/margin_content_quarter"

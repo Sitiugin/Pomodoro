@@ -192,7 +192,9 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
 
             @Override
             public void onNext(DocumentChange documentChange) {
-                TaskItem item = new TaskItem(documentChange.getDocument().toObject(TaskModel.class));
+                TaskModel taskModel = documentChange.getDocument().toObject(TaskModel.class);
+                ProjectModel projectModel = projectModelMap.get(taskModel.getProjectName());
+                TaskItem item = new TaskItem(projectModel, taskModel);
                 switch (documentChange.getType()) {
                     case ADDED:
                         presenterListener.onTaskAdded(item);

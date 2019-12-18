@@ -198,7 +198,7 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
 
             @Override
             public void onNext(DocumentChange documentChange) {
-                TaskItem item = new TaskItem(documentChange.getDocument().toObject(TaskModel.class));
+                TaskItem item = new TaskItem(projectModel, documentChange.getDocument().toObject(TaskModel.class));
                 switch (documentChange.getType()) {
                     case ADDED:
                         presenterListener.onTaskAdded(item);
@@ -265,7 +265,7 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
                 if (model == null) {
                     return;
                 }
-                projectModel = model;
+                projectModel.updateFromModel(model); // TODO update from model
                 presenterListener.onHeaderItemChanged(
                         new ViewProjectHeaderItem(model));
                 presenterListener.onAppBarChanged(
