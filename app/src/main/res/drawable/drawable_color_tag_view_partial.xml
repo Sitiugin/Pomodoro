@@ -3,13 +3,13 @@
 
     <item android:id="@+id/shape_color_tag">
         <shape
-            android:width="@dimen/radius_small"
+            android:width="@dimen/radius_medium"
             android:shape="rectangle">
             <solid
                 android:color="@color/colorHighlight"/>
             <corners
-                android:radius="@dimen/radius_small"
-                android:topLeftRadius="@dimen/radius_small"
+                android:radius="@dimen/radius_medium"
+                android:topLeftRadius="@dimen/radius_medium"
                 android:topRightRadius="0dp"
                 android:bottomLeftRadius="0dp"
                 android:bottomRightRadius="0dp" />
@@ -18,15 +18,15 @@
 
     <item
         android:id="@+id/shape_color_tag_overlay"
-        android:width="@dimen/radius_small"
+        android:width="@dimen/radius_medium"
         android:start="@dimen/width_color_tag">
         <shape android:shape="rectangle">
             <solid android:color="@color/colorForeground" />
             <corners
                 android:bottomLeftRadius="0dp"
                 android:bottomRightRadius="0dp"
-                android:radius="@dimen/radius_small"
-                android:topLeftRadius="@dimen/radius_small"
+                android:radius="@dimen/radius_medium"
+                android:topLeftRadius="@dimen/radius_medium"
                 android:topRightRadius="0dp" />
         </shape>
     </item>

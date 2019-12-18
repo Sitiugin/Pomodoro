@@ -13,7 +13,7 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/view_color_tag"
-        android:layout_width="@dimen/radius_small"
+        android:layout_width="@dimen/radius_medium"
         android:layout_height="0dp"
         app:srcCompat="@drawable/drawable_color_tag_view_partial"
         app:layout_constraintBottom_toBottomOf="@+id/text_view_completed_on"

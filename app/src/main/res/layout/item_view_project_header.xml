@@ -14,7 +14,7 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/view_color_tag"
-        android:layout_width="@dimen/radius_small"
+        android:layout_width="@dimen/radius_medium"
         android:layout_height="0dp"
         android:layout_marginBottom="@dimen/margin_content"
         app:srcCompat="@drawable/drawable_color_tag_view_partial"

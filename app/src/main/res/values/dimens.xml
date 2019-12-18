@@ -44,8 +44,7 @@
     <dimen name="width_button_medium">192dp</dimen>
     <dimen name="width_button_small">128dp</dimen>
     <dimen name="width_color_tag">4dp</dimen>
-    <dimen name="radius_tiny">4dp</dimen>
-    <dimen name="radius_small">8dp</dimen>
+    <dimen name="radius_small">4dp</dimen>
     <dimen name="radius_medium">16dp</dimen>
     <dimen name="radius_large">24dp</dimen>
 
