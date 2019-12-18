@@ -15,7 +15,7 @@
         android:id="@+id/view_color_tag"
         android:layout_width="@dimen/radius_medium"
         android:layout_height="0dp"
-        app:srcCompat="@drawable/drawable_color_tag"
+        app:srcCompat="@drawable/drawable_color_tag_rounded_left"
         app:layout_constraintVertical_weight="1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
