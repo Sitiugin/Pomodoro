@@ -22,7 +22,6 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -84,6 +83,7 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
 
         presenterListener.onInitView(
                 projectModel.getName(),
+                projectModel.getDueDate(),
                 projectModel.getAllTasksCompleted(),
                 projectModel.isCompleted(),
                 new ViewProjectHeaderItem(projectModel),
@@ -265,11 +265,15 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
                 if (model == null) {
                     return;
                 }
+                boolean isColorTagDifferent = !projectModel.getColorTag().equals(model.getColorTag());
+                boolean isDueDateDifferent = !projectModel.getDueDate().equals(model.getDueDate());
                 projectModel.updateFromModel(model);
-                presenterListener.onProjectModelChanged();
-                presenterListener.onAppBarChanged(
-                        model.getDueDate(),
-                        new Date());
+                if (isColorTagDifferent) {
+                    presenterListener.onColorTagChanged();
+                }
+                if (isDueDateDifferent) {
+                    presenterListener.onDueDateChanged(model.getDueDate());
+                }
             }
 
             @Override

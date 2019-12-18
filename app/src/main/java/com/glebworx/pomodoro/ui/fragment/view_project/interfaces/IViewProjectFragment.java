@@ -10,6 +10,7 @@ import java.util.Date;
 public interface IViewProjectFragment {
 
     void onInitView(String projectName,
+                    Date dueDate,
                     boolean allTasksCompleted,
                     boolean isCompleted,
                     ViewProjectHeaderItem headerItem,
@@ -27,8 +28,8 @@ public interface IViewProjectFragment {
 
     void onTaskDeleted(boolean isSuccessful, int position);
 
-    void onProjectModelChanged();
+    void onColorTagChanged();
 
-    void onAppBarChanged(Date dueDate, Date today);
+    void onDueDateChanged(Date dueDate);
 
 }

@@ -143,6 +143,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
 
     @Override
     public void onInitView(String projectName,
+                           Date dueDate,
                            boolean allTasksCompleted,
                            boolean isCompleted,
                            ViewProjectHeaderItem headerItem,
@@ -157,6 +158,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
             }
         });
         titleTextView.setText(projectName);
+        onDueDateChanged(dueDate);
         initRecyclerView(fastAdapter, headerItem, addTaskItem);
         initClickEvents(fastAdapter);
     }
@@ -213,17 +215,13 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     }
 
     @Override
-    public synchronized void onProjectModelChanged() {
-        fastAdapter.notifyAdapterDataSetChanged(); // TODO only do changes when needed
-        /*if (headerAdapter.getAdapterItemCount() == 0) {
-            headerAdapter.add(headerItem);
-        } else if (!headerAdapter.getAdapterItem(0).equals(headerItem)) {
-            headerAdapter.set(0, headerItem);
-        }*/
+    public synchronized void onColorTagChanged() {
+        fastAdapter.notifyAdapterDataSetChanged();
     }
 
     @Override
-    public void onAppBarChanged(Date dueDate, Date today) {
+    public void onDueDateChanged(Date dueDate) {
+        Date today = new Date();
         subtitleTextView.setText(DateTimeManager.getDueDateString(context, dueDate, today));
         subtitleTextView.setTextColor(context.getColor(dueDate.compareTo(today) < 0
                 ? R.color.colorError
