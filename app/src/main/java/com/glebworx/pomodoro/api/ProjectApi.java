@@ -15,6 +15,7 @@ import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
+import java.util.Date;
 import java.util.List;
 
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_COMPLETED;
@@ -87,6 +88,7 @@ public class ProjectApi extends BaseApi {
         DocumentReference projectDocument = getCollection(COLLECTION_PROJECTS).document(projectModel.getName());
 
         batch.update(projectDocument, FIELD_COMPLETED, true);
+        batch.update(projectDocument, FIELD_COMPLETED_ON, new Date());
 
         batch.set(
                 getCollection(COLLECTION_HISTORY).document(),

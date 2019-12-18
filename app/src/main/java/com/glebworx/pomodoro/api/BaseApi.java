@@ -34,6 +34,7 @@ public abstract class BaseApi {
     static final String FIELD_TIMESTAMP = "timestamp";
     static final String FIELD_TASKS = "tasks";
     static final String FIELD_COMPLETED = "completed";
+    static final String FIELD_COMPLETED_ON = "completedOn";
     static final String FIELD_POMODOROS_ALLOCATED = "pomodorosAllocated";
     static final String FIELD_POMODOROS_COMPLETED = "pomodorosCompleted";
     static final String FIELD_DUE_DATE = "dueDate";
