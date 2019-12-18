@@ -162,42 +162,34 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     }
 
     @Override
-    public void onTaskAdded(TaskItem item) {
-        synchronized (this) {
-            taskAdapter.add(item);
+    public synchronized void onTaskAdded(TaskItem item) {
+        taskAdapter.add(item);
+    }
+
+    @Override
+    public synchronized void onTaskModified(TaskItem item) { // TODO this is a bug
+        int index = getTaskItemIndex(item.getTaskName());
+        if (index != -1) {
+            //taskAdapter.set(index + 1, item);
+            taskAdapter.set(index + 1, item);
         }
     }
 
     @Override
-    public void onTaskModified(TaskItem item) { // TODO this is a bug
-        synchronized (this) {
-            int index = getTaskItemIndex(item.getTaskName());
-            if (index != -1) {
-                //taskAdapter.set(index + 1, item);
-                taskAdapter.set(index + 1, item);
-            }
+    public synchronized void onTaskDeleted(TaskItem item) {
+        int index = getTaskItemIndex(item.getTaskName());
+        if (index != -1) { // TODO this is always false
+            taskAdapter.remove(index + 1); // TODO while + 1?
         }
     }
 
     @Override
-    public void onTaskDeleted(TaskItem item) {
-        synchronized (this) {
-            int index = getTaskItemIndex(item.getTaskName());
-            if (index != -1) { // TODO this is always false
-                taskAdapter.remove(index + 1); // TODO while + 1?
-            }
+    public synchronized void onTaskCompleted(CompletedTaskItem completedItem) {
+        int index = getTaskItemIndex(completedItem.getTaskName());
+        if (index != -1) {
+            taskAdapter.remove(index + 1);
         }
-    }
-
-    @Override
-    public void onTaskCompleted(CompletedTaskItem completedItem) {
-        synchronized (this) {
-            int index = getTaskItemIndex(completedItem.getTaskName());
-            if (index != -1) {
-                taskAdapter.remove(index + 1);
-            }
-            completedTaskAdapter.add(completedItem);
-        }
+        completedTaskAdapter.add(completedItem);
     }
 
     @Override
@@ -211,26 +203,23 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     }
 
     @Override
-    public void onTaskDeleted(boolean isSuccessful, int position) {
+    public synchronized void onTaskDeleted(boolean isSuccessful, int position) {
         if (isSuccessful) {
             Toast.makeText(context, R.string.view_project_toast_task_delete_success, Toast.LENGTH_SHORT).show();
         } else {
-            synchronized (this) {
-                fastAdapter.notifyAdapterItemChanged(position);
-            }
+            fastAdapter.notifyAdapterItemChanged(position);
             Toast.makeText(context, R.string.view_project_toast_task_delete_failed, Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
-    public void onHeaderItemChanged(ViewProjectHeaderItem headerItem) {
-        synchronized (this) {
-            if (headerAdapter.getAdapterItemCount() == 0) {
-                headerAdapter.add(headerItem);
-            } else if (!headerAdapter.getAdapterItem(0).equals(headerItem)) {
-                headerAdapter.set(0, headerItem);
-            }
-        }
+    public synchronized void onProjectModelChanged() {
+        fastAdapter.notifyAdapterDataSetChanged(); // TODO only do changes when needed
+        /*if (headerAdapter.getAdapterItemCount() == 0) {
+            headerAdapter.add(headerItem);
+        } else if (!headerAdapter.getAdapterItem(0).equals(headerItem)) {
+            headerAdapter.set(0, headerItem);
+        }*/
     }
 
     @Override

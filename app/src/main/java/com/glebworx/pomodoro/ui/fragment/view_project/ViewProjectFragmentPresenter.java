@@ -265,9 +265,8 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
                 if (model == null) {
                     return;
                 }
-                projectModel.updateFromModel(model); // TODO update from model
-                presenterListener.onHeaderItemChanged(
-                        new ViewProjectHeaderItem(model));
+                projectModel.updateFromModel(model);
+                presenterListener.onProjectModelChanged();
                 presenterListener.onAppBarChanged(
                         model.getDueDate(),
                         new Date());

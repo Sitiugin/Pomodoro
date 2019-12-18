@@ -27,7 +27,7 @@ public interface IViewProjectFragment {
 
     void onTaskDeleted(boolean isSuccessful, int position);
 
-    void onHeaderItemChanged(ViewProjectHeaderItem headerItem);
+    void onProjectModelChanged();
 
     void onAppBarChanged(Date dueDate, Date today);
 
