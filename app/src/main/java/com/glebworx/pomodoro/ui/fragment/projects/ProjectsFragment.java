@@ -226,7 +226,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
             }
         }));
         ItemAdapter<AddProjectItem> addAdapter = new ItemAdapter<>();
-        addAdapter.add(new AddProjectItem(getString(R.string.add_project_title_add_project)));
+        addAdapter.add(new AddProjectItem());
 
         fastAdapter.addAdapter(0, headerAdapter);
         fastAdapter.addAdapter(1, projectAdapter);

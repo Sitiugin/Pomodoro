@@ -145,7 +145,8 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     public void onInitView(String projectName,
                            boolean allTasksCompleted,
                            boolean isCompleted,
-                           ViewProjectHeaderItem headerItem) {
+                           ViewProjectHeaderItem headerItem,
+                           AddTaskItem addTaskItem) {
         headerAdapter = new ItemAdapter<>();
         taskAdapter = new ItemAdapter<>();
         completedTaskAdapter = new ItemAdapter<>();
@@ -156,7 +157,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
             }
         });
         titleTextView.setText(projectName);
-        initRecyclerView(fastAdapter, headerItem);
+        initRecyclerView(fastAdapter, headerItem, addTaskItem);
         initClickEvents(fastAdapter);
     }
 
@@ -243,7 +244,9 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
 
     //                                                                                       HELPERS
 
-    private void initRecyclerView(FastAdapter fastAdapter, ViewProjectHeaderItem headerItem) {
+    private void initRecyclerView(FastAdapter fastAdapter,
+                                  ViewProjectHeaderItem headerItem,
+                                  AddTaskItem addTaskItem) {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setItemAnimator(new SlideInOutLeftAnimator(recyclerView));
@@ -251,7 +254,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         headerAdapter.add(headerItem);
 
         ItemAdapter<AddTaskItem> addTaskAdapter = new ItemAdapter<>();
-        addTaskAdapter.add(new AddTaskItem(getString(R.string.view_project_title_add_task)));
+        addTaskAdapter.add(addTaskItem);
 
         ItemAdapter<CompleteProjectItem> completeProjectAdapter = new ItemAdapter<>();
         completeProjectAdapter.add(new CompleteProjectItem(getString(R.string.view_project_title_complete_project)));

@@ -5,6 +5,7 @@
     android:id="@+id/item_add_project"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:text="@string/projects_title_add_project"
     android:layout_marginVertical="@dimen/margin_content_half"
     android:layout_marginHorizontal="@dimen/margin_content"
     android:drawableEnd="@drawable/ic_plus_black"

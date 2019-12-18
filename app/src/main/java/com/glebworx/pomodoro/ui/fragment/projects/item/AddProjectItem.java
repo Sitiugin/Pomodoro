@@ -3,7 +3,6 @@ package com.glebworx.pomodoro.ui.fragment.projects.item;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatButton;
 
 import com.glebworx.pomodoro.R;
 import com.mikepenz.fastadapter.FastAdapter;
@@ -17,19 +16,9 @@ public class AddProjectItem
         implements ISwipeable<AddProjectItem, AddProjectItem> {
 
 
-    //                                                                                    ATTRIBUTES
-
-    private String buttonText;
-
-
     //                                                                                  CONSTRUCTORS
 
-    public AddProjectItem(String buttonText) {
-        this.buttonText = buttonText;
-    }
-
-    public AddProjectItem(String buttonText, boolean showRoundedBg) {
-        this.buttonText = buttonText;
+    public AddProjectItem() {
     }
 
 
@@ -59,10 +48,6 @@ public class AddProjectItem
 
     //                                                                                       HELPERS
 
-    public String getButtonText() {
-        return buttonText;
-    }
-
     @Override
     public boolean isSwipeable() {
         return false;
@@ -78,22 +63,16 @@ public class AddProjectItem
 
     protected static class ViewHolder extends FastAdapter.ViewHolder<AddProjectItem> {
 
-        private AppCompatButton addButton;
-
         ViewHolder(View view) {
             super(view);
-            addButton = view.findViewById(R.id.item_add_project);
         }
 
         @Override
         public void bindView(@NonNull AddProjectItem item, @NonNull List<Object> payloads) {
-
-            addButton.setText(item.getButtonText());
         }
 
         @Override
         public void unbindView(@NonNull AddProjectItem item) {
-            addButton.setText(null);
         }
 
     }

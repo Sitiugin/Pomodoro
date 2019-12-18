@@ -12,6 +12,7 @@ import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragment;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentPresenter;
+import com.glebworx.pomodoro.ui.fragment.view_project.item.AddTaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.CompletedTaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.ViewProjectHeaderItem;
 import com.glebworx.pomodoro.ui.item.TaskItem;
@@ -85,7 +86,8 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
                 projectModel.getName(),
                 projectModel.getAllTasksCompleted(),
                 projectModel.isCompleted(),
-                new ViewProjectHeaderItem(projectModel));
+                new ViewProjectHeaderItem(projectModel),
+                new AddTaskItem(projectModel));
 
         observable.subscribe(getObserver());
         completedObservable.subscribe(getCompletedObserver());
@@ -259,14 +261,15 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
 
             @Override
             public void onNext(DocumentSnapshot documentSnapshot) {
-                ProjectModel projectModel = documentSnapshot.toObject(ProjectModel.class);
-                if (projectModel == null) {
+                ProjectModel model = documentSnapshot.toObject(ProjectModel.class);
+                if (model == null) {
                     return;
                 }
+                projectModel = model;
                 presenterListener.onHeaderItemChanged(
-                        new ViewProjectHeaderItem(projectModel));
+                        new ViewProjectHeaderItem(model));
                 presenterListener.onAppBarChanged(
-                        projectModel.getDueDate(),
+                        model.getDueDate(),
                         new Date());
             }
 

@@ -1,11 +1,17 @@
 package com.glebworx.pomodoro.ui.fragment.view_project.item;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatButton;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 
 import com.glebworx.pomodoro.R;
+import com.glebworx.pomodoro.model.ProjectModel;
+import com.glebworx.pomodoro.util.manager.ColorManager;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.fastadapter_extensions.swipe.ISwipeable;
@@ -19,13 +25,13 @@ public class AddTaskItem
 
     //                                                                                    ATTRIBUTES
 
-    private String buttonText;
+    private ProjectModel model;
 
 
     //                                                                                  CONSTRUCTORS
 
-    public AddTaskItem(String buttonText) {
-        this.buttonText = buttonText;
+    public AddTaskItem(ProjectModel model) {
+        this.model = model;
     }
 
 
@@ -65,8 +71,9 @@ public class AddTaskItem
 
     //                                                                                       HELPERS
 
-    private String getButtonText() {
-        return buttonText;
+    public @Nullable
+    String getColorTag() {
+        return model.getColorTag();
     }
 
 
@@ -74,22 +81,25 @@ public class AddTaskItem
 
     protected static class ViewHolder extends FastAdapter.ViewHolder<AddTaskItem> {
 
-        private AppCompatButton addButton;
+        private Context context;
+        private Drawable colorTagDrawable;
 
         ViewHolder(View view) {
             super(view);
-            addButton = view.findViewById(R.id.item_add_task);
+            this.context = view.getContext();
+            colorTagDrawable = ((LayerDrawable) ((AppCompatImageView) view.findViewById(R.id.view_color_tag))
+                    .getDrawable())
+                    .findDrawableByLayerId(R.id.shape_color_tag);
         }
 
         @Override
         public void bindView(@NonNull AddTaskItem item, @NonNull List<Object> payloads) {
-
-            addButton.setText(item.getButtonText());
+            colorTagDrawable.setTint(ColorManager.getColor(context, item.getColorTag()));
         }
 
         @Override
         public void unbindView(@NonNull AddTaskItem item) {
-            addButton.setText(null);
+            colorTagDrawable.setTint(ColorManager.getColor(context, null));
         }
 
     }
