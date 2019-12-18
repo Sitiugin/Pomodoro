@@ -28,8 +28,8 @@
     <string name="core_open">Open</string>
     <string name="core_close">Close</string>
     <string name="core_set">Set</string>
-    <string name="core_pomodoro" formatted="true">%1$s Pomodoro</string>
-    <string name="core_pomodoros" formatted="true">%1$s Pomodoros</string>
+    <string name="core_pomodoro" formatted="true">%1$s Pomodoro - %2$s</string>
+    <string name="core_pomodoros" formatted="true">%1$s Pomodoros - %2$s</string>
     <string name="core_hours" formatted="true">%1$s h</string>
     <string name="core_edit_something" formatted="true">Edit %1$s</string>
     <string name="core_filter">Filter</string>

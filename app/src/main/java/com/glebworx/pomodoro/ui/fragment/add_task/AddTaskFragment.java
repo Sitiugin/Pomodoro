@@ -29,6 +29,7 @@ import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.ui.fragment.add_task.interfaces.IAddTaskFragment;
 import com.glebworx.pomodoro.ui.fragment.add_task.interfaces.IAddTaskFragmentInteractionListener;
+import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.KeyboardManager;
 import com.glebworx.pomodoro.util.manager.NumberPickerManager;
@@ -152,7 +153,8 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
         dueDateButton.setText(dueDate);
         pomodorosAllocatedButton.setText(getString(
                 pomodorosAllocated == 1 ? R.string.core_pomodoro : R.string.core_pomodoros,
-                String.valueOf(pomodorosAllocated)));
+                String.valueOf(pomodorosAllocated),
+                DateTimeManager.formatHHMMString(pomodorosAllocated)));
 
         if (isEditing) {
             taskNameEditText.setVisibility(View.GONE);

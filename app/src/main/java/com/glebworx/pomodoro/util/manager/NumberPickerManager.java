@@ -15,10 +15,17 @@ public class NumberPickerManager {
         picker.setMaxValue(maxValue);
         picker.setWrapSelectorWheel(true);
         picker.setFormatter(value -> {
+            int minutes = value * DateTimeManager.POMODORO_LENGTH + (value - 1) * DateTimeManager.BREAK_LENGTH;
             if (value == 1) {
-                return context.getString(R.string.core_pomodoro, String.valueOf(value));
+                return context.getString(
+                        R.string.core_pomodoro,
+                        String.valueOf(value),
+                        DateTimeManager.formatHHMMString(context, minutes));
             }
-            return context.getString(R.string.core_pomodoros, String.valueOf(value));
+            return context.getString(
+                    R.string.core_pomodoros,
+                    String.valueOf(value),
+                    DateTimeManager.formatHHMMString(context, minutes));
         });
         picker.setValue(1);
 

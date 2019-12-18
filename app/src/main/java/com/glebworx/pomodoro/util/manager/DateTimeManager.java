@@ -15,6 +15,7 @@ import java.util.Locale;
 public class DateTimeManager {
 
     public static final int POMODORO_LENGTH = 25;
+    public static final int BREAK_LENGTH = 5;
     public static final int HOUR_LENGTH = 60;
 
     private static SimpleDateFormat dateFormat =
