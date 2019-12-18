@@ -37,6 +37,7 @@ import com.mikepenz.fastadapter_extensions.swipe.SimpleSwipeCallback;
 import com.mikepenz.itemanimators.SlideInOutLeftAnimator;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.IntStream;
 
@@ -62,6 +63,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
     //                                                                                    ATTRIBUTES
 
     private Context context;
+    private View activityRootView;
     private ItemAdapter<ProjectHeaderItem> headerAdapter;
     private ItemAdapter<ProjectItem> projectAdapter;
     private FastAdapter<AbstractItem> fastAdapter;
@@ -88,6 +90,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_projects, container, false);
         context = getContext();
+        activityRootView = Objects.requireNonNull(getActivity()).findViewById(android.R.id.content);
         unbinder = ButterKnife.bind(this, rootView);
         presenter = new ProjectsFragmentPresenter(this, fragmentListener);
         return rootView;
@@ -251,7 +254,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
                         positionSet.add(position);
                         searchView.setEnabled(false);
                         undoHelper.remove(
-                                recyclerView,
+                                activityRootView,
                                 getString(R.string.projects_toast_project_delete_success),
                                 getString(R.string.core_undo),
                                 LENGTH_SNACK_BAR,

@@ -40,6 +40,7 @@ import com.mikepenz.itemanimators.SlideInOutLeftAnimator;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.IntStream;
 
@@ -70,6 +71,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     //                                                                                    ATTRIBUTES
 
     private Context context;
+    private View activityRootView;
     private FastAdapter<AbstractItem> fastAdapter;
     private ItemAdapter<ViewProjectHeaderItem> headerAdapter;
     private ItemAdapter<TaskItem> taskAdapter;
@@ -104,9 +106,11 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_view_project, container, false);
         context = getContext();
-        if (context == null) {
+        Activity activity = getActivity();
+        if (context == null || activity == null) {
             fragmentListener.onCloseFragment();
         }
+        activityRootView = Objects.requireNonNull(activity).findViewById(android.R.id.content);
         unbinder = ButterKnife.bind(this, rootView);
         presenter = new ViewProjectFragmentPresenter(
                 this,
@@ -282,7 +286,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
             Set<Integer> positionSet = new HashSet<>();
             positionSet.add(position);
             undoHelper.remove(
-                    recyclerView,
+                    activityRootView,
                     getString(R.string.view_project_toast_task_delete_success),
                     getString(R.string.core_undo),
                     LENGTH_SNACK_BAR,
