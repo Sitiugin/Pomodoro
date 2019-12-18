@@ -46,7 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_content"
-        android:background="@drawable/drawable_foreground_rounded_small"
+        android:background="@drawable/drawable_foreground_rounded"
         android:foreground="@drawable/ripple_rounded_small"
         android:elevation="@dimen/elevation_view"
         android:hint="@string/add_task_hint_name"

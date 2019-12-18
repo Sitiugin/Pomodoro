@@ -247,7 +247,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         headerAdapter.add(headerItem);
 
         ItemAdapter<AddTaskItem> addTaskAdapter = new ItemAdapter<>();
-        addTaskAdapter.add(new AddTaskItem(getString(R.string.view_project_title_add_task), true));
+        addTaskAdapter.add(new AddTaskItem(getString(R.string.view_project_title_add_task)));
 
         ItemAdapter<CompleteProjectItem> completeProjectAdapter = new ItemAdapter<>();
         completeProjectAdapter.add(new CompleteProjectItem(getString(R.string.view_project_title_complete_project)));

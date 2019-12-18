@@ -28,10 +28,6 @@ public class AddTaskItem
         this.buttonText = buttonText;
     }
 
-    public AddTaskItem(String buttonText, boolean showRoundedBg) {
-        this.buttonText = buttonText;
-    }
-
 
     //                                                                                    OVERRIDDEN
 
@@ -56,13 +52,6 @@ public class AddTaskItem
         return false;
     }
 
-
-    //                                                                                       HELPERS
-
-    public String getButtonText() {
-        return buttonText;
-    }
-
     @Override
     public boolean isSwipeable() {
         return false;
@@ -71,6 +60,13 @@ public class AddTaskItem
     @Override
     public AddTaskItem withIsSwipeable(boolean swipeable) {
         return this;
+    }
+
+
+    //                                                                                       HELPERS
+
+    private String getButtonText() {
+        return buttonText;
     }
 
 

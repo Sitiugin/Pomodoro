@@ -8,5 +8,4 @@
     android:layout_marginVertical="@dimen/margin_content_half"
     android:layout_marginHorizontal="@dimen/margin_content"
     android:drawableEnd="@drawable/ic_plus_black"
-    android:gravity="start"
-    android:transitionName="@string/projects_title_add_project" />
+    android:gravity="start" />

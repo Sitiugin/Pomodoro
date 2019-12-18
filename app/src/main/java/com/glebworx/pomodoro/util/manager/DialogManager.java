@@ -26,7 +26,7 @@ public class DialogManager {
         View dialogView = inflater.inflate(layoutId, activity.findViewById(rootViewId), false);
         dialogBuilder.setView(dialogView);
         AlertDialog alertDialog = dialogBuilder.create();
-        Objects.requireNonNull(alertDialog.getWindow()).setBackgroundDrawable(activity.getDrawable(R.drawable.drawable_foreground_rounded_small));
+        Objects.requireNonNull(alertDialog.getWindow()).setBackgroundDrawable(activity.getDrawable(R.drawable.drawable_foreground_rounded));
         alertDialog.show();
         return alertDialog;
     }
@@ -44,7 +44,7 @@ public class DialogManager {
         dialogBuilder.setView(dialogView);
         AlertDialog alertDialog = dialogBuilder.create();
 
-        Objects.requireNonNull(alertDialog.getWindow()).setBackgroundDrawable(activity.getDrawable(R.drawable.drawable_foreground_rounded_small));
+        Objects.requireNonNull(alertDialog.getWindow()).setBackgroundDrawable(activity.getDrawable(R.drawable.drawable_foreground_rounded));
 
         ((AppCompatTextView) dialogView.findViewById(R.id.text_view_title)).setText(titleId);
         ((AppCompatTextView) dialogView.findViewById(R.id.text_view_description)).setText(descriptionId);
@@ -75,7 +75,7 @@ public class DialogManager {
         dialogBuilder.setView(dialogView);
         AlertDialog alertDialog = dialogBuilder.create();
 
-        Objects.requireNonNull(alertDialog.getWindow()).setBackgroundDrawable(activity.getDrawable(R.drawable.drawable_foreground_rounded_small));
+        Objects.requireNonNull(alertDialog.getWindow()).setBackgroundDrawable(activity.getDrawable(R.drawable.drawable_foreground_rounded));
 
         ((AppCompatTextView) dialogView.findViewById(R.id.text_view_title)).setText(titleId);
         ((AppCompatTextView) dialogView.findViewById(R.id.text_view_description)).setText(description);

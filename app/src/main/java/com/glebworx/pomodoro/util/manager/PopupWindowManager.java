@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
 
-
 import androidx.core.widget.PopupWindowCompat;
 
 import com.glebworx.pomodoro.R;
@@ -49,7 +48,7 @@ public class PopupWindowManager {
             : new PopupWindow(context);
 
         popupWindow.setContentView(popupView);
-        popupWindow.setBackgroundDrawable(context.getDrawable(R.drawable.drawable_foreground_rounded_small));
+        popupWindow.setBackgroundDrawable(context.getDrawable(R.drawable.drawable_foreground_rounded));
         popupWindow.setElevation(context.getResources().getDimensionPixelSize(R.dimen.elevation_popup));
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(true);

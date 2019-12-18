@@ -39,7 +39,7 @@
     <dimen name="size_divider">1dp</dimen>
     <dimen name="size_divider_thick">2dp</dimen>
     <dimen name="size_icon">24dp</dimen>
-    <dimen name="size_seek_arc_list">32dp</dimen>
+    <dimen name="size_seek_arc_list">40dp</dimen>
     <dimen name="width_button_large">256dp</dimen>
     <dimen name="width_button_medium">192dp</dimen>
     <dimen name="width_button_small">128dp</dimen>

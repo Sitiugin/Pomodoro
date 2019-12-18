@@ -47,7 +47,6 @@
         android:id="@+id/seek_arc_progress"
         android:layout_width="@dimen/size_seek_arc_list"
         android:layout_height="@dimen/size_seek_arc_list"
-        android:layout_marginVertical="@dimen/margin_content"
         android:layout_marginEnd="@dimen/margin_content"
         app:enabled="false"
         app:arcColor="@android:color/darker_gray"
