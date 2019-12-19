@@ -6,5 +6,5 @@
         android:width="@dimen/size_splash"
         android:top="@dimen/margin_splash"
         android:gravity="top|center_horizontal"
-        android:drawable="@drawable/ic_splash" />
+        android:drawable="@mipmap/ic_launcher" />
 </layer-list>

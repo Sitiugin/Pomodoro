@@ -149,12 +149,11 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
                            String taskName,
                            String dueDate,
                            int pomodorosAllocated) {
-
         dueDateButton.setText(dueDate);
         pomodorosAllocatedButton.setText(getString(
                 pomodorosAllocated == 1 ? R.string.core_pomodoro : R.string.core_pomodoros,
                 String.valueOf(pomodorosAllocated),
-                DateTimeManager.formatHHMMString(pomodorosAllocated)));
+                DateTimeManager.formatHHString(pomodorosAllocated)));
 
         if (isEditing) {
             taskNameEditText.setVisibility(View.GONE);
@@ -216,7 +215,8 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
     public void onPomodorosChanged(int pomodorosAllocated) {
         pomodorosAllocatedButton.setText(getString(
                 pomodorosAllocated == 1 ? R.string.core_pomodoro : R.string.core_pomodoros,
-                String.valueOf(pomodorosAllocated)));
+                String.valueOf(pomodorosAllocated),
+                DateTimeManager.formatHHString(pomodorosAllocated)));
     }
 
     @Override

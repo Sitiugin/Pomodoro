@@ -20,6 +20,8 @@ public class DateTimeManager {
 
     private static SimpleDateFormat dateFormat =
             new SimpleDateFormat(Constants.PATTERN_DATE, Locale.getDefault());
+    private static SimpleDateFormat timeFormat =
+            new SimpleDateFormat(Constants.PATTERN_TIME, Locale.getDefault());
     private static SimpleDateFormat calendarFormat =
             new SimpleDateFormat(Constants.PATTERN_CALENDAR, Locale.getDefault());
 
@@ -148,12 +150,16 @@ public class DateTimeManager {
         return String.format(Locale.getDefault(), "%d:%02d", minutes / 60, minutes % 60);
     }
 
+    public static String formatHHString(float pomodoros) {
+        return String.format(Locale.getDefault(), "%.2f", pomodoros / 2);
+    }
+
     public static int formatHHMMString(int pomodoros) {
         return pomodoros * POMODORO_LENGTH;
     }
 
     public static String formatMMSSString(Context context, int seconds) {
-        return String.format(Locale.getDefault(), "%d:%02d", seconds / 60, seconds % 60);
+        return String.format(Locale.getDefault(), "%d:%01d", seconds / 60, seconds % 60);
     }
 
 }

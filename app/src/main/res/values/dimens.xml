@@ -28,7 +28,7 @@
 
     <!--                                                                              VIEW SIZES -->
 
-    <dimen name="size_splash">256dp</dimen>
+    <dimen name="size_splash">64dp</dimen>
     <dimen name="size_splash_small">128dp</dimen>
     <dimen name="height_app_bar">56dp</dimen>
     <dimen name="height_fab">56dp</dimen>

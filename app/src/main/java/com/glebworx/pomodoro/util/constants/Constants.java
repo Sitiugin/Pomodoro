@@ -8,6 +8,7 @@ public class Constants {
 
     public static final String PATTERN_DATE_TIME = "EEEE MMM d, y hh:mm a";
     public static final String PATTERN_DATE = "EEEE MMM d, y";
+    public static final String PATTERN_TIME = "HH mm";
     public static final String PATTERN_CALENDAR = "MMM y";
 
     public static final int MAX_POMODOROS_SESSION = 10;
