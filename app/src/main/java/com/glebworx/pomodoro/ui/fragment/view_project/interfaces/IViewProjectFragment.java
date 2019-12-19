@@ -32,4 +32,6 @@ public interface IViewProjectFragment {
 
     void onDueDateChanged(Date dueDate);
 
+    void onSummaryChanged();
+
 }

@@ -228,6 +228,11 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
                 : android.R.color.darker_gray));
     }
 
+    @Override
+    public void onSummaryChanged() {
+        headerAdapter.set(0, new ViewProjectHeaderItem(headerAdapter.getAdapterItem(0)));
+    }
+
 
     //                                                                                       HELPERS
 

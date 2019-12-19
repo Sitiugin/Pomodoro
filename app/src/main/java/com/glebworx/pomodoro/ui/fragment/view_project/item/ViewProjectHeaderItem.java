@@ -39,6 +39,10 @@ public class ViewProjectHeaderItem extends AbstractItem<ViewProjectHeaderItem, V
         this.model = model;
     }
 
+    public ViewProjectHeaderItem(ViewProjectHeaderItem other) {
+        this(other.model);
+    }
+
 
     //                                                                                    OVERRIDDEN
 
