@@ -11,6 +11,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.glebworx.pomodoro.R;
+import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.model.TaskModel;
@@ -65,7 +66,9 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     private VibrationManager vibrationManager;
     private TaskNotificationManager notificationManager;
     private Observable<DocumentSnapshot> taskEventObservable;
+    private Observable<DocumentSnapshot> projectEventObservable;
     private ListenerRegistration taskEventListenerRegistration;
+    private ListenerRegistration projectEventListenerRegistration;
     private CompositeDisposable compositeDisposable;
 
 
@@ -101,6 +104,12 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());
 
+        projectEventObservable = getProjectEventObservable();
+        projectEventObservable = projectEventObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io());
+
     }
 
     @Override
@@ -112,11 +121,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     @Override
     public synchronized void setTask(ProjectModel projectModel, TaskModel taskModel, int numberOfSessions) {
 
-        if (taskEventListenerRegistration != null) {
-            taskEventListenerRegistration.remove();
-            taskEventListenerRegistration = null;
-        }
-
+        clearEventListeners();
         clearState();
 
         this.projectModel = projectModel;
@@ -127,12 +132,8 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
         presenterListener.onTaskSet(taskModel.getName(), numberOfSessions);
 
-        if (taskEventListenerRegistration != null) {
-            taskEventListenerRegistration.remove();
-            taskEventListenerRegistration = null;
-        }
-
         taskEventObservable.subscribe(getTaskEventObserver());
+        projectEventObservable.subscribe(getProjectEventObserver());
 
         vibrationManager.vibrateMedium();
         notificationManager.showPersistentNotification(taskModel.getName(), TaskNotificationManager.STATUS_READY);
@@ -326,10 +327,7 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
         clearState();
 
-        if (taskEventListenerRegistration != null) {
-            taskEventListenerRegistration.remove();
-            taskEventListenerRegistration = null;
-        }
+        clearEventListeners();
 
         totalPomodoroCount = 0;
         completedPomodoroCount = 0;
@@ -340,6 +338,17 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
         presenterListener.onHideBottomSheet();
 
+    }
+
+    private void clearEventListeners() {
+        if (taskEventListenerRegistration != null) {
+            taskEventListenerRegistration.remove();
+            taskEventListenerRegistration = null;
+        }
+        if (projectEventListenerRegistration != null) {
+            projectEventListenerRegistration.remove();
+            projectEventListenerRegistration = null;
+        }
     }
 
     private void showCancelSessionDialog(Activity activity) {
@@ -433,13 +442,69 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
             @Override
             public void onNext(DocumentSnapshot documentSnapshot) {
+                if (!documentSnapshot.exists()) {
+                    closeSession();
+                    return;
+                }
                 TaskModel model = documentSnapshot.toObject(TaskModel.class);
                 if (model == null) {
                     closeSession();
-                } else {
-                    presenterListener.onTaskDataChanged(
-                            model.getPomodorosAllocated(),
-                            model.getPomodorosCompleted());
+                    return;
+                }
+                presenterListener.onTaskDataChanged(
+                        model.getPomodorosAllocated(),
+                        model.getPomodorosCompleted());
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+    }
+
+    private Observable<DocumentSnapshot> getProjectEventObservable() {
+        return Observable.create(emitter -> {
+            projectEventListenerRegistration = ProjectApi.addProjectEventListener(
+                    projectModel.getName(),
+                    (documentSnapshot, e) -> {
+                        if (emitter.isDisposed()) {
+                            return;
+                        }
+                        if (e != null) {
+                            emitter.onError(e);
+                            return;
+                        }
+                        if (documentSnapshot == null) {
+                            return;
+                        }
+                        emitter.onNext(documentSnapshot);
+                    });
+            emitter.setCancellable(projectEventListenerRegistration::remove);
+        });
+    }
+
+    private io.reactivex.Observer<DocumentSnapshot> getProjectEventObserver() {
+        return new io.reactivex.Observer<DocumentSnapshot>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                compositeDisposable.add(disposable);
+            }
+
+            @Override
+            public void onNext(DocumentSnapshot documentSnapshot) {
+                if (!documentSnapshot.exists()) {
+                    closeSession();
+                    return;
+                }
+                ProjectModel model = documentSnapshot.toObject(ProjectModel.class);
+                if (model == null) {
+                    closeSession();
                 }
             }
 
