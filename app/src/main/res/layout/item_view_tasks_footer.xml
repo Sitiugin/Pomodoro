@@ -7,5 +7,6 @@
     android:layout_marginHorizontal="@dimen/margin_content"
     android:layout_marginBottom="@dimen/margin_content_half"
     android:background="@drawable/drawable_foreground_rounded_bottom"
+    android:foreground="@drawable/ripple_rounded_bottom"
     android:clipChildren="false"
     android:clipToPadding="false" />

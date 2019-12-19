@@ -103,7 +103,7 @@
     </style>
     <style name="ButtonStyle" parent="@style/BaseButtonStyle">
         <item name="android:background">@drawable/drawable_foreground_rounded</item>
-        <item name="android:foreground">@drawable/ripple_rounded_small</item>
+        <item name="android:foreground">@drawable/ripple_rounded</item>
         <item name="android:elevation">@dimen/elevation_view</item>
         <item name="android:stateListAnimator">@animator/lift_on_touch</item>
     </style>
@@ -112,7 +112,7 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
     <style name="ButtonStyle.Borderless" parent="@style/BaseButtonStyle">
-        <item name="android:background">@drawable/ripple_rounded_small</item>
+        <item name="android:background">@drawable/ripple_rounded</item>
     </style>
     <style name="ButtonStyle.Borderless.Colored" parent="@style/ButtonStyle.Borderless">
         <item name="android:textColor">@color/colorHighlight</item>
@@ -164,7 +164,7 @@
     <style name="ViewStyle.Rounded.Clickable" parent="ViewStyle.Rounded">
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
-        <item name="android:foreground">@drawable/ripple_rounded_small</item>
+        <item name="android:foreground">@drawable/ripple_rounded</item>
         <item name="android:stateListAnimator">@animator/lift_on_touch</item>
     </style>
 
@@ -179,7 +179,7 @@
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
         <item name="android:padding">@dimen/margin_content</item>
-        <item name="android:background">@drawable/ripple_rounded_small</item>
+        <item name="android:background">@drawable/ripple_rounded</item>
         <item name="android:foreground">@null</item>
     </style>
 
@@ -196,7 +196,7 @@
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
         <item name="android:padding">@dimen/margin_content</item>
-        <item name="android:background">@drawable/ripple_rounded_small</item>
+        <item name="android:background">@drawable/ripple_rounded</item>
     </style>
 
     <style name="ViewStyle.Search">
@@ -336,7 +336,7 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:padding">@dimen/margin_content</item>
         <item name="android:background">@drawable/drawable_foreground_rounded</item>
-        <item name="android:foreground">@drawable/ripple_rounded_small</item>
+        <item name="android:foreground">@drawable/ripple_rounded</item>
         <item name="android:stateListAnimator">@animator/lift_on_touch</item>
     </style>
 
