@@ -151,7 +151,7 @@ public class DateTimeManager {
     }
 
     public static String formatHHString(float pomodoros) {
-        return String.format(Locale.getDefault(), "%.2f", pomodoros / 2);
+        return String.format(Locale.getDefault(), "%.1f", pomodoros / 2);
     }
 
     public static int formatHHMMString(int pomodoros) {

@@ -96,6 +96,8 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
         vibrationManager = new VibrationManager(context);
         notificationManager = new TaskNotificationManager(context);
 
+        notificationManager.cancelAllNotifications();
+
         compositeDisposable = new CompositeDisposable();
 
         taskEventObservable = getTaskEventObservable();
@@ -169,12 +171,12 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
     @Override
     public void cancelSession(Activity activity) {
+        notificationManager.cancelAllNotifications();
         if (isStatusIdle()) {
             closeSession();
         } else {
             showCancelSessionDialog(activity);
         }
-        notificationManager.cancelAllNotifications();
     }
 
     @Override

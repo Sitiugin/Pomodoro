@@ -100,8 +100,6 @@ public class MainActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        TaskNotificationManager notificationManager = new TaskNotificationManager(MainActivity.this);
-        notificationManager.cancelAllNotifications();
         bottomSheetView.onClearViews();
         fragmentManager.clearAllFragments();
         unbinder.unbind();
