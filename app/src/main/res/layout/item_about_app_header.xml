@@ -12,7 +12,7 @@
         android:id="@+id/image_view_icon"
         android:layout_width="@dimen/size_splash_small"
         android:layout_height="@dimen/size_splash_small"
-        android:scaleType="centerInside"
+        android:scaleType="fitXY"
         android:src="@drawable/ic_splash"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

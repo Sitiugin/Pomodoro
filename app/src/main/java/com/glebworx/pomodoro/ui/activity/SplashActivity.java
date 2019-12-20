@@ -27,6 +27,8 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.Objects;
+
 
 public class SplashActivity extends AppCompatActivity implements ISplashActivity {
 
@@ -217,7 +219,7 @@ public class SplashActivity extends AppCompatActivity implements ISplashActivity
         AlertDialog alertDialog = DialogManager.showDialog(SplashActivity.this, R.id.container_splash, layoutId);
         ((AppCompatTextView) alertDialog.findViewById(R.id.text_view_title)).setText(titleId);
         AppCompatButton positiveButton = alertDialog.findViewById(R.id.button_positive);
-        positiveButton.setText(R.string.core_close);
+        Objects.requireNonNull(positiveButton).setText(R.string.core_close);
         positiveButton.setOnClickListener(view -> alertDialog.dismiss());
     }
 

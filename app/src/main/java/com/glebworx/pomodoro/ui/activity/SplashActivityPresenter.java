@@ -85,7 +85,6 @@ public class SplashActivityPresenter implements ISplashActivityPresenter {
 
     @Override
     public void openEmailClient(Context context) {
-        presenterListener.onHideViews();
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_APP_EMAIL);
         //context.startActivity(intent);
