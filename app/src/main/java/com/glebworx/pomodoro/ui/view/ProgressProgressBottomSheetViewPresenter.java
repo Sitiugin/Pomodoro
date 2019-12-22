@@ -354,10 +354,11 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     }
 
     private void showCancelSessionDialog(Activity activity) {
-        AlertDialog alertDialog = DialogManager.showDialog(
+        AlertDialog alertDialog = DialogManager.buildDialog(
                 activity,
                 R.id.container_main,
                 R.layout.dialog_generic);
+        alertDialog.show();
         ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_title))).setText(R.string.bottom_sheet_title_cancel_session);
         ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_description))).setText(R.string.bottom_sheet_text_cancel_session);
         AppCompatButton positiveButton = alertDialog.findViewById(R.id.button_positive);
@@ -375,10 +376,11 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     }
 
     private void showCompleteTaskDialog(Activity activity) {
-        AlertDialog alertDialog = DialogManager.showDialog(
+        AlertDialog alertDialog = DialogManager.buildDialog(
                 activity,
                 R.id.container_main,
                 R.layout.dialog_generic);
+        alertDialog.show();
         ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_title))).setText(R.string.bottom_sheet_title_complete_task);
         ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_description))).setText(R.string.bottom_sheet_text_complete_task);
         AppCompatButton positiveButton = alertDialog.findViewById(R.id.button_positive);

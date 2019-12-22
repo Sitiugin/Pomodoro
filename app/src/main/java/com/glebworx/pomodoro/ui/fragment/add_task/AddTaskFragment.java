@@ -182,10 +182,11 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
 
     @Override
     public void onEditPomodorosAllocated(int pomodorosAllocated) {
-        AlertDialog alertDialog = DialogManager.showDialog(
+        AlertDialog alertDialog = DialogManager.buildDialog(
                 activity,
                 R.id.container_main,
                 R.layout.dialog_pomodoro_picker);
+        alertDialog.show();
         NumberPicker picker = alertDialog.findViewById(R.id.number_picker);
         NumberPickerManager.initPicker(context, Objects.requireNonNull(picker), 1, 25);
         picker.setValue(pomodorosAllocated);
@@ -281,10 +282,11 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
     }
 
     private void showDatePickerDialog(Date dueDate) {
-        AlertDialog alertDialog = DialogManager.showDialog(
+        AlertDialog alertDialog = DialogManager.buildDialog(
                 activity,
                 R.id.container_main,
                 R.layout.dialog_date_picker);
+        alertDialog.show();
         DatePicker datePicker = alertDialog.findViewById(R.id.date_picker);
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.setTime(dueDate);

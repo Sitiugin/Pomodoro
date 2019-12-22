@@ -227,10 +227,12 @@ public class MainActivity
 
     private void showSetTaskDialog(ProjectModel projectModel, TaskModel taskModel) {
 
-        AlertDialog alertDialog = DialogManager.showDialog(
+        AlertDialog alertDialog = DialogManager.buildDialog(
                 MainActivity.this,
                 R.id.container_main,
                 R.layout.dialog_set_task);
+
+        alertDialog.show();
 
         NumberPicker picker = alertDialog.findViewById(R.id.number_picker);
         NumberPickerManager.initPicker(MainActivity.this, Objects.requireNonNull(picker), 1, MAX_POMODOROS_SESSION);

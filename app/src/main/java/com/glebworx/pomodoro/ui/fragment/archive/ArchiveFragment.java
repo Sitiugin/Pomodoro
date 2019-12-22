@@ -308,10 +308,11 @@ public class ArchiveFragment extends Fragment implements IArchiveFragment {
         if (activity == null) {
             return;
         }
-        AlertDialog dialog = DialogManager.showDialog(
+        AlertDialog dialog = DialogManager.buildDialog(
                 activity,
                 R.id.container_main,
                 R.layout.dialog_delete_all);
+        dialog.show();
         View.OnClickListener onClickListener = view -> {
             if (view.getId() == R.id.button_positive) {
                 dialog.dismiss();

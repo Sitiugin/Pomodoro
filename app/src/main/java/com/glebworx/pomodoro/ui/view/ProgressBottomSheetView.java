@@ -442,10 +442,11 @@ public class ProgressBottomSheetView
             return;
         }
 
-        AlertDialog alertDialog = DialogManager.showDialog(
+        AlertDialog alertDialog = DialogManager.buildDialog(
                 (Activity) context,
                 R.id.container_main,
                 R.layout.dialog_set_task);
+        alertDialog.show();
 
         int initialPomodoroCount = presenter.getCompletedPomodoroCount() + 1;
         if (initialPomodoroCount < 1) {

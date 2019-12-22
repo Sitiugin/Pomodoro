@@ -101,7 +101,8 @@ public class ReportHistoryView extends ConstraintLayout implements IReportHistor
         if (activity == null) {
             return;
         }
-        AlertDialog alertDialog = DialogManager.showDialog(activity, R.id.container_main, R.layout.dialog_date_picker);
+        AlertDialog alertDialog = DialogManager.buildDialog(activity, R.id.container_main, R.layout.dialog_date_picker);
+        alertDialog.show();
         DatePicker datePicker = alertDialog.findViewById(R.id.date_picker);
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.setTime(defaultDate);

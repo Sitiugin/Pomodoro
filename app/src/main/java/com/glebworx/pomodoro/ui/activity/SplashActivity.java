@@ -216,7 +216,8 @@ public class SplashActivity extends AppCompatActivity implements ISplashActivity
     }
 
     private void showInfoDialog(int layoutId, int titleId) {
-        AlertDialog alertDialog = DialogManager.showDialog(SplashActivity.this, R.id.container_splash, layoutId);
+        AlertDialog alertDialog = DialogManager.buildDialog(SplashActivity.this, R.id.container_splash, layoutId);
+        alertDialog.show();
         ((AppCompatTextView) alertDialog.findViewById(R.id.text_view_title)).setText(titleId);
         AppCompatButton positiveButton = alertDialog.findViewById(R.id.button_positive);
         Objects.requireNonNull(positiveButton).setText(R.string.core_close);

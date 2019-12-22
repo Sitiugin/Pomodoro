@@ -20,14 +20,13 @@ public class DialogManager {
 
     private DialogManager() { }
 
-    public static AlertDialog showDialog(@Nonnull Activity activity, int rootViewId, int layoutId) {
+    public static AlertDialog buildDialog(@Nonnull Activity activity, int rootViewId, int layoutId) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
         LayoutInflater inflater = activity.getLayoutInflater();
         View dialogView = inflater.inflate(layoutId, activity.findViewById(rootViewId), false);
         dialogBuilder.setView(dialogView);
         AlertDialog alertDialog = dialogBuilder.create();
         Objects.requireNonNull(alertDialog.getWindow()).setBackgroundDrawable(activity.getDrawable(R.drawable.drawable_foreground_rounded));
-        alertDialog.show();
         return alertDialog;
     }
 

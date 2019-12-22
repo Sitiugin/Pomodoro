@@ -331,10 +331,11 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
             return;
         }
 
-        AlertDialog alertDialog = DialogManager.showDialog(
+        AlertDialog alertDialog = DialogManager.buildDialog(
                 activity,
                 R.id.container_main,
                 R.layout.dialog_complete_project);
+        alertDialog.show();
 
         KonfettiView konfettiView = alertDialog.findViewById(R.id.view_konfetti);
         KonfettiManager.buildKonfetti(konfettiView, context);
