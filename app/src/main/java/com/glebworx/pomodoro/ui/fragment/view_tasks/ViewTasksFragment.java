@@ -154,118 +154,106 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
     }
 
     @Override
-    public void onTaskAdded(TaskItem item) {
+    public synchronized void onTaskAdded(TaskItem item) {
 
-        synchronized (this) {
+        String projectName = item.getProjectName();
 
-            String projectName = item.getProjectName();
+        if (adapterMap.containsKey(projectName)) {
 
-            if (adapterMap.containsKey(projectName)) {
+            ItemAdapter<AbstractItem> adapter = adapterMap.get(projectName);
+            Objects.requireNonNull(adapter).add(item);
 
-                ItemAdapter<AbstractItem> adapter = adapterMap.get(projectName);
-                Objects.requireNonNull(adapter).add(item);
+        } else {
 
-            } else {
+            ItemAdapter<AbstractItem> headerAdapter = new ItemAdapter<>();
+            ItemAdapter<AbstractItem> adapter = new ItemAdapter<>();
+            ItemAdapter<AbstractItem> completedAdapter = new ItemAdapter<>();
+            ItemAdapter<AbstractItem> footerAdapter = new ItemAdapter<>();
 
-                ItemAdapter<AbstractItem> headerAdapter = new ItemAdapter<>();
-                ItemAdapter<AbstractItem> adapter = new ItemAdapter<>();
-                ItemAdapter<AbstractItem> completedAdapter = new ItemAdapter<>();
-                ItemAdapter<AbstractItem> footerAdapter = new ItemAdapter<>();
+            headerAdapter.add(new ViewTasksHeaderItem(item.getProjectName()));
+            headerAdapterMap.put(projectName, headerAdapter);
 
-                headerAdapter.add(new ViewTasksHeaderItem(item.getProjectName()));
-                headerAdapterMap.put(projectName, headerAdapter);
+            adapter.add(item);
+            adapterMap.put(projectName, adapter);
 
-                adapter.add(item);
-                adapterMap.put(projectName, adapter);
+            completedAdapterMap.put(projectName, completedAdapter);
 
-                completedAdapterMap.put(projectName, completedAdapter);
+            footerAdapter.add(new ViewTasksFooterItem());
 
-                footerAdapter.add(new ViewTasksFooterItem());
-
-                fastAdapter.addAdapter(adapterCount++, headerAdapter);
-                fastAdapter.addAdapter(adapterCount++, adapter);
-                fastAdapter.addAdapter(adapterCount++, completedAdapter);
-                fastAdapter.addAdapter(adapterCount++, footerAdapter);
-                fastAdapter.notifyAdapterItemRangeChanged(adapterCount, 4);
-
-            }
+            fastAdapter.addAdapter(adapterCount++, headerAdapter);
+            fastAdapter.addAdapter(adapterCount++, adapter);
+            fastAdapter.addAdapter(adapterCount++, completedAdapter);
+            fastAdapter.addAdapter(adapterCount++, footerAdapter);
+            fastAdapter.notifyAdapterItemRangeChanged(adapterCount, 4);
 
         }
 
     }
 
     @Override
-    public void onTaskModified(TaskItem item) {
-        synchronized (this) {
-            String projectName = item.getProjectName();
-            if (adapterMap.containsKey(projectName)) {
-                ItemAdapter<AbstractItem> adapter = adapterMap.get(projectName);
-                int index = getTaskItemIndex(item.getTaskName(), Objects.requireNonNull(adapter));
-                if (index != -1) {
-                    adapter.set(index, item);
-                }
+    public synchronized void onTaskModified(TaskItem item) {
+        String projectName = item.getProjectName();
+        if (adapterMap.containsKey(projectName)) {
+            ItemAdapter<AbstractItem> adapter = adapterMap.get(projectName);
+            int index = getTaskItemIndex(item.getTaskName(), Objects.requireNonNull(adapter));
+            if (index != -1) {
+                adapter.set(index, item);
             }
         }
     }
 
     @Override
-    public void onTaskDeleted(TaskItem item) {
-        synchronized (this) {
-            String projectName = item.getProjectName();
-            if (adapterMap.containsKey(projectName)) {
-                ItemAdapter<AbstractItem> adapter = adapterMap.get(projectName);
-                int index = getTaskItemIndex(item.getTaskName(), Objects.requireNonNull(adapter));
-                if (index != -1) {
-                    adapter.remove(index);
-                }
+    public synchronized void onTaskDeleted(TaskItem item) {
+        String projectName = item.getProjectName();
+        if (adapterMap.containsKey(projectName)) {
+            ItemAdapter<AbstractItem> adapter = adapterMap.get(projectName);
+            int index = getTaskItemIndex(item.getTaskName(), Objects.requireNonNull(adapter));
+            if (index != -1) {
+                adapter.remove(index);
             }
         }
     }
 
     @Override
-    public void onTaskCompleted(CompletedTaskItem completedItem) {
+    public synchronized void onTaskCompleted(CompletedTaskItem completedItem) { // TODO this block is not working properly - concurrency issues
 
-        synchronized (this) { // TODO this block is not working properly - concurrency issues
+        String projectName = completedItem.getProjectName();
 
-            String projectName = completedItem.getProjectName();
-
-            if (adapterMap.containsKey(projectName)) {
-                ItemAdapter<AbstractItem> adapter = adapterMap.get(projectName);
-                int index = getTaskItemIndex(completedItem.getTaskName(), Objects.requireNonNull(adapter));
-                if (index != -1) {
-                    adapter.remove(index);
-                }
+        if (adapterMap.containsKey(projectName)) {
+            ItemAdapter<AbstractItem> adapter = adapterMap.get(projectName);
+            int index = getTaskItemIndex(completedItem.getTaskName(), Objects.requireNonNull(adapter));
+            if (index != -1) {
+                adapter.remove(index);
             }
+        }
 
-            if (completedAdapterMap.containsKey(projectName)) {
+        if (completedAdapterMap.containsKey(projectName)) {
 
-                ItemAdapter<AbstractItem> adapter = completedAdapterMap.get(projectName);
-                Objects.requireNonNull(adapter).add(completedItem);
+            ItemAdapter<AbstractItem> adapter = completedAdapterMap.get(projectName);
+            Objects.requireNonNull(adapter).add(completedItem);
 
-            } else {
+        } else {
 
-                ItemAdapter<AbstractItem> headerAdapter = new ItemAdapter<>();
-                ItemAdapter<AbstractItem> adapter = new ItemAdapter<>();
-                ItemAdapter<AbstractItem> completedAdapter = new ItemAdapter<>();
-                ItemAdapter<AbstractItem> footerAdapter = new ItemAdapter<>();
+            ItemAdapter<AbstractItem> headerAdapter = new ItemAdapter<>();
+            ItemAdapter<AbstractItem> adapter = new ItemAdapter<>();
+            ItemAdapter<AbstractItem> completedAdapter = new ItemAdapter<>();
+            ItemAdapter<AbstractItem> footerAdapter = new ItemAdapter<>();
 
-                headerAdapter.add(new ViewTasksHeaderItem(completedItem.getProjectName()));
-                headerAdapterMap.put(projectName, headerAdapter);
+            headerAdapter.add(new ViewTasksHeaderItem(completedItem.getProjectName()));
+            headerAdapterMap.put(projectName, headerAdapter);
 
-                adapterMap.put(projectName, adapter);
+            adapterMap.put(projectName, adapter);
 
-                completedAdapter.add(completedItem);
-                completedAdapterMap.put(projectName, completedAdapter);
+            completedAdapter.add(completedItem);
+            completedAdapterMap.put(projectName, completedAdapter);
 
-                footerAdapter.add(new ViewTasksFooterItem());
+            footerAdapter.add(new ViewTasksFooterItem());
 
-                fastAdapter.addAdapter(adapterCount++, headerAdapter);
-                fastAdapter.addAdapter(adapterCount++, adapter);
-                fastAdapter.addAdapter(adapterCount++, completedAdapter);
-                fastAdapter.addAdapter(adapterCount++, footerAdapter);
-                fastAdapter.notifyAdapterItemRangeChanged(adapterCount, 4);
-
-            }
+            fastAdapter.addAdapter(adapterCount++, headerAdapter);
+            fastAdapter.addAdapter(adapterCount++, adapter);
+            fastAdapter.addAdapter(adapterCount++, completedAdapter);
+            fastAdapter.addAdapter(adapterCount++, footerAdapter);
+            fastAdapter.notifyAdapterItemRangeChanged(adapterCount, 4);
 
         }
 
@@ -273,14 +261,12 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
     @Override
     public synchronized void onProjectChanged(String projectName, String tagColor) {
-        synchronized (this) {
-            ItemAdapter<AbstractItem> headerAdapter = headerAdapterMap.get(projectName);
-            if (headerAdapter != null) {
-                AbstractItem headerItem = Objects.requireNonNull(headerAdapter).getAdapterItem(0);
-                ((ViewTasksHeaderItem) headerItem).setColorTag(tagColor);
-                //fastAdapter.notifyItemChanged(fastAdapter.getPosition(headerItem)); // TODO why this doesn't work?
-                fastAdapter.notifyAdapterDataSetChanged();
-            }
+        ItemAdapter<AbstractItem> headerAdapter = headerAdapterMap.get(projectName);
+        if (headerAdapter != null) {
+            AbstractItem headerItem = Objects.requireNonNull(headerAdapter).getAdapterItem(0);
+            ((ViewTasksHeaderItem) headerItem).setColorTag(tagColor);
+            //fastAdapter.notifyItemChanged(fastAdapter.getPosition(headerItem)); // TODO why this doesn't work?
+            fastAdapter.notifyAdapterDataSetChanged();
         }
     }
 

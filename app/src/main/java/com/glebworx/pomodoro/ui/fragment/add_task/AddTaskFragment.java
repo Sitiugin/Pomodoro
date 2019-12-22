@@ -151,7 +151,7 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
                            int pomodorosAllocated) {
         dueDateButton.setText(dueDate);
         pomodorosAllocatedButton.setText(getString(
-                pomodorosAllocated == 1 ? R.string.core_pomodoro : R.string.core_pomodoros,
+                pomodorosAllocated == 1 ? R.string.core_pomodoro_time : R.string.core_pomodoros_time,
                 String.valueOf(pomodorosAllocated),
                 DateTimeManager.formatHHString(pomodorosAllocated)));
 
@@ -214,7 +214,7 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
     @Override
     public void onPomodorosChanged(int pomodorosAllocated) {
         pomodorosAllocatedButton.setText(getString(
-                pomodorosAllocated == 1 ? R.string.core_pomodoro : R.string.core_pomodoros,
+                pomodorosAllocated == 1 ? R.string.core_pomodoro_time : R.string.core_pomodoros_time,
                 String.valueOf(pomodorosAllocated),
                 DateTimeManager.formatHHString(pomodorosAllocated)));
     }

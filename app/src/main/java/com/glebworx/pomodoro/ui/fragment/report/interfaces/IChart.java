@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import static com.glebworx.pomodoro.util.constants.Constants.ANIM_DURATION;
+import static com.glebworx.pomodoro.util.constants.Constants.RATIO_MS_TO_WEEK;
 import static com.glebworx.pomodoro.util.constants.Constants.TYPEFACE;
 
 public interface IChart {
@@ -85,7 +86,7 @@ public interface IChart {
 
     static void initChart(BarChart chart, boolean isExpanded, boolean showLegend, String descriptionText) {
         initBaseChart(chart, isExpanded, showLegend, descriptionText);
-        chart.setFitBars(true);
+        //chart.setFitBars(true);
         XAxis xAxis = chart.getXAxis();
         xAxis.setValueFormatter(new BarAxisEntryXFormatter());
     }
@@ -241,7 +242,7 @@ public interface IChart {
 
         @Override
         public String getFormattedValue(float value) {
-            return DateTimeManager.getBarAxisDateString((long) value * 604800000, currentDate);
+            return DateTimeManager.getBarAxisDateString((long) value * RATIO_MS_TO_WEEK, currentDate);
         }
     }
 
@@ -252,6 +253,29 @@ public interface IChart {
         @Override
         public String getFormattedValue(float value) {
             return numberFormat.format(value);
+        }
+
+    }
+
+    class AxisEntryYPomodoroFormatter extends ValueFormatter {
+
+        private static NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
+        private Context context;
+
+        public AxisEntryYPomodoroFormatter(Context context) {
+            super();
+            this.context = context;
+        }
+
+        @Override
+        public String getFormattedValue(float value) {
+            int stringId;
+            if ((int) value == 1) {
+                stringId = R.string.core_pomodoro;
+            } else {
+                stringId = R.string.core_pomodoros;
+            }
+            return context.getString(stringId, numberFormat.format(value));
         }
 
     }

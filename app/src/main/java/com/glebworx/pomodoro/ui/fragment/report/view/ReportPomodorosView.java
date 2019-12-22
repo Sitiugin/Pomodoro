@@ -88,6 +88,7 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
 
     @Override
     public void onInitWeeklyTrendsChart(BarData barData) {
+        barData.setValueFormatter(new IChart.AxisEntryYPomodoroFormatter(context));
         if (barData.getEntryCount() > 0) {
             weeklyTrendsBarChart.setData(barData);
             weeklyTrendsBarChart.animateY(ANIM_DURATION);

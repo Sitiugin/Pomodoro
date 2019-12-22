@@ -19,7 +19,7 @@
         app:srcCompat="@drawable/drawable_color_tag" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        style="@style/TextStyle.Title.Selectable"
+        style="@style/TextStyle.Title"
         android:id="@+id/text_view_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

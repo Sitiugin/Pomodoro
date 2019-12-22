@@ -19,6 +19,8 @@ public class Constants {
 
     public static final String SANS_SERIF_LIGHT = "sans-serif-light";
 
+    public static final int RATIO_MS_TO_WEEK = 604800000;
+
     public static final Typeface TYPEFACE = Typeface.create(SANS_SERIF_LIGHT, Typeface.NORMAL);
 
 }

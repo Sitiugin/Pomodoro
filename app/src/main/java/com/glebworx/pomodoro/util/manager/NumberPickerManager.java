@@ -17,12 +17,12 @@ public class NumberPickerManager {
         picker.setFormatter(value -> {
             if (value == 1) {
                 return context.getString(
-                        R.string.core_pomodoro,
+                        R.string.core_pomodoro_time,
                         String.valueOf(value),
                         DateTimeManager.formatHHString(1));
             }
             return context.getString(
-                    R.string.core_pomodoros,
+                    R.string.core_pomodoros_time,
                     String.valueOf(value),
                     DateTimeManager.formatHHString(value));
         });

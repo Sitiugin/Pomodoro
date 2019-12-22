@@ -17,10 +17,10 @@
 
     <dimen name="elevation_content">1dp</dimen>
     <dimen name="elevation_content_high">2dp</dimen>
-    <dimen name="elevation_view">2dp</dimen>
-    <dimen name="elevation_view_high">4dp</dimen>
-    <dimen name="elevation_bottom_bar">6dp</dimen>
-    <dimen name="elevation_navigation">6dp</dimen>
+    <dimen name="elevation_view">4dp</dimen>
+    <dimen name="elevation_view_high">6dp</dimen>
+    <dimen name="elevation_bottom_bar">8dp</dimen>
+    <dimen name="elevation_navigation">8dp</dimen>
     <dimen name="elevation_fab">12dp</dimen>
     <dimen name="elevation_fab_high">16dp</dimen>
     <dimen name="elevation_popup">16dp</dimen>

@@ -44,6 +44,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_GRAY_HEX;
 import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_HIGHLIGHT_HEX;
+import static com.glebworx.pomodoro.util.constants.Constants.RATIO_MS_TO_WEEK;
 
 public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresenter {
 
@@ -372,9 +373,9 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
             }
 
             calendar.setTime(model.getTimestamp());
-            DateTimeManager.clearTime(calendar);
             calendar.set(Calendar.DAY_OF_WEEK, 0);
-            time = (float) calendar.getTimeInMillis() / 604800000;
+            DateTimeManager.clearTime(calendar);
+            time = Math.round(((float) calendar.getTimeInMillis()) / RATIO_MS_TO_WEEK);
 
             optionalEntry = getBarEntry(time, entries);
             if (optionalEntry.isPresent()) {
@@ -391,10 +392,7 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
         BarDataSet dataSet = new BarDataSet(entries, null);
         IChart.initDataSet(dataSet, ColorConstants.rgb(COLOR_HIGHLIGHT_HEX));
 
-        BarData barData = new BarData(dataSet);
-        barData.setValueFormatter(new IChart.AxisEntryYFormatter());
-
-        return barData;
+        return new BarData(dataSet);
 
     }
 
