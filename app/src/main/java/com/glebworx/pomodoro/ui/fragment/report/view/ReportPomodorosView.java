@@ -73,6 +73,7 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
 
     @Override
     public void onInitOverview(String pomodorosCompletedString, String averagePerDayString, String streakString) {
+        rootView.findViewById(R.id.spin_kit_view_overview).setVisibility(GONE);
         pomodorosCompletedTextView.setText(pomodorosCompletedString);
         averagePerDayTextView.setText(averagePerDayString);
         streakTextView.setText(streakString);
@@ -80,6 +81,7 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
 
     @Override
     public void onInitPomodorosCompletedChart(LineData lineData) {
+        rootView.findViewById(R.id.spin_kit_view_pomodoros_completed).setVisibility(GONE);
         if (lineData.getEntryCount() > 0) {
             pomodorosCompletedLineChart.setData(lineData);
             pomodorosCompletedLineChart.animateY(ANIM_DURATION);
@@ -88,6 +90,7 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
 
     @Override
     public void onInitWeeklyTrendsChart(BarData barData) {
+        rootView.findViewById(R.id.spin_kit_view_trends).setVisibility(GONE);
         barData.setValueFormatter(new IChart.AxisEntryYPomodoroFormatter(context));
         if (barData.getEntryCount() > 0) {
             weeklyTrendsBarChart.setData(barData);
@@ -97,6 +100,9 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
 
     @Override
     public void onChartDataEmpty() {
+        rootView.findViewById(R.id.spin_kit_view_overview).setVisibility(GONE);
+        rootView.findViewById(R.id.spin_kit_view_pomodoros_completed).setVisibility(GONE);
+        rootView.findViewById(R.id.spin_kit_view_trends).setVisibility(GONE);
         String emptyText = context.getString(R.string.core_text_no_data);
         pomodorosCompletedTextView.setText(String.valueOf(0));
         averagePerDayTextView.setText(String.valueOf(0));
