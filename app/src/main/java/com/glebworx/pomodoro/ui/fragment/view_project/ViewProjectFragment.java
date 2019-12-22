@@ -4,6 +4,7 @@ package com.glebworx.pomodoro.ui.fragment.view_project;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
@@ -47,6 +50,9 @@ import java.util.stream.IntStream;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import nl.dionsegijn.konfetti.KonfettiView;
+import nl.dionsegijn.konfetti.models.Shape;
+import nl.dionsegijn.konfetti.models.Size;
 
 import static com.glebworx.pomodoro.util.constants.Constants.LENGTH_SNACK_BAR;
 
@@ -320,20 +326,60 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
     }
 
     private void showCompleteProjectDialog() {
+
         Activity activity = getActivity();
         if (activity == null) {
             return;
         }
-        DialogManager.showGenericDialog(
+
+        AlertDialog alertDialog = DialogManager.showDialog(
                 activity,
                 R.id.container_main,
-                R.string.view_project_title_complete_project,
-                R.string.view_project_text_complete_project,
-                R.string.view_project_title_complete_project,
-                () -> {
-                    presenter.completeProject();
-                    fragmentListener.onCloseFragment();
-                });
+                R.layout.dialog_complete_project);
+
+        KonfettiView konfettiView = alertDialog.findViewById(R.id.view_konfetti);
+        Objects.requireNonNull(konfettiView).build()
+                .addColors(
+                        context.getColor(R.color.colorRed),
+                        context.getColor(R.color.colorPink),
+                        context.getColor(R.color.colorPurple),
+                        context.getColor(R.color.colorDeepPurple),
+                        context.getColor(R.color.colorIndigo),
+                        context.getColor(R.color.colorBlue),
+                        context.getColor(R.color.colorLightBlue),
+                        context.getColor(R.color.colorCyan),
+                        context.getColor(R.color.colorTeal),
+                        context.getColor(R.color.colorGreen),
+                        context.getColor(R.color.colorLightGreen),
+                        context.getColor(R.color.colorLime),
+                        context.getColor(R.color.colorYellow),
+                        context.getColor(R.color.colorAmber),
+                        context.getColor(R.color.colorOrange),
+                        context.getColor(R.color.colorDeepOrange))
+                .setDirection(0.0, 359.0)
+                .setSpeed(1f, 5f)
+                .setFadeOutEnabled(true)
+                .setTimeToLive(1000L)
+                .addShapes(Shape.RECT, Shape.CIRCLE)
+                .addSizes(new Size(12, 4))
+                .setPosition(-50f, konfettiView.getWidth() + 50f, -50f, -50f)
+                .streamFor(100, 2000L);
+
+        ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_description))).setText(Html.fromHtml(context.getString(R.string.view_project_text_complete_project)));
+
+        View.OnClickListener onClickListener = view -> {
+            if (view.getId() == R.id.button_positive) {
+                alertDialog.cancel();
+                presenter.completeProject(context);
+                fragmentListener.onCloseFragment();
+            } else if (view.getId() == R.id.button_negative) {
+                alertDialog.cancel();
+            }
+        };
+
+        Objects.requireNonNull((AppCompatButton) alertDialog.findViewById(R.id.button_negative)).setOnClickListener(onClickListener);
+        Objects.requireNonNull((AppCompatButton) alertDialog.findViewById(R.id.button_positive)).setOnClickListener(onClickListener);
+
     }
 
     private void showOptionsPopup() {

@@ -40,6 +40,13 @@ public class AboutLicensesViewPresenter implements IAboutLicensesViewPresenter {
                 R.string.about_licenses_text_mit_libraries,
                 R.string.about_licenses_text_mit_uri));
 
+        items.add(getItem(
+                context,
+                R.string.about_licenses_title_isc,
+                R.string.about_licenses_text_isc,
+                R.string.about_licenses_text_isc_libraries,
+                R.string.about_licenses_text_isc_uri));
+
         items.add(getSimpleItem(
                 context,
                 R.string.about_licenses_title_firebase,

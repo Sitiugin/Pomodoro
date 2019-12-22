@@ -1,10 +1,13 @@
 package com.glebworx.pomodoro.ui.fragment.view_project;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
@@ -16,6 +19,7 @@ import com.glebworx.pomodoro.ui.fragment.view_project.item.AddTaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.CompletedTaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.ViewProjectHeaderItem;
 import com.glebworx.pomodoro.ui.item.TaskItem;
+import com.glebworx.pomodoro.util.manager.VibrationManager;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -113,10 +117,16 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
     }
 
     @Override
-    public void completeProject() {
-        if (projectModel.getAllTasksCompleted()) {
-            ProjectApi.completeProject(projectModel, null);
-        }
+    public void completeProject(Context context) {
+        VibrationManager vibrationManager = new VibrationManager(context);
+        vibrationManager.vibrateLong();
+        ProjectApi.completeProject(projectModel, task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(context, R.string.view_project_toast_project_complete_success, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, R.string.view_project_toast_project_complete_failed, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

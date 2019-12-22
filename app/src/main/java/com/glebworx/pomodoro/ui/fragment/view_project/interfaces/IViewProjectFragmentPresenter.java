@@ -1,5 +1,6 @@
 package com.glebworx.pomodoro.ui.fragment.view_project.interfaces;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import com.glebworx.pomodoro.ui.item.TaskItem;
@@ -14,7 +15,7 @@ public interface IViewProjectFragmentPresenter {
 
     void deleteProject();
 
-    void completeProject();
+    void completeProject(Context context);
 
     void addTask();
 
