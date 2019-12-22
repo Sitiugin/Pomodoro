@@ -8,6 +8,7 @@ import com.glebworx.pomodoro.ui.fragment.archive.interfaces.IArchiveFragment;
 import com.glebworx.pomodoro.ui.fragment.archive.interfaces.IArchiveFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.archive.interfaces.IArchiveFragmentPresenter;
 import com.glebworx.pomodoro.ui.fragment.archive.item.ArchivedProjectItem;
+import com.glebworx.pomodoro.util.TimestampFieldComparator;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.mikepenz.fastadapter.IItemAdapter;
@@ -111,7 +112,9 @@ class ArchiveFragmentPresenter implements IArchiveFragmentPresenter {
                     return;
                 }
                 List<DocumentChange> documentChanges = querySnapshot.getDocumentChanges();
-                for (DocumentChange change : documentChanges) {
+                List<DocumentChange> copy = new ArrayList<>(documentChanges);
+                copy.sort(new TimestampFieldComparator("completedOn"));
+                for (DocumentChange change : copy) {
                     emitter.onNext(change);
                 }
             }, true);

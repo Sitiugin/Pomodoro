@@ -180,6 +180,14 @@ public class ProjectApi extends BaseApi {
     }
 
     public static ListenerRegistration addProjectsEventListener(@NonNull EventListener<QuerySnapshot> eventListener, boolean completed) {
+        /*Query query = getCollection(COLLECTION_PROJECTS) // TODO is this working?
+                .whereEqualTo(FIELD_COMPLETED, completed);
+        if (completed) {
+            query.orderBy(FIELD_COMPLETED_ON, Query.Direction.DESCENDING);
+        } else {
+            query.orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING);
+        }
+        return query.addSnapshotListener(MetadataChanges.INCLUDE, eventListener);*/
         return getCollection(COLLECTION_PROJECTS)
                 .whereEqualTo(FIELD_COMPLETED, completed)
                 //.orderBy(FIELD_COMPLETED, Query.Direction.DESCENDING)

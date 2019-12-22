@@ -13,12 +13,14 @@ import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragmen
 import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragmentPresenter;
 import com.glebworx.pomodoro.ui.item.TaskItem;
+import com.glebworx.pomodoro.util.TimestampFieldComparator;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -158,7 +160,9 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
                 return;
             }
             List<DocumentChange> documentChanges = querySnapshot.getDocumentChanges();
-            for (DocumentChange change : documentChanges) {
+            List<DocumentChange> copy = new ArrayList<>(documentChanges);
+            copy.sort(new TimestampFieldComparator("timestamp"));
+            for (DocumentChange change : copy) {
                 emitter.onNext(change);
             }
         };
