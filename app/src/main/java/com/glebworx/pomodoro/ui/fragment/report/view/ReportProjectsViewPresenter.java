@@ -343,6 +343,11 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
                 continue;
             }
 
+            int elapsedTime = model.getElapsedTime();
+            if (elapsedTime == 0) {
+                elapsedTime = POMODORO_LENGTH;
+            }
+
             calendar.setTime(model.getTimestamp());
             DateTimeManager.clearTime(calendar);
             time = calendar.getTimeInMillis();
@@ -350,9 +355,9 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
             optionalEntry = getEntry(time, entries);
             if (optionalEntry.isPresent()) {
                 entry = optionalEntry.get();
-                entry.setY(entry.getY() + POMODORO_LENGTH);
+                entry.setY(entry.getY() + elapsedTime);
             } else {
-                entry = new Entry(time, POMODORO_LENGTH);
+                entry = new Entry(time, elapsedTime);
                 entries.add(entry);
             }
 
