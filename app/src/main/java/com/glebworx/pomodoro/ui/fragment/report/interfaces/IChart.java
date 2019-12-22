@@ -82,10 +82,14 @@ public interface IChart {
 
     static void initChart(LineChart chart, boolean isExpanded, boolean showLegend, String descriptionText) {
         initBaseChart(chart, isExpanded, showLegend, descriptionText);
+        chart.setAutoScaleMinMaxEnabled(true);
     }
 
     static void initChart(BarChart chart, boolean isExpanded, boolean showLegend, String descriptionText) {
         initBaseChart(chart, isExpanded, showLegend, descriptionText);
+        chart.setFitBars(true);
+
+        //chart.setVisibleYRangeMaximum(30, YAxis.AxisDependency.LEFT);
         //chart.setFitBars(true);
         XAxis xAxis = chart.getXAxis();
         xAxis.setValueFormatter(new BarAxisEntryXFormatter());
@@ -98,7 +102,6 @@ public interface IChart {
         if (context == null) {
             return;
         }
-
         int colorGray = context.getColor(android.R.color.darker_gray);
         chart.setNoDataTextColor(colorGray);
         chart.setNoDataText("");
@@ -106,7 +109,7 @@ public interface IChart {
         chart.setBorderColor(colorGray);
         chart.setBorderWidth(0.5f);
         chart.setDrawBorders(true);
-        chart.setAutoScaleMinMaxEnabled(true);
+        chart.setMaxVisibleValueCount(10);
         chart.setTouchEnabled(isExpanded);
 
         Description description = new Description();
@@ -207,7 +210,7 @@ public interface IChart {
                         if (chart.getData().getEntryCount() > 0) {
                             expandedChart.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                             IChart.rotateChart(expandedChart);
-                            IChart.initChart(expandedChart, true, true, "");
+                            IChart.initChart(expandedChart, true, false, "");
                             expandedChart.setData(chart.getData());
                             expandedChart.animateY(ANIM_DURATION);
                         } else {
