@@ -47,7 +47,7 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
     private @NonNull
     String type;
     private @NonNull
-    Map<String, ProjectModel> projectModelMap; // TODO put models into map when added
+    Map<String, ProjectModel> projectModelMap;
     private CompositeDisposable compositeDisposable;
 
     ViewTasksFragmentPresenter(@NonNull IViewTasksFragment presenterListener,
@@ -78,8 +78,7 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
                 completedObservable = getThisWeekObservable(true);
                 break;
             case TYPE_OVERDUE:
-                observable = getOverdueObservable(false);
-                //completedObservable = getOverdueObservable(true);
+                observable = getOverdueObservable();
                 break;
         }
         if (observable != null) {
@@ -124,21 +123,24 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
 
     private Observable<DocumentChange> getTodayObservable(boolean completed) {
         return Observable.create(emitter -> {
-            ListenerRegistration listenerRegistration = TaskApi.addTodayTasksEventListener(getObservableEventListener(emitter), completed);
+            ListenerRegistration listenerRegistration
+                    = TaskApi.addTodayTasksEventListener(getObservableEventListener(emitter), completed);
             emitter.setCancellable(listenerRegistration::remove);
         });
     }
 
     private Observable<DocumentChange> getThisWeekObservable(boolean completed) {
         return Observable.create(emitter -> {
-            ListenerRegistration listenerRegistration = TaskApi.addThisWeekTasksEventListener(getObservableEventListener(emitter), completed);
+            ListenerRegistration listenerRegistration
+                    = TaskApi.addThisWeekTasksEventListener(getObservableEventListener(emitter), completed);
             emitter.setCancellable(listenerRegistration::remove);
         });
     }
 
-    private Observable<DocumentChange> getOverdueObservable(boolean completed) {
+    private Observable<DocumentChange> getOverdueObservable() {
         return Observable.create(emitter -> {
-            ListenerRegistration listenerRegistration = TaskApi.addOverdueTasksEventListener(getObservableEventListener(emitter), completed);
+            ListenerRegistration listenerRegistration
+                    = TaskApi.addOverdueTasksEventListener(getObservableEventListener(emitter), false);
             emitter.setCancellable(listenerRegistration::remove);
         });
     }

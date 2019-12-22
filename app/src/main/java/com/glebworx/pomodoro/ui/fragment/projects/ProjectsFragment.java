@@ -23,7 +23,7 @@ import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragment;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.projects.item.AddProjectItem;
-import com.glebworx.pomodoro.ui.fragment.projects.item.ProjectHeaderItem;
+import com.glebworx.pomodoro.ui.fragment.projects.item.ProjectsHeaderItem;
 import com.glebworx.pomodoro.ui.item.ProjectItem;
 import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
@@ -64,7 +64,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
 
     private Context context;
     private View activityRootView;
-    private ItemAdapter<ProjectHeaderItem> headerAdapter;
+    private ItemAdapter<ProjectsHeaderItem> headerAdapter;
     private ItemAdapter<ProjectItem> projectAdapter;
     private FastAdapter<AbstractItem> fastAdapter;
     private UndoHelper<AbstractItem> undoHelper;
@@ -165,7 +165,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
     @Override
     public void onTodayTaskCountChanged(int todayTaskCount) {
         synchronized (this) {
-            ProjectHeaderItem item = headerAdapter.getAdapterItem(0);
+            ProjectsHeaderItem item = headerAdapter.getAdapterItem(0);
             if (item != null) {
                 item.setTodayCount(todayTaskCount);
                 fastAdapter.notifyAdapterItemChanged(0);
@@ -176,7 +176,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
     @Override
     public void onThisWeekTaskCountChanged(int thisWeekTaskCount) {
         synchronized (this) {
-            ProjectHeaderItem item = headerAdapter.getAdapterItem(0);
+            ProjectsHeaderItem item = headerAdapter.getAdapterItem(0);
             if (item != null) {
                 item.setThisWeekCount(thisWeekTaskCount);
                 fastAdapter.notifyAdapterItemChanged(0);
@@ -187,7 +187,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
     @Override
     public void onOverdueTaskCountChanged(int overdueTaskCount) {
         synchronized (this) {
-            ProjectHeaderItem item = headerAdapter.getAdapterItem(0);
+            ProjectsHeaderItem item = headerAdapter.getAdapterItem(0);
             if (item != null) {
                 item.setOverdueCount(overdueTaskCount);
                 fastAdapter.notifyAdapterItemChanged(0);
@@ -212,7 +212,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
         recyclerView.setItemAnimator(new SlideInOutLeftAnimator(recyclerView));
 
         headerAdapter = new ItemAdapter<>();
-        headerAdapter.add(new ProjectHeaderItem(view -> {
+        headerAdapter.add(new ProjectsHeaderItem(view -> {
             switch (view.getId()) {
                 case R.id.layout_today:
                     fragmentListener.onViewTodayTasks();

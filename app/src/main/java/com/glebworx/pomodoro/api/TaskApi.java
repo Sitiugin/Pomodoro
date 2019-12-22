@@ -229,7 +229,7 @@ public class TaskApi extends BaseApi {
                 .addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
     }
 
-    public static ListenerRegistration addTodayTasksEventNoChangesListener(@NonNull EventListener<QuerySnapshot> eventListener, boolean completed) {
+    public static ListenerRegistration addTodayTasksNoChangesEventListener(@NonNull EventListener<QuerySnapshot> eventListener, boolean completed) {
         ZonedDateTime todayDateTime = LocalDate.now().atStartOfDay(ZoneId.systemDefault());
         return getCollectionGroup(COLLECTION_TASKS)
                 .whereEqualTo(FIELD_COMPLETED, completed)

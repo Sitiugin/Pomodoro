@@ -17,9 +17,9 @@ import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
-public class ProjectHeaderItem
-        extends AbstractItem<ProjectHeaderItem, ProjectHeaderItem.ViewHolder>
-        implements ISwipeable<ProjectHeaderItem, ProjectHeaderItem> {
+public class ProjectsHeaderItem
+        extends AbstractItem<ProjectsHeaderItem, ProjectsHeaderItem.ViewHolder>
+        implements ISwipeable<ProjectsHeaderItem, ProjectsHeaderItem> {
 
 
     //                                                                                    ATTRIBUTES
@@ -33,7 +33,7 @@ public class ProjectHeaderItem
 
     //                                                                                  CONSTRUCTORS
 
-    public ProjectHeaderItem(View.OnClickListener onClickListener) {
+    public ProjectsHeaderItem(View.OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
         todayCount = 0;
         thisWeekCount = 0;
@@ -51,7 +51,7 @@ public class ProjectHeaderItem
 
     @Override
     public int getType() {
-        return R.id.item_project_header;
+        return R.id.item_projects_header;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class ProjectHeaderItem
     }
 
     @Override
-    public ProjectHeaderItem withIsSwipeable(boolean swipeable) {
+    public ProjectsHeaderItem withIsSwipeable(boolean swipeable) {
         return this;
     }
 
@@ -103,7 +103,7 @@ public class ProjectHeaderItem
 
     //                                                                                   VIEW HOLDER
 
-    protected static class ViewHolder extends FastAdapter.ViewHolder<ProjectHeaderItem> {
+    protected static class ViewHolder extends FastAdapter.ViewHolder<ProjectsHeaderItem> {
 
         private Context context;
         private ConstraintLayout todayLayout;
@@ -125,29 +125,29 @@ public class ProjectHeaderItem
         }
 
         @Override
-        public void bindView(@NonNull ProjectHeaderItem item, @NonNull List<Object> payloads) {
+        public void bindView(@NonNull ProjectsHeaderItem item, @NonNull List<Object> payloads) {
 
             int count;
 
             count = item.getTodayCount();
-            todayTextView.setText(String.valueOf(count));
+            todayTextView.setText(getCountString(count));
             todayTextView.setTextColor(context.getColor(count > 0 ? R.color.colorDark : R.color.colorHighlight));
             todayLayout.setOnClickListener(item.getOnClickListener());
 
             count = item.getThisWeekCount();
-            thisWeekTextView.setText(String.valueOf(count));
+            thisWeekTextView.setText(getCountString(count));
             thisWeekTextView.setTextColor(context.getColor(count > 0 ? R.color.colorDark : R.color.colorHighlight));
             thisWeekLayout.setOnClickListener(item.getOnClickListener());
 
             count = item.getOverdueCount();
-            overdueTextView.setText(String.valueOf(count));
+            overdueTextView.setText(getCountString(count));
             overdueTextView.setTextColor(context.getColor(count > 0 ? R.color.colorError : R.color.colorHighlight));
             overdueLayout.setOnClickListener(item.getOnClickListener());
 
         }
 
         @Override
-        public void unbindView(@NonNull ProjectHeaderItem item) {
+        public void unbindView(@NonNull ProjectsHeaderItem item) {
 
             todayTextView.setText(null);
             thisWeekTextView.setText(null);
@@ -161,6 +161,12 @@ public class ProjectHeaderItem
             thisWeekLayout.setOnClickListener(null);
             overdueLayout.setOnClickListener(null);
 
+        }
+
+        private String getCountString(int count) {
+            return count > 99
+                    ? context.getString(R.string.core_count, numberFormat.format(99))
+                    : numberFormat.format(count);
         }
 
     }

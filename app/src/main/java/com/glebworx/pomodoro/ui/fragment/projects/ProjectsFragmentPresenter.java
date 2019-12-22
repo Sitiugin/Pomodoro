@@ -211,7 +211,7 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
             if (emitter.isDisposed()) {
                 return;
             }
-            ListenerRegistration listenerRegistration = TaskApi.addTodayTasksEventNoChangesListener(getObservableEventListener(emitter), false);
+            ListenerRegistration listenerRegistration = TaskApi.addTodayTasksNoChangesEventListener(getObservableEventListener(emitter), false);
             emitter.setCancellable(listenerRegistration::remove);
         });
     }
