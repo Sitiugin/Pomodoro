@@ -33,6 +33,7 @@ import com.glebworx.pomodoro.ui.fragment.view_project.item.ViewProjectHeaderItem
 import com.glebworx.pomodoro.ui.item.TaskItem;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.DialogManager;
+import com.glebworx.pomodoro.util.manager.KonfettiManager;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
@@ -51,8 +52,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import nl.dionsegijn.konfetti.KonfettiView;
-import nl.dionsegijn.konfetti.models.Shape;
-import nl.dionsegijn.konfetti.models.Size;
 
 import static com.glebworx.pomodoro.util.constants.Constants.LENGTH_SNACK_BAR;
 
@@ -338,32 +337,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
                 R.layout.dialog_complete_project);
 
         KonfettiView konfettiView = alertDialog.findViewById(R.id.view_konfetti);
-        Objects.requireNonNull(konfettiView).build()
-                .addColors(
-                        context.getColor(R.color.colorRed),
-                        context.getColor(R.color.colorPink),
-                        context.getColor(R.color.colorPurple),
-                        context.getColor(R.color.colorDeepPurple),
-                        context.getColor(R.color.colorIndigo),
-                        context.getColor(R.color.colorBlue),
-                        context.getColor(R.color.colorLightBlue),
-                        context.getColor(R.color.colorCyan),
-                        context.getColor(R.color.colorTeal),
-                        context.getColor(R.color.colorGreen),
-                        context.getColor(R.color.colorLightGreen),
-                        context.getColor(R.color.colorLime),
-                        context.getColor(R.color.colorYellow),
-                        context.getColor(R.color.colorAmber),
-                        context.getColor(R.color.colorOrange),
-                        context.getColor(R.color.colorDeepOrange))
-                .setDirection(0.0, 359.0)
-                .setSpeed(1f, 5f)
-                .setFadeOutEnabled(true)
-                .setTimeToLive(1000L)
-                .addShapes(Shape.RECT, Shape.CIRCLE)
-                .addSizes(new Size(12, 4))
-                .setPosition(-50f, konfettiView.getWidth() + 50f, -50f, -50f)
-                .streamFor(100, 2000L);
+        KonfettiManager.buildKonfetti(konfettiView, context);
 
         ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_description))).setText(Html.fromHtml(context.getString(R.string.view_project_text_complete_project)));
 
