@@ -73,7 +73,7 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
 
     @Override
     public void onInitOverview(String pomodorosCompletedString, String averagePerDayString, String streakString) {
-        rootView.findViewById(R.id.spin_kit_view_overview).setVisibility(GONE);
+        hideOverviewSpinKit();
         pomodorosCompletedTextView.setText(pomodorosCompletedString);
         averagePerDayTextView.setText(averagePerDayString);
         streakTextView.setText(streakString);
@@ -81,7 +81,8 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
 
     @Override
     public void onInitPomodorosCompletedChart(LineData lineData) {
-        rootView.findViewById(R.id.spin_kit_view_pomodoros_completed).setVisibility(GONE);
+        hidePomodorosCompletedSpinKit();
+        IChart.initData(lineData, context);
         if (lineData.getEntryCount() > 0) {
             pomodorosCompletedLineChart.setData(lineData);
             pomodorosCompletedLineChart.animateY(ANIM_DURATION);
@@ -90,8 +91,8 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
 
     @Override
     public void onInitWeeklyTrendsChart(BarData barData) {
-        rootView.findViewById(R.id.spin_kit_view_trends).setVisibility(GONE);
-        barData.setValueFormatter(new IChart.AxisEntryYPomodoroFormatter(context));
+        hideWeeklyTrendsSpinKit();
+        IChart.initData(barData, context);
         if (barData.getEntryCount() > 0) {
             weeklyTrendsBarChart.setData(barData);
             weeklyTrendsBarChart.animateY(ANIM_DURATION);
@@ -100,9 +101,9 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
 
     @Override
     public void onChartDataEmpty() {
-        rootView.findViewById(R.id.spin_kit_view_overview).setVisibility(GONE);
-        rootView.findViewById(R.id.spin_kit_view_pomodoros_completed).setVisibility(GONE);
-        rootView.findViewById(R.id.spin_kit_view_trends).setVisibility(GONE);
+        hideOverviewSpinKit();
+        hidePomodorosCompletedSpinKit();
+        hideWeeklyTrendsSpinKit();
         String emptyText = context.getString(R.string.core_text_no_data);
         pomodorosCompletedTextView.setText(String.valueOf(0));
         averagePerDayTextView.setText(String.valueOf(0));
@@ -124,6 +125,18 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
         weeklyTrendsBarChart = rootView.findViewById(R.id.bar_chart_trends);
         this.context = context;
         this.presenter = new ReportPomodorosViewPresenter(this);
+    }
+
+    private void hideOverviewSpinKit() {
+        rootView.findViewById(R.id.spin_kit_view_overview).setVisibility(GONE);
+    }
+
+    private void hidePomodorosCompletedSpinKit() {
+        rootView.findViewById(R.id.spin_kit_view_pomodoros_completed).setVisibility(GONE);
+    }
+
+    private void hideWeeklyTrendsSpinKit() {
+        rootView.findViewById(R.id.spin_kit_view_trends).setVisibility(GONE);
     }
 
 }

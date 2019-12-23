@@ -349,8 +349,6 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
             lineData.addDataSet(dataSet);
         }
 
-        lineData.setValueFormatter(new IChart.AxisEntryYFormatter());
-
         return lineData;
 
     }

@@ -16,7 +16,10 @@ import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData;
+import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.glebworx.pomodoro.R;
@@ -33,6 +36,8 @@ import static com.glebworx.pomodoro.util.constants.Constants.TYPEFACE;
 
 public interface IChart {
 
+    int SIZE_LABEL = 8;
+
     static void initDataSet(LineDataSet dataSet, int color) {
         dataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
         dataSet.setDrawFilled(true);
@@ -45,6 +50,23 @@ public interface IChart {
 
     static void initDataSet(BarDataSet dataSet, int color) {
         dataSet.setColor(color);
+    }
+
+    static void initData(LineData data, Context context) {
+        initBaseData(data, context);
+        data.setValueFormatter(new IChart.AxisEntryYFormatter());
+    }
+
+    static void initData(BarData data, Context context) {
+        initBaseData(data, context);
+        data.setValueFormatter(new IChart.AxisEntryYPomodoroFormatter(context));
+    }
+
+    static void initBaseData(BarLineScatterCandleBubbleData data, Context context) {
+        data.setDrawValues(true);
+        data.setValueTextColor(context.getColor(android.R.color.darker_gray));
+        data.setValueTextSize(SIZE_LABEL);
+        data.setHighlightEnabled(false);
     }
 
     static void initChart(PieChart chart) {
@@ -110,7 +132,7 @@ public interface IChart {
         chart.setBorderWidth(0.5f);
         chart.setDrawBorders(true);
         chart.setMaxVisibleValueCount(10);
-        chart.setTouchEnabled(isExpanded);
+        chart.setTouchEnabled(false);
 
         Description description = new Description();
         if (isExpanded) {
