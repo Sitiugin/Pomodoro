@@ -61,7 +61,7 @@ public class ReportProjectFragmentPresenter implements IReportProjectFragmentPre
 
         projectObservable.subscribe(getProjectObserver());
 
-        HistoryApi.getPomodoroCompletionHistory(this::handleHistory);
+        HistoryApi.getProjectCompletionHistory(projectName, this::handleHistory);
 
         presenterListener.onInitView(
                 projectName,

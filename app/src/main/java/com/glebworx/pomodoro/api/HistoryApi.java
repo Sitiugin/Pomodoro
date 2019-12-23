@@ -68,10 +68,12 @@ public class HistoryApi extends BaseApi {
                 .addOnCompleteListener(onCompleteListener);
     }
 
-    public static void getProjectCompletionHistory(@NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
+    public static void getProjectCompletionHistory(@NonNull String projectName,
+                                                   @NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
         getCollection(COLLECTION_HISTORY)
-                .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
+                .whereEqualTo(FIELD_NAME, projectName)
                 .whereEqualTo(FIELD_EVENT_TYPE, EVENT_PROJECT_COMPLETED)
+                .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
                 //.get(Source.CACHE)
                 .get()
                 .addOnCompleteListener(onCompleteListener);
