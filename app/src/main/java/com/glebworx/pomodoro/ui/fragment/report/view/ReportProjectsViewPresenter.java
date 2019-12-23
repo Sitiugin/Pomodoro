@@ -2,38 +2,27 @@ package com.glebworx.pomodoro.ui.fragment.report.view;
 
 import androidx.annotation.NonNull;
 
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.utils.EntryXComparator;
 import com.glebworx.pomodoro.api.HistoryApi;
 import com.glebworx.pomodoro.model.HistoryModel;
 import com.glebworx.pomodoro.model.report.ReportProjectOverviewModel;
-import com.glebworx.pomodoro.ui.fragment.report.interfaces.IChart;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportProjectsView;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportProjectsViewPresenter;
-import com.glebworx.pomodoro.util.constants.ColorConstants;
-import com.glebworx.pomodoro.util.manager.DateTimeManager;
+import com.glebworx.pomodoro.util.manager.ChartDataManager;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.glebworx.pomodoro.util.manager.DateTimeManager.POMODORO_LENGTH;
 
 public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter {
 
@@ -139,7 +128,7 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
             if (emitter.isDisposed()) {
                 return;
             }
-            emitter.onNext(getElapsedTimeData(snapshot.getDocuments()));
+            emitter.onNext(ChartDataManager.getElapsedTimeData(snapshot.getDocuments()));
             emitter.onComplete();
 
         });
@@ -326,66 +315,5 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
         return new PieData(); // TODO implement
     }
 
-    private LineData getElapsedTimeData(List<DocumentSnapshot> documentSnapshots) {
-
-        HistoryModel model;
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        float time;
-        List<Entry> entries = new ArrayList<>();
-        Optional<Entry> optionalEntry;
-        Entry entry;
-
-        for (DocumentSnapshot snapshot : documentSnapshots) {
-
-            // get model
-            model = snapshot.toObject(HistoryModel.class);
-            if (model == null) {
-                continue;
-            }
-
-            int elapsedTime = model.getElapsedTime();
-            if (elapsedTime == 0) {
-                elapsedTime = POMODORO_LENGTH;
-            }
-
-            calendar.setTime(model.getTimestamp());
-            DateTimeManager.clearTime(calendar);
-            time = calendar.getTimeInMillis();
-
-            optionalEntry = getEntry(time, entries);
-            if (optionalEntry.isPresent()) {
-                entry = optionalEntry.get();
-                entry.setY(entry.getY() + elapsedTime);
-            } else {
-                entry = new Entry(time, elapsedTime);
-                entries.add(entry);
-            }
-
-        }
-
-        Collections.sort(entries, new EntryXComparator());
-
-        for (int i = 1; i < entries.size(); i++) {
-            entry = entries.get(i);
-            entry.setY(entry.getY() + entries.get(i - 1).getY());
-
-        }
-        for (int i = 0; i < entries.size(); i++) {
-            entry = entries.get(i);
-            entry.setY(entry.getY() / 60);
-        }
-
-        LineDataSet dataSet = new LineDataSet(entries, null);
-        IChart.initDataSet(dataSet, ColorConstants.rgb(ColorConstants.COLOR_HIGHLIGHT_HEX));
-
-        return new LineData(dataSet);
-
-    }
-
-    private Optional<Entry> getEntry(float time, List<Entry> entries) {
-        return entries.stream()
-                .filter(entry -> time == entry.getX())
-                .findAny();
-    }
 
 }

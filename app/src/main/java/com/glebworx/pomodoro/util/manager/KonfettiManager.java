@@ -12,6 +12,10 @@ import nl.dionsegijn.konfetti.models.Size;
 
 public class KonfettiManager {
 
+    private KonfettiManager() {
+
+    }
+
     public static void buildKonfetti(KonfettiView konfettiView, Context context) {
         Objects.requireNonNull(konfettiView).build()
                 .addColors(getColors(context))
