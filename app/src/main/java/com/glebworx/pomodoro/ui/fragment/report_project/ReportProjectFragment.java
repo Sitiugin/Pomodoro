@@ -16,6 +16,11 @@ import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.ui.fragment.report_project.interfaces.IReportProjectFragment;
 import com.glebworx.pomodoro.ui.fragment.report_project.interfaces.IReportProjectFragmentInteractionListener;
+import com.glebworx.pomodoro.util.manager.DateTimeManager;
+
+import java.text.NumberFormat;
+import java.util.Locale;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,8 +31,19 @@ public class ReportProjectFragment extends Fragment implements IReportProjectFra
 
     //                                                                                     CONSTANTS
 
+    private static NumberFormat numberFormat = NumberFormat.getPercentInstance(Locale.getDefault());
+
+
+    //                                                                                      BINDINGS
+
     @BindView(R.id.text_view_title)
     AppCompatTextView titleTextView;
+    @BindView(R.id.text_view_estimated_time)
+    AppCompatTextView estimatedTimeTextView;
+    @BindView(R.id.text_view_elapsed_time)
+    AppCompatTextView elapsedTimeTextView;
+    @BindView(R.id.text_view_progress)
+    AppCompatTextView progressTextView;
     @BindView(R.id.button_close)
     AppCompatImageButton closeButton;
 
@@ -71,7 +87,10 @@ public class ReportProjectFragment extends Fragment implements IReportProjectFra
             fragmentListener.onCloseFragment();
         }
         unbinder = ButterKnife.bind(this, rootView);
-        presenter = new ReportProjectFragmentPresenter(this, fragmentListener, getArguments());
+        presenter = new ReportProjectFragmentPresenter(
+                this,
+                fragmentListener,
+                Objects.requireNonNull(getArguments()));
         return rootView;
     }
 
@@ -98,11 +117,21 @@ public class ReportProjectFragment extends Fragment implements IReportProjectFra
     //                                                                                IMPLEMENTATION
 
     @Override
-    public void onInitView(String projectName) {
+    public void onInitView(String projectName,
+                           int estimatedTime,
+                           int elapsedTime,
+                           float progress) {
         titleTextView.setText(projectName);
+        onSummaryChanged(estimatedTime, elapsedTime, progress);
         initClickEvents();
     }
 
+    @Override
+    public void onSummaryChanged(int estimatedTime, int elapsedTime, float progress) {
+        estimatedTimeTextView.setText(DateTimeManager.formatHHMMString(context, estimatedTime));
+        elapsedTimeTextView.setText(DateTimeManager.formatHHMMString(context, elapsedTime));
+        progressTextView.setText(numberFormat.format(progress > 1 ? 1 : progress));
+    }
 
     //                                                                                       HELPERS
 

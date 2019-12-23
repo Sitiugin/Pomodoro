@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.ProjectApi;
@@ -54,10 +53,10 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
 
     ViewProjectFragmentPresenter(@NonNull IViewProjectFragment presenterListener,
                                  @NonNull IViewProjectFragmentInteractionListener interactionListener,
-                                 @Nullable Bundle arguments) {
+                                 @NonNull Bundle arguments) {
         this.presenterListener = presenterListener;
         this.interactionListener = interactionListener;
-        init(Objects.requireNonNull(arguments));
+        init(arguments);
     }
 
     @Override

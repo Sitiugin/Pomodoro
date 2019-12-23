@@ -271,8 +271,8 @@
 
     <string name="report_projects_title_overview">Projects Overview</string>
     <string name="report_projects_title_completed">Completed</string>
-    <string name="report_projects_title_avg_completion_time">Avg completion time</string>
-    <string name="report_projects_title_elapsed_time">Elapsed time</string>
+    <string name="report_projects_title_elapsed_time">Elapsed</string>
+    <string name="report_projects_title_progress">Progress</string>
     <string name="report_projects_title_distribution">Projects Distribution</string>
 
 

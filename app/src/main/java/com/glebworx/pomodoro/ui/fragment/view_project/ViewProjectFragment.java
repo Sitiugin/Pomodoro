@@ -120,7 +120,7 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         presenter = new ViewProjectFragmentPresenter(
                 this,
                 fragmentListener,
-                getArguments());
+                Objects.requireNonNull(getArguments()));
         return rootView;
     }
 
