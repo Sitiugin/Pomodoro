@@ -69,6 +69,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
     private FastAdapter<AbstractItem> fastAdapter;
     private int adapterCount;
 
+
     //                                                                                  CONSTRUCTORS
 
     public ViewTasksFragment() {
