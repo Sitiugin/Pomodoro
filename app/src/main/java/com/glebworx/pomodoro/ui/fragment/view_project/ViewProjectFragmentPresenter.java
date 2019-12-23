@@ -154,6 +154,11 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
         interactionListener.onSelectTask(projectModel, taskItem.getModel());
     }
 
+    @Override
+    public void viewProjectReport() {
+        interactionListener.onViewProjectReport(projectModel);
+    }
+
     private EventListener<QuerySnapshot> getEventListener(ObservableEmitter<DocumentChange> emitter) {
         return (querySnapshot, e) -> {
             if (emitter.isDisposed()) {

@@ -368,15 +368,23 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         View contentView = popupWindow.getContentView();
 
         View.OnClickListener onClickListener = view -> {
-            if (view.getId() == R.id.button_edit) {
-                popupWindow.dismiss();
-                presenter.editProject();
-            } else if (view.getId() == R.id.button_delete) {
-                popupWindow.dismiss();
-                fragmentListener.onCloseFragment();
-                presenter.deleteProject();
+            switch (view.getId()) {
+                case R.id.button_report:
+                    presenter.viewProjectReport();
+                    popupWindow.dismiss();
+                    break;
+                case R.id.button_edit:
+                    popupWindow.dismiss();
+                    presenter.editProject();
+                    break;
+                case R.id.button_delete:
+                    popupWindow.dismiss();
+                    fragmentListener.onCloseFragment();
+                    presenter.deleteProject();
+                    break;
             }
         };
+        contentView.findViewById(R.id.button_report).setOnClickListener(onClickListener);
         contentView.findViewById(R.id.button_edit).setOnClickListener(onClickListener);
         contentView.findViewById(R.id.button_delete).setOnClickListener(onClickListener);
 

@@ -13,13 +13,23 @@
         android:text="@string/view_project_title_options" />
     <androidx.appcompat.widget.AppCompatButton
         style="@style/ButtonStyle.Borderless"
-        android:id="@+id/button_edit"
+        android:id="@+id/button_report"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="start"
+        android:drawableEnd="@drawable/ic_report_black"
+        android:drawablePadding="@dimen/margin_content"
+        android:text="@string/view_project_title_project_report" />
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/ButtonStyle.Borderless"
+        android:id="@+id/button_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:drawableEnd="@drawable/ic_edit_black"
         android:drawablePadding="@dimen/margin_content"
-        android:text="@string/view_project_title_edit_project"/>
+        android:gravity="start"
+        android:text="@string/view_project_title_edit_project" />
+
     <androidx.appcompat.widget.AppCompatButton
         style="@style/ButtonStyle.Borderless"
         android:id="@+id/button_delete"

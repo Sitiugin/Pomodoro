@@ -36,7 +36,7 @@ import static com.glebworx.pomodoro.util.constants.Constants.TYPEFACE;
 
 public interface IChart {
 
-    int SIZE_LABEL = 8;
+    int SIZE_LABEL = 6;
 
     static void initDataSet(LineDataSet dataSet, int color) {
         dataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
@@ -130,7 +130,7 @@ public interface IChart {
         chart.setBorderColor(colorGray);
         chart.setBorderWidth(0.5f);
         chart.setDrawBorders(true);
-        chart.setMaxVisibleValueCount(10);
+        //chart.setMaxVisibleValueCount(10);
         chart.setTouchEnabled(isExpanded);
 
         Description description = new Description();

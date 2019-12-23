@@ -200,6 +200,7 @@
 
     <string name="view_project_title_options">Options</string>
     <string name="view_project_title_add_task">Add Task</string>
+    <string name="view_project_title_project_report">Project Report</string>
     <string name="view_project_title_edit_project">Edit Project</string>
     <string name="view_project_title_delete_project">Delete Project</string>
     <string name="view_project_title_complete_project">Complete Project</string>
@@ -389,5 +390,8 @@
     <string name="about_licenses_text_firebase_uri">https://firebase.google.com/terms</string>
     <string name="about_licenses_text_linear_icons_uri">http://linearicons.com/license</string>
     <string name="about_licenses_text_open_in_browser" formatted="true"><![CDATA[Open the following link in browser?<br><b>%1$s</b>]]></string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

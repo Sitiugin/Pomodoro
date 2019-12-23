@@ -28,6 +28,7 @@ import com.glebworx.pomodoro.ui.fragment.projects.ProjectsFragment;
 import com.glebworx.pomodoro.ui.fragment.projects.interfaces.IProjectsFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.report.ReportFragment;
 import com.glebworx.pomodoro.ui.fragment.report.interfaces.IReportFragmentInteractionListener;
+import com.glebworx.pomodoro.ui.fragment.report_project.ReportProjectFragment;
 import com.glebworx.pomodoro.ui.fragment.view_project.ViewProjectFragment;
 import com.glebworx.pomodoro.ui.fragment.view_project.interfaces.IViewProjectFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.view_tasks.ViewTasksFragment;
@@ -180,6 +181,11 @@ public class MainActivity
             return;
         }
         showSetTaskDialog(projectModel, taskModel);
+    }
+
+    @Override
+    public void onViewProjectReport(ProjectModel projectModel) {
+        fragmentManager.pushToBackStack(ReportProjectFragment.newInstance(projectModel));
     }
 
     @Override

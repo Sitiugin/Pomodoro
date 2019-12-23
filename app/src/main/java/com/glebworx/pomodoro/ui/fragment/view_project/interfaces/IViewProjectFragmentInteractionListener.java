@@ -13,6 +13,8 @@ public interface IViewProjectFragmentInteractionListener {
 
     void onEditTask(ProjectModel projectModel, TaskModel taskModel);
 
+    void onViewProjectReport(ProjectModel projectModel);
+
     void onCloseFragment();
 
 }
