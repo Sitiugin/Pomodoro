@@ -4,13 +4,18 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import com.github.mikephil.charting.data.LineData;
+import com.glebworx.pomodoro.api.HistoryApi;
 import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.ui.fragment.report_project.interfaces.IReportProjectFragment;
 import com.glebworx.pomodoro.ui.fragment.report_project.interfaces.IReportProjectFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.report_project.interfaces.IReportProjectFragmentPresenter;
+import com.glebworx.pomodoro.util.manager.ChartDataManager;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Objects;
 
@@ -56,6 +61,8 @@ public class ReportProjectFragmentPresenter implements IReportProjectFragmentPre
 
         projectObservable.subscribe(getProjectObserver());
 
+        HistoryApi.getPomodoroCompletionHistory(this::handleHistory);
+
         presenterListener.onInitView(
                 projectName,
                 projectModel.getEstimatedTime(),
@@ -66,6 +73,29 @@ public class ReportProjectFragmentPresenter implements IReportProjectFragmentPre
     @Override
     public void destroy() {
         compositeDisposable.clear();
+    }
+
+    private void handleHistory(Task<QuerySnapshot> task) {
+
+        QuerySnapshot result = task.getResult();
+
+        if (task.isSuccessful() && result != null) {
+
+            Observable<LineData> elapsedTimeObservable = getElapsedTimeObservable(result);
+            elapsedTimeObservable = elapsedTimeObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread());
+
+            elapsedTimeObservable.subscribe(getElapsedTimeObserver());
+
+            if (result.isEmpty()) {
+                presenterListener.onChartDataEmpty();
+            }
+
+        } else {
+            presenterListener.onChartDataEmpty();
+        }
+
     }
 
     private Observable<DocumentSnapshot> getProjectObservable(@NonNull String projectName) {
@@ -117,6 +147,41 @@ public class ReportProjectFragmentPresenter implements IReportProjectFragmentPre
                             projectModel.getProgress());
                 }
 
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+    }
+
+    private Observable<LineData> getElapsedTimeObservable(QuerySnapshot snapshot) {
+        return Observable.create(emitter -> {
+            if (emitter.isDisposed()) {
+                return;
+            }
+            emitter.onNext(ChartDataManager.getElapsedTimeData(snapshot.getDocuments()));
+            emitter.onComplete();
+
+        });
+    }
+
+    private io.reactivex.Observer<LineData> getElapsedTimeObserver() {
+        return new io.reactivex.Observer<LineData>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                compositeDisposable.add(disposable);
+            }
+
+            @Override
+            public void onNext(LineData lineData) {
+                presenterListener.onInitElapsedTimeChart(lineData);
             }
 
             @Override
