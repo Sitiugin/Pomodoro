@@ -66,7 +66,6 @@ public interface IChart {
         data.setDrawValues(true);
         data.setValueTextColor(context.getColor(android.R.color.darker_gray));
         data.setValueTextSize(SIZE_LABEL);
-        data.setHighlightEnabled(false);
     }
 
     static void initChart(PieChart chart) {
@@ -132,7 +131,7 @@ public interface IChart {
         chart.setBorderWidth(0.5f);
         chart.setDrawBorders(true);
         chart.setMaxVisibleValueCount(10);
-        chart.setTouchEnabled(false);
+        chart.setTouchEnabled(isExpanded);
 
         Description description = new Description();
         if (isExpanded) {
