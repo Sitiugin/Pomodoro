@@ -1,6 +1,7 @@
 package com.glebworx.pomodoro.ui.fragment.report_project.interfaces;
 
 import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.PieData;
 
 public interface IReportProjectFragment {
 
@@ -11,8 +12,12 @@ public interface IReportProjectFragment {
 
     void onSummaryChanged(int estimatedTime, int elapsedTime, float progress);
 
+    void onInitDistributionChart(PieData pieData);
+
     void onInitElapsedTimeChart(LineData lineData);
 
-    void onChartDataEmpty();
+    void onDistributionChartDataEmpty();
+
+    void onElapsedChartDataEmpty();
 
 }

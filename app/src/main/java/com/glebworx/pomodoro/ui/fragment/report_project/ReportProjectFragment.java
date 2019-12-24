@@ -14,7 +14,9 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.PieData;
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.ui.fragment.report.interfaces.IChart;
@@ -53,6 +55,8 @@ public class ReportProjectFragment extends Fragment implements IReportProjectFra
     AppCompatTextView elapsedTimeTextView;
     @BindView(R.id.text_view_progress)
     AppCompatTextView progressTextView;
+    @BindView(R.id.pie_chart_distribution)
+    PieChart distributionPieChart;
     @BindView(R.id.layout_elapsed_time)
     FrameLayout elapsedTimeLayout;
     @BindView(R.id.line_chart_elapsed_time)
@@ -145,15 +149,31 @@ public class ReportProjectFragment extends Fragment implements IReportProjectFra
     }
 
     @Override
+    public void onInitDistributionChart(PieData pieData) {
+        hideDistributionSpinKit();
+        distributionPieChart.setData(pieData);
+        distributionPieChart.animateY(ANIM_DURATION);
+    }
+
+    @Override
     public void onInitElapsedTimeChart(LineData lineData) {
-        rootView.findViewById(R.id.spin_kit_view_elapsed_time).setVisibility(View.GONE);
+        hideElapsedTimeSpinKit();
         elapsedTimeLineChart.setData(lineData);
         elapsedTimeLineChart.animateY(ANIM_DURATION);
     }
 
     @Override
-    public void onChartDataEmpty() {
-        String emptyTime = DateTimeManager.formatHHMMString(context, 0);
+    public void onDistributionChartDataEmpty() {
+        hideDistributionSpinKit();
+        String emptyText = context.getString(R.string.core_text_no_data);
+        distributionPieChart.setNoDataText(emptyText);
+        distributionPieChart.invalidate();
+    }
+
+    @Override
+    public void onElapsedChartDataEmpty() {
+        hideElapsedTimeSpinKit();
+        //String emptyTime = DateTimeManager.formatHHMMString(context, 0);
         String emptyText = context.getString(R.string.core_text_no_data);
         elapsedTimeLineChart.setNoDataText(emptyText);
         elapsedTimeLineChart.invalidate();
@@ -161,6 +181,14 @@ public class ReportProjectFragment extends Fragment implements IReportProjectFra
 
 
     //                                                                                       HELPERS
+
+    private void hideDistributionSpinKit() {
+        rootView.findViewById(R.id.spin_kit_view_distribution).setVisibility(View.GONE);
+    }
+
+    private void hideElapsedTimeSpinKit() {
+        rootView.findViewById(R.id.spin_kit_view_elapsed_time).setVisibility(View.GONE);
+    }
 
     private void initClickEvents() {
         View.OnClickListener onClickListener = view -> {

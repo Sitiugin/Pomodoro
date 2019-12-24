@@ -283,8 +283,10 @@ public class ViewProjectFragmentPresenter implements IViewProjectFragmentPresent
                 if (model == null) {
                     return;
                 }
-                boolean isColorTagDifferent = !projectModel.getColorTag().equals(model.getColorTag());
-                boolean isDueDateDifferent = !projectModel.getDueDate().equals(model.getDueDate());
+                boolean isColorTagDifferent = projectModel.getColorTag() == null
+                        || !projectModel.getColorTag().equals(model.getColorTag());
+                boolean isDueDateDifferent = projectModel.getDueDate() == null
+                        || !projectModel.getDueDate().equals(model.getDueDate());
                 boolean summaryChanged = projectModel.getEstimatedTime() != model.getEstimatedTime()
                         || projectModel.getElapsedTime() != model.getElapsedTime()
                         || projectModel.getProgress() != model.getProgress();

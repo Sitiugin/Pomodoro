@@ -6,6 +6,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.utils.EntryXComparator;
 import com.glebworx.pomodoro.model.HistoryModel;
 import com.glebworx.pomodoro.ui.fragment.report.interfaces.IChart;
@@ -147,6 +148,10 @@ public class ChartDataManager {
 
         return new BarData(dataSet);
 
+    }
+
+    public static PieData getDistributionData(List<DocumentSnapshot> documentSnapshots) {
+        return new PieData(); // TODO implement
     }
 
     public static LineData getElapsedTimeData(List<DocumentSnapshot> documentSnapshots) {

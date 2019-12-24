@@ -200,6 +200,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/height_chart"
                     android:animateLayoutChanges="true" />
+
+                <com.github.ybq.android.spinkit.SpinKitView
+                    android:id="@+id/spin_kit_view_distribution"
+                    style="@style/SpinKitView.Pulse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:elevation="@dimen/elevation_fab_high"
+                    app:SpinKit_Color="@color/colorHighlight" />
+
             </FrameLayout>
 
             <FrameLayout
@@ -219,6 +229,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/height_chart"
                     android:animateLayoutChanges="true" />
+
+                <com.github.ybq.android.spinkit.SpinKitView
+                    android:id="@+id/spin_kit_view_overdue"
+                    style="@style/SpinKitView.Pulse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:elevation="@dimen/elevation_fab_high"
+                    app:SpinKit_Color="@color/colorHighlight" />
+
             </FrameLayout>
 
             <androidx.appcompat.widget.AppCompatTextView

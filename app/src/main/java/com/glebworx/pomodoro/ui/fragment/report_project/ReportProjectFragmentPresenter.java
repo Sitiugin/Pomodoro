@@ -5,8 +5,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 
 import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.PieData;
 import com.glebworx.pomodoro.api.HistoryApi;
 import com.glebworx.pomodoro.api.ProjectApi;
+import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.ui.fragment.report_project.interfaces.IReportProjectFragment;
 import com.glebworx.pomodoro.ui.fragment.report_project.interfaces.IReportProjectFragmentInteractionListener;
@@ -61,6 +63,8 @@ public class ReportProjectFragmentPresenter implements IReportProjectFragmentPre
 
         projectObservable.subscribe(getProjectObserver());
 
+        TaskApi.getTasks(projectName, false, this::handleTasks);
+
         HistoryApi.getProjectCompletionHistory(projectName, this::handleHistory);
 
         presenterListener.onInitView(
@@ -73,6 +77,29 @@ public class ReportProjectFragmentPresenter implements IReportProjectFragmentPre
     @Override
     public void destroy() {
         compositeDisposable.clear();
+    }
+
+    private void handleTasks(Task<QuerySnapshot> task) {
+
+        QuerySnapshot result = task.getResult();
+
+        if (task.isSuccessful() && result != null) {
+
+            Observable<PieData> distributionObservable = getDistributionObservable(result);
+            distributionObservable = distributionObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread());
+
+            distributionObservable.subscribe(getDistributionObserver());
+
+            if (result.isEmpty()) {
+                presenterListener.onDistributionChartDataEmpty();
+            }
+
+        } else {
+            presenterListener.onDistributionChartDataEmpty();
+        }
+
     }
 
     private void handleHistory(Task<QuerySnapshot> task) {
@@ -89,11 +116,11 @@ public class ReportProjectFragmentPresenter implements IReportProjectFragmentPre
             elapsedTimeObservable.subscribe(getElapsedTimeObserver());
 
             if (result.isEmpty()) {
-                presenterListener.onChartDataEmpty();
+                presenterListener.onElapsedChartDataEmpty();
             }
 
         } else {
-            presenterListener.onChartDataEmpty();
+            presenterListener.onElapsedChartDataEmpty();
         }
 
     }
@@ -147,6 +174,41 @@ public class ReportProjectFragmentPresenter implements IReportProjectFragmentPre
                             projectModel.getProgress());
                 }
 
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+    }
+
+    private Observable<PieData> getDistributionObservable(QuerySnapshot snapshot) {
+        return Observable.create(emitter -> {
+            if (emitter.isDisposed()) {
+                return;
+            }
+            emitter.onNext(ChartDataManager.getDistributionData(snapshot.getDocuments()));
+            emitter.onComplete();
+
+        });
+    }
+
+    private io.reactivex.Observer<PieData> getDistributionObserver() {
+        return new io.reactivex.Observer<PieData>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                compositeDisposable.add(disposable);
+            }
+
+            @Override
+            public void onNext(PieData pieData) {
+                //presenterListener.onInitDistributionChart(pieData);
             }
 
             @Override
