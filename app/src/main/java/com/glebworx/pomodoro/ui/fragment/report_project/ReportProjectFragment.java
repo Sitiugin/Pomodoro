@@ -146,6 +146,7 @@ public class ReportProjectFragment extends Fragment implements IReportProjectFra
 
     @Override
     public void onInitElapsedTimeChart(LineData lineData) {
+        rootView.findViewById(R.id.spin_kit_view_elapsed_time).setVisibility(View.GONE);
         elapsedTimeLineChart.setData(lineData);
         elapsedTimeLineChart.animateY(ANIM_DURATION);
     }
