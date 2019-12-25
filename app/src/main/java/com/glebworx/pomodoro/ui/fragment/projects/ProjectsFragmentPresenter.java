@@ -134,11 +134,12 @@ public class ProjectsFragmentPresenter implements IProjectsFragmentPresenter {
     }
 
     @Override
-    public void signOut(Context context) {
+    public synchronized void signOut(Context context) {
+        AuthManager.getInstance().signOut();
+        Toast.makeText(context, R.string.core_signed_out, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(context, SplashActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(intent);
-        AuthManager.getInstance().signOut();
     }
 
     private IItemAdapter.Predicate<ProjectItem> getFilterPredicate() {
