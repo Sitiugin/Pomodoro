@@ -199,7 +199,7 @@ public class ReportProjectFragment extends Fragment implements IReportProjectFra
                     fragmentListener.onCloseFragment();
                     break;
                 case R.id.layout_elapsed_time:
-                    IChart.expandChart(context, rootView, elapsedTimeLineChart);
+                    IChart.expandChart(context, rootView, elapsedTimeLineChart, false);
                     break;
             }
         };

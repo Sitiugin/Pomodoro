@@ -197,7 +197,7 @@ public interface IChart {
         expandedChart.setTranslationY(offset);
     }
 
-    static void expandChart(Context context, View rootView, LineChart chart) {
+    static void expandChart(Context context, View rootView, LineChart chart, boolean showLegend) {
         if (chart.getData() == null || chart.getData().getEntryCount() == 0) {
             return;
         }
@@ -213,7 +213,7 @@ public interface IChart {
                         if (chart.getData().getEntryCount() > 0) {
                             expandedChart.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                             IChart.rotateChart(expandedChart);
-                            IChart.initChart(expandedChart, true, true, "");
+                            IChart.initChart(expandedChart, true, showLegend, "");
                             expandedChart.setData(chart.getData());
                             expandedChart.animateY(ANIM_DURATION);
                         } else {

@@ -60,7 +60,7 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
         OnClickListener onClickListener = view -> {
             switch (view.getId()) {
                 case R.id.layout_pomodoros_completed:
-                    IChart.expandChart(context, rootView, pomodorosCompletedLineChart);
+                    IChart.expandChart(context, rootView, pomodorosCompletedLineChart, true);
                     break;
                 case R.id.layout_trends:
                     IChart.expandChart(context, rootView, weeklyTrendsBarChart);
