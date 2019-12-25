@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.PieData;
 import com.glebworx.pomodoro.api.HistoryApi;
-import com.glebworx.pomodoro.model.HistoryModel;
 import com.glebworx.pomodoro.model.report.ReportProjectOverviewModel;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportProjectsView;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportProjectsViewPresenter;
@@ -78,12 +77,10 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
             overdueObservable.subscribe(getProjectsOverdueObserver());
             elapsedTimeObservable.subscribe(getElapsedTimeObserver());
 
-            if (result.isEmpty()) {
-                presenterListener.onChartDataEmpty();
-            }
-
         } else {
-            presenterListener.onChartDataEmpty();
+            presenterListener.onOverviewDataEmpty();
+            presenterListener.onDistributionDataEmpty();
+            presenterListener.onElapsedTimeDataEmpty();
         }
 
     }
@@ -93,8 +90,7 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
             if (emitter.isDisposed()) {
                 return;
             }
-            ReportProjectOverviewModel model = new ReportProjectOverviewModel();
-            initOverview(model, snapshot.getDocuments());
+            ReportProjectOverviewModel model = ReportDataManager.getProjectOverviewModel(snapshot.getDocuments());
             emitter.onNext(model);
             emitter.onComplete();
 
@@ -175,7 +171,11 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
 
             @Override
             public void onNext(PieData pieData) {
-                presenterListener.onInitProjectsDistributionChart(pieData);
+                if (pieData.getEntryCount() > 0) {
+                    presenterListener.onInitProjectsDistributionChart(pieData);
+                } else {
+                    presenterListener.onDistributionDataEmpty();
+                }
             }
 
             @Override
@@ -199,7 +199,11 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
 
             @Override
             public void onNext(PieData pieData) {
-                presenterListener.onInitProjectsOverdueChart(pieData);
+                if (pieData.getEntryCount() > 0) {
+                    presenterListener.onInitProjectsOverdueChart(pieData);
+                } else {
+                    presenterListener.onDistributionDataEmpty();
+                }
             }
 
             @Override
@@ -223,7 +227,11 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
 
             @Override
             public void onNext(LineData lineData) {
-                presenterListener.onInitElapsedTimeChart(lineData);
+                if (lineData.getEntryCount() > 0) {
+                    presenterListener.onInitElapsedTimeChart(lineData);
+                } else {
+                    presenterListener.onElapsedTimeDataEmpty();
+                }
             }
 
             @Override
@@ -236,75 +244,6 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
 
             }
         };
-    }
-
-    private void initOverview(ReportProjectOverviewModel overviewModel,
-                              List<DocumentSnapshot> documentSnapshots) {
-
-        HistoryModel model;
-        for (DocumentSnapshot snapshot : documentSnapshots) {
-
-        }
-
-
-        /*overviewModel.setPomodorosCompleted(documentSnapshots.size());
-
-        HistoryModel model;
-        List<Date> dates = new ArrayList<>();
-        Date date;
-        Date minDate = new Date();
-        int totalPomodoros = 0;
-
-        for (DocumentSnapshot snapshot : documentSnapshots) {
-            model = snapshot.toObject(HistoryModel.class); // get model
-            if (model != null && model.getEventType().equals(HistoryModel.EVENT_POMODORO_COMPLETED)) {
-                date = model.getTimestamp();
-                dates.add(date);
-                if (date.compareTo(minDate) < 0) {
-                    minDate = date;
-                }
-                totalPomodoros++;
-            }
-        }
-
-        long daysElapsed = ChronoUnit.DAYS.between(minDate.toInstant(), new Date().toInstant());
-
-        overviewModel.setAveragePerDay((float) totalPomodoros / daysElapsed);
-
-        Collections.sort(dates);
-
-        LocalDate current;
-        LocalDate previous = dates
-                .get(dates.size() - 1)
-                .toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-
-        if (!previous.equals(LocalDate.now()) && !previous.equals(LocalDate.now().minusDays(1))) {
-            overviewModel.setStreak(0);
-            return;
-        }
-
-        int streak = 1;
-        for (int i = dates.size() - 1; i > 0; i--) {
-            current = previous;
-            previous = dates.get(i - 1)
-                    .toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDate();
-            if (previous.equals(current)) {
-                continue;
-            }
-            if (previous.plusDays(1).equals(current)) {
-                streak++;
-            } else {
-                overviewModel.setStreak(streak);
-                return;
-            }
-        }
-
-        overviewModel.setStreak(streak);*/
-
     }
 
     private PieData getProjectsDistributionData(List<DocumentSnapshot> documentSnapshots) {

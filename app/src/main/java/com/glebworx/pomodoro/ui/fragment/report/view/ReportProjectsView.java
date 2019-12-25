@@ -69,24 +69,8 @@ public class ReportProjectsView extends NestedScrollView implements IReportProje
     }
 
     @Override
-    public void onChartDataEmpty() {
-        hideOverviewSpinKit();
-        hideElapsedTimeSpinKit();
-        String emptyTime = DateTimeManager.formatHHMMString(context, 0);
-        String emptyText = context.getString(R.string.core_text_no_data);
-        projectsCompletedTextView.setText(emptyTime);
-        averageCompletionTimeTextView.setText(emptyTime);
-        elapsedTimeTextView.setText(emptyTime);
-        projectDistributionPieChart.setNoDataText(emptyText);
-        projectDistributionPieChart.invalidate();
-        projectOverduePieChart.setNoDataText(emptyText);
-        projectOverduePieChart.invalidate();
-        elapsedTimeLineChart.setNoDataText(emptyText);
-        elapsedTimeLineChart.invalidate();
-    }
-
-    @Override
     public void onInitOverview(String projectsCompletedString, String averageCompletionTimeString, String elapsedTimeString) {
+        hideOverviewSpinKit();
         projectsCompletedTextView.setText(projectsCompletedString);
         averageCompletionTimeTextView.setText(averageCompletionTimeString);
         elapsedTimeTextView.setText(elapsedTimeString);
@@ -122,10 +106,18 @@ public class ReportProjectsView extends NestedScrollView implements IReportProje
     public void onOverviewDataEmpty() {
         hideOverviewSpinKit();
         String emptyTime = DateTimeManager.formatHHMMString(context, 0);
-        String emptyText = context.getString(R.string.core_text_no_data);
         projectsCompletedTextView.setText(emptyTime);
         averageCompletionTimeTextView.setText(emptyTime);
         elapsedTimeTextView.setText(emptyTime);
+    }
+
+    @Override
+    public void onDistributionDataEmpty() {
+        String emptyText = context.getString(R.string.core_text_no_data);
+        projectDistributionPieChart.setNoDataText(emptyText);
+        projectDistributionPieChart.invalidate();
+        projectOverduePieChart.setNoDataText(emptyText);
+        projectOverduePieChart.invalidate();
     }
 
     @Override

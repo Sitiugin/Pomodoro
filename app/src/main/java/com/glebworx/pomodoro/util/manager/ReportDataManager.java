@@ -13,6 +13,7 @@ import com.github.mikephil.charting.utils.EntryXComparator;
 import com.glebworx.pomodoro.model.HistoryModel;
 import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.model.report.ReportPomodoroOverviewModel;
+import com.glebworx.pomodoro.model.report.ReportProjectOverviewModel;
 import com.glebworx.pomodoro.ui.fragment.report.interfaces.IChart;
 import com.glebworx.pomodoro.util.constants.ColorConstants;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -106,6 +107,12 @@ public class ReportDataManager {
 
         return overviewModel;
 
+    }
+
+    public static ReportProjectOverviewModel getProjectOverviewModel(List<DocumentSnapshot> documentSnapshots) {
+        ReportProjectOverviewModel overviewModel = new ReportProjectOverviewModel();
+        // TODO implement
+        return overviewModel;
     }
 
     public static LineData getPomodorosCompletedData(List<DocumentSnapshot> documentSnapshots) {

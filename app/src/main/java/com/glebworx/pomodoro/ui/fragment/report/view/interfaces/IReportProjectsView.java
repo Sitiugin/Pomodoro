@@ -7,8 +7,6 @@ public interface IReportProjectsView {
 
     void onInitView();
 
-    void onChartDataEmpty();
-
     void onInitOverview(String projectsCompletedString,
                         String averageCompletionTimeString,
                         String elapsedTimeString);
@@ -20,6 +18,8 @@ public interface IReportProjectsView {
     void onInitElapsedTimeChart(LineData lineData);
 
     void onOverviewDataEmpty();
+
+    void onDistributionDataEmpty();
 
     void onElapsedTimeDataEmpty();
 
