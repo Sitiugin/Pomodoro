@@ -76,6 +76,7 @@ public class ReportProjectsView extends NestedScrollView implements IReportProje
 
     @Override
     public void onInitProjectsDistributionChart(PieData pieData) {
+        hideDistributionSpinKit();
         if (pieData.getEntryCount() > 0) {
             projectDistributionPieChart.setData(pieData);
             projectDistributionPieChart.animateY(ANIM_DURATION);
@@ -110,9 +111,16 @@ public class ReportProjectsView extends NestedScrollView implements IReportProje
 
     @Override
     public void onDistributionDataEmpty() {
+        hideDistributionSpinKit();
         String emptyText = context.getString(R.string.core_text_no_data);
         projectDistributionPieChart.setNoDataText(emptyText);
         projectDistributionPieChart.invalidate();
+    }
+
+    @Override
+    public void onOverdueDataEmpty() {
+        hideOverdueSpinKit();
+        String emptyText = context.getString(R.string.core_text_no_data);
         projectOverduePieChart.setNoDataText(emptyText);
         projectOverduePieChart.invalidate();
     }
@@ -140,6 +148,14 @@ public class ReportProjectsView extends NestedScrollView implements IReportProje
 
     private void hideOverviewSpinKit() {
         rootView.findViewById(R.id.spin_kit_view_overview).setVisibility(GONE);
+    }
+
+    private void hideDistributionSpinKit() {
+        rootView.findViewById(R.id.spin_kit_view_distribution).setVisibility(GONE);
+    }
+
+    private void hideOverdueSpinKit() {
+        rootView.findViewById(R.id.spin_kit_view_overdue).setVisibility(GONE);
     }
 
     private void hideElapsedTimeSpinKit() {

@@ -38,7 +38,7 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
     public void init() {
         presenterListener.onInitView();
         compositeDisposable = new CompositeDisposable();
-        HistoryApi.getPomodoroCompletionHistory(this::handlePomodoroCompletionHistory);
+        HistoryApi.getPomodoroCompletionHistory(this::handlePomodoroCompletionHistory); // TODO monitor elapsed time, model should have project name
         HistoryApi.getProjectTaskCompletionHistory(this::handleProjectTaskCompletionHistory);
     }
 

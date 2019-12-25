@@ -275,6 +275,13 @@
     <string name="report_projects_title_tasks_completed">Tasks Completed</string>
     <string name="report_projects_title_distribution">Projects Distribution</string>
     <string name="report_projects_title_elapsed_time">Elapsed Time</string>
+    <string-array name="report_projects_array_duration_types">
+        <item>0 &#8211; 10 hours</item>
+        <item>11 &#8211; 25 hours</item>
+        <item>26 &#8211; 50 hours</item>
+        <item>51 &#8211; 100 hours</item>
+        <item>100+ hours</item>
+    </string-array>
 
 
     <!--                                                                          REPORT HISTORY -->
