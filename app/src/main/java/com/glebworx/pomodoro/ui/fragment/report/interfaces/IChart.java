@@ -117,7 +117,7 @@ public interface IChart {
 
     static void initChart(BarChart chart, boolean isExpanded, boolean showLegend, String descriptionText) {
         initBaseChart(chart, isExpanded, showLegend, descriptionText);
-        chart.setFitBars(true);
+        //chart.setFitBars(true);
 
         //chart.setVisibleYRangeMaximum(30, YAxis.AxisDependency.LEFT);
         //chart.setFitBars(true);

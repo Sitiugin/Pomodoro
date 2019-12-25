@@ -115,10 +115,6 @@ public class ReportProjectFragmentPresenter implements IReportProjectFragmentPre
 
             elapsedTimeObservable.subscribe(getElapsedTimeObserver());
 
-            if (result.isEmpty()) {
-                presenterListener.onElapsedChartDataEmpty();
-            }
-
         } else {
             presenterListener.onElapsedChartDataEmpty();
         }
@@ -208,7 +204,11 @@ public class ReportProjectFragmentPresenter implements IReportProjectFragmentPre
 
             @Override
             public void onNext(PieData pieData) {
-                presenterListener.onInitDistributionChart(pieData);
+                if (pieData.getEntryCount() > 0) {
+                    presenterListener.onInitDistributionChart(pieData);
+                } else {
+                    presenterListener.onDistributionChartDataEmpty();
+                }
             }
 
             @Override
@@ -243,7 +243,11 @@ public class ReportProjectFragmentPresenter implements IReportProjectFragmentPre
 
             @Override
             public void onNext(LineData lineData) {
-                presenterListener.onInitElapsedTimeChart(lineData);
+                if (lineData.getEntryCount() > 0) {
+                    presenterListener.onInitElapsedTimeChart(lineData);
+                } else {
+                    presenterListener.onElapsedChartDataEmpty();
+                }
             }
 
             @Override
