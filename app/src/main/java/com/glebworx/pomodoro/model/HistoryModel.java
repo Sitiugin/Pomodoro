@@ -86,7 +86,7 @@ public class HistoryModel extends AbstractModel {
         this.timeElapsed = timeElapsed;
     }
 
-    public HistoryModel(Parcel in) {
+    private HistoryModel(Parcel in) {
         super(in);
         this.id = in.readString();
         this.colorTag = in.readString();

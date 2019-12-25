@@ -10,6 +10,11 @@ public class ReportProjectOverviewModel {
         tasksCompleted = 0;
     }
 
+    public ReportProjectOverviewModel(int projectsCompleted, int tasksCompleted) {
+        this.projectsCompleted = projectsCompleted;
+        this.tasksCompleted = tasksCompleted;
+    }
+
     public int getProjectsCompleted() {
         return projectsCompleted;
     }

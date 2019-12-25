@@ -110,9 +110,25 @@ public class ReportDataManager {
     }
 
     public static ReportProjectOverviewModel getProjectOverviewModel(List<DocumentSnapshot> documentSnapshots) {
-        ReportProjectOverviewModel overviewModel = new ReportProjectOverviewModel();
-        // TODO implement
-        return overviewModel;
+
+        HistoryModel model;
+        int projectsCompleted = 0;
+        int tasksCompleted = 0;
+
+        for (DocumentSnapshot snapshot : documentSnapshots) {
+            model = snapshot.toObject(HistoryModel.class); // get model
+            if (model == null) {
+                continue;
+            }
+            if (model.getEventType().equals(HistoryModel.EVENT_PROJECT_COMPLETED)) {
+                projectsCompleted++;
+            } else if (model.getEventType().equals(HistoryModel.EVENT_TASK_COMPLETED)) {
+                tasksCompleted++;
+            }
+        }
+
+        return new ReportProjectOverviewModel(projectsCompleted, tasksCompleted);
+
     }
 
     public static LineData getPomodorosCompletedData(List<DocumentSnapshot> documentSnapshots) {

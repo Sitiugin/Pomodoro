@@ -11,10 +11,13 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_POMODORO_COMPLETED;
 import static com.glebworx.pomodoro.model.HistoryModel.EVENT_PROJECT_COMPLETED;
+import static com.glebworx.pomodoro.model.HistoryModel.EVENT_TASK_COMPLETED;
 
 public class HistoryApi extends BaseApi {
 
@@ -64,6 +67,17 @@ public class HistoryApi extends BaseApi {
                 .whereEqualTo(FIELD_EVENT_TYPE, EVENT_POMODORO_COMPLETED)
                 .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
                 //.get(Source.CACHE)
+                .get()
+                .addOnCompleteListener(onCompleteListener);
+    }
+
+    public static void getProjectTaskCompletionHistory(@NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
+        List<String> list = new ArrayList<>();
+        list.add(EVENT_PROJECT_COMPLETED);
+        list.add(EVENT_TASK_COMPLETED);
+        getCollection(COLLECTION_HISTORY)
+                .whereIn(FIELD_EVENT_TYPE, list)
+                .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(onCompleteListener);
     }

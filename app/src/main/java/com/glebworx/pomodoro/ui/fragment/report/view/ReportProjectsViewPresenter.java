@@ -38,7 +38,8 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
     public void init() {
         presenterListener.onInitView();
         compositeDisposable = new CompositeDisposable();
-        HistoryApi.getPomodoroCompletionHistory(this::handleHistory);
+        HistoryApi.getPomodoroCompletionHistory(this::handlePomodoroCompletionHistory);
+        HistoryApi.getProjectTaskCompletionHistory(this::handleProjectTaskCompletionHistory);
     }
 
     @Override
@@ -46,7 +47,42 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
         compositeDisposable.clear();
     }
 
-    private void handleHistory(Task<QuerySnapshot> task) {
+    private void handlePomodoroCompletionHistory(Task<QuerySnapshot> task) {
+
+        QuerySnapshot result = task.getResult();
+
+        if (task.isSuccessful() && result != null) {
+
+            Observable<PieData> projectsDistributionObservable = getProjectsDistributionObservable(result);
+            projectsDistributionObservable = projectsDistributionObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .unsubscribeOn(Schedulers.io());
+
+            Observable<PieData> overdueObservable = getProjectsOverdueObservable(result);
+            overdueObservable = overdueObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .unsubscribeOn(Schedulers.io());
+
+            Observable<LineData> elapsedTimeObservable = getElapsedTimeObservable(result);
+            elapsedTimeObservable = elapsedTimeObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .unsubscribeOn(Schedulers.io());
+
+            projectsDistributionObservable.subscribe(getProjectsDistributionObserver());
+            overdueObservable.subscribe(getProjectsOverdueObserver());
+            elapsedTimeObservable.subscribe(getElapsedTimeObserver());
+
+        } else {
+            presenterListener.onDistributionDataEmpty();
+            presenterListener.onElapsedTimeDataEmpty();
+        }
+
+    }
+
+    private void handleProjectTaskCompletionHistory(Task<QuerySnapshot> task) {
 
         QuerySnapshot result = task.getResult();
 
@@ -55,32 +91,13 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
             Observable<ReportProjectOverviewModel> overviewObservable = getOverviewObservable(result);
             overviewObservable = overviewObservable
                     .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread());
-
-            Observable<PieData> projectsDistributionObservable = getProjectsDistributionObservable(result);
-            projectsDistributionObservable = projectsDistributionObservable
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread());
-
-            Observable<PieData> overdueObservable = getProjectsOverdueObservable(result);
-            overdueObservable = overdueObservable
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread());
-
-            Observable<LineData> elapsedTimeObservable = getElapsedTimeObservable(result);
-            elapsedTimeObservable = elapsedTimeObservable
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread());
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .unsubscribeOn(Schedulers.io());
 
             overviewObservable.subscribe(getOverviewObserver());
-            projectsDistributionObservable.subscribe(getProjectsDistributionObserver());
-            overdueObservable.subscribe(getProjectsOverdueObserver());
-            elapsedTimeObservable.subscribe(getElapsedTimeObserver());
 
         } else {
             presenterListener.onOverviewDataEmpty();
-            presenterListener.onDistributionDataEmpty();
-            presenterListener.onElapsedTimeDataEmpty();
         }
 
     }
