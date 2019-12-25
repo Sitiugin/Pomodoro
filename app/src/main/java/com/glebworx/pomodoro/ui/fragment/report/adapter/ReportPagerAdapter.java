@@ -27,7 +27,7 @@ public class ReportPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 2;
     }
 
     @Nullable
@@ -36,9 +36,9 @@ public class ReportPagerAdapter extends PagerAdapter {
         switch (position) {
             case 0:
                 return context.getString(R.string.report_title_pomodoros);
+            /*case 1:
+                return context.getString(R.string.report_title_projects);*/
             case 1:
-                return context.getString(R.string.report_title_projects);
-            case 2:
             default:
                 return context.getString(R.string.report_title_history);
         }
@@ -57,9 +57,9 @@ public class ReportPagerAdapter extends PagerAdapter {
         switch (position) {
             case 0:
                 return R.id.view_pomodoros;
+            /*case 1:
+                return R.id.view_projects;*/
             case 1:
-                return R.id.view_tasks;
-            case 2:
             default:
                 return R.id.view_history;
         }

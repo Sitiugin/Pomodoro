@@ -78,44 +78,9 @@ public class ReportFragment extends Fragment implements IReportFragment {
         super.onDetach();
     }
 
-    /*@Nullable
-    @Override
-    public Animator onCreateAnimator(int transit, boolean enter, int nextAnim) {
-        Animator animator = super.onCreateAnimator(transit, enter, nextAnim);
-        if (animator != null) {
-            initAnimatorListener(animator);
-        }
-        return animator;
-    }
-
-    private void initAnimatorListener(Animator animator) {
-        animator.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                initTabs();
-                animator.removeAllListeners();
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-                animator.removeAllListeners();
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-
-            }
-        });
-    }*/
-
     private void initTabs() {
         ReportPagerAdapter adapter = new ReportPagerAdapter(context);
-        viewPager.setOffscreenPageLimit(2);
+        viewPager.setOffscreenPageLimit(1);
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
     }

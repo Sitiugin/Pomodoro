@@ -79,10 +79,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <com.glebworx.pomodoro.ui.fragment.report.view.ReportProjectsView
-            android:id="@+id/view_tasks"
+        <!--<com.glebworx.pomodoro.ui.fragment.report.view.ReportProjectsView
+            android:id="@+id/view_projects"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent" />-->
 
         <com.glebworx.pomodoro.ui.fragment.report.view.ReportHistoryView
             android:id="@+id/view_history"
