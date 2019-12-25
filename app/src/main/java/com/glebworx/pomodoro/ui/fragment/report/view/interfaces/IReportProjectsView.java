@@ -7,9 +7,7 @@ public interface IReportProjectsView {
 
     void onInitView();
 
-    void onInitOverview(String projectsCompletedString,
-                        String averageCompletionTimeString,
-                        String elapsedTimeString);
+    void onInitOverview(String projectsCompletedString, String tasksCompletedString);
 
     void onInitProjectsDistributionChart(PieData pieData);
 

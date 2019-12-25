@@ -23,8 +23,7 @@ public class ReportProjectsView extends NestedScrollView implements IReportProje
 
     private View rootView;
     private AppCompatTextView projectsCompletedTextView;
-    private AppCompatTextView averageCompletionTimeTextView;
-    private AppCompatTextView elapsedTimeTextView;
+    private AppCompatTextView tasksCompletedTextView;
     private FrameLayout projectDistributionLayout;
     private PieChart projectDistributionPieChart;
     private FrameLayout projectOverdueLayout;
@@ -69,11 +68,10 @@ public class ReportProjectsView extends NestedScrollView implements IReportProje
     }
 
     @Override
-    public void onInitOverview(String projectsCompletedString, String averageCompletionTimeString, String elapsedTimeString) {
+    public void onInitOverview(String projectsCompletedString, String tasksCompletedString) {
         hideOverviewSpinKit();
         projectsCompletedTextView.setText(projectsCompletedString);
-        averageCompletionTimeTextView.setText(averageCompletionTimeString);
-        elapsedTimeTextView.setText(elapsedTimeString);
+        tasksCompletedTextView.setText(tasksCompletedString);
     }
 
     @Override
@@ -107,8 +105,7 @@ public class ReportProjectsView extends NestedScrollView implements IReportProje
         hideOverviewSpinKit();
         String emptyTime = DateTimeManager.formatHHMMString(context, 0);
         projectsCompletedTextView.setText(emptyTime);
-        averageCompletionTimeTextView.setText(emptyTime);
-        elapsedTimeTextView.setText(emptyTime);
+        tasksCompletedTextView.setText(emptyTime);
     }
 
     @Override
@@ -130,8 +127,7 @@ public class ReportProjectsView extends NestedScrollView implements IReportProje
     private void init(Context context, AttributeSet attrs, int defStyle) {
         rootView = inflate(context, R.layout.view_report_projects, this);
         projectsCompletedTextView = rootView.findViewById(R.id.text_view_projects_completed);
-        averageCompletionTimeTextView = rootView.findViewById(R.id.text_view_average_completion_time);
-        elapsedTimeTextView = rootView.findViewById(R.id.text_view_elapsed_time);
+        tasksCompletedTextView = rootView.findViewById(R.id.text_view_tasks_completed);
         projectDistributionLayout = rootView.findViewById(R.id.layout_distribution);
         projectDistributionPieChart = rootView.findViewById(R.id.pie_chart_distribution);
         projectOverdueLayout = rootView.findViewById(R.id.layout_overdue);

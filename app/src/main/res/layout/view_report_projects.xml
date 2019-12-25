@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_content_double"
-                app:layout_constraintEnd_toStartOf="@+id/text_view_average_completion_time"
+                app:layout_constraintEnd_toStartOf="@+id/text_view_tasks_completed"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toStartOf="parent"
@@ -55,28 +55,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_view_projects_completed" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/text_view_average_completion_time"
-                style="@style/TextStyle.Count.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toStartOf="@+id/text_view_elapsed_time"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toEndOf="@+id/text_view_projects_completed"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/text_view_average_completion_time_description"
-                style="@style/TextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Avg completion time"
-                app:layout_constraintEnd_toEndOf="@+id/text_view_average_completion_time"
-                app:layout_constraintStart_toStartOf="@+id/text_view_average_completion_time"
-                app:layout_constraintTop_toBottomOf="@+id/text_view_average_completion_time" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/text_view_elapsed_time"
+                android:id="@+id/text_view_tasks_completed"
                 style="@style/TextStyle.Count.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -84,18 +63,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toEndOf="@+id/text_view_average_completion_time"
+                app:layout_constraintStart_toEndOf="@+id/text_view_projects_completed"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/text_view_elapsed_time_description"
+                android:id="@+id/text_view_tasks_completed_description"
                 style="@style/TextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Elapsed time"
-                app:layout_constraintEnd_toEndOf="@+id/text_view_elapsed_time"
-                app:layout_constraintStart_toStartOf="@+id/text_view_elapsed_time"
-                app:layout_constraintTop_toBottomOf="@+id/text_view_elapsed_time" />
+                android:text="Tasks Completed"
+                app:layout_constraintEnd_toEndOf="@+id/text_view_tasks_completed"
+                app:layout_constraintStart_toStartOf="@+id/text_view_tasks_completed"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_tasks_completed" />
 
             <com.github.ybq.android.spinkit.SpinKitView
                 android:id="@+id/spin_kit_view_overview"

@@ -140,14 +140,9 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
             @Override
             public void onNext(ReportProjectOverviewModel model) {
                 NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
-                //presenterListener.onInitOverview(numberFormat.format(model.get));
-                /*presenterListener.onInitOverview(
-                        String.valueOf(model.getPomodorosCompleted()),
-                        String.format(
-                                Locale.getDefault(),
-                                FORMAT_DECIMAL_1PT,
-                                model.getAveragePerDay()),
-                        String.valueOf(model.getStreak()));*/
+                presenterListener.onInitOverview(
+                        numberFormat.format(model.getProjectsCompleted()),
+                        numberFormat.format(model.getTasksCompleted()));
             }
 
             @Override
