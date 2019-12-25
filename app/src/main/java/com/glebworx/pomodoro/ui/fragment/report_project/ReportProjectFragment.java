@@ -137,6 +137,7 @@ public class ReportProjectFragment extends Fragment implements IReportProjectFra
                            float progress) {
         titleTextView.setText(projectName);
         onSummaryChanged(estimatedTime, elapsedTime, progress);
+        IChart.initChart(distributionPieChart);
         IChart.initChart(elapsedTimeLineChart, false, false, null);
         initClickEvents();
     }
@@ -151,6 +152,7 @@ public class ReportProjectFragment extends Fragment implements IReportProjectFra
     @Override
     public void onInitDistributionChart(PieData pieData) {
         hideDistributionSpinKit();
+        pieData.getDataSet().setValueTextColor(context.getColor(android.R.color.white));
         distributionPieChart.setData(pieData);
         distributionPieChart.animateY(ANIM_DURATION);
     }

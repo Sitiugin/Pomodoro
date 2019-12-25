@@ -63,7 +63,7 @@ public class ReportProjectFragmentPresenter implements IReportProjectFragmentPre
 
         projectObservable.subscribe(getProjectObserver());
 
-        TaskApi.getTasks(projectName, false, this::handleTasks);
+        TaskApi.getTasks(projectName, this::handleTasks);
 
         HistoryApi.getProjectCompletionHistory(projectName, this::handleHistory);
 
@@ -208,7 +208,7 @@ public class ReportProjectFragmentPresenter implements IReportProjectFragmentPre
 
             @Override
             public void onNext(PieData pieData) {
-                //presenterListener.onInitDistributionChart(pieData);
+                presenterListener.onInitDistributionChart(pieData);
             }
 
             @Override

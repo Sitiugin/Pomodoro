@@ -1,12 +1,14 @@
 package com.glebworx.pomodoro.util.manager;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.glebworx.pomodoro.R;
+import com.glebworx.pomodoro.util.constants.ColorConstants;
+
+import java.util.Random;
 
 import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_AMBER_HEX;
 import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_BLUE_HEX;
@@ -70,5 +72,44 @@ public class ColorManager {
             default:
                 return context.getColor(android.R.color.transparent);
         }
+    }
+
+    public static int getRandomColor() {
+        int random = new Random().nextInt(16);
+        switch (random) {
+            case 0:
+                return ColorConstants.rgb(COLOR_RED_HEX);
+            case 1:
+                return ColorConstants.rgb(COLOR_PINK_HEX);
+            case 2:
+                return ColorConstants.rgb(COLOR_PURPLE_HEX);
+            case 3:
+                return ColorConstants.rgb(COLOR_DEEP_PURPLE_HEX);
+            case 4:
+                return ColorConstants.rgb(COLOR_INDIGO_HEX);
+            case 5:
+                return ColorConstants.rgb(COLOR_BLUE_HEX);
+            case 6:
+                return ColorConstants.rgb(COLOR_LIGHT_BLUE_HEX);
+            case 7:
+                return ColorConstants.rgb(COLOR_CYAN_HEX);
+            case 8:
+                return ColorConstants.rgb(COLOR_TEAL_HEX);
+            case 9:
+                return ColorConstants.rgb(COLOR_GREEN_HEX);
+            case 10:
+                return ColorConstants.rgb(COLOR_LIGHT_GREEN_HEX);
+            case 11:
+                return ColorConstants.rgb(COLOR_LIME_HEX);
+            case 12:
+                return ColorConstants.rgb(COLOR_YELLOW_HEX);
+            case 13:
+                return ColorConstants.rgb(COLOR_AMBER_HEX);
+            case 14:
+                return ColorConstants.rgb(COLOR_ORANGE_HEX);
+            case 15:
+                return ColorConstants.rgb(COLOR_DEEP_ORANGE_HEX);
+        }
+        return 0;
     }
 }

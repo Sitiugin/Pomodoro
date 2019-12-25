@@ -156,6 +156,14 @@ public class TaskApi extends BaseApi {
 
     }
 
+    public static void getTasks(String projectName, @NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
+        getCollection(COLLECTION_PROJECTS)
+                .document(projectName)
+                .collection(COLLECTION_TASKS)
+                .get()
+                .addOnCompleteListener(onCompleteListener);
+    }
+
     public static void getTasks(String projectName, boolean completed, @NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
         getCollection(COLLECTION_PROJECTS)
                 .document(projectName)

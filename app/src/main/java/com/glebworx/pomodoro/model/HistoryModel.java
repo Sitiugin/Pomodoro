@@ -47,7 +47,7 @@ public class HistoryModel extends AbstractModel {
     private String taskName;
     private String eventType;
 
-    private int elapsedTime;
+    private int timeElapsed;
 
 
     //                                                                                  CONSTRUCTORS
@@ -77,13 +77,13 @@ public class HistoryModel extends AbstractModel {
                         @Nullable String colorTag,
                         @Nullable String taskName,
                         @NonNull String eventType,
-                        int elapsedTime) {
+                        int timeElapsed) {
         super(projectName);
         this.id = generateStringId();
         this.colorTag = colorTag;
         this.taskName = taskName;
         this.eventType = eventType;
-        this.elapsedTime = elapsedTime;
+        this.timeElapsed = timeElapsed;
     }
 
     public HistoryModel(Parcel in) {
@@ -92,7 +92,7 @@ public class HistoryModel extends AbstractModel {
         this.colorTag = in.readString();
         this.taskName = in.readString();
         this.eventType = in.readString();
-        this.elapsedTime = in.readInt();
+        this.timeElapsed = in.readInt();
     }
 
 
@@ -105,7 +105,7 @@ public class HistoryModel extends AbstractModel {
         parcel.writeString(taskName);
         parcel.writeString(eventType);
         parcel.writeString(colorTag);
-        parcel.writeInt(elapsedTime);
+        parcel.writeInt(timeElapsed);
     }
 
     @Exclude
@@ -145,12 +145,12 @@ public class HistoryModel extends AbstractModel {
         this.eventType = eventType;
     }
 
-    public int getElapsedTime() {
-        return elapsedTime;
+    public int getTimeElapsed() {
+        return timeElapsed;
     }
 
-    public void setElapsedTime(int elapsedTime) {
-        this.elapsedTime = elapsedTime;
+    public void setTimeElapsed(int timeElapsed) {
+        this.timeElapsed = timeElapsed;
     }
 
     //                                                                                       HELPERS

@@ -21,8 +21,10 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.glebworx.pomodoro.R;
+import com.glebworx.pomodoro.util.constants.ColorConstants;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.PopupWindowManager;
 
@@ -38,6 +40,10 @@ public interface IChart {
 
     int SIZE_LABEL = 6;
 
+    static void initDataSet(PieDataSet dataSet) {
+        dataSet.setColors(ColorConstants.COLORS);
+    }
+
     static void initDataSet(LineDataSet dataSet, int color) {
         dataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
         dataSet.setDrawFilled(true);
@@ -50,6 +56,7 @@ public interface IChart {
 
     static void initDataSet(BarDataSet dataSet, int color) {
         dataSet.setColor(color);
+
     }
 
     static void initData(LineData data, Context context) {
@@ -93,12 +100,14 @@ public interface IChart {
         legend.setEnabled(true);
         legend.setDrawInside(false);
         legend.setForm(Legend.LegendForm.CIRCLE);
+        //legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         legend.setWordWrapEnabled(true);
         legend.setTextColor(colorGray);
 
         chart.setDrawEntryLabels(false);
-        chart.setUsePercentValues(false);
+        chart.setUsePercentValues(true);
+        //chart.setEntryLabelColor(context.getColor(android.R.color.white));
     }
 
     static void initChart(LineChart chart, boolean isExpanded, boolean showLegend, String descriptionText) {

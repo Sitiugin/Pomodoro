@@ -7,8 +7,11 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.EntryXComparator;
 import com.glebworx.pomodoro.model.HistoryModel;
+import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.ui.fragment.report.interfaces.IChart;
 import com.glebworx.pomodoro.util.constants.ColorConstants;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -151,7 +154,30 @@ public class ChartDataManager {
     }
 
     public static PieData getDistributionData(List<DocumentSnapshot> documentSnapshots) {
-        return new PieData(); // TODO implement
+
+        TaskModel model;
+        List<PieEntry> entries = new ArrayList<>();
+        PieEntry entry;
+        String name;
+
+        for (DocumentSnapshot snapshot : documentSnapshots) {
+
+            model = snapshot.toObject(TaskModel.class);
+            if (model == null) {
+                continue;
+            }
+
+            name = model.getName();
+
+            entry = new PieEntry(model.getTimeElapsed(), name);
+            entries.add(entry);
+
+        }
+
+        PieDataSet dataSet = new PieDataSet(entries, null);
+        IChart.initDataSet(dataSet);
+
+        return new PieData(dataSet);
     }
 
     public static LineData getElapsedTimeData(List<DocumentSnapshot> documentSnapshots) {
@@ -171,7 +197,7 @@ public class ChartDataManager {
                 continue;
             }
 
-            int elapsedTime = model.getElapsedTime();
+            int elapsedTime = model.getTimeElapsed();
             if (elapsedTime == 0) {
                 elapsedTime = POMODORO_LENGTH;
             }

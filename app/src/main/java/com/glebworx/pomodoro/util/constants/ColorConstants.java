@@ -24,6 +24,24 @@ public class ColorConstants {
     public static final String COLOR_ORANGE_HEX = "#FFAB40";
     public static final String COLOR_DEEP_ORANGE_HEX = "#FF6E40";
 
+    public static final int[] COLORS = {
+            ColorConstants.rgb(COLOR_RED_HEX),
+            ColorConstants.rgb(COLOR_PINK_HEX),
+            ColorConstants.rgb(COLOR_PURPLE_HEX),
+            ColorConstants.rgb(COLOR_DEEP_PURPLE_HEX),
+            ColorConstants.rgb(COLOR_INDIGO_HEX),
+            ColorConstants.rgb(COLOR_BLUE_HEX),
+            ColorConstants.rgb(COLOR_LIGHT_BLUE_HEX),
+            ColorConstants.rgb(COLOR_CYAN_HEX),
+            ColorConstants.rgb(COLOR_TEAL_HEX),
+            ColorConstants.rgb(COLOR_GREEN_HEX),
+            ColorConstants.rgb(COLOR_LIGHT_GREEN_HEX),
+            ColorConstants.rgb(COLOR_YELLOW_HEX),
+            ColorConstants.rgb(COLOR_AMBER_HEX),
+            ColorConstants.rgb(COLOR_ORANGE_HEX),
+            ColorConstants.rgb(COLOR_DEEP_ORANGE_HEX)
+    };
+
     private ColorConstants() { }
 
     public static int rgb(String hex) {
