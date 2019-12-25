@@ -77,7 +77,11 @@
         <com.glebworx.pomodoro.ui.fragment.report.view.ReportPomodorosView
             android:id="@+id/view_pomodoros"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:paddingTop="0dp"
+            android:paddingBottom="@dimen/height_app_bar" />
 
         <!--<com.glebworx.pomodoro.ui.fragment.report.view.ReportProjectsView
             android:id="@+id/view_projects"
@@ -87,7 +91,11 @@
         <com.glebworx.pomodoro.ui.fragment.report.view.ReportHistoryView
             android:id="@+id/view_history"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:paddingTop="0dp"
+            android:paddingBottom="@dimen/height_app_bar" />
 
     </androidx.viewpager.widget.ViewPager>
 

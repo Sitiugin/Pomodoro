@@ -13,10 +13,14 @@ public interface IReportPomodorosView {
 
     void onInitWeeklyTrendsChart(BarData barData);
 
+    void onInitElapsedTimeChart(LineData lineData);
+
     void onOverviewDataEmpty();
 
     void onPomodorosCompletedDataEmpty();
 
     void onWeeklyTrendsDataEmpty();
+
+    void onElapsedTimeDataEmpty();
 
 }

@@ -77,9 +77,16 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
                     .observeOn(AndroidSchedulers.mainThread())
                     .unsubscribeOn(Schedulers.io());
 
+            Observable<LineData> elapsedTimeObservable = getElapsedTimeObservable(result);
+            elapsedTimeObservable = elapsedTimeObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .unsubscribeOn(Schedulers.io());
+
             overviewObservable.subscribe(getOverviewObserver());
             pomodorosCompletedObservable.subscribe(getPomodorosCompletedObserver());
             weeklyTrendsObservable.subscribe(getWeeklyTrendsObserver());
+            elapsedTimeObservable.subscribe(getElapsedTimeObserver());
 
         } else {
             presenterListener.onOverviewDataEmpty();
@@ -190,6 +197,45 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
                     presenterListener.onInitWeeklyTrendsChart(barData);
                 } else {
                     presenterListener.onWeeklyTrendsDataEmpty();
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+    }
+
+    private Observable<LineData> getElapsedTimeObservable(QuerySnapshot snapshot) {
+        return Observable.create(emitter -> {
+            if (emitter.isDisposed()) {
+                return;
+            }
+            emitter.onNext(ChartDataManager.getElapsedTimeData(snapshot.getDocuments()));
+            emitter.onComplete();
+
+        });
+    }
+
+    private io.reactivex.Observer<LineData> getElapsedTimeObserver() {
+        return new io.reactivex.Observer<LineData>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                compositeDisposable.add(disposable);
+            }
+
+            @Override
+            public void onNext(LineData lineData) {
+                if (lineData.getEntryCount() > 0) {
+                    presenterListener.onInitElapsedTimeChart(lineData);
+                } else {
+                    presenterListener.onElapsedTimeDataEmpty();
                 }
             }
 
