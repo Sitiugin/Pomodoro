@@ -251,8 +251,10 @@ public class ReportDataManager {
 
         /*HistoryModel model;
         List<PieEntry> entries = new ArrayList<>();
+        Optional<PieEntry> optionalEntry;
         PieEntry entry;
         String name;
+        int timeElapsed;
 
         for (DocumentSnapshot snapshot : documentSnapshots) {
 
@@ -262,16 +264,24 @@ public class ReportDataManager {
             }
 
             name = model.getName();
+            timeElapsed = model.getTimeElapsed();
 
-            entry = new PieEntry(model.getTimeElapsed(), name);
-            entries.add(entry);
+            optionalEntry = getPieEntry(name, entries);
+            if (optionalEntry.isPresent()) {
+                entry = optionalEntry.get();
+                entry.setY(entry.getY() + timeElapsed);
+            } else {
+                entry = new PieEntry(timeElapsed, name);
+                entries.add(entry);
+            }
 
         }
 
         PieDataSet dataSet = new PieDataSet(entries, null);
-        IChart.initDataSet(dataSet);
+        IChart.initDataSet(dataSet);*/
 
-        return new PieData(dataSet);*/
+        //return new PieData(dataSet);
+
         // TODO implement
         return new PieData();
     }
@@ -373,6 +383,12 @@ public class ReportDataManager {
     private static Optional<BarEntry> getBarEntry(float time, List<BarEntry> entries) {
         return entries.stream()
                 .filter(entry -> time == entry.getX())
+                .findAny();
+    }
+
+    private static Optional<PieEntry> getPieEntry(String label, List<PieEntry> entries) {
+        return entries.stream()
+                .filter(entry -> label.equals(entry.getLabel()))
                 .findAny();
     }
 
