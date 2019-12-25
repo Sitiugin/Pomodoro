@@ -97,6 +97,18 @@
                 app:layout_constraintStart_toStartOf="@+id/text_view_elapsed_time"
                 app:layout_constraintTop_toBottomOf="@+id/text_view_elapsed_time" />
 
+            <com.github.ybq.android.spinkit.SpinKitView
+                android:id="@+id/spin_kit_view_overview"
+                style="@style/SpinKitView.Pulse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="@dimen/elevation_fab_high"
+                app:SpinKit_Color="@color/colorHighlight"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -170,6 +182,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_chart"
                 android:animateLayoutChanges="true" />
+
+            <com.github.ybq.android.spinkit.SpinKitView
+                android:id="@+id/spin_kit_view_elapsed_time"
+                style="@style/SpinKitView.Pulse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:elevation="@dimen/elevation_fab_high"
+                app:SpinKit_Color="@color/colorHighlight" />
+
         </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

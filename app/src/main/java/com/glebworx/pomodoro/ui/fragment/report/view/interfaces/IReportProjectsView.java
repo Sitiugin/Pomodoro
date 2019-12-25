@@ -19,4 +19,8 @@ public interface IReportProjectsView {
 
     void onInitElapsedTimeChart(LineData lineData);
 
+    void onOverviewDataEmpty();
+
+    void onElapsedTimeDataEmpty();
+
 }

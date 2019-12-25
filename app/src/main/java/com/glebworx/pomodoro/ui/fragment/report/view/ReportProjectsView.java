@@ -70,6 +70,8 @@ public class ReportProjectsView extends NestedScrollView implements IReportProje
 
     @Override
     public void onChartDataEmpty() {
+        hideOverviewSpinKit();
+        hideElapsedTimeSpinKit();
         String emptyTime = DateTimeManager.formatHHMMString(context, 0);
         String emptyText = context.getString(R.string.core_text_no_data);
         projectsCompletedTextView.setText(emptyTime);
@@ -108,8 +110,29 @@ public class ReportProjectsView extends NestedScrollView implements IReportProje
 
     @Override
     public void onInitElapsedTimeChart(LineData lineData) {
-        elapsedTimeLineChart.setData(lineData);
-        elapsedTimeLineChart.animateY(ANIM_DURATION);
+        hideElapsedTimeSpinKit();
+        IChart.initData(lineData, context);
+        if (lineData.getEntryCount() > 0) {
+            elapsedTimeLineChart.setData(lineData);
+            elapsedTimeLineChart.animateY(ANIM_DURATION);
+        }
+    }
+
+    @Override
+    public void onOverviewDataEmpty() {
+        hideOverviewSpinKit();
+        String emptyTime = DateTimeManager.formatHHMMString(context, 0);
+        String emptyText = context.getString(R.string.core_text_no_data);
+        projectsCompletedTextView.setText(emptyTime);
+        averageCompletionTimeTextView.setText(emptyTime);
+        elapsedTimeTextView.setText(emptyTime);
+    }
+
+    @Override
+    public void onElapsedTimeDataEmpty() {
+        hideElapsedTimeSpinKit();
+        elapsedTimeLineChart.setNoDataText(context.getString(R.string.core_text_no_data));
+        elapsedTimeLineChart.invalidate();
     }
 
     private void init(Context context, AttributeSet attrs, int defStyle) {
@@ -125,6 +148,14 @@ public class ReportProjectsView extends NestedScrollView implements IReportProje
         elapsedTimeLineChart = rootView.findViewById(R.id.line_chart_elapsed_time);
         this.context = context;
         this.presenter = new ReportProjectsViewPresenter(this);
+    }
+
+    private void hideOverviewSpinKit() {
+        rootView.findViewById(R.id.spin_kit_view_overview).setVisibility(GONE);
+    }
+
+    private void hideElapsedTimeSpinKit() {
+        rootView.findViewById(R.id.spin_kit_view_elapsed_time).setVisibility(GONE);
     }
 
 }

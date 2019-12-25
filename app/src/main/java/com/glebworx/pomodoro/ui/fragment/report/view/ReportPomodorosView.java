@@ -28,8 +28,6 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
     private LineChart pomodorosCompletedLineChart;
     private FrameLayout weeklyTrendsLayout;
     private BarChart weeklyTrendsBarChart;
-    private FrameLayout elapsedTimeLayout;
-    private LineChart elapsedTimeLineChart;
 
     private Context context;
     private ReportPomodorosViewPresenter presenter;
@@ -59,7 +57,6 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
     public void onInitView() {
         IChart.initChart(pomodorosCompletedLineChart, false, true, null);
         IChart.initChart(weeklyTrendsBarChart, false, false, null);
-        IChart.initChart(elapsedTimeLineChart, false, true, null);
         OnClickListener onClickListener = view -> {
             switch (view.getId()) {
                 case R.id.layout_pomodoros_completed:
@@ -68,13 +65,10 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
                 case R.id.layout_trends:
                     IChart.expandChart(context, rootView, weeklyTrendsBarChart);
                     break;
-                case R.id.layout_elapsed_time:
-                    IChart.expandChart(context, rootView, elapsedTimeLineChart);
             }
         };
         pomodorosCompletedLayout.setOnClickListener(onClickListener);
         weeklyTrendsLayout.setOnClickListener(onClickListener);
-        elapsedTimeLayout.setOnClickListener(onClickListener);
     }
 
     @Override
@@ -106,16 +100,6 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
     }
 
     @Override
-    public void onInitElapsedTimeChart(LineData lineData) {
-        hideElapsedTimeSpinKit();
-        IChart.initData(lineData, context);
-        if (lineData.getEntryCount() > 0) {
-            elapsedTimeLineChart.setData(lineData);
-            elapsedTimeLineChart.animateY(ANIM_DURATION);
-        }
-    }
-
-    @Override
     public void onOverviewDataEmpty() {
         hideOverviewSpinKit();
         pomodorosCompletedTextView.setText(String.valueOf(0));
@@ -137,13 +121,6 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
         weeklyTrendsBarChart.invalidate();
     }
 
-    @Override
-    public void onElapsedTimeDataEmpty() {
-        hideElapsedTimeSpinKit();
-        elapsedTimeLineChart.setNoDataText(context.getString(R.string.core_text_no_data));
-        elapsedTimeLineChart.invalidate();
-    }
-
     private void init(Context context, AttributeSet attrs, int defStyle) {
         rootView = inflate(context, R.layout.view_report_pomodoros, this);
         pomodorosCompletedTextView = rootView.findViewById(R.id.text_view_pomodoros_completed);
@@ -153,8 +130,6 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
         pomodorosCompletedLineChart = rootView.findViewById(R.id.line_chart_pomodoros_completed);
         weeklyTrendsLayout = rootView.findViewById(R.id.layout_trends);
         weeklyTrendsBarChart = rootView.findViewById(R.id.bar_chart_trends);
-        elapsedTimeLayout = rootView.findViewById(R.id.layout_elapsed_time);
-        elapsedTimeLineChart = rootView.findViewById(R.id.line_chart_elapsed_time);
         this.context = context;
         this.presenter = new ReportPomodorosViewPresenter(this);
     }
@@ -169,10 +144,6 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
 
     private void hideWeeklyTrendsSpinKit() {
         rootView.findViewById(R.id.spin_kit_view_trends).setVisibility(GONE);
-    }
-
-    private void hideElapsedTimeSpinKit() {
-        rootView.findViewById(R.id.spin_kit_view_elapsed_time).setVisibility(GONE);
     }
 
 }

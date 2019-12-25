@@ -80,7 +80,7 @@ public class ReportFragment extends Fragment implements IReportFragment {
 
     private void initTabs() {
         ReportPagerAdapter adapter = new ReportPagerAdapter(context);
-        viewPager.setOffscreenPageLimit(1);
+        viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
     }

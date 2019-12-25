@@ -190,41 +190,6 @@
 
         </FrameLayout>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/text_view_elapsed_time_title"
-            style="@style/TextStyle.Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_content"
-            android:text="@string/report_pomodoros_title_elapsed_time"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_trends" />
-
-        <FrameLayout
-            android:id="@+id/layout_elapsed_time"
-            style="@style/ViewStyle.Rounded.Clickable"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_content"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_elapsed_time_title">
-
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/line_chart_elapsed_time"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/height_chart"
-                android:animateLayoutChanges="true" />
-
-            <com.github.ybq.android.spinkit.SpinKitView
-                android:id="@+id/spin_kit_view_elapsed_time"
-                style="@style/SpinKitView.Pulse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:elevation="@dimen/elevation_fab_high"
-                app:SpinKit_Color="@color/colorHighlight" />
-
-        </FrameLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </merge>
