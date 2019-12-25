@@ -272,9 +272,9 @@
 
     <string name="report_projects_title_overview">Projects Overview</string>
     <string name="report_projects_title_completed">Completed</string>
-    <string name="report_projects_title_elapsed_time">Elapsed</string>
-    <string name="report_projects_title_progress">Progress</string>
+    <string name="report_projects_title_tasks_completed">Tasks Completed</string>
     <string name="report_projects_title_distribution">Projects Distribution</string>
+    <string name="report_projects_title_elapsed_time">Elapsed Time</string>
 
 
     <!--                                                                          REPORT HISTORY -->
