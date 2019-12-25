@@ -13,7 +13,7 @@ import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.ui.fragment.report_project.interfaces.IReportProjectFragment;
 import com.glebworx.pomodoro.ui.fragment.report_project.interfaces.IReportProjectFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.fragment.report_project.interfaces.IReportProjectFragmentPresenter;
-import com.glebworx.pomodoro.util.manager.ChartDataManager;
+import com.glebworx.pomodoro.util.manager.ReportDataManager;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -185,7 +185,7 @@ public class ReportProjectFragmentPresenter implements IReportProjectFragmentPre
             if (emitter.isDisposed()) {
                 return;
             }
-            emitter.onNext(ChartDataManager.getDistributionData(snapshot.getDocuments()));
+            emitter.onNext(ReportDataManager.getDistributionData(snapshot.getDocuments()));
             emitter.onComplete();
 
         });
@@ -224,7 +224,7 @@ public class ReportProjectFragmentPresenter implements IReportProjectFragmentPre
             if (emitter.isDisposed()) {
                 return;
             }
-            emitter.onNext(ChartDataManager.getElapsedTimeData(snapshot.getDocuments()));
+            emitter.onNext(ReportDataManager.getElapsedTimeData(snapshot.getDocuments()));
             emitter.onComplete();
 
         });

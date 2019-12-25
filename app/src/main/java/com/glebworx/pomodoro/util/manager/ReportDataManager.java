@@ -12,13 +12,18 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.EntryXComparator;
 import com.glebworx.pomodoro.model.HistoryModel;
 import com.glebworx.pomodoro.model.TaskModel;
+import com.glebworx.pomodoro.model.report.ReportPomodoroOverviewModel;
 import com.glebworx.pomodoro.ui.fragment.report.interfaces.IChart;
 import com.glebworx.pomodoro.util.constants.ColorConstants;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -31,9 +36,75 @@ import static com.glebworx.pomodoro.util.constants.ColorConstants.COLOR_HIGHLIGH
 import static com.glebworx.pomodoro.util.constants.Constants.RATIO_MS_TO_WEEK;
 import static com.glebworx.pomodoro.util.manager.DateTimeManager.POMODORO_LENGTH;
 
-public class ChartDataManager {
+public class ReportDataManager {
 
-    private ChartDataManager() {
+    private ReportDataManager() {
+
+    }
+
+    public static ReportPomodoroOverviewModel getPomodoroOverviewModel(List<DocumentSnapshot> documentSnapshots) {
+
+        ReportPomodoroOverviewModel overviewModel = new ReportPomodoroOverviewModel();
+
+        overviewModel.setPomodorosCompleted(documentSnapshots.size());
+
+        HistoryModel model;
+        List<Date> dates = new ArrayList<>();
+        Date date;
+        Date minDate = new Date();
+        int totalPomodoros = 0;
+
+        for (DocumentSnapshot snapshot : documentSnapshots) {
+            model = snapshot.toObject(HistoryModel.class); // get model
+            if (model != null && model.getEventType().equals(HistoryModel.EVENT_POMODORO_COMPLETED)) {
+                date = model.getTimestamp();
+                dates.add(date);
+                if (date.compareTo(minDate) < 0) {
+                    minDate = date;
+                }
+                totalPomodoros++;
+            }
+        }
+
+        long daysElapsed = ChronoUnit.DAYS.between(minDate.toInstant(), new Date().toInstant());
+
+        overviewModel.setAveragePerDay(daysElapsed == 0 ? 0 : (float) totalPomodoros / daysElapsed);
+
+        Collections.sort(dates);
+
+        LocalDate current;
+        LocalDate previous = dates
+                .get(dates.size() - 1)
+                .toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+
+        if (!previous.equals(LocalDate.now()) && !previous.equals(LocalDate.now().minusDays(1))) {
+            overviewModel.setStreak(0);
+            return overviewModel;
+        }
+
+        int streak = 1;
+        for (int i = dates.size() - 1; i > 0; i--) {
+            current = previous;
+            previous = dates.get(i - 1)
+                    .toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+            if (previous.equals(current)) {
+                continue;
+            }
+            if (previous.plusDays(1).equals(current)) {
+                streak++;
+            } else {
+                overviewModel.setStreak(streak);
+                return overviewModel;
+            }
+        }
+
+        overviewModel.setStreak(streak);
+
+        return overviewModel;
 
     }
 

@@ -9,7 +9,7 @@ import com.glebworx.pomodoro.model.HistoryModel;
 import com.glebworx.pomodoro.model.report.ReportProjectOverviewModel;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportProjectsView;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportProjectsViewPresenter;
-import com.glebworx.pomodoro.util.manager.ChartDataManager;
+import com.glebworx.pomodoro.util.manager.ReportDataManager;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -128,7 +128,7 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
             if (emitter.isDisposed()) {
                 return;
             }
-            emitter.onNext(ChartDataManager.getElapsedTimeData(snapshot.getDocuments()));
+            emitter.onNext(ReportDataManager.getElapsedTimeData(snapshot.getDocuments()));
             emitter.onComplete();
 
         });
