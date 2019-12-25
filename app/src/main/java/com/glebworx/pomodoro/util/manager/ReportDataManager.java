@@ -247,6 +247,40 @@ public class ReportDataManager {
 
     }
 
+    public static PieData getProjectDistributionData(List<DocumentSnapshot> documentSnapshots) {
+
+        /*HistoryModel model;
+        List<PieEntry> entries = new ArrayList<>();
+        PieEntry entry;
+        String name;
+
+        for (DocumentSnapshot snapshot : documentSnapshots) {
+
+            model = snapshot.toObject(HistoryModel.class);
+            if (model == null) {
+                continue;
+            }
+
+            name = model.getName();
+
+            entry = new PieEntry(model.getTimeElapsed(), name);
+            entries.add(entry);
+
+        }
+
+        PieDataSet dataSet = new PieDataSet(entries, null);
+        IChart.initDataSet(dataSet);
+
+        return new PieData(dataSet);*/
+        // TODO implement
+        return new PieData();
+    }
+
+    public static PieData getProjectsOverdueData(List<DocumentSnapshot> documentSnapshots) {
+        // TODO implement
+        return new PieData();
+    }
+
     public static PieData getDistributionData(List<DocumentSnapshot> documentSnapshots) {
 
         TaskModel model;

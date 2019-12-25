@@ -10,11 +10,9 @@ import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportProjectsV
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportProjectsViewPresenter;
 import com.glebworx.pomodoro.util.manager.ReportDataManager;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.NumberFormat;
-import java.util.List;
 import java.util.Locale;
 
 import io.reactivex.Observable;
@@ -119,7 +117,7 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
             if (emitter.isDisposed()) {
                 return;
             }
-            emitter.onNext(getProjectsDistributionData(snapshot.getDocuments()));
+            emitter.onNext(ReportDataManager.getProjectDistributionData(snapshot.getDocuments()));
             emitter.onComplete();
 
         });
@@ -130,7 +128,7 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
             if (emitter.isDisposed()) {
                 return;
             }
-            emitter.onNext(getProjectsOverdueData(snapshot.getDocuments()));
+            emitter.onNext(ReportDataManager.getProjectsOverdueData(snapshot.getDocuments()));
             emitter.onComplete();
 
         });
@@ -214,7 +212,7 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
                 if (pieData.getEntryCount() > 0) {
                     presenterListener.onInitProjectsOverdueChart(pieData);
                 } else {
-                    presenterListener.onDistributionDataEmpty();
+                    presenterListener.onOverdueDataEmpty();
                 }
             }
 
@@ -257,14 +255,5 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
             }
         };
     }
-
-    private PieData getProjectsDistributionData(List<DocumentSnapshot> documentSnapshots) {
-        return new PieData(); // TODO implement
-    }
-
-    private PieData getProjectsOverdueData(List<DocumentSnapshot> documentSnapshots) {
-        return new PieData(); // TODO implement
-    }
-
 
 }
