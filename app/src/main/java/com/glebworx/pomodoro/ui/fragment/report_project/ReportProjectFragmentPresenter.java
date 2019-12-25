@@ -92,10 +92,6 @@ public class ReportProjectFragmentPresenter implements IReportProjectFragmentPre
 
             distributionObservable.subscribe(getDistributionObserver());
 
-            if (result.isEmpty()) {
-                presenterListener.onDistributionChartDataEmpty();
-            }
-
         } else {
             presenterListener.onDistributionChartDataEmpty();
         }

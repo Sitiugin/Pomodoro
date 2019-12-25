@@ -100,17 +100,24 @@ public class ReportPomodorosView extends NestedScrollView implements IReportPomo
     }
 
     @Override
-    public void onChartDataEmpty() {
+    public void onOverviewDataEmpty() {
         hideOverviewSpinKit();
-        hidePomodorosCompletedSpinKit();
-        hideWeeklyTrendsSpinKit();
-        String emptyText = context.getString(R.string.core_text_no_data);
         pomodorosCompletedTextView.setText(String.valueOf(0));
         averagePerDayTextView.setText(String.valueOf(0));
         streakTextView.setText(String.valueOf(0));
-        pomodorosCompletedLineChart.setNoDataText(emptyText);
+    }
+
+    @Override
+    public void onPomodorosCompletedDataEmpty() {
+        hidePomodorosCompletedSpinKit();
+        pomodorosCompletedLineChart.setNoDataText(context.getString(R.string.core_text_no_data));
         pomodorosCompletedLineChart.invalidate();
-        weeklyTrendsBarChart.setNoDataText(emptyText);
+    }
+
+    @Override
+    public void onWeeklyTrendsDataEmpty() {
+        hideWeeklyTrendsSpinKit();
+        weeklyTrendsBarChart.setNoDataText(context.getString(R.string.core_text_no_data));
         weeklyTrendsBarChart.invalidate();
     }
 

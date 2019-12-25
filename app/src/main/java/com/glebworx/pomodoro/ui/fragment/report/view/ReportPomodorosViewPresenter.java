@@ -81,12 +81,10 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
             pomodorosCompletedObservable.subscribe(getPomodorosCompletedObserver());
             weeklyTrendsObservable.subscribe(getWeeklyTrendsObserver());
 
-            if (result.isEmpty()) {
-                presenterListener.onChartDataEmpty();
-            }
-
         } else {
-            presenterListener.onChartDataEmpty();
+            presenterListener.onOverviewDataEmpty();
+            presenterListener.onPomodorosCompletedDataEmpty();
+            presenterListener.onWeeklyTrendsDataEmpty();
         }
 
     }
@@ -160,7 +158,11 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
 
             @Override
             public void onNext(LineData lineData) {
-                presenterListener.onInitPomodorosCompletedChart(lineData);
+                if (lineData.getEntryCount() > 0) {
+                    presenterListener.onInitPomodorosCompletedChart(lineData);
+                } else {
+                    presenterListener.onPomodorosCompletedDataEmpty();
+                }
             }
 
             @Override
@@ -184,7 +186,11 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
 
             @Override
             public void onNext(BarData barData) {
-                presenterListener.onInitWeeklyTrendsChart(barData);
+                if (barData.getEntryCount() > 0) {
+                    presenterListener.onInitWeeklyTrendsChart(barData);
+                } else {
+                    presenterListener.onWeeklyTrendsDataEmpty();
+                }
             }
 
             @Override
