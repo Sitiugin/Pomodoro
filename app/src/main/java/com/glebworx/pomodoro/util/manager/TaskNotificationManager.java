@@ -108,7 +108,7 @@ public class TaskNotificationManager {
 
     private NotificationCompat.Builder getNotificationBuilder() {
         return new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_timer_gray_small)
+                .setSmallIcon(R.mipmap.ic_notification)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setCategory(NotificationCompat.CATEGORY_PROGRESS)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)

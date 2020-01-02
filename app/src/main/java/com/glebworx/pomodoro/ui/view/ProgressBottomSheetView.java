@@ -26,6 +26,7 @@ import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewInteract
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewPresenter;
 import com.glebworx.pomodoro.util.manager.DateTimeManager;
 import com.glebworx.pomodoro.util.manager.DialogManager;
+import com.glebworx.pomodoro.util.manager.KonfettiManager;
 import com.glebworx.pomodoro.util.manager.NumberPickerManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -39,6 +40,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
+import nl.dionsegijn.konfetti.KonfettiView;
 
 import static com.glebworx.pomodoro.util.constants.Constants.MAX_POMODOROS_SESSION;
 import static com.glebworx.pomodoro.util.manager.DateTimeManager.POMODORO_LENGTH;
@@ -68,6 +70,8 @@ public class ProgressBottomSheetView
     @BindView(R.id.button_complete) AppCompatImageButton completeButton;
     @BindView(R.id.spin_kit_view_large)
     SpinKitView spinKitView;
+    @BindView(R.id.view_konfetti)
+    KonfettiView konfettiView;
 
 
     //                                                                                    ATTRIBUTES
@@ -226,6 +230,7 @@ public class ProgressBottomSheetView
     @Override
     public void onPomodoroCompleted(boolean isSuccessful, int totalSessions, int completedSessions) {
         updatePomodoroCountText(completedSessions, totalSessions);
+        KonfettiManager.buildKonfetti(konfettiView, context);
         Toast.makeText(
                 context,
                 isSuccessful
@@ -482,5 +487,49 @@ public class ProgressBottomSheetView
         Objects.requireNonNull(positiveButton).setOnClickListener(onClickListener);
 
     }
+
+    /*private void showCancelSessionDialog(Activity activity) {
+        AlertDialog alertDialog = DialogManager.buildDialog(
+                activity,
+                R.id.container_main,
+                R.layout.dialog_generic);
+        alertDialog.show();
+        ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_title))).setText(R.string.bottom_sheet_title_cancel_session);
+        ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_description))).setText(R.string.bottom_sheet_text_cancel_session);
+        AppCompatButton positiveButton = alertDialog.findViewById(R.id.button_positive);
+        Objects.requireNonNull(positiveButton).setText(R.string.bottom_sheet_title_cancel_session);
+        View.OnClickListener onClickListener = view -> {
+            if (view.getId() == R.id.button_positive) {
+                closeSession();
+                alertDialog.dismiss();
+            } else if (view.getId() == R.id.button_negative) {
+                alertDialog.dismiss();
+            }
+        };
+        ((AppCompatButton) Objects.requireNonNull(alertDialog.findViewById(R.id.button_negative))).setOnClickListener(onClickListener);
+        positiveButton.setOnClickListener(onClickListener);
+    }
+
+    private void showCompleteTaskDialog(Activity activity) {
+        AlertDialog alertDialog = DialogManager.buildDialog(
+                activity,
+                R.id.container_main,
+                R.layout.dialog_generic);
+        alertDialog.show();
+        ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_title))).setText(R.string.bottom_sheet_title_complete_task);
+        ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_description))).setText(R.string.bottom_sheet_text_complete_task);
+        AppCompatButton positiveButton = alertDialog.findViewById(R.id.button_positive);
+        Objects.requireNonNull(positiveButton).setText(R.string.bottom_sheet_title_complete_task);
+        View.OnClickListener onClickListener = view -> {
+            if (view.getId() == R.id.button_positive) {
+                completeTask();
+                alertDialog.dismiss();
+            } else if (view.getId() == R.id.button_negative) {
+                alertDialog.dismiss();
+            }
+        };
+        ((AppCompatButton) Objects.requireNonNull(alertDialog.findViewById(R.id.button_negative))).setOnClickListener(onClickListener);
+        positiveButton.setOnClickListener(onClickListener);
+    }*/
 
 }

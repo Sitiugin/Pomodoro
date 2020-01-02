@@ -354,7 +354,7 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
                 R.string.projects_title_sign_out,
                 R.string.projects_text_sign_out,
                 R.string.projects_title_sign_out,
-                () -> presenter.signOut(context));
+                () -> fragmentListener.onSignOut());
     }
 
     private int getProjectItemIndex(@NonNull String name) {

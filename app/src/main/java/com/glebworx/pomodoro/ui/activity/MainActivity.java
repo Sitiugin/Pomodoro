@@ -1,11 +1,13 @@
 package com.glebworx.pomodoro.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.NumberPicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -36,6 +38,7 @@ import com.glebworx.pomodoro.ui.fragment.view_tasks.ViewTasksFragment;
 import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragmentInteractionListener;
 import com.glebworx.pomodoro.ui.view.ProgressBottomSheetView;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewInteractionListener;
+import com.glebworx.pomodoro.util.manager.AuthManager;
 import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.NumberPickerManager;
 import com.glebworx.pomodoro.util.manager.TaskNotificationManager;
@@ -201,6 +204,15 @@ public class MainActivity
         fragmentManager.popFromBackStack();
     }
 
+    @Override
+    public void onSignOut() {
+        bottomSheetView.getPresenter().cancelSession(MainActivity.this);
+        AuthManager.getInstance().signOut();
+        Toast.makeText(MainActivity.this, R.string.core_signed_out, Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(MainActivity.this, SplashActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
 
     //                                                                                       HELPERS
 
