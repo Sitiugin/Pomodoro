@@ -1,16 +1,10 @@
 package com.glebworx.pomodoro.ui.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.PowerManager;
-import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatTextView;
 
-import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.ProjectApi;
 import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
@@ -18,7 +12,6 @@ import com.glebworx.pomodoro.model.TaskModel;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetView;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewPresenter;
 import com.glebworx.pomodoro.util.PomodoroTimer;
-import com.glebworx.pomodoro.util.manager.DialogManager;
 import com.glebworx.pomodoro.util.manager.TaskNotificationManager;
 import com.glebworx.pomodoro.util.manager.VibrationManager;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -170,18 +163,44 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     }
 
     @Override
-    public void cancelSession(Activity activity) {
+    public synchronized void closeSession() {
+
         notificationManager.cancelAllNotifications();
-        if (isStatusIdle()) {
-            closeSession();
-        } else {
-            showCancelSessionDialog(activity);
-        }
+
+        releaseWakeLock();
+
+        clearState();
+
+        clearEventListeners();
+
+        totalPomodoroCount = 0;
+        completedPomodoroCount = 0;
+        isResting = false;
+
+        projectModel = null;
+        taskModel = null;
+
+        presenterListener.onHideBottomSheet();
+
     }
 
     @Override
-    public void completeTask(Activity activity) {
-        showCompleteTaskDialog(activity);
+    public synchronized void completeTask() {
+
+        int progressTemp = progress;
+
+        if (taskModel != null) {
+            TaskApi.completeTask(
+                    projectModel,
+                    taskModel,
+                    progressTemp / 4,
+                    task -> presenterListener.onTaskCompleted(task.isSuccessful()));
+        }
+
+        closeSession();
+
+        vibrationManager.vibrateLong();
+
     }
 
     @Override
@@ -323,25 +342,6 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
 
     }
 
-    private synchronized void closeSession() {
-
-        releaseWakeLock();
-
-        clearState();
-
-        clearEventListeners();
-
-        totalPomodoroCount = 0;
-        completedPomodoroCount = 0;
-        isResting = false;
-
-        projectModel = null;
-        taskModel = null;
-
-        presenterListener.onHideBottomSheet();
-
-    }
-
     private void clearEventListeners() {
         if (taskEventListenerRegistration != null) {
             taskEventListenerRegistration.remove();
@@ -351,24 +351,6 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
             projectEventListenerRegistration.remove();
             projectEventListenerRegistration = null;
         }
-    }
-
-    private synchronized void completeTask() {
-
-        int progressTemp = progress;
-
-        if (taskModel != null) {
-            TaskApi.completeTask(
-                    projectModel,
-                    taskModel,
-                    progressTemp / 4,
-                    task -> presenterListener.onTaskCompleted(task.isSuccessful()));
-        }
-
-        closeSession();
-
-        vibrationManager.vibrateLong();
-
     }
 
     private Observable<DocumentSnapshot> getTaskEventObservable() {
@@ -509,50 +491,6 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
                 }
             }
         }
-    }
-
-    private void showCancelSessionDialog(Activity activity) {
-        AlertDialog alertDialog = DialogManager.buildDialog(
-                activity,
-                R.id.container_main,
-                R.layout.dialog_generic);
-        alertDialog.show();
-        ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_title))).setText(R.string.bottom_sheet_title_cancel_session);
-        ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_description))).setText(R.string.bottom_sheet_text_cancel_session);
-        AppCompatButton positiveButton = alertDialog.findViewById(R.id.button_positive);
-        Objects.requireNonNull(positiveButton).setText(R.string.bottom_sheet_title_cancel_session);
-        View.OnClickListener onClickListener = view -> {
-            if (view.getId() == R.id.button_positive) {
-                closeSession();
-                alertDialog.dismiss();
-            } else if (view.getId() == R.id.button_negative) {
-                alertDialog.dismiss();
-            }
-        };
-        ((AppCompatButton) Objects.requireNonNull(alertDialog.findViewById(R.id.button_negative))).setOnClickListener(onClickListener);
-        positiveButton.setOnClickListener(onClickListener);
-    }
-
-    private void showCompleteTaskDialog(Activity activity) {
-        AlertDialog alertDialog = DialogManager.buildDialog(
-                activity,
-                R.id.container_main,
-                R.layout.dialog_generic);
-        alertDialog.show();
-        ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_title))).setText(R.string.bottom_sheet_title_complete_task);
-        ((AppCompatTextView) Objects.requireNonNull(alertDialog.findViewById(R.id.text_view_description))).setText(R.string.bottom_sheet_text_complete_task);
-        AppCompatButton positiveButton = alertDialog.findViewById(R.id.button_positive);
-        Objects.requireNonNull(positiveButton).setText(R.string.bottom_sheet_title_complete_task);
-        View.OnClickListener onClickListener = view -> {
-            if (view.getId() == R.id.button_positive) {
-                completeTask();
-                alertDialog.dismiss();
-            } else if (view.getId() == R.id.button_negative) {
-                alertDialog.dismiss();
-            }
-        };
-        ((AppCompatButton) Objects.requireNonNull(alertDialog.findViewById(R.id.button_negative))).setOnClickListener(onClickListener);
-        positiveButton.setOnClickListener(onClickListener);
     }
 
 }

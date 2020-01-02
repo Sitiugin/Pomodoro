@@ -20,7 +20,6 @@ import androidx.transition.TransitionManager;
 
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.glebworx.pomodoro.R;
-import com.glebworx.pomodoro.ui.activity.MainActivity;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetView;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewInteractionListener;
 import com.glebworx.pomodoro.ui.view.interfaces.IProgressBottomSheetViewPresenter;
@@ -149,10 +148,14 @@ public class ProgressBottomSheetView
                 presenter.handleStartStopSkipClick();
                 break;
             case R.id.button_cancel:
-                presenter.cancelSession((MainActivity) context);
+                if (presenter.isStatusIdle()) {
+                    presenter.closeSession();
+                } else {
+                    showCancelSessionDialog();
+                }
                 break;
             case R.id.button_complete:
-                presenter.completeTask((MainActivity) context);
+                showCompleteTaskDialog();
                 break;
             case R.id.button_sessions_remaining:
                 showSessionCountDialog();
@@ -488,9 +491,9 @@ public class ProgressBottomSheetView
 
     }
 
-    /*private void showCancelSessionDialog(Activity activity) {
+    private void showCancelSessionDialog() {
         AlertDialog alertDialog = DialogManager.buildDialog(
-                activity,
+                (Activity) context,
                 R.id.container_main,
                 R.layout.dialog_generic);
         alertDialog.show();
@@ -500,7 +503,7 @@ public class ProgressBottomSheetView
         Objects.requireNonNull(positiveButton).setText(R.string.bottom_sheet_title_cancel_session);
         View.OnClickListener onClickListener = view -> {
             if (view.getId() == R.id.button_positive) {
-                closeSession();
+                presenter.closeSession();
                 alertDialog.dismiss();
             } else if (view.getId() == R.id.button_negative) {
                 alertDialog.dismiss();
@@ -510,9 +513,9 @@ public class ProgressBottomSheetView
         positiveButton.setOnClickListener(onClickListener);
     }
 
-    private void showCompleteTaskDialog(Activity activity) {
+    private void showCompleteTaskDialog() {
         AlertDialog alertDialog = DialogManager.buildDialog(
-                activity,
+                (Activity) context,
                 R.id.container_main,
                 R.layout.dialog_generic);
         alertDialog.show();
@@ -522,7 +525,7 @@ public class ProgressBottomSheetView
         Objects.requireNonNull(positiveButton).setText(R.string.bottom_sheet_title_complete_task);
         View.OnClickListener onClickListener = view -> {
             if (view.getId() == R.id.button_positive) {
-                completeTask();
+                presenter.completeTask();
                 alertDialog.dismiss();
             } else if (view.getId() == R.id.button_negative) {
                 alertDialog.dismiss();
@@ -530,6 +533,6 @@ public class ProgressBottomSheetView
         };
         ((AppCompatButton) Objects.requireNonNull(alertDialog.findViewById(R.id.button_negative))).setOnClickListener(onClickListener);
         positiveButton.setOnClickListener(onClickListener);
-    }*/
+    }
 
 }

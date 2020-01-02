@@ -1,6 +1,5 @@
 package com.glebworx.pomodoro.ui.view.interfaces;
 
-import android.app.Activity;
 import android.content.Context;
 
 import com.glebworx.pomodoro.model.ProjectModel;
@@ -18,9 +17,9 @@ public interface IProgressBottomSheetViewPresenter {
 
     void handleStartStopSkipClick();
 
-    void cancelSession(Activity activity);
+    void closeSession();
 
-    void completeTask(Activity activity);
+    void completeTask();
 
     boolean isStatusIdle();
 

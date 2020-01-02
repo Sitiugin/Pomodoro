@@ -206,7 +206,7 @@ public class MainActivity
 
     @Override
     public void onSignOut() {
-        bottomSheetView.getPresenter().cancelSession(MainActivity.this);
+        bottomSheetView.getPresenter().closeSession();
         AuthManager.getInstance().signOut();
         Toast.makeText(MainActivity.this, R.string.core_signed_out, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(MainActivity.this, SplashActivity.class);
