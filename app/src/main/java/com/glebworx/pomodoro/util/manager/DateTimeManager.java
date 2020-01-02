@@ -159,7 +159,7 @@ public class DateTimeManager {
     }
 
     public static String formatMMSSString(Context context, int seconds) {
-        return String.format(Locale.getDefault(), "%d:%01d", seconds / 60, seconds % 60);
+        return String.format(Locale.getDefault(), "%d:%02d", seconds / 60, seconds % 60);
     }
 
 }
