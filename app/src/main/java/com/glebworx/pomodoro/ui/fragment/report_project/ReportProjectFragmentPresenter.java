@@ -50,6 +50,7 @@ public class ReportProjectFragmentPresenter implements IReportProjectFragmentPre
 
     @Override
     public void init(Bundle arguments) {
+
         projectModel = Objects.requireNonNull(arguments.getParcelable(ARG_PROJECT_MODEL));
         compositeDisposable = new CompositeDisposable();
 
@@ -72,6 +73,7 @@ public class ReportProjectFragmentPresenter implements IReportProjectFragmentPre
                 projectModel.getEstimatedTime(),
                 projectModel.getElapsedTime(),
                 projectModel.getProgress());
+
     }
 
     @Override
@@ -88,9 +90,18 @@ public class ReportProjectFragmentPresenter implements IReportProjectFragmentPre
             Observable<PieData> distributionObservable = getDistributionObservable(result);
             distributionObservable = distributionObservable
                     .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread());
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .unsubscribeOn(Schedulers.io());
 
             distributionObservable.subscribe(getDistributionObserver());
+
+            Observable<PieData> overdueObservable = getOverdueObservable(result);
+            overdueObservable = overdueObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .unsubscribeOn(Schedulers.io());
+
+            overdueObservable.subscribe(getOverdueObserver());
 
         } else {
             presenterListener.onDistributionChartDataEmpty();
@@ -204,6 +215,45 @@ public class ReportProjectFragmentPresenter implements IReportProjectFragmentPre
                     presenterListener.onInitDistributionChart(pieData);
                 } else {
                     presenterListener.onDistributionChartDataEmpty();
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+    }
+
+    private Observable<PieData> getOverdueObservable(QuerySnapshot snapshot) {
+        return Observable.create(emitter -> {
+            if (emitter.isDisposed()) {
+                return;
+            }
+            emitter.onNext(ReportDataManager.getOverdueData(snapshot.getDocuments()));
+            emitter.onComplete();
+
+        });
+    }
+
+    private io.reactivex.Observer<PieData> getOverdueObserver() {
+        return new io.reactivex.Observer<PieData>() {
+            @Override
+            public void onSubscribe(Disposable disposable) {
+                compositeDisposable.add(disposable);
+            }
+
+            @Override
+            public void onNext(PieData pieData) {
+                if (pieData.getEntryCount() > 0) {
+                    presenterListener.onInitOverdueChart(pieData);
+                } else {
+                    presenterListener.onOverdueChartDataEmpty();
                 }
             }
 

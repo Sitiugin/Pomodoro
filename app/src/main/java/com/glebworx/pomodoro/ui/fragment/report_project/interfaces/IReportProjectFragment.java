@@ -14,9 +14,13 @@ public interface IReportProjectFragment {
 
     void onInitDistributionChart(PieData pieData);
 
+    void onInitOverdueChart(PieData pieData);
+
     void onInitElapsedTimeChart(LineData lineData);
 
     void onDistributionChartDataEmpty();
+
+    void onOverdueChartDataEmpty();
 
     void onElapsedChartDataEmpty();
 

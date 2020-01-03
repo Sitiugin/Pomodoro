@@ -43,6 +43,7 @@ public class ReportProjectFragment extends Fragment implements IReportProjectFra
 
     static final String ARG_PROJECT_MODEL = "project_model";
 
+
     //                                                                                      BINDINGS
 
     @BindView(R.id.text_view_title)
@@ -57,6 +58,8 @@ public class ReportProjectFragment extends Fragment implements IReportProjectFra
     AppCompatTextView progressTextView;
     @BindView(R.id.pie_chart_distribution)
     PieChart distributionPieChart;
+    @BindView(R.id.pie_chart_overdue)
+    PieChart overduePieChart;
     @BindView(R.id.layout_elapsed_time)
     FrameLayout elapsedTimeLayout;
     @BindView(R.id.line_chart_elapsed_time)
@@ -70,6 +73,7 @@ public class ReportProjectFragment extends Fragment implements IReportProjectFra
     private IReportProjectFragmentInteractionListener fragmentListener;
     private Unbinder unbinder;
     private ReportProjectFragmentPresenter presenter;
+
 
     //                                                                                  CONSTRUCTORS
 
@@ -138,6 +142,7 @@ public class ReportProjectFragment extends Fragment implements IReportProjectFra
         titleTextView.setText(projectName);
         onSummaryChanged(estimatedTime, elapsedTime, progress);
         IChart.initChart(distributionPieChart);
+        IChart.initChart(overduePieChart);
         IChart.initChart(elapsedTimeLineChart, false, false, null);
         initClickEvents();
     }
@@ -165,6 +170,14 @@ public class ReportProjectFragment extends Fragment implements IReportProjectFra
     }
 
     @Override
+    public void onInitOverdueChart(PieData pieData) {
+        hideOverdueSpinKit();
+        pieData.getDataSet().setValueTextColor(context.getColor(android.R.color.white));
+        overduePieChart.setData(pieData);
+        overduePieChart.animateY(ANIM_DURATION);
+    }
+
+    @Override
     public void onDistributionChartDataEmpty() {
         hideDistributionSpinKit();
         String emptyText = context.getString(R.string.core_text_no_data);
@@ -181,11 +194,23 @@ public class ReportProjectFragment extends Fragment implements IReportProjectFra
         elapsedTimeLineChart.invalidate();
     }
 
+    @Override
+    public void onOverdueChartDataEmpty() {
+        hideOverdueSpinKit();
+        String emptyText = context.getString(R.string.core_text_no_data);
+        overduePieChart.setNoDataText(emptyText);
+        overduePieChart.invalidate();
+    }
+
 
     //                                                                                       HELPERS
 
     private void hideDistributionSpinKit() {
         rootView.findViewById(R.id.spin_kit_view_distribution).setVisibility(View.GONE);
+    }
+
+    private void hideOverdueSpinKit() {
+        rootView.findViewById(R.id.spin_kit_view_overdue).setVisibility(View.GONE);
     }
 
     private void hideElapsedTimeSpinKit() {

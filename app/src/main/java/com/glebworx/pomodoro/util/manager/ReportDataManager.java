@@ -318,6 +318,33 @@ public class ReportDataManager {
         return new PieData(dataSet);
     }
 
+    public static PieData getOverdueData(List<DocumentSnapshot> documentSnapshots) { // TODO implement
+
+        TaskModel model;
+        List<PieEntry> entries = new ArrayList<>();
+        PieEntry entry;
+        String name;
+
+        for (DocumentSnapshot snapshot : documentSnapshots) {
+
+            model = snapshot.toObject(TaskModel.class);
+            if (model == null) {
+                continue;
+            }
+
+            name = model.getName();
+
+            entry = new PieEntry(model.getTimeElapsed(), name);
+            entries.add(entry);
+
+        }
+
+        PieDataSet dataSet = new PieDataSet(entries, null);
+        IChart.initDataSet(dataSet);
+
+        return new PieData(dataSet);
+    }
+
     public static LineData getElapsedTimeData(List<DocumentSnapshot> documentSnapshots) {
 
         HistoryModel model;

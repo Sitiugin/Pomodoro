@@ -265,7 +265,7 @@ public class MainActivity
         AppCompatButton positiveButton = alertDialog.findViewById(R.id.button_positive);
 
         boolean isReplace = bottomSheetView.getPresenter().hasTask();
-        int pomodoroCount = 1;
+        int pomodoroCount;
 
         if (isReplace) {
 
