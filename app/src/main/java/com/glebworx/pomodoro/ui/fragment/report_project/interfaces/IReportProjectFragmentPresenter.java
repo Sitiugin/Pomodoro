@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 public interface IReportProjectFragmentPresenter {
 
-    void init(Bundle arguments);
+    void init(Bundle arguments, String onTimeLabel, String overdueLabel);
 
     void destroy();
 }

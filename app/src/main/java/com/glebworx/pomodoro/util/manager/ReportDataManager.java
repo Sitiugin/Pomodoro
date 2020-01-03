@@ -316,14 +316,17 @@ public class ReportDataManager {
         IChart.initDataSet(dataSet);
 
         return new PieData(dataSet);
+
     }
 
-    public static PieData getOverdueData(List<DocumentSnapshot> documentSnapshots) { // TODO implement
+    public static PieData getOverdueData(List<DocumentSnapshot> documentSnapshots,
+                                         String onTimeLabel,
+                                         String overdueLabel) {
 
         TaskModel model;
         List<PieEntry> entries = new ArrayList<>();
-        PieEntry entry;
-        String name;
+        int onTime = 0;
+        int overdue = 0;
 
         for (DocumentSnapshot snapshot : documentSnapshots) {
 
@@ -332,17 +335,22 @@ public class ReportDataManager {
                 continue;
             }
 
-            name = model.getName();
-
-            entry = new PieEntry(model.getTimeElapsed(), name);
-            entries.add(entry);
+            if (model.isOverdue()) {
+                overdue++;
+            } else {
+                onTime++;
+            }
 
         }
 
+        entries.add(new PieEntry(onTime, onTimeLabel));
+        entries.add(new PieEntry(overdue, overdueLabel));
+
         PieDataSet dataSet = new PieDataSet(entries, null);
-        IChart.initDataSet(dataSet);
+        IChart.initTwoColorDataSet(dataSet);
 
         return new PieData(dataSet);
+
     }
 
     public static LineData getElapsedTimeData(List<DocumentSnapshot> documentSnapshots) {

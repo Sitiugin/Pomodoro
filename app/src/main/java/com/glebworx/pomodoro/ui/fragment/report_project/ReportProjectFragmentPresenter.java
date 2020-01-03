@@ -42,14 +42,16 @@ public class ReportProjectFragmentPresenter implements IReportProjectFragmentPre
 
     ReportProjectFragmentPresenter(@NonNull IReportProjectFragment presenterListener,
                                    @NonNull IReportProjectFragmentInteractionListener interactionListener,
-                                   @NonNull Bundle arguments) {
+                                   @NonNull Bundle arguments,
+                                   @NonNull String onTimeLabel,
+                                   @NonNull String overdueLabel) {
         this.presenterListener = presenterListener;
         this.interactionListener = interactionListener;
-        init(arguments);
+        init(arguments, onTimeLabel, overdueLabel);
     }
 
     @Override
-    public void init(Bundle arguments) {
+    public void init(Bundle arguments, String onTimeLabel, String overdueLabel) {
 
         projectModel = Objects.requireNonNull(arguments.getParcelable(ARG_PROJECT_MODEL));
         compositeDisposable = new CompositeDisposable();
@@ -64,7 +66,7 @@ public class ReportProjectFragmentPresenter implements IReportProjectFragmentPre
 
         projectObservable.subscribe(getProjectObserver());
 
-        TaskApi.getTasks(projectName, this::handleTasks);
+        TaskApi.getTasks(projectName, task -> handleTasks(task, onTimeLabel, overdueLabel));
 
         HistoryApi.getProjectCompletionHistory(projectName, this::handleHistory);
 
@@ -81,7 +83,7 @@ public class ReportProjectFragmentPresenter implements IReportProjectFragmentPre
         compositeDisposable.clear();
     }
 
-    private void handleTasks(Task<QuerySnapshot> task) {
+    private void handleTasks(Task<QuerySnapshot> task, String onTimeLabel, String overdueLabel) {
 
         QuerySnapshot result = task.getResult();
 
@@ -95,7 +97,7 @@ public class ReportProjectFragmentPresenter implements IReportProjectFragmentPre
 
             distributionObservable.subscribe(getDistributionObserver());
 
-            Observable<PieData> overdueObservable = getOverdueObservable(result);
+            Observable<PieData> overdueObservable = getOverdueObservable(result, onTimeLabel, overdueLabel);
             overdueObservable = overdueObservable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -230,12 +232,17 @@ public class ReportProjectFragmentPresenter implements IReportProjectFragmentPre
         };
     }
 
-    private Observable<PieData> getOverdueObservable(QuerySnapshot snapshot) {
+    private Observable<PieData> getOverdueObservable(QuerySnapshot snapshot,
+                                                     String onTimeLabel,
+                                                     String overdueLabel) {
         return Observable.create(emitter -> {
             if (emitter.isDisposed()) {
                 return;
             }
-            emitter.onNext(ReportDataManager.getOverdueData(snapshot.getDocuments()));
+            emitter.onNext(ReportDataManager.getOverdueData(
+                    snapshot.getDocuments(),
+                    onTimeLabel,
+                    overdueLabel));
             emitter.onComplete();
 
         });

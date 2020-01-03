@@ -228,6 +228,8 @@
     <string name="report_project_title_progress">Progress</string>
     <string name="report_project_title_distribution">Task Distribution</string>
     <string name="report_project_title_elapsed_time">Elapsed Time</string>
+    <string name="report_project_title_on_time">On Time</string>
+    <string name="report_project_title_overdue">Pverdue</string>
 
 
     <!--                                                                              VIEW TASKS -->

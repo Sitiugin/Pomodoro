@@ -155,6 +155,10 @@ public class TaskModel extends AbstractModel {
         this.dueDate = dueDate;
     }
 
+    public boolean isOverdue() {
+        return new Date().compareTo(dueDate) > 0;
+    }
+
     public boolean isCompleted() {
         return completed;
     }

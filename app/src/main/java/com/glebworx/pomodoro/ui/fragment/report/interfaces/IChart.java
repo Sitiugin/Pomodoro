@@ -44,6 +44,10 @@ public interface IChart {
         dataSet.setColors(ColorConstants.COLORS);
     }
 
+    static void initTwoColorDataSet(PieDataSet dataSet) {
+        dataSet.setColors(ColorConstants.OK_ERROR_COLORS);
+    }
+
     static void initDataSet(LineDataSet dataSet, int color) {
         dataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
         dataSet.setDrawFilled(true);

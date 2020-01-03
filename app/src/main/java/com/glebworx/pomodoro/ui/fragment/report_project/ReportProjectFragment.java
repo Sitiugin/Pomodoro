@@ -108,7 +108,9 @@ public class ReportProjectFragment extends Fragment implements IReportProjectFra
         presenter = new ReportProjectFragmentPresenter(
                 this,
                 fragmentListener,
-                Objects.requireNonNull(getArguments()));
+                Objects.requireNonNull(getArguments()),
+                context.getString(R.string.report_project_title_on_time),
+                context.getString(R.string.report_project_title_overdue));
         return rootView;
     }
 

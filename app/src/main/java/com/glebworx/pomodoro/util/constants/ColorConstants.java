@@ -42,6 +42,11 @@ public class ColorConstants {
             ColorConstants.rgb(COLOR_DEEP_ORANGE_HEX)
     };
 
+    public static final int[] OK_ERROR_COLORS = {
+            ColorConstants.rgb(COLOR_HIGHLIGHT_HEX),
+            ColorConstants.rgb(COLOR_RED_HEX)
+    };
+
     private ColorConstants() { }
 
     public static int rgb(String hex) {
