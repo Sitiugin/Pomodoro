@@ -214,7 +214,7 @@ public class MainActivity
         startActivity(intent);
     }
 
-    
+
     //                                                                                       HELPERS
 
     private void initBottomSheet() {
@@ -256,11 +256,16 @@ public class MainActivity
         alertDialog.show();
 
         NumberPicker picker = alertDialog.findViewById(R.id.number_picker);
-        NumberPickerManager.initPicker(MainActivity.this, Objects.requireNonNull(picker), 1, MAX_POMODOROS_SESSION);
+        NumberPickerManager.initPicker(
+                MainActivity.this,
+                Objects.requireNonNull(picker),
+                1,
+                MAX_POMODOROS_SESSION);
 
         AppCompatButton positiveButton = alertDialog.findViewById(R.id.button_positive);
 
         boolean isReplace = bottomSheetView.getPresenter().hasTask();
+        int pomodoroCount = 1;
 
         if (isReplace) {
 
@@ -271,13 +276,7 @@ public class MainActivity
             ((AppCompatTextView) Objects.requireNonNull(
                     alertDialog.findViewById(R.id.text_view_description))).setText(description);
             Objects.requireNonNull(positiveButton).setText(R.string.main_title_replace_task);
-            int pomodoroCount = bottomSheetView.getPresenter().getRemainingPomodoroCount();
-            if (pomodoroCount < 1) {
-                pomodoroCount = 1;
-            } else if (pomodoroCount > MAX_POMODOROS_SESSION) {
-                pomodoroCount = MAX_POMODOROS_SESSION;
-            }
-            picker.setValue(pomodoroCount);
+            pomodoroCount = bottomSheetView.getPresenter().getRemainingPomodoroCount();
 
         } else {
 
@@ -285,8 +284,16 @@ public class MainActivity
                     getString(R.string.main_text_set_task, taskModel.getName()), 0);
             ((AppCompatTextView) Objects.requireNonNull(
                     alertDialog.findViewById(R.id.text_view_description))).setText(description);
+            pomodoroCount = taskModel.getPomodorosAllocated();
 
         }
+
+        if (pomodoroCount < 1) {
+            pomodoroCount = 1;
+        } else if (pomodoroCount > MAX_POMODOROS_SESSION) {
+            pomodoroCount = MAX_POMODOROS_SESSION;
+        }
+        picker.setValue(pomodoroCount);
 
         View.OnClickListener onClickListener = view -> {
             if (view.getId() == R.id.button_positive) {
