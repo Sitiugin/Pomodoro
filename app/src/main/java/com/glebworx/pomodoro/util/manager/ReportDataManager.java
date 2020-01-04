@@ -247,14 +247,20 @@ public class ReportDataManager {
 
     }
 
-    public static PieData getProjectDistributionData(List<DocumentSnapshot> documentSnapshots) {
+    public static PieData getProjectDistributionData(List<DocumentSnapshot> documentSnapshots, String[] labels) {
 
-        /*HistoryModel model;
+        HistoryModel model;
         List<PieEntry> entries = new ArrayList<>();
         Optional<PieEntry> optionalEntry;
         PieEntry entry;
         String name;
         int timeElapsed;
+
+        PieEntry zeroToTenEntry;
+        PieEntry elevenToTwentyFiveEntry;
+        PieEntry twentySixToFiftyEntry;
+        PieEntry fiftyOneToHundredEntry;
+        PieEntry hundredOneOrMoreEntry;
 
         for (DocumentSnapshot snapshot : documentSnapshots) {
 
@@ -278,7 +284,7 @@ public class ReportDataManager {
         }
 
         PieDataSet dataSet = new PieDataSet(entries, null);
-        IChart.initDataSet(dataSet);*/
+        IChart.initDataSet(dataSet);
 
         //return new PieData(dataSet);
 

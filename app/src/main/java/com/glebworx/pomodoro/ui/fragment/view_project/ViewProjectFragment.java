@@ -214,7 +214,6 @@ public class ViewProjectFragment extends Fragment implements IViewProjectFragmen
         if (isSuccessful) {
             Toast.makeText(context, R.string.view_project_toast_task_delete_success, Toast.LENGTH_SHORT).show();
         } else {
-            fastAdapter.notifyAdapterItemChanged(position);
             Toast.makeText(context, R.string.view_project_toast_task_delete_failed, Toast.LENGTH_LONG).show();
         }
     }

@@ -185,7 +185,6 @@ public class ProjectsFragment extends Fragment implements IProjectsFragment {
 
     @Override
     public synchronized void onDeleteProjectFailed(int position) {
-        fastAdapter.notifyAdapterItemChanged(position);
         Toast.makeText(context, R.string.projects_toast_project_delete_failed, LENGTH_LONG).show();
     }
 

@@ -143,7 +143,8 @@ public class ReportProjectsView extends NestedScrollView implements IReportProje
         elapsedTimeLayout = rootView.findViewById(R.id.layout_elapsed_time);
         elapsedTimeLineChart = rootView.findViewById(R.id.line_chart_elapsed_time);
         this.context = context;
-        this.presenter = new ReportProjectsViewPresenter(this);
+        String[] labels = context.getResources().getStringArray(R.array.report_projects_array_duration_types);
+        this.presenter = new ReportProjectsViewPresenter(this, labels);
     }
 
     private void hideOverviewSpinKit() {

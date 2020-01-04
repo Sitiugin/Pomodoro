@@ -292,7 +292,9 @@ public class ProgressBottomSheetView
 
     @Override
     public void onHideBottomSheet() {
-        bottomSheetListener.onHideBottomSheet();
+        if (bottomSheetListener != null) {
+            bottomSheetListener.onHideBottomSheet();
+        }
     }
 
     @Override

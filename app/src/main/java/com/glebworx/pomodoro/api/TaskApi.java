@@ -173,6 +173,12 @@ public class TaskApi extends BaseApi {
                 .addOnCompleteListener(onCompleteListener);
     }
 
+    public static void getTasks(@NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
+        getCollectionGroup(COLLECTION_TASKS)
+                .get()
+                .addOnCompleteListener(onCompleteListener);
+    }
+
     public static void getTodayTasks(@NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
         ZonedDateTime todayDateTime = LocalDate.now().atStartOfDay(ZoneId.systemDefault());
         getCollectionGroup(COLLECTION_TASKS)

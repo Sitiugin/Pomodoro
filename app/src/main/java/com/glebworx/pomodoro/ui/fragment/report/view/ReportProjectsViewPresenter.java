@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.PieData;
 import com.glebworx.pomodoro.api.HistoryApi;
+import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.report.ReportProjectOverviewModel;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportProjectsView;
 import com.glebworx.pomodoro.ui.fragment.report.view.interfaces.IReportProjectsViewPresenter;
@@ -27,16 +28,16 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
     IReportProjectsView presenterListener;
     private CompositeDisposable compositeDisposable;
 
-    ReportProjectsViewPresenter(@NonNull IReportProjectsView presenterListener) {
+    ReportProjectsViewPresenter(@NonNull IReportProjectsView presenterListener, @NonNull String[] labels) {
         this.presenterListener = presenterListener;
-        init();
+        init(labels);
     }
 
     @Override
-    public void init() {
+    public void init(String[] labels) {
         presenterListener.onInitView();
         compositeDisposable = new CompositeDisposable();
-        HistoryApi.getPomodoroCompletionHistory(this::handlePomodoroCompletionHistory); // TODO monitor elapsed time, model should have project name
+        TaskApi.getTasks(task -> handleTasks(task, labels));
         HistoryApi.getProjectTaskCompletionHistory(this::handleProjectTaskCompletionHistory);
     }
 
@@ -45,13 +46,13 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
         compositeDisposable.clear();
     }
 
-    private void handlePomodoroCompletionHistory(Task<QuerySnapshot> task) {
+    private void handleTasks(Task<QuerySnapshot> task, String[] labels) {
 
         QuerySnapshot result = task.getResult();
 
         if (task.isSuccessful() && result != null) {
 
-            Observable<PieData> projectsDistributionObservable = getProjectsDistributionObservable(result);
+            Observable<PieData> projectsDistributionObservable = getProjectsDistributionObservable(result, labels);
             projectsDistributionObservable = projectsDistributionObservable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -112,12 +113,12 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
         });
     }
 
-    private Observable<PieData> getProjectsDistributionObservable(QuerySnapshot snapshot) {
+    private Observable<PieData> getProjectsDistributionObservable(QuerySnapshot snapshot, String[] labels) {
         return Observable.create(emitter -> {
             if (emitter.isDisposed()) {
                 return;
             }
-            emitter.onNext(ReportDataManager.getProjectDistributionData(snapshot.getDocuments()));
+            emitter.onNext(ReportDataManager.getProjectDistributionData(snapshot.getDocuments(), labels));
             emitter.onComplete();
 
         });
