@@ -28,16 +28,18 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
     IReportProjectsView presenterListener;
     private CompositeDisposable compositeDisposable;
 
-    ReportProjectsViewPresenter(@NonNull IReportProjectsView presenterListener, @NonNull String[] labels) {
+    ReportProjectsViewPresenter(@NonNull IReportProjectsView presenterListener,
+                                @NonNull String[] distributionLabels,
+                                @NonNull String[] overdueLabels) {
         this.presenterListener = presenterListener;
-        init(labels);
+        init(distributionLabels, overdueLabels);
     }
 
     @Override
-    public void init(String[] labels) {
+    public void init(String[] distributionLabels, String[] overdueLabels) {
         presenterListener.onInitView();
         compositeDisposable = new CompositeDisposable();
-        TaskApi.getTasks(task -> handleTasks(task, labels));
+        TaskApi.getTasks(task -> handleTasks(task, distributionLabels, overdueLabels));
         HistoryApi.getProjectTaskCompletionHistory(this::handleProjectTaskCompletionHistory);
     }
 
@@ -46,19 +48,19 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
         compositeDisposable.clear();
     }
 
-    private void handleTasks(Task<QuerySnapshot> task, String[] labels) {
+    private void handleTasks(Task<QuerySnapshot> task, String[] distributionLabels, String[] overdueLabels) {
 
         QuerySnapshot result = task.getResult();
 
         if (task.isSuccessful() && result != null) {
 
-            Observable<PieData> projectsDistributionObservable = getProjectsDistributionObservable(result, labels);
+            Observable<PieData> projectsDistributionObservable = getProjectsDistributionObservable(result, distributionLabels);
             projectsDistributionObservable = projectsDistributionObservable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .unsubscribeOn(Schedulers.io());
 
-            Observable<PieData> overdueObservable = getProjectsOverdueObservable(result);
+            Observable<PieData> overdueObservable = getProjectsOverdueObservable(result, overdueLabels);
             overdueObservable = overdueObservable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -124,12 +126,12 @@ public class ReportProjectsViewPresenter implements IReportProjectsViewPresenter
         });
     }
 
-    private Observable<PieData> getProjectsOverdueObservable(QuerySnapshot snapshot) {
+    private Observable<PieData> getProjectsOverdueObservable(QuerySnapshot snapshot, String[] labels) {
         return Observable.create(emitter -> {
             if (emitter.isDisposed()) {
                 return;
             }
-            emitter.onNext(ReportDataManager.getProjectsOverdueData(snapshot.getDocuments()));
+            emitter.onNext(ReportDataManager.getProjectsOverdueData(snapshot.getDocuments(), labels));
             emitter.onComplete();
 
         });

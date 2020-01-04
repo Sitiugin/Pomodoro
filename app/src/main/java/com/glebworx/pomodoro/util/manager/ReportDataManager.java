@@ -269,11 +269,11 @@ public class ReportDataManager {
             timeElapsed = model.getTimeElapsed();
             if (timeElapsed <= 10) {
                 zeroToTen++;
-            } else if (timeElapsed > 10 && timeElapsed <= 25) {
+            } else if (timeElapsed <= 25) {
                 elevenToTwentyFive++;
-            } else if (timeElapsed > 25 && timeElapsed <= 50) {
+            } else if (timeElapsed <= 50) {
                 twentySixToFifty++;
-            } else if (timeElapsed > 50 && timeElapsed <= 100) {
+            } else if (timeElapsed <= 100) {
                 fiftyOneToHundred++;
             } else {
                 hundredOneOrMore++;
@@ -294,9 +294,37 @@ public class ReportDataManager {
 
     }
 
-    public static PieData getProjectsOverdueData(List<DocumentSnapshot> documentSnapshots) {
-        // TODO implement
-        return new PieData();
+    public static PieData getProjectsOverdueData(List<DocumentSnapshot> documentSnapshots, String[] labels) {
+
+        TaskModel model;
+        List<PieEntry> entries = new ArrayList<>();
+
+        int onTime = 0;
+        int overdue = 0;
+
+        for (DocumentSnapshot snapshot : documentSnapshots) {
+
+            model = snapshot.toObject(TaskModel.class);
+            if (model == null) {
+                continue;
+            }
+
+            if (model.isOverdue()) {
+                overdue++;
+            } else {
+                onTime++;
+            }
+
+        }
+
+        PieDataSet dataSet = new PieDataSet(entries, null);
+        IChart.initDataSet(dataSet);
+
+        dataSet.addEntry(new PieEntry(onTime, labels[0]));
+        dataSet.addEntry(new PieEntry(overdue, labels[1]));
+
+        return new PieData(dataSet);
+
     }
 
     public static PieData getDistributionData(List<DocumentSnapshot> documentSnapshots) {

@@ -285,6 +285,10 @@
         <item>51 &#8211; 100 hours</item>
         <item>100+ hours</item>
     </string-array>
+    <string-array name="report_projects_array_overdue">
+        <item>On Time</item>
+        <item>Overdue</item>
+    </string-array>
 
 
     <!--                                                                          REPORT HISTORY -->
