@@ -209,11 +209,15 @@ public class MainActivity
         if (!bottomSheetView.getPresenter().isStatusIdle()) {
             bottomSheetView.getPresenter().closeSession();
         }
-        AuthManager.getInstance().signOut();
-        Toast.makeText(MainActivity.this, R.string.core_signed_out, Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(MainActivity.this, SplashActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        if (AuthManager.getInstance().isSignedIn()) {
+            AuthManager.getInstance().signOut();
+            Toast.makeText(MainActivity.this, R.string.core_signed_out, Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(MainActivity.this, SplashActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        } else {
+            Toast.makeText(MainActivity.this, R.string.core_sign_out_failed, Toast.LENGTH_LONG).show();
+        }
     }
 
 

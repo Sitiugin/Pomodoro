@@ -74,7 +74,7 @@ public class AuthManager {
         return ActionCodeSettings.newBuilder()
                 .setUrl("https://pomodorosignin.page.link")
                 .setHandleCodeInApp(true)
-                .setIOSBundleId("com.glebworx.ios")
+                //.setIOSBundleId("com.glebworx.ios")
                 .setAndroidPackageName(
                         "com.glebworx.android",
                         true,

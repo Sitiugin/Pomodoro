@@ -249,36 +249,34 @@ public class ReportDataManager {
 
     public static PieData getProjectDistributionData(List<DocumentSnapshot> documentSnapshots, String[] labels) {
 
-        HistoryModel model;
+        TaskModel model;
         List<PieEntry> entries = new ArrayList<>();
-        Optional<PieEntry> optionalEntry;
-        PieEntry entry;
-        String name;
         int timeElapsed;
 
-        PieEntry zeroToTenEntry;
-        PieEntry elevenToTwentyFiveEntry;
-        PieEntry twentySixToFiftyEntry;
-        PieEntry fiftyOneToHundredEntry;
-        PieEntry hundredOneOrMoreEntry;
+        int zeroToTen = 0;
+        int elevenToTwentyFive = 0;
+        int twentySixToFifty = 0;
+        int fiftyOneToHundred = 0;
+        int hundredOneOrMore = 0;
 
         for (DocumentSnapshot snapshot : documentSnapshots) {
 
-            model = snapshot.toObject(HistoryModel.class);
+            model = snapshot.toObject(TaskModel.class);
             if (model == null) {
                 continue;
             }
 
-            name = model.getName();
             timeElapsed = model.getTimeElapsed();
-
-            optionalEntry = getPieEntry(name, entries);
-            if (optionalEntry.isPresent()) {
-                entry = optionalEntry.get();
-                entry.setY(entry.getY() + timeElapsed);
+            if (timeElapsed <= 10) {
+                zeroToTen++;
+            } else if (timeElapsed > 10 && timeElapsed <= 25) {
+                elevenToTwentyFive++;
+            } else if (timeElapsed > 25 && timeElapsed <= 50) {
+                twentySixToFifty++;
+            } else if (timeElapsed > 50 && timeElapsed <= 100) {
+                fiftyOneToHundred++;
             } else {
-                entry = new PieEntry(timeElapsed, name);
-                entries.add(entry);
+                hundredOneOrMore++;
             }
 
         }
@@ -286,10 +284,14 @@ public class ReportDataManager {
         PieDataSet dataSet = new PieDataSet(entries, null);
         IChart.initDataSet(dataSet);
 
-        //return new PieData(dataSet);
+        dataSet.addEntry(new PieEntry(zeroToTen, labels[0]));
+        dataSet.addEntry(new PieEntry(elevenToTwentyFive, labels[1]));
+        dataSet.addEntry(new PieEntry(twentySixToFifty, labels[2]));
+        dataSet.addEntry(new PieEntry(fiftyOneToHundred, labels[3]));
+        dataSet.addEntry(new PieEntry(hundredOneOrMore, labels[4]));
 
-        // TODO implement
-        return new PieData();
+        return new PieData(dataSet);
+
     }
 
     public static PieData getProjectsOverdueData(List<DocumentSnapshot> documentSnapshots) {
