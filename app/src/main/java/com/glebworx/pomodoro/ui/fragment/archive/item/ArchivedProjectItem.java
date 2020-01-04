@@ -119,12 +119,10 @@ public class ArchivedProjectItem
     private String getExtraInfoString(Context context) {
         String estimatedTimeString = DateTimeManager.formatHHMMString(context, model.getEstimatedTime());
         String elapsedTimeString = DateTimeManager.formatHHMMString(context, model.getElapsedTime());
-        String tasksString = numberFormat.format(model.getTasks().size());
         return context.getString(
                 R.string.archive_text_item_extra_info,
                 estimatedTimeString,
-                elapsedTimeString,
-                tasksString);
+                elapsedTimeString);
 
     }
 

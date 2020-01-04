@@ -8,9 +8,7 @@ import androidx.annotation.Nullable;
 
 import com.google.firebase.firestore.Exclude;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 
 public class ProjectModel extends AbstractModel {
@@ -35,7 +33,6 @@ public class ProjectModel extends AbstractModel {
 
     private Date dueDate;
     private String colorTag;
-    private List<String> tasks;
     private int estimatedTime;
     private int elapsedTime;
     private float progress;
@@ -51,7 +48,6 @@ public class ProjectModel extends AbstractModel {
         super();
         this.dueDate = new Date();
         this.colorTag = null;
-        this.tasks = new ArrayList<>();
         this.estimatedTime = 0;
         this.elapsedTime = 0;
         this.allTasksCompleted = true;
@@ -65,7 +61,6 @@ public class ProjectModel extends AbstractModel {
         super(name);
         this.dueDate = dueDate;
         this.colorTag = colorTag;
-        this.tasks = new ArrayList<>();
         this.estimatedTime = 0;
         this.elapsedTime = 0;
         this.progress = 0;
@@ -78,7 +73,6 @@ public class ProjectModel extends AbstractModel {
         super(projectModel.getName());
         dueDate = projectModel.getDueDate();
         colorTag = projectModel.getColorTag();
-        tasks = projectModel.getTasks();
         estimatedTime = projectModel.getEstimatedTime();
         elapsedTime = projectModel.getElapsedTime();
         progress = projectModel.getProgress();
@@ -94,7 +88,6 @@ public class ProjectModel extends AbstractModel {
             this.dueDate = new Date(dueDate);
         }
         this.colorTag = in.readString();
-        in.readStringList(this.tasks);
         this.estimatedTime = in.readInt();
         this.elapsedTime = in.readInt();
         this.progress = in.readFloat();
@@ -118,7 +111,6 @@ public class ProjectModel extends AbstractModel {
             parcel.writeLong(-1);
         }
         parcel.writeString(colorTag);
-        parcel.writeStringList(tasks);
         parcel.writeInt(estimatedTime);
         parcel.writeInt(elapsedTime);
         parcel.writeFloat(progress);
@@ -145,7 +137,6 @@ public class ProjectModel extends AbstractModel {
         updateTimestamp();
         dueDate = projectModel.getDueDate();
         colorTag = projectModel.getColorTag();
-        tasks = projectModel.getTasks();
         estimatedTime = projectModel.getEstimatedTime();
         elapsedTime = projectModel.getElapsedTime();
         progress = projectModel.getProgress();
@@ -171,10 +162,6 @@ public class ProjectModel extends AbstractModel {
 
     public void setColorTag(String colorTag) {
         this.colorTag = colorTag;
-    }
-
-    public List<String> getTasks() {
-        return tasks;
     }
 
     public int getEstimatedTime() {
@@ -216,4 +203,5 @@ public class ProjectModel extends AbstractModel {
     public void setCompletedOn(Date completedOn) {
         this.completedOn = completedOn;
     }
+
 }

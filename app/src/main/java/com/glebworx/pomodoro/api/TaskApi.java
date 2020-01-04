@@ -29,6 +29,7 @@ public class TaskApi extends BaseApi {
 
     private TaskApi() { }
 
+
     //                                                                                    PUBLIC API
 
 
@@ -57,11 +58,9 @@ public class TaskApi extends BaseApi {
 
         WriteBatch batch = getWriteBatch();
 
-        DocumentReference projectDocument = getCollection(COLLECTION_PROJECTS).document(projectModel.getName());
+        DocumentReference document = getCollection(COLLECTION_TASKS).document(taskModel.getName());
 
-        batch.set(
-                projectDocument.collection(COLLECTION_TASKS).document(taskModel.getName()),
-                taskModel);
+        batch.set(document, taskModel);
 
         batch.set(
                 getCollection(COLLECTION_HISTORY).document(),
@@ -95,11 +94,9 @@ public class TaskApi extends BaseApi {
 
         WriteBatch batch = getWriteBatch();
 
-        DocumentReference projectDocument = getCollection(COLLECTION_PROJECTS).document(projectModel.getName());
+        DocumentReference document = getCollection(COLLECTION_TASKS).document(taskModel.getName());
 
-        batch.set(
-                projectDocument.collection(COLLECTION_TASKS).document(taskModel.getName()),
-                taskModel);
+        batch.set(document, taskModel);
 
         batch.set(
                 getCollection(COLLECTION_HISTORY).document(),
@@ -131,9 +128,9 @@ public class TaskApi extends BaseApi {
 
         WriteBatch batch = getWriteBatch();
 
-        DocumentReference projectDocument = getCollection(COLLECTION_PROJECTS).document(projectModel.getName());
+        DocumentReference document = getCollection(COLLECTION_TASKS).document(taskModel.getName());
 
-        batch.delete(projectDocument.collection(COLLECTION_TASKS).document(taskModel.getName()));
+        batch.delete(document);
 
         /*batch.update(projectDocument,
                 FIELD_TASKS, projectModel.getTasks(),
@@ -157,31 +154,29 @@ public class TaskApi extends BaseApi {
     }
 
     public static void getTasks(String projectName, @NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
-        getCollection(COLLECTION_PROJECTS)
-                .document(projectName)
-                .collection(COLLECTION_TASKS)
+        getCollection(COLLECTION_TASKS)
+                .whereEqualTo(FIELD_PROJECT_NAME, projectName)
                 .get()
                 .addOnCompleteListener(onCompleteListener);
     }
 
     public static void getTasks(String projectName, boolean completed, @NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
-        getCollection(COLLECTION_PROJECTS)
-                .document(projectName)
-                .collection(COLLECTION_TASKS)
+        getCollection(COLLECTION_TASKS)
+                .whereEqualTo(FIELD_PROJECT_NAME, projectName)
                 .whereEqualTo(FIELD_COMPLETED, completed)
                 .get()
                 .addOnCompleteListener(onCompleteListener);
     }
 
     public static void getTasks(@NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
-        getCollectionGroup(COLLECTION_TASKS)
+        getCollection(COLLECTION_TASKS)
                 .get()
                 .addOnCompleteListener(onCompleteListener);
     }
 
     public static void getTodayTasks(@NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
         ZonedDateTime todayDateTime = LocalDate.now().atStartOfDay(ZoneId.systemDefault());
-        getCollectionGroup(COLLECTION_TASKS)
+        getCollection(COLLECTION_TASKS)
                 .whereEqualTo(FIELD_COMPLETED, false)
                 .whereGreaterThanOrEqualTo(FIELD_DUE_DATE, Date.from(todayDateTime.toInstant()))
                 .whereLessThan(FIELD_DUE_DATE, Date.from(todayDateTime.plusDays(1).toInstant()))
@@ -193,7 +188,7 @@ public class TaskApi extends BaseApi {
         ZonedDateTime todayDateTime = LocalDate.now().atStartOfDay(ZoneId.systemDefault());
         Date today = Date.from(todayDateTime.toInstant());
         Date inAWeek = Date.from(todayDateTime.plusDays(7).toInstant());
-        getCollectionGroup(COLLECTION_TASKS)
+        getCollection(COLLECTION_TASKS)
                 .whereEqualTo(FIELD_COMPLETED, false)
                 .whereLessThanOrEqualTo(FIELD_DUE_DATE, inAWeek)
                 .whereGreaterThanOrEqualTo(FIELD_DUE_DATE, today)
@@ -203,7 +198,7 @@ public class TaskApi extends BaseApi {
 
     public static void getOverdueTasks(@NonNull OnCompleteListener<QuerySnapshot> onCompleteListener) {
         Date today = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        getCollectionGroup(COLLECTION_TASKS)
+        getCollection(COLLECTION_TASKS)
                 .whereEqualTo(FIELD_COMPLETED, false)
                 .whereLessThan(FIELD_DUE_DATE, today)
                 .get()
@@ -211,7 +206,7 @@ public class TaskApi extends BaseApi {
     }
 
     public static void addAllTasksEventListener(@NonNull EventListener<QuerySnapshot> eventListener) {
-        getCollectionGroup(COLLECTION_TASKS)
+        getCollection(COLLECTION_TASKS)
                 .orderBy(FIELD_DUE_DATE, Query.Direction.DESCENDING)
                 .addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
     }
@@ -228,7 +223,7 @@ public class TaskApi extends BaseApi {
         ZonedDateTime todayDateTime = LocalDate.now().atStartOfDay(ZoneId.systemDefault());
         Date today = Date.from(todayDateTime.toInstant());
         Date inAWeek = Date.from(todayDateTime.plusDays(7).toInstant());
-        return getCollectionGroup(COLLECTION_TASKS)
+        return getCollection(COLLECTION_TASKS)
                 .whereLessThanOrEqualTo(FIELD_DUE_DATE, inAWeek)
                 .whereGreaterThanOrEqualTo(FIELD_DUE_DATE, today)
                 .addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
@@ -236,14 +231,14 @@ public class TaskApi extends BaseApi {
 
     public static ListenerRegistration addOverdueTasksEventListener(@NonNull EventListener<QuerySnapshot> eventListener) {
         Date today = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        return getCollectionGroup(COLLECTION_TASKS)
+        return getCollection(COLLECTION_TASKS)
                 .whereLessThan(FIELD_DUE_DATE, today)
                 .addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
     }
 
     public static ListenerRegistration addTodayTasksEventListener(@NonNull EventListener<QuerySnapshot> eventListener, boolean completed) {
         ZonedDateTime todayDateTime = LocalDate.now().atStartOfDay(ZoneId.systemDefault());
-        return getCollectionGroup(COLLECTION_TASKS)
+        return getCollection(COLLECTION_TASKS)
                 .whereEqualTo(FIELD_COMPLETED, completed)
                 .whereGreaterThanOrEqualTo(FIELD_DUE_DATE, Date.from(todayDateTime.toInstant()))
                 .whereLessThan(FIELD_DUE_DATE, Date.from(todayDateTime.plusDays(1).toInstant()))
@@ -254,7 +249,7 @@ public class TaskApi extends BaseApi {
         ZonedDateTime todayDateTime = LocalDate.now().atStartOfDay(ZoneId.systemDefault());
         Date today = Date.from(todayDateTime.toInstant());
         Date inAWeek = Date.from(todayDateTime.plusDays(7).toInstant());
-        return getCollectionGroup(COLLECTION_TASKS)
+        return getCollection(COLLECTION_TASKS)
                 .whereEqualTo(FIELD_COMPLETED, completed)
                 .whereLessThanOrEqualTo(FIELD_DUE_DATE, inAWeek)
                 .whereGreaterThanOrEqualTo(FIELD_DUE_DATE, today)
@@ -263,7 +258,7 @@ public class TaskApi extends BaseApi {
 
     public static ListenerRegistration addOverdueTasksEventListener(@NonNull EventListener<QuerySnapshot> eventListener, boolean completed) {
         Date today = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        return getCollectionGroup(COLLECTION_TASKS)
+        return getCollection(COLLECTION_TASKS)
                 .whereEqualTo(FIELD_COMPLETED, completed)
                 .whereLessThan(FIELD_DUE_DATE, today)
                 .addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
@@ -271,7 +266,7 @@ public class TaskApi extends BaseApi {
 
     public static ListenerRegistration addTodayTasksNoChangesEventListener(@NonNull EventListener<QuerySnapshot> eventListener, boolean completed) {
         ZonedDateTime todayDateTime = LocalDate.now().atStartOfDay(ZoneId.systemDefault());
-        return getCollectionGroup(COLLECTION_TASKS)
+        return getCollection(COLLECTION_TASKS)
                 .whereEqualTo(FIELD_COMPLETED, completed)
                 .whereGreaterThanOrEqualTo(FIELD_DUE_DATE, Date.from(todayDateTime.toInstant()))
                 .whereLessThan(FIELD_DUE_DATE, Date.from(todayDateTime.plusDays(1).toInstant()))
@@ -282,7 +277,7 @@ public class TaskApi extends BaseApi {
         ZonedDateTime todayDateTime = LocalDate.now().atStartOfDay(ZoneId.systemDefault());
         Date today = Date.from(todayDateTime.toInstant());
         Date inAWeek = Date.from(todayDateTime.plusDays(7).toInstant());
-        return getCollectionGroup(COLLECTION_TASKS)
+        return getCollection(COLLECTION_TASKS)
                 .whereEqualTo(FIELD_COMPLETED, completed)
                 .whereLessThanOrEqualTo(FIELD_DUE_DATE, inAWeek)
                 .whereGreaterThanOrEqualTo(FIELD_DUE_DATE, today)
@@ -291,7 +286,7 @@ public class TaskApi extends BaseApi {
 
     public static ListenerRegistration addOverdueTasksNoChangesEventListener(@NonNull EventListener<QuerySnapshot> eventListener, boolean completed) {
         Date today = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        return getCollectionGroup(COLLECTION_TASKS)
+        return getCollection(COLLECTION_TASKS)
                 .whereEqualTo(FIELD_COMPLETED, completed)
                 .whereLessThan(FIELD_DUE_DATE, today)
                 .addSnapshotListener(eventListener);
@@ -300,20 +295,16 @@ public class TaskApi extends BaseApi {
     public static ListenerRegistration addTaskEventListener(@NonNull String projectName,
                                                             @NonNull EventListener<QuerySnapshot> eventListener,
                                                             boolean completed) {
-        return getCollection(COLLECTION_PROJECTS)
-                .document(projectName)
-                .collection(COLLECTION_TASKS)
+        return getCollection(COLLECTION_TASKS)
+                .whereEqualTo(FIELD_PROJECT_NAME, projectName)
                 .whereEqualTo(FIELD_COMPLETED, completed)
                 //.orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING)
                 .addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
     }
 
-    public static ListenerRegistration addSingleTaskEventListener(@NonNull String projectName,
-                                                                  @NonNull String taskName,
+    public static ListenerRegistration addSingleTaskEventListener(@NonNull String taskName,
                                                                   @NonNull EventListener<DocumentSnapshot> eventListener) {
-        return getCollection(COLLECTION_PROJECTS)
-                .document(projectName)
-                .collection(COLLECTION_TASKS)
+        return getCollection(COLLECTION_TASKS)
                 .document(taskName)
                 .addSnapshotListener(MetadataChanges.INCLUDE, eventListener);
     }
@@ -328,11 +319,9 @@ public class TaskApi extends BaseApi {
 
         WriteBatch batch = getWriteBatch();
 
-        DocumentReference projectDocument = getCollection(COLLECTION_PROJECTS).document(projectModel.getName());
+        DocumentReference document = getCollection(COLLECTION_TASKS).document(taskModel.getName());
 
-        batch.set(
-                projectDocument.collection(COLLECTION_TASKS).document(taskModel.getName()),
-                taskModel);
+        batch.set(document, taskModel);
 
         batch.set(
                 getCollection(COLLECTION_HISTORY).document(),

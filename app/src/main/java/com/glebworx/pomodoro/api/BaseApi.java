@@ -31,6 +31,7 @@ public abstract class BaseApi {
     static final String COLLECTION_HISTORY = "history";
 
     static final String FIELD_NAME = "name";
+    static final String FIELD_PROJECT_NAME = "projectName";
     static final String FIELD_TIMESTAMP = "timestamp";
     static final String FIELD_TASKS = "tasks";
     static final String FIELD_COMPLETED = "completed";

@@ -356,7 +356,6 @@ public class ProgressProgressBottomSheetViewPresenter implements IProgressBottom
     private Observable<DocumentSnapshot> getTaskEventObservable() {
         return Observable.create(emitter -> {
             taskEventListenerRegistration = TaskApi.addSingleTaskEventListener(
-                    projectModel.getName(),
                     taskModel.getName(),
                     (documentSnapshot, e) -> {
                         if (emitter.isDisposed()) {
