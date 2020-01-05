@@ -40,15 +40,18 @@ public class TaskNotificationManager {
         this.notificationManager = NotificationManagerCompat.from(context);
     }
 
-    public static void createNotificationChannel(Context context) { // TODO use another channel for update notifications
+    public static void createNotificationChannel(Context context) {
+
         CharSequence name = context.getString(R.string.notification_channel_name);
         String description = context.getString(R.string.notification_channel_description);
-        int importance = NotificationManager.IMPORTANCE_DEFAULT;
-        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_LOW);
         channel.setDescription(description);
+
         //channel.setSound(); // TODO
         NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
         Objects.requireNonNull(notificationManager).createNotificationChannel(channel);
+
     }
 
     public int showPersistentNotification(String taskName, String status) {

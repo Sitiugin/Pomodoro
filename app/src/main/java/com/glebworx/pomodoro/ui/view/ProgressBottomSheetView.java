@@ -442,7 +442,7 @@ public class ProgressBottomSheetView
     private void updatePomodoroCountText(int completedPomodoroCount, int totalPomodoroCount) {
         sessionsRemainingButton.setText(
                 context.getString(R.string.bottom_sheet_title_pomodoro_count,
-                        numberFormat.format(completedPomodoroCount),
+                        numberFormat.format(completedPomodoroCount + 1),
                         numberFormat.format(totalPomodoroCount)));
     }
 

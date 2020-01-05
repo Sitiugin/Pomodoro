@@ -45,6 +45,7 @@ public class SplashActivity extends AppCompatActivity implements ISplashActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //FirebaseFirestore.getInstance().clearPersistence();
         presenter = new SplashActivityPresenter(this);
         constraintSet = new ConstraintSet();
         presenter.handleIntent(getIntent(), SplashActivity.this);

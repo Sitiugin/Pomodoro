@@ -85,6 +85,7 @@ public class ReportProjectsView extends NestedScrollView implements IReportProje
 
     @Override
     public void onInitProjectsOverdueChart(PieData pieData) {
+        hideOverdueSpinKit();
         if (pieData.getEntryCount() > 0) {
             projectOverduePieChart.setData(pieData);
             projectOverduePieChart.animateY(ANIM_DURATION);
