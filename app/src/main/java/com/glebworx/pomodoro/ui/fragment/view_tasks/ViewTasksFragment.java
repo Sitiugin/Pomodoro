@@ -159,7 +159,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
         String projectName = item.getProjectName();
 
-        if (adapterMap.containsKey(projectName)) {
+        if (adapterMap.containsKey(projectName)) { // project already present
 
             ItemAdapter<AbstractItem> adapter = adapterMap.get(projectName);
             Objects.requireNonNull(adapter).add(item);

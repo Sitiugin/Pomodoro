@@ -157,10 +157,12 @@ public interface IChart {
 
         Legend legend = chart.getLegend();
         if (showLegend) {
-            legend.setDrawInside(isExpanded);
+            legend.setDrawInside(true);
             legend.setForm(Legend.LegendForm.CIRCLE);
+            legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
             legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-            legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+            //legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+            legend.setMaxSizePercent(0.25f);
             legend.setWordWrapEnabled(true);
             legend.setTextColor(colorGray);
         }
