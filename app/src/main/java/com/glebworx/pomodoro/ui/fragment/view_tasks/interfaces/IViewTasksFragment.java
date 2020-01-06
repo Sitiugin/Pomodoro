@@ -18,4 +18,6 @@ public interface IViewTasksFragment {
 
     void onProjectChanged(ProjectModel projectModel);
 
+    void onProjectDeleted(String projectName);
+
 }

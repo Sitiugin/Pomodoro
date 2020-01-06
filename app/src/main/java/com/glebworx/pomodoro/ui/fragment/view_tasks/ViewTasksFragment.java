@@ -220,7 +220,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
     }
 
     @Override
-    public synchronized void onTaskCompleted(CompletedTaskItem completedItem) { // TODO this block is not working properly - concurrency issues
+    public synchronized void onTaskCompleted(CompletedTaskItem completedItem) {
 
         String projectName = completedItem.getProjectName();
 
@@ -228,7 +228,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
             ItemAdapter<AbstractItem> adapter = adapterMap.get(projectName);
             int index = getTaskItemIndex(completedItem.getTaskName(), Objects.requireNonNull(adapter));
             if (index != -1) {
-                adapter.remove(index);
+                adapter.remove(index + 1);
             }
         }
 
@@ -294,6 +294,34 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
         fastAdapter.notifyAdapterDataSetChanged();
 
     }
+
+    @Override
+    public synchronized void onProjectDeleted(String projectName) {
+
+        ItemAdapter<AbstractItem> headerAdapter = headerAdapterMap.get(projectName);
+        if (headerAdapter != null) {
+            headerAdapter.clear();
+        }
+
+        ItemAdapter<AbstractItem> adapter = adapterMap.get(projectName);
+        if (adapter != null) {
+            adapter.clear();
+        }
+
+        ItemAdapter<AbstractItem> completedAdapter = completedAdapterMap.get(projectName);
+        if (completedAdapter != null) {
+            completedAdapter.clear();
+        }
+
+        ItemAdapter<AbstractItem> footerAdapter = footerAdapterMap.get(projectName);
+        if (footerAdapter != null) {
+            footerAdapter.clear();
+        }
+
+        fastAdapter.notifyAdapterDataSetChanged();
+
+    }
+
 
     //                                                                                       HELPERS
 

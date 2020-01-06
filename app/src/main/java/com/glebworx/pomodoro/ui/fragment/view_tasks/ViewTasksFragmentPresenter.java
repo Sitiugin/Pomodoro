@@ -168,27 +168,6 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
         };
     }
 
-    private Observable<DocumentSnapshot> getProjectObservable(@NonNull String projectName) {
-        return Observable.create(emitter -> {
-            ListenerRegistration taskEventListenerRegistration = ProjectApi.addProjectEventListener(
-                    projectName,
-                    (documentSnapshot, e) -> {
-                        if (emitter.isDisposed()) {
-                            return;
-                        }
-                        if (e != null) {
-                            emitter.onError(e);
-                            return;
-                        }
-                        if (documentSnapshot == null) {
-                            return;
-                        }
-                        emitter.onNext(documentSnapshot);
-                    });
-            emitter.setCancellable(taskEventListenerRegistration::remove);
-        });
-    }
-
     private io.reactivex.Observer<DocumentChange> getObserver() {
         return new io.reactivex.Observer<DocumentChange>() {
             @Override
@@ -263,6 +242,30 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());
         projectObservable.subscribe(getProjectObserver());
+    }
+
+    private Observable<DocumentSnapshot> getProjectObservable(@NonNull String projectName) {
+        return Observable.create(emitter -> {
+            ListenerRegistration taskEventListenerRegistration = ProjectApi.addProjectEventListener(
+                    projectName,
+                    (documentSnapshot, e) -> {
+                        if (emitter.isDisposed()) {
+                            return;
+                        }
+                        if (e != null) {
+                            emitter.onError(e);
+                            return;
+                        }
+                        if (documentSnapshot == null) {
+                            return;
+                        }
+                        if (!documentSnapshot.exists()) {
+                            presenterListener.onProjectDeleted(projectName);
+                        }
+                        emitter.onNext(documentSnapshot);
+                    });
+            emitter.setCancellable(taskEventListenerRegistration::remove);
+        });
     }
 
     private io.reactivex.Observer<DocumentSnapshot> getProjectObserver() {
