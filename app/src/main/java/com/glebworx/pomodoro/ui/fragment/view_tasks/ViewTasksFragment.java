@@ -202,7 +202,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
             ItemAdapter<AbstractItem> adapter = adapterMap.get(projectName);
             int index = getTaskItemIndex(item.getTaskName(), Objects.requireNonNull(adapter));
             if (index != -1) {
-                adapter.set(index, item);
+                adapter.set(index + 1, item);
             }
         }
     }
@@ -214,7 +214,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
             ItemAdapter<AbstractItem> adapter = adapterMap.get(projectName);
             int index = getTaskItemIndex(item.getTaskName(), Objects.requireNonNull(adapter));
             if (index != -1) {
-                adapter.remove(index);
+                adapter.remove(index + 1);
             }
         }
     }

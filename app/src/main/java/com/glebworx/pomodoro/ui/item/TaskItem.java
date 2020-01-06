@@ -88,10 +88,6 @@ public class TaskItem
         return this.model;
     }
 
-    public boolean hasProjectModel() {
-        return projectModel != null;
-    }
-
     public void setProjectModel(ProjectModel projectModel) {
         this.projectModel = projectModel;
     }

@@ -50,10 +50,6 @@ public class ViewTasksFooterItem extends AbstractItem<ViewTasksFooterItem, ViewT
         return false;
     }
 
-    public boolean hasModel() {
-        return model != null;
-    }
-
     public void setModel(ProjectModel model) {
         this.model = model;
     }
