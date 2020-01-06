@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<View xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item_view_tasks_footer"
     style="@style/ViewStyle.Rounded.Clickable"
     android:layout_width="match_parent"
@@ -9,4 +10,12 @@
     android:background="@drawable/drawable_foreground_rounded_bottom"
     android:foreground="@drawable/ripple_rounded_bottom"
     android:clipChildren="false"
-    android:clipToPadding="false" />
+    android:clipToPadding="false">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/view_color_tag"
+        android:layout_width="@dimen/radius_medium"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:srcCompat="@drawable/drawable_color_tag_rounded_bottom_left" />
+</FrameLayout>

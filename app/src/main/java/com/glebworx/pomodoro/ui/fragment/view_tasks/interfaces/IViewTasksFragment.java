@@ -1,5 +1,6 @@
 package com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces;
 
+import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.CompletedTaskItem;
 import com.glebworx.pomodoro.ui.item.TaskItem;
 
@@ -15,6 +16,6 @@ public interface IViewTasksFragment {
 
     void onTaskCompleted(CompletedTaskItem completedItem);
 
-    void onProjectChanged(String projectName, String tagColor);
+    void onProjectChanged(ProjectModel projectModel);
 
 }

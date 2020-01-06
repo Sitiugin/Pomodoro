@@ -279,7 +279,7 @@ public class ViewTasksFragmentPresenter implements IViewTasksFragmentPresenter {
                     return;
                 }
                 projectModelMap.put(projectModel.getName(), projectModel);
-                presenterListener.onProjectChanged(projectModel.getName(), projectModel.getColorTag());
+                presenterListener.onProjectChanged(projectModel);
             }
 
             @Override

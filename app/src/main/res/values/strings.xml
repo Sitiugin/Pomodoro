@@ -320,7 +320,7 @@
 
     <string name="archive_title_projects">Archived Projects</string>
     <string name="archive_title_delete_all">Delete All</string>
-    <string name="archive_text_item_extra_info">&#8226; Estimated time: %1$s\n&#8226; Elapsed time: %2$s\n&#8226;</string>
+    <string name="archive_text_item_extra_info">&#8226; Estimated time: %1$s\n&#8226; Elapsed time: %2$s</string>
     <string name="archive_text_delete_all">Are you sure you want to delete all archived projects? Warning: This cannot be undone.</string>
     <string name="archive_text_delete">Delete</string>
     <string name="archive_hint_search_projects">Search Archived</string>

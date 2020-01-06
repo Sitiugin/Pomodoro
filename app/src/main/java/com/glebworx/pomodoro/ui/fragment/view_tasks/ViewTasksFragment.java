@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.glebworx.pomodoro.R;
+import com.glebworx.pomodoro.model.ProjectModel;
 import com.glebworx.pomodoro.ui.fragment.view_project.item.CompletedTaskItem;
 import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragment;
 import com.glebworx.pomodoro.ui.fragment.view_tasks.interfaces.IViewTasksFragmentInteractionListener;
@@ -61,6 +62,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
     private Context context;
     private Map<String, ItemAdapter<AbstractItem>> headerAdapterMap;
+    private Map<String, ItemAdapter<AbstractItem>> footerAdapterMap;
     private Map<String, ItemAdapter<AbstractItem>> adapterMap;
     private Map<String, ItemAdapter<AbstractItem>> completedAdapterMap;
     private IViewTasksFragmentInteractionListener fragmentListener;
@@ -144,6 +146,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
         }
 
         headerAdapterMap = new HashMap<>();
+        footerAdapterMap = new HashMap<>();
         adapterMap = new HashMap<>();
         completedAdapterMap = new HashMap<>();
         fastAdapter = new FastAdapter<>();
@@ -173,6 +176,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
             headerAdapter.add(new ViewTasksHeaderItem(item.getProjectName()));
             headerAdapterMap.put(projectName, headerAdapter);
+            footerAdapterMap.put(projectName, footerAdapter);
 
             adapter.add(item);
             adapterMap.put(projectName, adapter);
@@ -242,6 +246,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
 
             headerAdapter.add(new ViewTasksHeaderItem(completedItem.getProjectName()));
             headerAdapterMap.put(projectName, headerAdapter);
+            footerAdapterMap.put(projectName, footerAdapter);
 
             adapterMap.put(projectName, adapter);
 
@@ -261,14 +266,33 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
     }
 
     @Override
-    public synchronized void onProjectChanged(String projectName, String tagColor) {
+    public synchronized void onProjectChanged(ProjectModel projectModel) {
+
+        String projectName = projectModel.getName();
+
         ItemAdapter<AbstractItem> headerAdapter = headerAdapterMap.get(projectName);
         if (headerAdapter != null) {
             AbstractItem headerItem = Objects.requireNonNull(headerAdapter).getAdapterItem(0);
-            ((ViewTasksHeaderItem) headerItem).setColorTag(tagColor);
-            //fastAdapter.notifyItemChanged(fastAdapter.getPosition(headerItem)); // TODO why this doesn't work?
-            fastAdapter.notifyAdapterDataSetChanged();
+            ((ViewTasksHeaderItem) headerItem).setColorTag(projectModel.getColorTag());
         }
+
+        ItemAdapter<AbstractItem> adapter = adapterMap.get(projectName);
+        if (adapter != null) {
+            TaskItem taskItem;
+            for (AbstractItem item : adapter.getAdapterItems()) {
+                taskItem = ((TaskItem) item);
+                taskItem.setProjectModel(projectModel);
+            }
+        }
+
+        ItemAdapter<AbstractItem> footerAdapter = footerAdapterMap.get(projectName);
+        if (footerAdapter != null) {
+            ViewTasksFooterItem footerItem = (ViewTasksFooterItem) Objects.requireNonNull(footerAdapter).getAdapterItem(0);
+            footerItem.setModel(projectModel);
+        }
+
+        fastAdapter.notifyAdapterDataSetChanged();
+
     }
 
     //                                                                                       HELPERS
