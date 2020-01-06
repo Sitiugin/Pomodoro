@@ -266,7 +266,7 @@ public class ViewTasksFragment extends Fragment implements IViewTasksFragment {
     }
 
     @Override
-    public synchronized void onProjectChanged(ProjectModel projectModel) {
+    public synchronized void onProjectChanged(ProjectModel projectModel) { // TODO view should not know the model
 
         String projectName = projectModel.getName();
 

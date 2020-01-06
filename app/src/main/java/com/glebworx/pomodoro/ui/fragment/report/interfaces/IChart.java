@@ -60,7 +60,6 @@ public interface IChart {
 
     static void initDataSet(BarDataSet dataSet, int color) {
         dataSet.setColor(color);
-
     }
 
     static void initData(LineData data, Context context) {

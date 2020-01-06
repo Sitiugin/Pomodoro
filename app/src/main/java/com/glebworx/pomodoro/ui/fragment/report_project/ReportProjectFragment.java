@@ -160,23 +160,29 @@ public class ReportProjectFragment extends Fragment implements IReportProjectFra
     public void onInitDistributionChart(PieData pieData) {
         hideDistributionSpinKit();
         pieData.getDataSet().setValueTextColor(context.getColor(android.R.color.white));
-        distributionPieChart.setData(pieData);
-        distributionPieChart.animateY(ANIM_DURATION);
+        if (pieData.getEntryCount() > 0) {
+            distributionPieChart.setData(pieData);
+            distributionPieChart.animateY(ANIM_DURATION);
+        }
     }
 
     @Override
     public void onInitElapsedTimeChart(LineData lineData) {
         hideElapsedTimeSpinKit();
-        elapsedTimeLineChart.setData(lineData);
-        elapsedTimeLineChart.animateY(ANIM_DURATION);
+        if (lineData.getEntryCount() > 0) {
+            elapsedTimeLineChart.setData(lineData);
+            elapsedTimeLineChart.animateY(ANIM_DURATION);
+        }
     }
 
     @Override
     public void onInitOverdueChart(PieData pieData) {
         hideOverdueSpinKit();
         pieData.getDataSet().setValueTextColor(context.getColor(android.R.color.white));
-        overduePieChart.setData(pieData);
-        overduePieChart.animateY(ANIM_DURATION);
+        if (pieData.getEntryCount() > 0) {
+            overduePieChart.setData(pieData);
+            overduePieChart.animateY(ANIM_DURATION);
+        }
     }
 
     @Override

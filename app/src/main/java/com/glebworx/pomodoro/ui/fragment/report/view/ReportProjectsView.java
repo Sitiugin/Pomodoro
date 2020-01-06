@@ -77,6 +77,7 @@ public class ReportProjectsView extends NestedScrollView implements IReportProje
     @Override
     public void onInitProjectsDistributionChart(PieData pieData) {
         hideDistributionSpinKit();
+        pieData.getDataSet().setValueTextColor(context.getColor(android.R.color.white));
         if (pieData.getEntryCount() > 0) {
             projectDistributionPieChart.setData(pieData);
             projectDistributionPieChart.animateY(ANIM_DURATION);
@@ -86,6 +87,7 @@ public class ReportProjectsView extends NestedScrollView implements IReportProje
     @Override
     public void onInitProjectsOverdueChart(PieData pieData) {
         hideOverdueSpinKit();
+        pieData.getDataSet().setValueTextColor(context.getColor(android.R.color.white));
         if (pieData.getEntryCount() > 0) {
             projectOverduePieChart.setData(pieData);
             projectOverduePieChart.animateY(ANIM_DURATION);
