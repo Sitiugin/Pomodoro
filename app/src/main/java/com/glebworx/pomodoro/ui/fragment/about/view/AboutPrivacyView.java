@@ -21,7 +21,6 @@ import java.util.List;
 public class AboutPrivacyView extends RecyclerView implements IAboutPrivacyView {
 
     private Context context;
-    private AboutPrivacyViewPresenter presenter;
 
     public AboutPrivacyView(@NonNull Context context) {
         super(context);
@@ -67,7 +66,8 @@ public class AboutPrivacyView extends RecyclerView implements IAboutPrivacyView 
         }
 
         this.context = context;
-        presenter = new AboutPrivacyViewPresenter(this, context, isEmbedded);
+        AboutPrivacyViewPresenter presenter = new AboutPrivacyViewPresenter(this);
+        presenter.init(context, isEmbedded);
 
     }
 

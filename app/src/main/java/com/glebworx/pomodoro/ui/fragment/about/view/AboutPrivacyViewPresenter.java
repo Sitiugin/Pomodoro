@@ -17,9 +17,8 @@ public class AboutPrivacyViewPresenter implements IAboutPrivacyViewPresenter {
 
     private IAboutPrivacyView presenterListener;
 
-    AboutPrivacyViewPresenter(@NonNull IAboutPrivacyView presenterListener, Context context, boolean isEmbedded) {
+    AboutPrivacyViewPresenter(@NonNull IAboutPrivacyView presenterListener) {
         this.presenterListener = presenterListener;
-        init(context, isEmbedded);
     }
 
     @Override

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "799704347111-f3ukn8c7k7g3hmh3rktqtgrcop19lm5k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.glebworx.pomodoro",
+            "certificate_hash": "feeba9c046c59256a67fad95f5c05263a8055952"
+          }
+        },
+        {
           "client_id": "799704347111-mocla6j9pcjj4aihbka5gpcvv6fksdu1.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

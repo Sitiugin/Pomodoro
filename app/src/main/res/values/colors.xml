@@ -33,15 +33,4 @@
     <color name="colorOrange">#FFAB40</color>
     <color name="colorDeepOrange">#FF6E40</color>
 
-    <!--
-    <color name="colorTurquoise">#1abc9c</color>
-    <color name="colorEmerald">#2ecc71</color>
-    <color name="colorPeterRiver">#3498db</color>
-    <color name="colorAmethyst">#9b59b6</color>
-    <color name="colorWetAsphalt">#34495e</color>
-    <color name="colorSunflower">#f1c40f</color>
-    <color name="colorCarrot">#e67e22</color>
-    <color name="colorAlizarin">#e74c3c</color>
-    -->
-
 </resources>

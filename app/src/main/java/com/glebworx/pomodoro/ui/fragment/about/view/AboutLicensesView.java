@@ -25,7 +25,6 @@ import java.util.List;
 public class AboutLicensesView extends RecyclerView implements IAboutLicensesView {
 
     private Context context;
-    private AboutLicensesViewPresenter presenter;
 
     public AboutLicensesView(@NonNull Context context) {
         super(context);
@@ -64,7 +63,8 @@ public class AboutLicensesView extends RecyclerView implements IAboutLicensesVie
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         this.context = context;
-        presenter = new AboutLicensesViewPresenter(this, context);
+        AboutLicensesViewPresenter presenter = new AboutLicensesViewPresenter(this);
+        presenter.init(context);
     }
 
     private void showUriDialog(String uri) {

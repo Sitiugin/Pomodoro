@@ -17,9 +17,8 @@ public class AboutAppViewPresenter implements IAboutAppViewPresenter {
 
     private IAboutAppView presenterListener;
 
-    AboutAppViewPresenter(@NonNull IAboutAppView presenterListener, Context context) {
+    AboutAppViewPresenter(@NonNull IAboutAppView presenterListener) {
         this.presenterListener = presenterListener;
-        init(context);
     }
 
     @Override

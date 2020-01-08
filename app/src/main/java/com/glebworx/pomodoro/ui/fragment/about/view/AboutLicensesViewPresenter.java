@@ -16,9 +16,8 @@ public class AboutLicensesViewPresenter implements IAboutLicensesViewPresenter {
 
     private IAboutLicensesView presenterListener;
 
-    AboutLicensesViewPresenter(@NonNull IAboutLicensesView presenterListener, Context context) {
+    AboutLicensesViewPresenter(@NonNull IAboutLicensesView presenterListener) {
         this.presenterListener = presenterListener;
-        init(context);
     }
 
     @Override

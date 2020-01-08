@@ -20,7 +20,6 @@ import java.util.List;
 public class AboutAppView extends RecyclerView implements IAboutAppView {
 
     private Context context;
-    private AboutAppViewPresenter presenter;
 
     public AboutAppView(@NonNull Context context) {
         super(context);
@@ -55,7 +54,8 @@ public class AboutAppView extends RecyclerView implements IAboutAppView {
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         this.context = context;
-        presenter = new AboutAppViewPresenter(this, context);
+        AboutAppViewPresenter presenter = new AboutAppViewPresenter(this);
+        presenter.init(context);
     }
 
 }

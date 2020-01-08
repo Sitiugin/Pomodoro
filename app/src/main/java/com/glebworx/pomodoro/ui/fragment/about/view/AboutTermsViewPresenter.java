@@ -17,9 +17,8 @@ public class AboutTermsViewPresenter implements IAboutTermsViewPresenter {
 
     private IAboutTermsView presenterListener;
 
-    AboutTermsViewPresenter(@NonNull IAboutTermsView presenterListener, Context context, boolean isEmbedded) {
+    AboutTermsViewPresenter(@NonNull IAboutTermsView presenterListener) {
         this.presenterListener = presenterListener;
-        init(context, isEmbedded);
     }
 
     @Override

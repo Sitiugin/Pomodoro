@@ -21,7 +21,6 @@ import java.util.List;
 public class AboutTermsView extends RecyclerView implements IAboutTermsView {
 
     private Context context;
-    private AboutTermsViewPresenter presenter;
 
     public AboutTermsView(@NonNull Context context) {
         super(context);
@@ -67,8 +66,8 @@ public class AboutTermsView extends RecyclerView implements IAboutTermsView {
         }
 
         this.context = context;
-        presenter = new AboutTermsViewPresenter(this, context, isEmbedded);
-
+        AboutTermsViewPresenter presenter = new AboutTermsViewPresenter(this);
+        presenter.init(context, isEmbedded);
     }
 
 }
