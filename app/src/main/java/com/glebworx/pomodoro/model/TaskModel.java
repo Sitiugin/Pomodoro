@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.firebase.firestore.Exclude;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
@@ -31,11 +32,17 @@ public class TaskModel extends AbstractModel {
 
     //                                                                                    ATTRIBUTES
 
+    @SerializedName("projectName")
     private final String projectName;
+    @SerializedName("pomodorosAllocated")
     private int pomodorosAllocated;
+    @SerializedName("pomodorosCompleted")
     private int pomodorosCompleted;
+    @SerializedName("timeElapsed")
     private int timeElapsed;
+    @SerializedName("dueDate")
     private Date dueDate;
+    @SerializedName("completed")
     private boolean completed;
 
 

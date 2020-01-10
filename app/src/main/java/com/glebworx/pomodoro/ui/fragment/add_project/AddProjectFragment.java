@@ -107,7 +107,8 @@ public class AddProjectFragment extends Fragment implements IAddProjectFragment 
         }
         constraintSet = new ConstraintSet();
         unbinder = ButterKnife.bind(this, rootView);
-        presenter = new AddProjectFragmentPresenter(this, getArguments());
+        presenter = new AddProjectFragmentPresenter(this);
+        presenter.init(getArguments());
         return rootView;
     }
 

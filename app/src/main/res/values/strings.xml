@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name">Pomodoro Timer</string>
-    <string name="app_version">v1.0.0</string>
+    <string name="app_version">v1.2</string>
 
     <string name="notification_channel_name">Pomodoro Notifications</string>
     <string name="notification_channel_description">Pomodoro notifications</string>

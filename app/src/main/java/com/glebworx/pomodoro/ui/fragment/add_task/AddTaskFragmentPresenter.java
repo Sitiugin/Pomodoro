@@ -3,7 +3,6 @@ package com.glebworx.pomodoro.ui.fragment.add_task;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.glebworx.pomodoro.api.TaskApi;
 import com.glebworx.pomodoro.model.ProjectModel;
@@ -27,16 +26,14 @@ public class AddTaskFragmentPresenter implements IAddTaskFragmentPresenter {
     private IAddTaskFragment presenterListener;
     private ProjectModel projectModel;
     private TaskModel taskModel;
-    private TaskModel oldTaskModel;
+    private TaskModel oldTaskModel; // TODO how is this used!?
     private boolean isEditing;
 
 
     //                                                                                  CONSTRUCTORS
 
-    AddTaskFragmentPresenter(@NonNull IAddTaskFragment presenterListener,
-                             @Nullable Bundle arguments) {
+    AddTaskFragmentPresenter(@NonNull IAddTaskFragment presenterListener) {
         this.presenterListener = presenterListener;
-        init(arguments);
     }
 
 

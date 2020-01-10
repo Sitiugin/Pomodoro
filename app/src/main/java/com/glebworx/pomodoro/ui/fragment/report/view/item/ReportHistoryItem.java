@@ -87,6 +87,9 @@ public class ReportHistoryItem extends AbstractItem<ReportHistoryItem, ReportHis
     }
 
     private String getEventTypeString(Context context) {
+        if (model.getEventType() == null) {
+            return "";
+        }
         switch (model.getEventType()) {
             case EVENT_PROJECT_CREATED:
                 return context.getString(

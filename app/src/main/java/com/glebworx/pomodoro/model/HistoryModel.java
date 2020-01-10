@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.firebase.firestore.Exclude;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.UUID;
 
@@ -42,11 +43,15 @@ public class HistoryModel extends AbstractModel {
 
     //                                                                                    ATTRIBUTES
 
+    @SerializedName("id")
     private final String id; // TODO why do we need id?
+    @SerializedName("colorTag")
     private String colorTag;
+    @SerializedName("taskName")
     private String taskName;
+    @SerializedName("eventType")
     private String eventType;
-
+    @SerializedName("timeElapsed")
     private int timeElapsed;
 
 

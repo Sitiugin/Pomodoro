@@ -119,7 +119,8 @@ public class AddTaskFragment extends Fragment implements IAddTaskFragment {
         }
         constraintSet = new ConstraintSet();
         unbinder = ButterKnife.bind(this, rootView);
-        presenter = new AddTaskFragmentPresenter(this, getArguments());
+        presenter = new AddTaskFragmentPresenter(this);
+        presenter.init(getArguments());
         return rootView;
     }
 

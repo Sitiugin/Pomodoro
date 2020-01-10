@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.firebase.firestore.Exclude;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
@@ -31,13 +32,21 @@ public class ProjectModel extends AbstractModel {
 
     //                                                                                    ATTRIBUTES
 
+    @SerializedName("dueDate")
     private Date dueDate;
+    @SerializedName("colorTag")
     private String colorTag;
+    @SerializedName("estimatedTime")
     private int estimatedTime;
+    @SerializedName("elapsedTime")
     private int elapsedTime;
+    @SerializedName("progress")
     private float progress;
+    @SerializedName("allTasksCompleted")
     private boolean allTasksCompleted;
+    @SerializedName("completed")
     private boolean completed;
+    @SerializedName("completedOn")
     private Date completedOn;
 
 

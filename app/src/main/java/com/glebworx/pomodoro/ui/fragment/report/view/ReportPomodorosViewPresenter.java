@@ -86,7 +86,9 @@ public class ReportPomodorosViewPresenter implements IReportPomodorosViewPresent
                 return;
             }
             ReportPomodoroOverviewModel model = ReportDataManager.getPomodoroOverviewModel(snapshot.getDocuments());
-            emitter.onNext(model);
+            if (model != null) {
+                emitter.onNext(model);
+            }
             emitter.onComplete();
         });
     }

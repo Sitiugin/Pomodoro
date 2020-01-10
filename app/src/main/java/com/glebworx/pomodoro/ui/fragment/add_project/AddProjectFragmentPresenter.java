@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.glebworx.pomodoro.R;
 import com.glebworx.pomodoro.api.ProjectApi;
@@ -98,10 +97,8 @@ class AddProjectFragmentPresenter implements IAddProjectFragmentPresenter {
 
     //                                                                                  CONSTRUCTORS
 
-    AddProjectFragmentPresenter(@NonNull IAddProjectFragment presenterListener,
-                                @Nullable Bundle arguments) {
+    AddProjectFragmentPresenter(@NonNull IAddProjectFragment presenterListener) {
         this.presenterListener = presenterListener;
-        init(arguments);
     }
 
 

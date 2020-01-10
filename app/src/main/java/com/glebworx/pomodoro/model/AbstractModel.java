@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 import com.google.firebase.firestore.Exclude;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 import java.util.Objects;
@@ -15,7 +16,9 @@ public abstract class AbstractModel implements Comparable<AbstractModel>, Parcel
 
     //                                                                                    ATTRIBUTES
 
+    @SerializedName("name")
     private String name;
+    @SerializedName("timestamp")
     private Date timestamp;
 
 
